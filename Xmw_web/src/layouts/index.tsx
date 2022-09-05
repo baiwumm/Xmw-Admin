@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 15:59:25
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-05 15:11:40
+ * @LastEditTime: 2022-09-05 16:00:44
  */
 // 引入第三方组件
 import { FC, useState } from 'react';
@@ -14,7 +14,7 @@ import { PageContainer, ProLayout, SettingDrawer } from '@ant-design/pro-compone
 import { Link } from 'umi';
 
 // 引入业务组件
-import IconFont from './utils/iconfont' // 渲染菜单图标
+import IconFont from './MenuIconRender' // 渲染菜单图标
 import GlobalFooter from './GlobalFooter' // 公共页面版权
 
 // 模拟从后端请求菜单
@@ -39,7 +39,7 @@ const BasicLayout: FC = ({ children, routes }) => {
     // 整体 layout 布局配置项工具
     const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
         fixSiderbar: true,
-        layout: 'side',
+        layout: 'mix',
     });
     return (
         <div
