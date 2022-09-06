@@ -1,15 +1,9 @@
-import type { IRoute } from 'umi'
+import type { MenuDataItem } from '@ant-design/pro-components';
 
 import system from './router/system'
 
-const routes: IRoute[] = [
-    {
-        path: '/',
-        component: '@/layouts/index',
-        routes: [
-            system
-        ]
-    }
-]
+const routes: MenuDataItem[] = [
+    system
+];
 
-export default routes
+export default routes;

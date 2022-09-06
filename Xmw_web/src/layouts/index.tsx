@@ -4,18 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-09-02 15:59:25
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-05 16:00:44
+ * @LastEditTime: 2022-09-06 16:09:27
  */
 // 引入第三方组件
 import { FC, useState } from 'react';
 import type { ProSettings, MenuDataItem } from '@ant-design/pro-components';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer, ProLayout, SettingDrawer } from '@ant-design/pro-components';
-import { Link } from 'umi';
+import { Link, Outlet } from 'umi';
 
 // 引入业务组件
 import IconFont from './MenuIconRender' // 渲染菜单图标
 import GlobalFooter from './GlobalFooter' // 公共页面版权
+import routes from '../../config/routes'
 
 // 模拟从后端请求菜单
 const waitTime = (time: number = 100) => {
@@ -35,12 +36,14 @@ const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
     }));
 
 // 侧边栏的默认关闭需要设置 breakpoint={false} ，如果只设置 defaultCollapsed 会无效
-const BasicLayout: FC = ({ children, routes }) => {
+const BasicLayout: FC = () => {
     // 整体 layout 布局配置项工具
     const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
         fixSiderbar: true,
-        layout: 'mix',
+        layout: 'side',
     });
+    // 当前应用会话的位置信息
+    const [pathname, setPathname] = useState('/');
     return (
         <div
             id="xmw-pro-layout"
@@ -54,11 +57,18 @@ const BasicLayout: FC = ({ children, routes }) => {
                 menu={{
                     request: async () => {
                         await waitTime(1000);
-                        return loopMenuItem(routes[0].routes)
+                        return loopMenuItem(routes)
                     }
                 }}
+                location={{
+                    pathname,
+                }}
                 /* 自定义菜单项的 render 方法 */
-                menuItemRender={(menuItem, dom) => (<Link to={menuItem.path ?? '/'}>{dom}</Link>)}
+                menuItemRender={(menuItem, dom) => (
+                    <div onClick={() => { setPathname(menuItem.path || '/') }}>
+                        <Link to={menuItem.path ?? '/'}>{dom}</Link>
+                    </div>
+                )}
                 /* 自定义菜单项的 render 方法 */
                 footerRender={() => <GlobalFooter />}
                 /* layout 的设置 */
@@ -66,12 +76,13 @@ const BasicLayout: FC = ({ children, routes }) => {
             >
                 <PageContainer >
                     <ProCard style={{ height: '100vh', minHeight: 800 }}>
-                        {children}
+                        <Outlet />
                     </ProCard>
                 </PageContainer>
             </ProLayout>
             {/* 整体 layout 布局配置项工具 */}
             <SettingDrawer
+                pathname={pathname}
                 enableDarkTheme
                 getContainer={() => document.getElementById('xmw-pro-layout')}
                 settings={settings}

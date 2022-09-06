@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-05 14:05:26
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-05 15:58:26
+ * @LastEditTime: 2022-09-06 16:08:31
  */
 import { FC } from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
@@ -16,7 +16,7 @@ const IconFont = createFromIconfontCN({
 
 // 定义接口
 interface IProps {
-    iconName: string
+    iconName: any
 }
 
 const IconFontLayout: FC<IProps> = ({ iconName }) => {

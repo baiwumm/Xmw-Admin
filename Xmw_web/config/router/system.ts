@@ -1,3 +1,11 @@
+/*
+ * @Description: 系统设置模块路由配置
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-09-02 13:54:14
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-09-06 11:24:52
+ */
 export default {
     path: '/system',
     name: '系统设置',
