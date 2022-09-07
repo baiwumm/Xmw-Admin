@@ -4,12 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-06 16:42:37
+ * @LastEditTime: 2022-09-07 11:28:36
  */
 import { defineConfig } from '@umijs/max';
 import routes from './routes'
 
 export default defineConfig({
+    // dva umi 状态管理方案
+    dva: {},
     antd: {},
     access: {},
     model: {},
@@ -33,6 +35,13 @@ export default defineConfig({
             ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_m6r215oif4m.js', // 阿里 iconfont 图标地址
             FOOTER_COPYRIGHT: 'Copyright 2022 by Cyan', // 底部版权
         },
+    },
+    locale: {
+        // 默认使用 src/locales/zh-CN.ts 作为多语言文件
+        default: 'zh-CN',
+        title: true,
+        antd: true,
+        baseSeparator: '-',
     },
     // 配置额外的 meta 标签
     metas: [
