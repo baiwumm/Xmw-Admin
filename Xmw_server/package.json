@@ -23,20 +23,22 @@
   },
   "dependencies": {
     "egg": "^2.6.1",
+    "egg-mysql": "^3.1.1",
     "egg-scripts": "^2.6.0"
   },
   "devDependencies": {
+    "@eggjs/tsconfig": "^1.0.0",
     "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.12",
     "@types/supertest": "^2.0.0",
-    "@eggjs/tsconfig": "^1.0.0",
     "autod": "^3.0.1",
     "autod-egg": "^1.1.0",
-    "egg-ci": "^2.1.0",
     "egg-bin": "^4.11.0",
+    "egg-ci": "^2.1.0",
     "egg-mock": "^3.16.0",
     "eslint": "^8.0.0",
     "eslint-config-egg": "^12.0.0",
+    "sequelize-cli": "^6.4.1",
     "typescript": "^4.0.0"
   },
   "engines": {
