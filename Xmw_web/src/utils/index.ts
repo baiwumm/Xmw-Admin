@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-07 16:26:42
+ * @LastEditTime: 2022-09-08 15:01:42
  */
 import { useIntl } from '@umijs/max'
 
