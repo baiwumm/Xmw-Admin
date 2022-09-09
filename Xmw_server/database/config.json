@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "root",
+    "password": "123456",
+    "port": 3306,
+    "database": "react_umi_xmw",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+08:00",
+    "define": {
+      "timestamps": false,
+      "freezeTableName": true
+    },
+    "logging": true,
+    "dialectOptions": {
+      "dateStrings": true,
+      "typeCast": true
+    }
+  }
+}

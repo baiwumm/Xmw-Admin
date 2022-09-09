@@ -8,8 +8,8 @@
     "declarations": true
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-React Umi Xmw",
-    "stop": "egg-scripts stop --title=egg-server-React Umi Xmw",
+    "start": "egg-scripts start --daemon --title=egg-server-react-umi-xmw",
+    "stop": "egg-scripts stop --title=egg-server-react-umi-xmw",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test-local": "egg-bin test",
@@ -23,8 +23,10 @@
   },
   "dependencies": {
     "egg": "^2.6.1",
-    "egg-mysql": "^3.1.1",
-    "egg-scripts": "^2.6.0"
+    "egg-cors": "^2.2.3",
+    "egg-scripts": "^2.6.0",
+    "egg-sequelize": "^6.0.0",
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.0.0",

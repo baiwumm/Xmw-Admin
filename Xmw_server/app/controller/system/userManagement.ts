@@ -1,14 +1,15 @@
 /*
- * @Description: 系统设置-用户模块接口
+ * @Description: 系统设置-用户模块-Controller层
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 18:30:31
+ * @LastEditTime: 2022-09-09 16:13:27
  */
-import { Controller } from 'egg';
 
-export default class UserManagement extends Controller {
+import BaseController from '../base'
+
+export default class UserManagement extends BaseController {
     /**
      * @description: 获取用户列表
      * @return {*}
@@ -17,13 +18,11 @@ export default class UserManagement extends Controller {
     public async getUserList() {
         const { ctx } = this;
         try {
-            let { } = ctx.params;
-            const results = await ctx.mysql.select('posts');
-            console.log(6666)
-            ctx.body = { resCode: 200, resMsg: '操作成功!', resData: results }
+            let result = await ctx.service.system.userManagement.getUserList()
+            this.resResult(1, result);
         } catch (error) {
             ctx.logger.info('getUserList方法报错：' + error)
-            ctx.body = { resCode: 400, resMsg: '操作失败!', resData: error }
+            this.resResult(2, error);
         }
     }
 }
