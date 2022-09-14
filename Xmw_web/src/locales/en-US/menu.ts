@@ -4,12 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:31:44
+ * @LastEditTime: 2022-09-13 10:16:03
  */
 export default {
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.work-bench': 'Work Bench',
+  'menu.administrative': 'Intelligent Administrative',
+  'menu.administrative.organization': 'Organization Management',
   'menu.system': 'System Settings',
-  'menu.system.user-management': 'User management',
+  'menu.system.user-management': 'User Management',
   'menu.system.operation-log': 'Operation Log'
 };

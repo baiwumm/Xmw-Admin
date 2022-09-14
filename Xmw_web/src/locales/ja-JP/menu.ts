@@ -4,11 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:31:34
+ * @LastEditTime: 2022-09-13 10:16:45
  */
 export default {
   'menu.dashboard': '指示パネル',
   'menu.dashboard.work-bench': '作業台',
+  'menu.administrative': 'スマート行政',
+  'menu.administrative.organization': '組織マネジメント',
   'menu.system': 'システム設定',
   'menu.system.user-management': 'ユーザー管理',
   'menu.system.operation-log': '操作ログ'

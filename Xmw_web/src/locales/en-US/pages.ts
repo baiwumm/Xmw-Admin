@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:23:09
+ * @LastEditTime: 2022-09-13 11:04:54
  */
 export default {
   'pages.login.subtitle': 'Technology stack: React + TS + UMI4 + ANTD-Pro',
@@ -17,6 +17,7 @@ export default {
   'pages.login.password.placeholder': 'Password:',
   'pages.login.password.required': 'Password is required!',
   'pages.dashboard.work-bench': 'Work Bench',
-  'pages.setting.user-management': 'User management',
+  'pages.administrative.organization': 'Organization Management',
+  'pages.setting.user-management': 'User Management',
   'pages.setting.operation-log': 'Operation Log'
 };

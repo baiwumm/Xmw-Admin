@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 13:49:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-09 16:09:25
+ * @LastEditTime: 2022-09-13 15:54:29
  */
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 
@@ -15,8 +15,8 @@ export default (appInfo: EggAppInfo) => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1662702532562_9450';
 
-  // add your egg config in here
-  config.middleware = [];
+  // 配置需要的中间件，数组顺序即为中间件的加载顺序
+  config.middleware = ['params']
 
   /* 取消安全证书验证 */
   config.security = {

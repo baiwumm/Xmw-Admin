@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:32:14
+ * @LastEditTime: 2022-09-13 09:27:30
  */
 export default {
     path: '/system',
     name: 'system',
-    icon: 'crown',
+    icon: 'icon-setting',
     routes: [
         {
             path: '/system',
@@ -18,13 +18,13 @@ export default {
         {
             path: '/system/user-management',
             name: 'user-management',
-            icon: 'crown',
+            icon: 'icon-user',
             component: './System/UserManagement',
         },
         {
             path: '/system/operation-log',
             name: 'operation-log',
-            icon: 'crown',
+            icon: 'icon-log',
             component: './System/OperationLog',
         },
     ],

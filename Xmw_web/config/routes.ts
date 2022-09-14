@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:02
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:19:34
+ * @LastEditTime: 2022-09-13 10:29:23
  */
 /**
  * @name umi 的路由配置
@@ -16,8 +16,7 @@
  * @param wrappers 配置路由组件的包装组件，通过包装组件可以为当前的路由组件组合进更多的功能。 比如，可以用于路由级别的权限校验
  * @doc https://umijs.org/docs/guides/routes
  */
-import setting from './router/system' // 系统设置模块
-import dashboard from './router/dashboard'; // 指示面板模块
+import { dashboard, administrative, setting } from './router'
 
 export default [
   {
@@ -32,6 +31,7 @@ export default [
     ],
   },
   dashboard,
+  administrative,
   setting,
   {
     path: '/',

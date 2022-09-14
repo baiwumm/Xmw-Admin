@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:02
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:10:04
+ * @LastEditTime: 2022-09-13 09:35:04
  */
 import { Settings as LayoutSettings } from '@ant-design/pro-components';
 
@@ -20,7 +20,7 @@ const Settings: LayoutSettings & {
   primaryColor: '#1890ff',
   layout: 'mix',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
   title: 'React Umi Xmw',

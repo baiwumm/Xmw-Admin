@@ -1,7 +1,17 @@
+/*
+ * @Description: 全局路由配置
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-09-08 16:07:35
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-09-13 15:31:26
+ */
 import { Application } from 'egg';
 
 export default (app: Application) => {
   const { controller, router } = app;
 
-  router.get('/system/getUserList', controller.system.userManagement.getUserList);
+  router.get('/system/getUserList', controller.system.userManagement.getUserList); // 获取用户管理列表
+  router.get('/administrative/getOrganizationList', controller.administrative.organization.getOrganizationList); // 获取组织管理列表
+  router.post('/administrative/saveOrganization', controller.administrative.organization.saveOrganization); // 更新组织管理列表
 };

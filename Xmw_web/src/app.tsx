@@ -6,8 +6,9 @@ import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from './requestErrorConfig';
+import { errorConfig } from '@/utils/umiRequest';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { useLocalStorageState } from 'ahooks';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -38,7 +39,7 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
-      settings: defaultSettings,
+      settings: JSON.parse(window.localStorage.getItem('umi_layout')) || defaultSettings,
     };
   }
   return {
@@ -50,12 +51,24 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   console.log(initialState?.settings);
+  const [umiLayout, setUmiLayout] = useLocalStorageState<Partial<LayoutSettings> | undefined>(
+    'umi_layout',
+    {
+      defaultValue: initialState?.settings,
+    },
+  );
   return {
+    /* 菜单图标使用iconfont */
+    iconfontUrl: process.env.ICONFONT_URL,
+    /* 右侧工具栏 */
     rightContentRender: () => <RightContent />,
+    /* 水印 */
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    /* 底部版权 */
     footerRender: () => <Footer />,
+    /* 页面切换时触发 */
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -85,11 +98,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ],
     links: isDev
       ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-        ]
+        <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+          <LinkOutlined />
+          <span>OpenAPI 文档</span>
+        </Link>,
+      ]
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
@@ -106,6 +119,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               enableDarkTheme
               settings={initialState?.settings}
               onSettingChange={(settings) => {
+                console.log(settings)
+                setUmiLayout(settings)
                 setInitialState((preInitialState) => ({
                   ...preInitialState,
                   settings,

@@ -130,4 +130,14 @@ export default defineConfig({
       projectName: 'swagger',
     },
   ],
+  /**
+   * @name openAPI 设置代码中的可用变量。
+   * @description 属性值会经过一次 JSON.stringify 转换。
+   * @doc https://umijs.org/docs/api/config#define
+   */
+  define: {
+    'process.env': {
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_jzzgxp7lwzj.js'
+    }
+  }
 });
