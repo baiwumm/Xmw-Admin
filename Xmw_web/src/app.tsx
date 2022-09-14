@@ -50,7 +50,7 @@ export async function getInitialState(): Promise<{
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-  console.log(initialState?.settings);
+  // console.log(initialState?.settings);
   const [umiLayout, setUmiLayout] = useLocalStorageState<Partial<LayoutSettings> | undefined>(
     'umi_layout',
     {
@@ -119,7 +119,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
               enableDarkTheme
               settings={initialState?.settings}
               onSettingChange={(settings) => {
-                console.log(settings)
                 setUmiLayout(settings)
                 setInitialState((preInitialState) => ({
                   ...preInitialState,

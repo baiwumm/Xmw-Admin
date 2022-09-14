@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 15:23:38
+ * @LastEditTime: 2022-09-14 16:26:38
  */
 'use strict';
 
 module.exports = (app) => {
-  const { STRING, INTEGER, DATE, ENUM, NOW, UUID, UUIDV4 } = app.Sequelize;
+  const { STRING, INTEGER, DATE, NOW, UUID, UUIDV4 } = app.Sequelize;
 
   const xmw_users = app.model.define('xmw_users', {
     user_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '用户id' },
@@ -22,8 +22,8 @@ module.exports = (app) => {
     email: { type: STRING(50), allowNull: true, defaultValue: '', comment: '电子邮箱' },
     phone: { type: STRING(11), allowNull: false, comment: '电话号码' },
     avatar_url: { type: STRING(200), allowNull: true, defaultValue: '', comment: '头像地址' },
-    sex: { type: ENUM, values: ['0', '1', '2'], allowNull: false, comment: '用户性别' },
-    status: { type: ENUM, values: ['0', '1'], allowNull: false, comment: '是否禁用' },
+    sex: { type: STRING(10), allowNull: false, comment: '用户性别' },
+    status: { type: STRING(10), allowNull: false, comment: '是否禁用' },
     token: { type: STRING(255), allowNull: false, comment: '登录token' },
     motto: { type: STRING(255), allowNull: true, defaultValue: '', comment: '座右铭' },
     tag: { type: STRING(200), allowNull: false, comment: '人物标签' },

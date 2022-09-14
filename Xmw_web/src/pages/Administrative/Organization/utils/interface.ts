@@ -1,3 +1,10 @@
+import { ReactNode } from "react"
+
+/**
+ * @description: 表格 columns 接口定义
+ * @return {*}
+ * @author: Cyan
+ */
 export interface TableItem {
     org_id?: string,
     org_name: string,
@@ -10,4 +17,18 @@ export interface TableItem {
     update_time?: Date,
     leader?: string,
     founder?: string,
+    children?: TableItem[]
+}
+
+
+/**
+ * @description: FormTemplate Props
+ * @return {*}
+ * @author: Cyan
+ */
+export interface FormTemplateProps {
+    treeData: TableItem[],
+    reloadTable: any,
+    formData?: TableItem,
+    triggerDom?: ReactNode
 }

@@ -4,46 +4,51 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 18:26:41
+ * @LastEditTime: 2022-09-14 18:27:03
  */
 
 // 引入第三方库
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
-import type { ActionType } from '@ant-design/pro-components'
 import { Button, Form, message } from 'antd'; // antd 组件库
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveOrganization } from '@/services/administrative/organization' // 组织管理接口
-import { TableItem } from '../utils/interface'
+import { TableItem, FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<{ treeData: object[], tableRef: ActionType }> = ({ treeData, tableRef }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom }) => {
     // 初始化表单
     const [form] = Form.useForm<TableItem>();
+    // 深克隆一份表单数据
+    const [cloneFormData, setCloneFormData] = useState<TableItem | undefined>(formData)
+    // 提交表单
     const handlerSubmit = async (values: any) => {
-        try {
-            // 提交数据
-            await saveOrganization(values).then(() => {
-                message.success('提交成功');
-                tableRef.current.reload()
-                // 不返回不会关闭弹框
-                return true;
-            })
-        } catch (error) {
-            // 抛出异常
-            throw (error);
-        }
-
+        // 提交数据
+        let result = false
+        await saveOrganization({ ...values, ...cloneFormData }).then(res => {
+            if (res.resCode === 200) {
+                message.success(res.resMsg);
+                reloadTable()
+                result = true
+            }
+        })
+        return result
     }
+    // 在组件首次渲染时，执行方法。
+    useEffect(() => {
+        // 判断是否有表单数据，有则回显
+        form.setFieldsValue(formData)
+        setCloneFormData(formData)
+    }, [form])
     return (
         <DrawerForm<TableItem>
-            title="新建"
+            title={cloneFormData && cloneFormData.org_id ? '编辑' : '新增'}
             width={500}
             grid
             form={form}
-            trigger={
+            trigger={triggerDom ||
                 <Button type="primary">
                     <PlusOutlined />
                     新建
@@ -56,7 +61,10 @@ const FormTemplate: FC<{ treeData: object[], tableRef: ActionType }> = ({ treeDa
             }}
             submitTimeout={2000}
             onFinish={async (values) => {
-                handlerSubmit(values)
+                // 提交数据
+                const isSuccess = await handlerSubmit(values)
+                // 返回true关闭弹框，否则不关闭
+                return isSuccess
             }}
             submitter={{
                 // 配置按钮文本

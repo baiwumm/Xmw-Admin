@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:19:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-09 15:41:14
+ * @LastEditTime: 2022-09-14 14:39:42
  */
 
 /**
@@ -13,8 +13,9 @@
  * @author: Cyan
  */
 export const RES_STATUS = {
-    SUCCESS: 1,
-    FAILURE: 2,
+    CUSTOM: -1,  // 自定义状态，用于处理一些特殊的结果
+    SUCCESS: 1, // 请求成功
+    FAILURE: 2, // 请求失败
 }
 
 /**
@@ -33,6 +34,7 @@ export const RES_STATUS_TEXT = {
  * @author: Cyan
  */
 export const RES_STATUS_CODE = {
+    [RES_STATUS.CUSTOM]: -1,
     [RES_STATUS.SUCCESS]: 200,
     [RES_STATUS.FAILURE]: 400
 }

@@ -4,12 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 15:48:59
+ * @LastEditTime: 2022-09-14 18:28:59
  */
 // 引入第三方库
 import { FC } from 'react';
 import {
-    ProFormDigit,
     ProFormRadio,
     ProFormText,
     ProFormTextArea,
@@ -26,6 +25,7 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
         <>
             {/* 父级 */}
             <ProFormTreeSelect
+                name="parent_id"
                 label="父级"
                 colProps={{ span: 24 }}
                 request={async () => treeData}
@@ -42,7 +42,7 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
             {/* 组织名称 */}
             <ProFormText
                 name="org_name"
-                colProps={{ span: 12 }}
+                colProps={{ span: 24 }}
                 label="组织名称"
                 placeholder="请输入组织名称"
                 fieldProps={{
@@ -54,7 +54,7 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
             {/* 组织编码 */}
             <ProFormText
                 name="org_code"
-                colProps={{ span: 12 }}
+                colProps={{ span: 24 }}
                 label="组织编码"
                 placeholder="请输入组织编码"
                 fieldProps={{
@@ -69,7 +69,7 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
                 colProps={{ span: 14 }}
                 label="组织类型"
                 radioType="button"
-                initialValue={1}
+                initialValue={'1'}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -80,23 +80,13 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
             <ProFormRadio.Group
                 name="status"
                 colProps={{ span: 10 }}
-                initialValue={1}
+                initialValue={'1'}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
                 label="状态"
                 options={APP_STATUS_OPTS}
                 rules={[{ required: true, message: '请选择组织状态' }]}
-            />
-            {/* 排序 */}
-            <ProFormDigit
-                name="sort"
-                label="排序"
-                width="lg"
-                tooltip="排序越大的在前面"
-                min={1} max={100}
-                colProps={{ span: 24 }}
-                fieldProps={{ precision: 0, defaultValue: 1 }}
             />
             {/* 描述 */}
             <ProFormTextArea

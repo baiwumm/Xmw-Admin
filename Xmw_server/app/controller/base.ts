@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 18:28:27
+ * @LastEditTime: 2022-09-14 16:55:18
  */
 
 import { Controller } from 'egg';
@@ -18,11 +18,11 @@ export default class BaseController extends Controller {
      * @return {*}
      * @author: Cyan
      */
-    public async resResult(resStatus: number, resData: any) {
+    public async resResult(resStatus: number, resData: any, resMsg?: string) {
         const { ctx } = this
         try {
             // 根据参数返回不同的状态
-            return ctx.body = { resCode: RES_STATUS_CODE[resStatus], resMsg: RES_STATUS_TEXT[resStatus], resData }
+            return ctx.body = { resCode: RES_STATUS_CODE[resStatus], resMsg: resStatus === -1 ? resMsg : RES_STATUS_TEXT[resStatus], resData }
         } catch (error) {
             // 打印错误日志
             ctx.logger.info('resResult方法报错：' + error)
@@ -135,7 +135,7 @@ export default class BaseController extends Controller {
             await result.update(source);
             return true
         } catch (error) {
-            ctx.logger.info('_update报错：' + error)
+            ctx.logger.info('_update方法报错：' + error)
         }
     }
 
@@ -149,12 +149,31 @@ export default class BaseController extends Controller {
     async _delete(modelName: string, id: string) {
         const { ctx } = this;
         try {
+            // 判断数据是否存在，不存在则直接返回
             const result = await ctx.model[modelName].findByPk(id);
             if (!result) return false;
+            // 存在则执行删除操作
             await result.destroy();
             return true;
         } catch (error) {
-            ctx.logger.info('_delete报错：' + error)
+            ctx.logger.info('_delete方法报错：' + error)
+        }
+    }
+
+    /**
+     * @description: findOne 方法获得它找到的第一个条目
+     * @param {string} modelName
+     * @param {*} options
+     * @return {*}
+     * @author: Cyan
+     */
+    async _findOne(modelName: string, options = {}) {
+        const { ctx } = this;
+        try {
+            const result = await ctx.model[modelName].findOne(options);
+            return result
+        } catch (error) {
+            ctx.logger.info('_findOne方法报错：' + error)
         }
     }
 }

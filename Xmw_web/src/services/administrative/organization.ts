@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 16:00:51
+ * @LastEditTime: 2022-09-14 16:58:01
  */
 import { request } from '@umijs/max';
 import { Data, Result } from '@/global/interface'
@@ -33,5 +33,18 @@ export async function saveOrganization(options?: Data) {
     return request<Result>('/api/administrative/saveOrganization', {
         method: 'POST',
         data: options || {},
+    });
+}
+
+/**
+ * @description: 新增更新组织管理列表
+ * @param {Data} org_id
+ * @return {*}
+ * @author: Cyan
+ */
+export async function delOrganization(org_id: string) {
+    return request<Result>('/api/administrative/delOrganization', {
+        method: 'POST',
+        data: { org_id },
     });
 }
