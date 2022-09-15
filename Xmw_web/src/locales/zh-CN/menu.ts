@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 10:17:02
+ * @LastEditTime: 2022-09-15 18:26:41
  */
 export default {
   'menu.dashboard': '指示面板',
@@ -13,5 +13,6 @@ export default {
   'menu.administrative.organization': '组织管理',
   'menu.system': '系统设置',
   'menu.system.user-management': '用户管理',
+  'menu.system.internationalization': '国际化',
   'menu.system.operation-log': '操作日志'
 };

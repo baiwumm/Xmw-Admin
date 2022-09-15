@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 11:05:24
+ * @LastEditTime: 2022-09-15 18:16:58
  */
 export default {
   'pages.login.subtitle': '技術スタック:React + TS + umi4 + antd-pro',
@@ -18,5 +18,6 @@ export default {
   'pages.dashboard.work-bench': '作業台',
   'pages.administrative.organization': '組織マネジメント',
   'pages.setting.user-management': 'ユーザー管理',
+  'pages.setting.internationalization': '国際化',
   'pages.setting.operation-log': '操作ログ'
 };

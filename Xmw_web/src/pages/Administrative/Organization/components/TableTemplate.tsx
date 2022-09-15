@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 17:11:34
+ * @LastEditTime: 2022-09-15 18:13:29
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
-import type { MenuProps } from 'antd';
 import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -25,50 +24,45 @@ const TableTemplate: FC = () => {
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState<TableItem[]>([])
+    const [treeData, setTreeData] = useState<any>([])
     // 当前行数据
     const [record, setRecord] = useState<TableItem>()
+    // 判断是否是添加子级
+    const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
     function reloadTable() {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (org_id: string | undefined) => {
-        console.log(1111)
+    const handlerDelete = async (org_id: string) => {
         Modal.confirm({
             title: '您确认要删除这条数据吗？',
             content: '删除后无法恢复，请谨慎操作',
             onOk: async () => {
-                if (org_id) {
-                    await delOrganization(org_id).then(res => {
-                        if (res.resCode === 200) {
-                            message.success(res.resMsg)
-                            // 刷新表格
-                            reloadTable()
-                        }
-                    })
-                }
+                await delOrganization(org_id).then(res => {
+                    if (res.resCode === 200) {
+                        message.success(res.resMsg)
+                        // 刷新表格
+                        reloadTable()
+                    }
+                })
             }
         })
 
     }
-    /**
- * @description: proTable columns 配置项
- * @return {*}
- * @author: Cyan
- */
+    //    下拉框菜单渲染
     const DropdownMenu = (
         <Menu
             items={[
-                // {
-                //     label: <FormTemplate
-                //         treeData={treeData}
-                //         reloadTable={reloadTable}
-                //         formData={record}
-                //         triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />}>添加子级</Button>}
-                //     />,
-                //     key: 'addChild',
-                // },
+                {
+                    label: <FormTemplate
+                        treeData={treeData}
+                        reloadTable={reloadTable}
+                        parent_id={parent_id}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />}>添加子级</Button>}
+                    />,
+                    key: 'addChild',
+                },
                 {
                     label: <FormTemplate
                         treeData={treeData}
@@ -86,6 +80,16 @@ const TableTemplate: FC = () => {
         />
     );
 
+    // 操作下拉框
+    const dropdownMenuClick = (record: TableItem) => {
+        setRecord(record)
+        set_parent_id(record?.org_id)
+    }
+    /**
+* @description: proTable columns 配置项
+* @return {*}
+* @author: Cyan
+*/
     const columns: ProColumns<TableItem>[] = [
         {
             title: '组织名称',
@@ -156,7 +160,7 @@ const TableTemplate: FC = () => {
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => setRecord(record)} key="operation"><Button size="small">操作<DownOutlined /></Button></Dropdown>
+                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">操作<DownOutlined /></Button></Dropdown>
             ]
         },
     ]
@@ -165,7 +169,7 @@ const TableTemplate: FC = () => {
         <ProTable<TableItem>
             actionRef={tableRef}
             columns={columns}
-            request={async (params?: { pageSize: number, current: number }) => {
+            request={async params => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改

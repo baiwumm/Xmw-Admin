@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 17:01:45
+ * @LastEditTime: 2022-09-15 17:40:25
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -21,7 +21,7 @@ import { TableItem } from '../utils/interface' // 公共 interface
 import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 
-const FormTemplateItem: FC<{ treeData: TableItem[] }> = ({ treeData }) => {
+const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
     return (
         <>
             {/* 父级 */}
@@ -32,6 +32,8 @@ const FormTemplateItem: FC<{ treeData: TableItem[] }> = ({ treeData }) => {
                 tooltip="不选默认为顶级组织"
                 fieldProps={{
                     treeData,
+                    disabled: !!parent_id,
+                    defaultValue: parent_id || undefined,
                     fieldNames: {
                         label: 'org_name',
                         value: 'org_id'

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 10:16:03
+ * @LastEditTime: 2022-09-15 18:26:09
  */
 export default {
   'menu.dashboard': 'Dashboard',
@@ -13,5 +13,6 @@ export default {
   'menu.administrative.organization': 'Organization Management',
   'menu.system': 'System Settings',
   'menu.system.user-management': 'User Management',
+  'menu.system.internationalization': 'Internationalization',
   'menu.system.operation-log': 'Operation Log'
 };

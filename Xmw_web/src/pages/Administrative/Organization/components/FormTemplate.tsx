@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 15:44:58
+ * @LastEditTime: 2022-09-15 17:42:28
  */
 
 // 引入第三方库
@@ -18,7 +18,7 @@ import FormTemplateItem from '../components/FormTemplateItem' // 表单组件
 import { saveOrganization } from '@/services/administrative/organization' // 组织管理接口
 import { TableItem, FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
     // 初始化表单
     const [form] = Form.useForm<TableItem>();
     // 深克隆一份表单数据
@@ -27,7 +27,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const handlerSubmit = async (values: any) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
+        const params = { ...cloneFormData, ...values, parent_id }
         // 删除 children 属性
         params.children && delete params.children
         await saveOrganization(params).then(res => {
@@ -43,7 +43,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     }
     return (
         <DrawerForm<TableItem>
-            title={cloneFormData && cloneFormData.org_id ? '编辑' : '新增'}
+            title={cloneFormData && cloneFormData.org_id ? `编辑组织：${cloneFormData.org_name}` : '新增组织'}
             width={500}
             grid
             form={form}
@@ -81,7 +81,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 }
             }}
         >
-            <FormTemplateItem treeData={treeData} />
+            <FormTemplateItem treeData={treeData} parent_id={parent_id} />
         </DrawerForm>
     );
 };

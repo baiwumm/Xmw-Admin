@@ -28,6 +28,7 @@ export interface TableItem {
 export interface FormTemplateProps {
     treeData: TableItem[],
     reloadTable: any,
-    formData?: TableItem,
-    triggerDom?: any
+    formData?: any,
+    triggerDom?: any,
+    parent_id?: string | undefined
 }

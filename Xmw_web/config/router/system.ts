@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 09:27:30
+ * @LastEditTime: 2022-09-15 18:23:19
  */
 export default {
     path: '/system',
@@ -20,6 +20,12 @@ export default {
             name: 'user-management',
             icon: 'icon-user',
             component: './System/UserManagement',
+        },
+        {
+            path: '/system/internationalization',
+            name: 'internationalization',
+            icon: 'icon-duoyuyan',
+            component: './System/Internationalization',
         },
         {
             path: '/system/operation-log',

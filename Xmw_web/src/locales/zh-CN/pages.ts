@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 11:05:36
+ * @LastEditTime: 2022-09-15 18:16:15
  */
 export default {
   'pages.login.subtitle': '技术栈：React + TS + umi4 + antd-pro',
@@ -18,5 +18,6 @@ export default {
   'pages.dashboard.work-bench': '工作台',
   'pages.administrative.organization': '组织管理',
   'pages.setting.user-management': '用户管理',
+  'pages.setting.internationalization': '国际化',
   'pages.setting.operation-log': '操作日志'
 };
