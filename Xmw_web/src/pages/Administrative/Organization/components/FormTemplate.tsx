@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 18:27:03
+ * @LastEditTime: 2022-09-15 15:44:58
  */
 
 // 引入第三方库
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
@@ -27,21 +27,20 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const handlerSubmit = async (values: any) => {
         // 提交数据
         let result = false
-        await saveOrganization({ ...values, ...cloneFormData }).then(res => {
+        const params = { ...cloneFormData, ...values }
+        // 删除 children 属性
+        params.children && delete params.children
+        await saveOrganization(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
                 reloadTable()
+                // 重置表单
+                form.resetFields()
                 result = true
             }
         })
         return result
     }
-    // 在组件首次渲染时，执行方法。
-    useEffect(() => {
-        // 判断是否有表单数据，有则回显
-        form.setFieldsValue(formData)
-        setCloneFormData(formData)
-    }, [form])
     return (
         <DrawerForm<TableItem>
             title={cloneFormData && cloneFormData.org_id ? '编辑' : '新增'}
@@ -56,9 +55,11 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             }
             autoFocusFirstInput
             drawerProps={{
-                destroyOnClose: true,
-                maskClosable: false
+                destroyOnClose: false,
+                maskClosable: false,
+                onClose: () => form.resetFields()
             }}
+            // 提交数据时，禁用取消按钮的超时时间（毫秒）。
             submitTimeout={2000}
             onFinish={async (values) => {
                 // 提交数据
@@ -71,6 +72,12 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 searchConfig: {
                     resetText: '取消',
                     submitText: '提交',
+                }
+            }}
+            onVisibleChange={visiable => {
+                if (visiable) {
+                    form.setFieldsValue(formData);
+                    setCloneFormData(formData)
                 }
             }}
         >

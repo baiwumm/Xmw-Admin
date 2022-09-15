@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 16:55:18
+ * @LastEditTime: 2022-09-15 15:26:04
  */
 
 import { Controller } from 'egg';
@@ -33,13 +33,13 @@ export default class BaseController extends Controller {
     /**
      * @description: 
      * @param {string} modelName
+     * @param {any} options:查询配置项
      * @param {number} current:当前页
      * @param {number} pageSize:每页条数
-     * @param {any} options:查询配置项
      * @return {*}
      * @author: Cyan
      */
-    public async _findAll(modelName: string, current?: number, pageSize?: number, options = {}) {
+    public async _findAll(modelName: string, options = {}, current?: number, pageSize?: number) {
         const { app, ctx } = this
         try {
             // 判断是否是分页查询还是全部查询
@@ -129,7 +129,7 @@ export default class BaseController extends Controller {
         const { ctx } = this
         try {
             // 判断这条数据是否存在，不存在则直接返回
-            const result = await ctx.model[modelName].findByPk(source[id]);
+            const result = await ctx.model[modelName].findByPk(id);
             if (!result) return false;
             // 如果存在则执行更新操作
             await result.update(source);

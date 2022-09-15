@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 18:28:59
+ * @LastEditTime: 2022-09-15 17:01:45
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -15,12 +15,13 @@ import {
     ProFormTreeSelect
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
+import { TableItem } from '../utils/interface' // 公共 interface
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 
-const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
+const FormTemplateItem: FC<{ treeData: TableItem[] }> = ({ treeData }) => {
     return (
         <>
             {/* 父级 */}
@@ -28,13 +29,14 @@ const FormTemplateItem: FC<{ treeData: object[] }> = ({ treeData }) => {
                 name="parent_id"
                 label="父级"
                 colProps={{ span: 24 }}
-                request={async () => treeData}
                 tooltip="不选默认为顶级组织"
                 fieldProps={{
+                    treeData,
                     fieldNames: {
                         label: 'org_name',
                         value: 'org_id'
                     },
+                    treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
                     placeholder: '请选择父级',
                 }}

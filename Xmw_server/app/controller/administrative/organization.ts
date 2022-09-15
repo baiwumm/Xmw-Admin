@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 18:09:16
+ * @LastEditTime: 2022-09-15 16:08:16
  */
 
 import BaseController from '../base'
 
 /**
- * @description: BaseController 里面的方法不能结构执行，目前原因暂不明￣□￣｜｜
+ * @description: BaseController 里面的方法不解构执行，目前原因暂不明￣□￣｜｜
  * @return {*}
  * @author: Cyan
  */
@@ -21,12 +21,26 @@ export default class Organization extends BaseController {
      * @author: Cyan
      */
     public async getOrganizationList() {
-        const { ctx } = this;
-        // 获取数据参数
-        let { current, pageSize, ...params } = ctx.params
+        const { ctx, app } = this;
         try {
+            const { Op } = app.Sequelize;
+            // 获取数据参数
+            let { org_name, org_code, org_type, status, start_time, end_time } = ctx.params
+            // 根据参数拼接查询条件
+            let where: any = {}
+            if (org_name) where.org_name = { [Op.substring]: org_name }
+            if (org_code) where.org_code = { [Op.substring]: org_code }
+            if (org_type) where.org_type = { [Op.eq]: org_type }
+            if (status) where.status = { [Op.eq]: status }
+            if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
+            // 查询规则
+            const options = {
+                order: [['created_time', 'desc']], // 排序规则
+                where
+            }
+
             // 根据参数查询数据
-            await this._findAll('XmwOrganization', current, pageSize, params).then(result => {
+            await this._findAll('XmwOrganization', options).then(result => {
                 // 判断是否有返回值
                 if (result) {
                     this.resResult(1, ctx.helper.initializeTree(result, 'org_id', 'parent_id', 'children'));
@@ -49,26 +63,45 @@ export default class Organization extends BaseController {
             const { Op } = app.Sequelize;
             // 获取数据参数
             let { org_id, ...params } = ctx.params
-            // 根据 org_id 判断是新增还是更新操作
-            if (org_id) {
-                console.log(params)
-            } else {
-                // 判断名称和编码是否存在
-                const options = {
-                    where: {
-                        [Op.or]: {
-                            org_name: params.org_name,
-                            org_code: params.org_code
-                        }
+            // 判断名称和编码是否存在
+            const options: any = {
+                where: {
+                    [Op.or]: {
+                        org_name: params.org_name,
+                        org_code: params.org_code
                     }
                 }
-                const exist = await this._findOne('XmwOrganization', options)
-                if (exist) {
-                    return this.resResult(-1, {}, '名称或者编码已存在！');
+            }
+            // 如果是编辑，则要加上这个条件：org_id != 自己
+            if (org_id) {
+                options.where.org_id = {
+                    [Op.ne]: org_id
                 }
+            }
+            // 如果有结果，则证明已存在
+            const exist = await this._findOne('XmwOrganization', options)
+            if (exist) {
+                return this.resResult(-1, {}, '名称或者编码已存在！');
+            }
+            // 根据 org_id 判断是新增还是更新操作
+            if (org_id) {
+                // 判断父级是否和自己相同
+                if (params.parent_id === org_id) {
+                    return this.resResult(-1, {}, '父级不能和自己相同！');
+                }
+                // 执行更新操作
+                await this._update('XmwOrganization', params, org_id).then(() => {
+                    // 更新成功
+                    this.resResult(1, {});
+                })
+
+            } else {
+
                 // 新增操作
-                await this._add('XmwOrganization', params)
-                this.resResult(1, {});
+                await this._add('XmwOrganization', params).then(() => {
+                    // 更新成功
+                    this.resResult(1, {});
+                })
             }
         } catch (error) {
             ctx.logger.info('saveOrganization方法报错：' + error)
@@ -98,8 +131,10 @@ export default class Organization extends BaseController {
                 return this.resResult(-1, {}, '当前数据存在子级，不能删除！');
             }
             // 不存在子级则执行删除操作
-            await this._delete('XmwOrganization', org_id)
-            this.resResult(1, {});
+            await this._delete('XmwOrganization', org_id).then(() => {
+                // 删除成功
+                this.resResult(1, {});
+            })
         } catch (error) {
             ctx.logger.info('delOrganization方法报错：' + error)
             // 返回状态,此处不能用结构，原因暂不明

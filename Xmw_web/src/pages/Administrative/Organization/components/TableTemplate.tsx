@@ -4,14 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 17:59:25
+ * @LastEditTime: 2022-09-15 17:11:34
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Popconfirm, message } from 'antd' // antd 组件库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
+import type { MenuProps } from 'antd';
+import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
+import moment from 'moment'
 
 // 引入业务组件
 import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
@@ -23,36 +25,67 @@ const TableTemplate: FC = () => {
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState([])
-    // 判断是否显示drawerForm，用于编辑操作
-    // const [drawerVisit, setDrawerVisit] = useState(false);
+    const [treeData, setTreeData] = useState<TableItem[]>([])
+    // 当前行数据
+    const [record, setRecord] = useState<TableItem>()
     // 手动触发刷新表格
     function reloadTable() {
-        tableRef.current.reload()
+        tableRef?.current?.reload()
     }
-    // 定义表格操作组件
-    const deleteOrganization = (record: any) => (
-        <Popconfirm title="你确认要删除吗" onConfirm={e => handlerDelete(record.org_id)} okText="是" cancelText="否">
-            <Button key="delete" type="link" size="small" icon={<DeleteOutlined />} danger>删除</Button>
-        </Popconfirm>
-    );
     // 删除列表
     const handlerDelete = async (org_id: string | undefined) => {
-        if (org_id) {
-            await delOrganization(org_id).then(res => {
-                if (res.resCode === 200) {
-                    message.success(res.resMsg)
-                    // 刷新表格
-                    reloadTable()
+        console.log(1111)
+        Modal.confirm({
+            title: '您确认要删除这条数据吗？',
+            content: '删除后无法恢复，请谨慎操作',
+            onOk: async () => {
+                if (org_id) {
+                    await delOrganization(org_id).then(res => {
+                        if (res.resCode === 200) {
+                            message.success(res.resMsg)
+                            // 刷新表格
+                            reloadTable()
+                        }
+                    })
                 }
-            })
-        }
+            }
+        })
+
     }
     /**
  * @description: proTable columns 配置项
  * @return {*}
  * @author: Cyan
  */
+    const DropdownMenu = (
+        <Menu
+            items={[
+                // {
+                //     label: <FormTemplate
+                //         treeData={treeData}
+                //         reloadTable={reloadTable}
+                //         formData={record}
+                //         triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />}>添加子级</Button>}
+                //     />,
+                //     key: 'addChild',
+                // },
+                {
+                    label: <FormTemplate
+                        treeData={treeData}
+                        reloadTable={reloadTable}
+                        formData={record}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />}>编辑</Button>}
+                    />,
+                    key: 'edit',
+                },
+                {
+                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} >删除</Button>,
+                    key: 'delete',
+                },
+            ]}
+        />
+    );
+
     const columns: ProColumns<TableItem>[] = [
         {
             title: '组织名称',
@@ -69,12 +102,17 @@ const TableTemplate: FC = () => {
         {
             title: '组织类型',
             dataIndex: 'org_type',
+            filters: true,
+            onFilter: true,
+            valueEnum: ORG_TYPE_TAGS,
             render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
         },
         {
             title: '状态',
             dataIndex: 'status',
-            width: 80,
+            width: 100,
+            filters: true,
+            onFilter: true,
             valueEnum: {
                 0: { text: '禁用', status: 'Default' },
                 1: { text: '正常', status: 'Success' },
@@ -84,6 +122,7 @@ const TableTemplate: FC = () => {
             title: '创建时间',
             dataIndex: 'created_time',
             valueType: 'date',
+            hideInSearch: true,
             render: text => (
                 <Space>
                     <ClockCircleOutlined /><span>{text}</span>
@@ -91,14 +130,34 @@ const TableTemplate: FC = () => {
             )
         },
         {
+            title: '创建时间',
+            dataIndex: 'created_time',
+            valueType: 'dateRange',
+            hideInTable: true,
+            search: {
+                transform: (value) => {
+                    return {
+                        start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+                        end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+                    };
+                },
+            },
+        },
+        {
+            title: '描述',
+            dataIndex: 'describe',
+            ellipsis: true,
+            hideInSearch: true
+        },
+        {
             title: '操作',
             valueType: 'option',
-            width: 150,
+            width: 120,
+            align: 'center',
             key: 'option',
             render: (_, record) => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} formData={record} triggerDom={<Button key="edit" type="link" size="small" icon={<EditOutlined />}>编辑</Button>} />,
-                deleteOrganization(record)
-            ],
+                <Dropdown overlay={DropdownMenu} onOpenChange={() => setRecord(record)} key="operation"><Button size="small">操作<DownOutlined /></Button></Dropdown>
+            ]
         },
     ]
 
@@ -106,12 +165,12 @@ const TableTemplate: FC = () => {
         <ProTable<TableItem>
             actionRef={tableRef}
             columns={columns}
-            request={async (params = {}) => {
+            request={async (params?: { pageSize: number, current: number }) => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    const { resData, resCode } = await getOrganizationList(params);
-                    resData && setTreeData(resData)
+                    const { resData, resCode } = await getOrganizationList(params)
+                    setTreeData(resData)
                     return {
                         data: resData,
                         // success 请返回 true，

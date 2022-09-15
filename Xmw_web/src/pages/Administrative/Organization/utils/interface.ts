@@ -1,4 +1,3 @@
-import { ReactNode } from "react"
 
 /**
  * @description: 表格 columns 接口定义
@@ -30,5 +29,5 @@ export interface FormTemplateProps {
     treeData: TableItem[],
     reloadTable: any,
     formData?: TableItem,
-    triggerDom?: ReactNode
+    triggerDom?: any
 }
