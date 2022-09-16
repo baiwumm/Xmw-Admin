@@ -4,15 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 18:15:50
+ * @LastEditTime: 2022-09-16 17:43:16
  */
+// 引入第三方库
 import { FC } from 'react';
-import { Button } from 'antd'; // antd 组件
+import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+
+// 引入业务工具类
+import TableTemplate from './components/TableTemplate'
 import { formatMessage } from '@/utils' // 引入工具类
 
 const Internationalization: FC = () => {
     return (
-        <Button type="primary">{formatMessage('pages.setting.internationalization')}</Button>
+        <PageContainer title={formatMessage('pages.setting.internationalization')}>
+            {/* 表格列表 */}
+            <TableTemplate />
+        </PageContainer>
     )
 }
 export default Internationalization

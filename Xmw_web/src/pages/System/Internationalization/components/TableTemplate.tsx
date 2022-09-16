@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 17:56:00
+ * @LastEditTime: 2022-09-16 17:56:36
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -15,10 +15,9 @@ import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // ant
 import moment from 'moment'
 
 // 引入业务组件
-import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
+import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { TableItem } from '../utils/interface' //interface 接口
-import { ORG_TYPE_TAGS } from '../utils/enum'
 
 const TableTemplate: FC = () => {
     // 获取表格实例
@@ -34,12 +33,12 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (org_id: string) => {
+    const handlerDelete = async (id: string) => {
         Modal.confirm({
             title: '您确认要删除这条数据吗？',
             content: '删除后无法恢复，请谨慎操作',
             onOk: async () => {
-                await delOrganization(org_id).then(res => {
+                await delInternational(id).then(res => {
                     if (res.resCode === 200) {
                         message.success(res.resMsg)
                         // 刷新表格
@@ -73,7 +72,7 @@ const TableTemplate: FC = () => {
                     key: 'edit',
                 },
                 {
-                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} >删除</Button>,
+                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >删除</Button>,
                     key: 'delete',
                 },
             ]}
@@ -83,7 +82,7 @@ const TableTemplate: FC = () => {
     // 操作下拉框
     const dropdownMenuClick = (record: TableItem) => {
         setRecord(record)
-        set_parent_id(record?.org_id)
+        set_parent_id(record?.id)
     }
     /**
 * @description: proTable columns 配置项
@@ -92,35 +91,28 @@ const TableTemplate: FC = () => {
 */
     const columns: ProColumns<TableItem>[] = [
         {
-            title: '组织名称',
-            dataIndex: 'org_name',
+            title: '国际化字段',
+            dataIndex: 'name',
             ellipsis: true,
             render: text => <Tag color="processing">{text}</Tag>
         },
         {
-            title: '组织编码',
-            dataIndex: 'org_code',
+            title: '中文',
+            dataIndex: 'zh-CN',
             ellipsis: true,
-            render: text => <Tag color="cyan">{text}</Tag>
+            hideInSearch: true,
         },
         {
-            title: '组织类型',
-            dataIndex: 'org_type',
-            filters: true,
-            onFilter: true,
-            valueEnum: ORG_TYPE_TAGS,
-            render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
+            title: '英文',
+            dataIndex: 'en-US',
+            ellipsis: true,
+            hideInSearch: true,
         },
         {
-            title: '状态',
-            dataIndex: 'status',
-            width: 100,
-            filters: true,
-            onFilter: true,
-            valueEnum: {
-                0: { text: '禁用', status: 'Default' },
-                1: { text: '正常', status: 'Success' },
-            },
+            title: '日文',
+            dataIndex: 'ja-JP',
+            ellipsis: true,
+            hideInSearch: true,
         },
         {
             title: '创建时间',
@@ -148,12 +140,6 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: '描述',
-            dataIndex: 'describe',
-            ellipsis: true,
-            hideInSearch: true
-        },
-        {
             title: '操作',
             valueType: 'option',
             width: 120,
@@ -173,7 +159,7 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    const { resData, resCode } = await getOrganizationList(params)
+                    const { resData, resCode } = await getInternationalList(params)
                     setTreeData(resData)
                     return {
                         data: resData,
@@ -186,7 +172,7 @@ const TableTemplate: FC = () => {
                 }
             }
             }
-            rowKey="org_id"
+            rowKey="id"
             pagination={false}
             // 工具栏
             toolBarRender={() => [

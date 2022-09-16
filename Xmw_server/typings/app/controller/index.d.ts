@@ -4,6 +4,7 @@
 import 'egg';
 import ExportBase from '../../../app/controller/base';
 import ExportAdministrativeOrganization from '../../../app/controller/administrative/organization';
+import ExportSystemInternationalization from '../../../app/controller/system/internationalization';
 import ExportSystemUserManagement from '../../../app/controller/system/userManagement';
 
 declare module 'egg' {
@@ -13,6 +14,7 @@ declare module 'egg' {
       organization: ExportAdministrativeOrganization;
     }
     system: {
+      internationalization: ExportSystemInternationalization;
       userManagement: ExportSystemUserManagement;
     }
   }

@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:55:13
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 16:26:51
+ * @LastEditTime: 2022-09-16 18:12:22
  */
 'use strict';
 
 module.exports = {
   // 在执行数据库升级时调用的函数，创建 xmw_users 表
   async up(queryInterface, Sequelize) {
-    const { STRING, INTEGER, DATE, NOW, UUID, UUIDV4 } = Sequelize;
+    const { STRING, INTEGER, DATE, UUID, UUIDV4 } = Sequelize;
     await queryInterface.createTable('xmw_users', {
       user_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '用户id' },
       user_name: { type: STRING(20), allowNull: false, comment: '用户名' },
@@ -34,8 +34,8 @@ module.exports = {
       role_id: { type: UUID, allowNull: false, comment: '权限id' },
       login_num: { type: INTEGER, allowNull: false, defaultValue: 0, comment: '登录次数' },
       last_ip: { type: STRING(20), allowNull: false, comment: '最后一次登录id' },
-      created_time: { type: DATE, allowNull: false, defaultValue: NOW, comment: '创建日期' },
-      update_time: { type: DATE, allowNull: false, defaultValue: NOW, comment: '最后更新时间' },
+      created_time: { type: DATE, allowNull: false, comment: '创建日期' },
+      update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
       founder: { type: UUID, allowNull: false, comment: '创建人' },
     });
   },

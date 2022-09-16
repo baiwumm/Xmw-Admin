@@ -1,15 +1,15 @@
 /*
- * @Description: 系统设置-用户管理模块接口
+ * @Description: 系统设置-用户管理-表设计
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 16:26:38
+ * @LastEditTime: 2022-09-16 18:12:34
  */
 'use strict';
 
 module.exports = (app) => {
-  const { STRING, INTEGER, DATE, NOW, UUID, UUIDV4 } = app.Sequelize;
+  const { STRING, INTEGER, DATE, UUID, UUIDV4 } = app.Sequelize;
 
   const xmw_users = app.model.define('xmw_users', {
     user_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '用户id' },
@@ -33,8 +33,8 @@ module.exports = (app) => {
     role_id: { type: UUID, allowNull: false, comment: '权限id' },
     login_num: { type: INTEGER, allowNull: false, defaultValue: 0, comment: '登录次数' },
     last_ip: { type: STRING(20), allowNull: false, comment: '最后一次登录id' },
-    created_time: { type: DATE, allowNull: false, defaultValue: NOW, comment: '创建日期' },
-    update_time: { type: DATE, allowNull: false, defaultValue: NOW, comment: '最后更新时间' },
+    created_time: { type: DATE, allowNull: false, comment: '创建日期' },
+    update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     founder: { type: UUID, allowNull: false, comment: '创建人' },
   });
 
