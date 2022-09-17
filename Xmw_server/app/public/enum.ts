@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:19:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 14:39:42
+ * @LastEditTime: 2022-09-17 17:27:23
  */
 
 /**
@@ -14,8 +14,8 @@
  */
 export const RES_STATUS = {
     CUSTOM: -1,  // 自定义状态，用于处理一些特殊的结果
-    SUCCESS: 1, // 请求成功
-    FAILURE: 2, // 请求失败
+    SUCCESS: 1, // 操作成功
+    FAILURE: 2, // 操作失败
 }
 
 /**
@@ -24,8 +24,8 @@ export const RES_STATUS = {
  * @author: Cyan
  */
 export const RES_STATUS_TEXT = {
-    [RES_STATUS.SUCCESS]: '请求成功！',
-    [RES_STATUS.FAILURE]: '请求失败！'
+    [RES_STATUS.SUCCESS]: '操作成功！',
+    [RES_STATUS.FAILURE]: '操作失败！'
 }
 
 /**

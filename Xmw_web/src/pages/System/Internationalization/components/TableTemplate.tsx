@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 12:16:10
+ * @LastEditTime: 2022-09-17 16:36:45
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -111,6 +111,12 @@ const TableTemplate: FC = () => {
         {
             title: '日文',
             dataIndex: 'ja-JP',
+            ellipsis: true,
+            hideInSearch: true,
+        },
+        {
+            title: '繁体中文',
+            dataIndex: 'zh-HK',
             ellipsis: true,
             hideInSearch: true,
         },

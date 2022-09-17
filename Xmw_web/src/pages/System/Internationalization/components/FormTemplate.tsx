@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 18:00:11
+ * @LastEditTime: 2022-09-17 17:22:42
  */
 
 // 引入第三方库
@@ -27,7 +27,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const handlerSubmit = async (values: any) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values, parent_id }
+        const params = { ...cloneFormData, ...values }
+        parent_id && (params.parent_id = parent_id)
         // 删除 children 属性
         params.children && delete params.children
         await saveInternational(params).then(res => {

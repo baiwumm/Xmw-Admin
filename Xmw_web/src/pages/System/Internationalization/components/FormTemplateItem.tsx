@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 10:11:16
+ * @LastEditTime: 2022-09-17 17:20:59
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -25,7 +25,7 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                 fieldProps={{
                     treeData,
                     disabled: !!parent_id,
-                    defaultValue: parent_id || undefined,
+                    defaultValue: parent_id || null,
                     fieldNames: {
                         label: 'name',
                         value: 'id'
@@ -75,6 +75,17 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                 colProps={{ span: 24 }}
                 label="日文"
                 placeholder="请输入日文"
+                fieldProps={{
+                    showCount: true,
+                    maxLength: 200
+                }}
+            />
+            {/* 繁体中文 */}
+            <ProFormText
+                name="zh-HK"
+                colProps={{ span: 24 }}
+                label="繁体中文"
+                placeholder="请输入繁体中文"
                 fieldProps={{
                     showCount: true,
                     maxLength: 200

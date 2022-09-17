@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 11:47:42
+ * @LastEditTime: 2022-09-17 17:12:17
  */
 import BaseController from '../base'
 
@@ -82,13 +82,13 @@ export default class Internationalization extends BaseController {
             if (id) {
                 params.update_time = new Date()
                 // 判断父级是否和自己相同
-                if (params.parent_id === id) {
+                if (params.parent_id && params.parent_id === id) {
                     return this.resResult(-1, {}, '父级不能和自己相同！');
                 }
                 // 执行更新操作
-                await this._update('XmwInternationalization', params, id).then(() => {
+                await this._update('XmwInternationalization', params, id).then(result => {
                     // 更新成功
-                    this.resResult(1, {});
+                    result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
                 })
             } else {
                 params.created_time = new Date()

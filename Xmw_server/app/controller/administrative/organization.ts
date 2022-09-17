@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 11:04:01
+ * @LastEditTime: 2022-09-17 17:13:25
  */
 
 import BaseController from '../base'
@@ -91,9 +91,9 @@ export default class Organization extends BaseController {
                     return this.resResult(-1, {}, '父级不能和自己相同！');
                 }
                 // 执行更新操作
-                await this._update('XmwOrganization', params, org_id).then(() => {
+                await this._update('XmwOrganization', params, org_id).then(result => {
                     // 更新成功
-                    this.resResult(1, {});
+                    result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
                 })
             } else {
                 params.created_time = new Date()
