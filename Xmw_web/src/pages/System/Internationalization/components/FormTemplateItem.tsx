@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 18:03:23
+ * @LastEditTime: 2022-09-17 10:11:16
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -57,7 +57,6 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                     showCount: true,
                     maxLength: 200
                 }}
-                rules={[{ required: true, message: '请输入中文' }]}
             />
             {/* 英文 */}
             <ProFormText
@@ -69,7 +68,6 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                     showCount: true,
                     maxLength: 200
                 }}
-                rules={[{ required: true, message: '请输入英文' }]}
             />
             {/* 日文 */}
             <ProFormText
@@ -81,7 +79,6 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                     showCount: true,
                     maxLength: 200
                 }}
-                rules={[{ required: true, message: '请输入日文' }]}
             />
         </>
     )

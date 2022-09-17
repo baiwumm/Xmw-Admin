@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 18:14:05
+ * @LastEditTime: 2022-09-17 11:47:42
  */
 import BaseController from '../base'
 
@@ -62,7 +62,8 @@ export default class Internationalization extends BaseController {
             const options: any = {
                 where: {
                     // 相同层级名称不能相同
-                    [Op.or]: { name: params.name, parent_id: params.parent_id }
+                    name: params.name,
+                    parent_id: params.parent_id
                 }
             }
             // 如果是编辑，则要加上这个条件：id != 自己
@@ -74,7 +75,7 @@ export default class Internationalization extends BaseController {
             // 如果有结果，则证明已存在
             const exist = await this._findOne('XmwInternationalization', options)
             if (exist) {
-                return this.resResult(-1, {}, '同一层级名称不同相同！');
+                return this.resResult(-1, {}, '同一层级名称不能相同！');
             }
 
             // 根据 id 判断是新增还是更新操作
@@ -125,9 +126,9 @@ export default class Internationalization extends BaseController {
                 return this.resResult(-1, {}, '当前数据存在子级，不能删除！');
             }
             // 不存在子级则执行删除操作
-            await this._delete('XmwOrganization', id).then(() => {
-                // 删除成功
-                this.resResult(1, {});
+            await this._delete('XmwInternationalization', id).then(result => {
+                // 判断是否删除成功
+                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
             })
         } catch (error) {
             ctx.logger.info('delInternational方法报错：' + error)

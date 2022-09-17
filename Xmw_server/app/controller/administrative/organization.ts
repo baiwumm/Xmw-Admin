@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 18:13:58
+ * @LastEditTime: 2022-09-17 11:04:01
  */
 
 import BaseController from '../base'
@@ -131,9 +131,9 @@ export default class Organization extends BaseController {
                 return this.resResult(-1, {}, '当前数据存在子级，不能删除！');
             }
             // 不存在子级则执行删除操作
-            await this._delete('XmwOrganization', org_id).then(() => {
-                // 删除成功
-                this.resResult(1, {});
+            await this._delete('XmwOrganization', org_id).then(result => {
+                // 判断是否删除成功
+                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
             })
         } catch (error) {
             ctx.logger.info('delOrganization方法报错：' + error)

@@ -4,11 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 18:16:44
+ * @LastEditTime: 2022-09-17 11:54:21
  */
 export default {
   'pages.login.subtitle': 'Technology stack: React + TS + UMI4 + ANTD-Pro',
-  'pages.login.accountLogin.tab': 'Account Password Login',
   'pages.login.accountLogin.errorMessage': 'Wrong username and password (admin/ant.design)',
   'pages.login.failure': 'Login failed, please try again!',
   'pages.login.success': 'Login successful!',
