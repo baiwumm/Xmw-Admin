@@ -4,13 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 13:47:48
+ * @LastEditTime: 2022-09-17 12:19:11
  */
 import menu from './ja-JP/menu';
 import pages from './ja-JP/pages';
 import pwa from './ja-JP/pwa';
 import settingDrawer from './ja-JP/settingDrawer';
-import settings from './ja-JP/settings';
 
 export default {
   'navBar.lang': '言語',
@@ -22,7 +21,6 @@ export default {
   'app.welcome.link.block-list': '',
   ...menu,
   ...settingDrawer,
-  ...settings,
   ...pwa,
   ...pages,
 };
