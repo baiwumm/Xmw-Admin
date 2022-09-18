@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 17:20:59
+ * @LastEditTime: 2022-09-18 17:56:51
  */
 // 引入第三方库
 import { FC } from 'react';
 import { ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import { TableItem } from '../utils/interface' // 公共 interface
+import { formatMessage } from '@/utils' // 引入工具类
 
 
 const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
@@ -19,9 +20,9 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
             {/* 父级 */}
             <ProFormTreeSelect
                 name="parent_id"
-                label="父级"
+                label={formatMessage('global.form.parent_id')}
                 colProps={{ span: 24 }}
-                tooltip="不选默认为顶级组织"
+                tooltip={formatMessage('global.form.parent_id.tooltip')}
                 fieldProps={{
                     treeData,
                     disabled: !!parent_id,
@@ -32,27 +33,27 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: '请选择父级',
+                    placeholder: formatMessage(['global.form.placeholder.seleted', 'global.form.parent_id']),
                 }}
             />
             {/* 国际化字段 */}
             <ProFormText
                 name="name"
                 colProps={{ span: 24 }}
-                label="国际化字段"
-                placeholder="请输入国际化字段"
+                label={formatMessage('pages.setting.internationalization.name')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.name'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: '请输入国际化字段' }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.setting.internationalization.name']) }]}
             />
             {/* 中文 */}
             <ProFormText
                 name="zh-CN"
                 colProps={{ span: 24 }}
-                label="中文"
-                placeholder="请输入中文"
+                label={formatMessage('pages.setting.internationalization.zh-CN')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.zh-CN'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -62,8 +63,8 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
             <ProFormText
                 name="en-US"
                 colProps={{ span: 24 }}
-                label="英文"
-                placeholder="请输入英文"
+                label={formatMessage('pages.setting.internationalization.en-US')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.en-US'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -73,8 +74,8 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
             <ProFormText
                 name="ja-JP"
                 colProps={{ span: 24 }}
-                label="日文"
-                placeholder="请输入日文"
+                label={formatMessage('pages.setting.internationalization.ja-JP')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.ja-JP'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -82,10 +83,10 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
             />
             {/* 繁体中文 */}
             <ProFormText
-                name="zh-HK"
+                name="zh-TW"
                 colProps={{ span: 24 }}
-                label="繁体中文"
-                placeholder="请输入繁体中文"
+                label={formatMessage('pages.setting.internationalization.zh-TW')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.zh-TW'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 17:40:25
+ * @LastEditTime: 2022-09-18 18:07:59
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -16,6 +16,7 @@ import {
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import { TableItem } from '../utils/interface' // 公共 interface
+import { formatMessage } from '@/utils' // 引入工具类
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
@@ -27,9 +28,9 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
             {/* 父级 */}
             <ProFormTreeSelect
                 name="parent_id"
-                label="父级"
+                label={formatMessage('global.form.parent_id')}
                 colProps={{ span: 24 }}
-                tooltip="不选默认为顶级组织"
+                tooltip={formatMessage('global.form.parent_id.tooltip')}
                 fieldProps={{
                     treeData,
                     disabled: !!parent_id,
@@ -40,45 +41,45 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: '请选择父级',
+                    placeholder: formatMessage(['global.form.placeholder.seleted', 'global.form.parent_id']),
                 }}
             />
             {/* 组织名称 */}
             <ProFormText
                 name="org_name"
                 colProps={{ span: 24 }}
-                label="组织名称"
-                placeholder="请输入组织名称"
+                label={formatMessage('pages.administrative.organization.org_name')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.administrative.organization.org_name'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: '请输入组织名称' }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.administrative.organization.org_name']) }]}
             />
             {/* 组织编码 */}
             <ProFormText
                 name="org_code"
                 colProps={{ span: 24 }}
-                label="组织编码"
-                placeholder="请输入组织编码"
+                label={formatMessage('pages.administrative.organization.org_code')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.administrative.organization.org_code'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: '请输入组织编码' }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.administrative.organization.org_code']) }]}
             />
             {/* 组织类型 */}
             <ProFormRadio.Group
                 name="org_type"
                 colProps={{ span: 14 }}
-                label="组织类型"
+                label={formatMessage('pages.administrative.organization.org_type')}
                 radioType="button"
                 initialValue={'1'}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
                 options={ORG_TYPE_OPTS}
-                rules={[{ required: true, message: '请选择组织类型' }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.organization.org_type']) }]}
             />
             {/* 状态 */}
             <ProFormRadio.Group
@@ -88,15 +89,15 @@ const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefine
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
-                label="状态"
+                label={formatMessage('global.status')}
                 options={APP_STATUS_OPTS}
-                rules={[{ required: true, message: '请选择组织状态' }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'global.status']) }]}
             />
             {/* 描述 */}
             <ProFormTextArea
                 name="describe"
-                label="描述"
-                placeholder="请输入描述"
+                label={formatMessage('pages.administrative.organization.describe')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.administrative.organization.describe'])}
                 colProps={{ span: 24 }}
                 fieldProps={{
                     showCount: true,

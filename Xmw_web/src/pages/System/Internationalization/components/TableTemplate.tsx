@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 16:36:45
+ * @LastEditTime: 2022-09-18 15:02:04
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
+import { useIntl } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
@@ -18,8 +19,11 @@ import moment from 'moment'
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { TableItem } from '../utils/interface' //interface 接口
+import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
+    const intl = useIntl();
+    const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
@@ -33,10 +37,10 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (id: string) => {
+    const handlerDelete = async (id: any) => {
         Modal.confirm({
-            title: '您确认要删除这条数据吗？',
-            content: '删除后无法恢复，请谨慎操作',
+            title: intl.formatMessage({ id: 'global.message.delete.title' }),
+            content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
                 await delInternational(id).then(res => {
                     if (res.resCode === 200) {
@@ -58,7 +62,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />}>添加子级</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
                     />,
                     key: 'addChild',
                 },
@@ -67,12 +71,12 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={record}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />}>编辑</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >删除</Button>,
+                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >{formatMessage('global.table.operation.delete')}</Button>,
                     key: 'delete',
                 },
             ]}
@@ -91,37 +95,37 @@ const TableTemplate: FC = () => {
 */
     const columns: ProColumns<TableItem>[] = [
         {
-            title: '国际化字段',
+            title: formatMessage('pages.setting.internationalization.name'),
             dataIndex: 'name',
             ellipsis: true,
-            render: text => <Tag color="processing">{text}</Tag>
+            render: text => <Tag color="success">{text}</Tag>
         },
         {
-            title: '中文',
+            title: formatMessage('pages.setting.internationalization.zh-CN'),
             dataIndex: 'zh-CN',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: '英文',
+            title: formatMessage('pages.setting.internationalization.en-US'),
             dataIndex: 'en-US',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: '日文',
+            title: formatMessage('pages.setting.internationalization.ja-JP'),
             dataIndex: 'ja-JP',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: '繁体中文',
-            dataIndex: 'zh-HK',
+            title: formatMessage('pages.setting.internationalization.zh-TW'),
+            dataIndex: 'zh-TW',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: '创建时间',
+            title: formatMessage('global.table.created_time'),
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
@@ -132,7 +136,7 @@ const TableTemplate: FC = () => {
             )
         },
         {
-            title: '创建时间',
+            title: formatMessage('global.table.created_time'),
             dataIndex: 'created_time',
             valueType: 'dateRange',
             hideInTable: true,
@@ -146,13 +150,18 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: '操作',
+            title: formatMessage('global.table.operation'),
             valueType: 'option',
             width: 120,
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">操作<DownOutlined /></Button></Dropdown>
+                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
+                    <Button size="small">
+                        {oprationName}
+                        <DownOutlined />
+                    </Button>
+                </Dropdown>
             ]
         },
     ]

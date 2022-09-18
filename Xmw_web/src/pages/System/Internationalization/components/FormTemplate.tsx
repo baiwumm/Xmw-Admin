@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 17:22:42
+ * @LastEditTime: 2022-09-18 18:06:33
  */
 
 // 引入第三方库
@@ -17,12 +17,14 @@ import { Button, Form, message } from 'antd'; // antd 组件库
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveInternational } from '@/services/system/internationalization' // 国际化接口
 import { TableItem, FormTemplateProps } from '../utils/interface' // 公共 interface
+import { formatMessage } from '@/utils' // 引入工具类
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
     // 初始化表单
     const [form] = Form.useForm<TableItem>();
     // 深克隆一份表单数据
     const [cloneFormData, setCloneFormData] = useState<TableItem | undefined>(formData)
+    const formTitle = cloneFormData && cloneFormData.id ? `${formatMessage(['global.table.operation.edit', 'pages.setting.internationalization.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.setting.internationalization.title'])
     // 提交表单
     const handlerSubmit = async (values: any) => {
         // 提交数据
@@ -44,14 +46,14 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     }
     return (
         <ModalForm<TableItem>
-            title={cloneFormData && cloneFormData.id ? `编辑字段：${cloneFormData.name}` : '新增字段'}
+            title={formTitle}
             width={500}
             grid
             form={form}
             trigger={triggerDom ||
                 <Button type="primary">
                     <PlusOutlined />
-                    新建
+                    {formatMessage('global.table.operation.add')}
                 </Button>
             }
             autoFocusFirstInput
@@ -67,13 +69,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 const isSuccess = await handlerSubmit(values)
                 // 返回true关闭弹框，否则不关闭
                 return isSuccess
-            }}
-            submitter={{
-                // 配置按钮文本
-                searchConfig: {
-                    resetText: '取消',
-                    submitText: '提交',
-                }
             }}
             onVisibleChange={visiable => {
                 if (visiable) {

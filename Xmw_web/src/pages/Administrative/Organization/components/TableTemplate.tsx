@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 12:16:58
+ * @LastEditTime: 2022-09-18 18:07:30
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
+import { useIntl } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
@@ -19,8 +20,11 @@ import { getOrganizationList, delOrganization } from '@/services/administrative/
 import FormTemplate from './FormTemplate'  // 表单组件
 import { TableItem } from '../utils/interface' //interface 接口
 import { ORG_TYPE_TAGS } from '../utils/enum'
+import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
+    const intl = useIntl();
+    const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
@@ -34,10 +38,10 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (org_id: string) => {
+    const handlerDelete = async (org_id: any) => {
         Modal.confirm({
-            title: '您确认要删除这条数据吗？',
-            content: '删除后无法恢复，请谨慎操作',
+            title: intl.formatMessage({ id: 'global.message.delete.title' }),
+            content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
                 await delOrganization(org_id).then(res => {
                     if (res.resCode === 200) {
@@ -59,7 +63,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />}>添加子级</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
                     />,
                     key: 'addChild',
                 },
@@ -68,12 +72,12 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={record}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />}>编辑</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} >删除</Button>,
+                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} block>{formatMessage('global.table.operation.delete')}</Button>,
                     key: 'delete',
                 },
             ]}
@@ -92,19 +96,19 @@ const TableTemplate: FC = () => {
 */
     const columns: ProColumns<TableItem>[] = [
         {
-            title: '组织名称',
+            title: formatMessage('pages.administrative.organization.org_name'),
             dataIndex: 'org_name',
             ellipsis: true,
             render: text => <Tag color="processing">{text}</Tag>
         },
         {
-            title: '组织编码',
+            title: formatMessage('pages.administrative.organization.org_code'),
             dataIndex: 'org_code',
             ellipsis: true,
             render: text => <Tag color="cyan">{text}</Tag>
         },
         {
-            title: '组织类型',
+            title: formatMessage('pages.administrative.organization.org_type'),
             dataIndex: 'org_type',
             filters: true,
             onFilter: true,
@@ -112,18 +116,18 @@ const TableTemplate: FC = () => {
             render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
         },
         {
-            title: '状态',
+            title: formatMessage('global.status'),
             dataIndex: 'status',
             width: 100,
             filters: true,
             onFilter: true,
             valueEnum: {
-                0: { text: '禁用', status: 'Default' },
-                1: { text: '正常', status: 'Success' },
+                0: { text: formatMessage('global.status.normal'), status: 'Default' },
+                1: { text: formatMessage('global.status.disable'), status: 'Success' },
             },
         },
         {
-            title: '创建时间',
+            title: formatMessage('global.table.created_time'),
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
@@ -134,7 +138,7 @@ const TableTemplate: FC = () => {
             )
         },
         {
-            title: '创建时间',
+            title: formatMessage('global.table.created_time'),
             dataIndex: 'created_time',
             valueType: 'dateRange',
             hideInTable: true,
@@ -148,19 +152,19 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: '描述',
+            title: formatMessage('pages.administrative.organization.describe'),
             dataIndex: 'describe',
             ellipsis: true,
             hideInSearch: true
         },
         {
-            title: '操作',
+            title: formatMessage('global.table.operation'),
             valueType: 'option',
             width: 120,
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">操作<DownOutlined /></Button></Dropdown>
+                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">{oprationName}<DownOutlined /></Button></Dropdown>
             ]
         },
     ]

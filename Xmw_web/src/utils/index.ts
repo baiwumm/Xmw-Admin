@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:28:39
+ * @LastEditTime: 2022-09-18 14:41:24
  */
 import { useIntl, addLocale } from '@umijs/max'
 import { message } from 'antd';
@@ -18,12 +18,27 @@ import { getAllLocalesLang } from '@/services/system/internationalization' //获
  * @return {*}
  * @author: Cyan
  */
-export const formatMessage = (id: string, stringTemplate = {}) => {
+export const formatMessage = (ids: string | Array<string>, stringTemplate = {}) => {
     const intl = useIntl();
-    // 合并配置项
-    const intlConfig = { id, ...stringTemplate }
-    // 返回国际化结果
-    return intl.formatMessage(intlConfig)
+    // 定义一个结果
+    let result = ''
+    // 判断id是字符串还是数组
+    if (Array.isArray(ids)) {
+        // 如果是数组则拼接
+        for (let i = 0; i < ids.length; i++) {
+            // 合并配置项
+            const intlConfig = { id: ids[i], ...stringTemplate }
+            // 返回国际化结果
+            result += intl.formatMessage(intlConfig)
+        }
+    } else {
+        // 合并配置项
+        const intlConfig = { id: ids, ...stringTemplate }
+        // 返回国际化结果
+        result = intl.formatMessage(intlConfig)
+    }
+
+    return result
 }
 
 /**
