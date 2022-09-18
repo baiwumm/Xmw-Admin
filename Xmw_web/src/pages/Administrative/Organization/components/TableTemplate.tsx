@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 18:07:30
+ * @LastEditTime: 2022-09-18 18:46:13
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -177,15 +177,18 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    const { resData, resCode } = await getOrganizationList(params)
-                    setTreeData(resData)
+                    let result: any = {}
+                    await getOrganizationList(params).then(res => {
+                        result = res
+                        setTreeData(result.resData)
+                    })
                     return {
-                        data: resData,
+                        data: result.resData,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
-                        success: resCode === 200,
+                        success: result.resCode === 200,
                         // 不传会使用 data 的长度，如果是分页一定要传
-                        total: resData?.length,
+                        total: result.resData?.length,
                     }
                 }
             }
