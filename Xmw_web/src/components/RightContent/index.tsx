@@ -1,3 +1,11 @@
+/*
+ * @Description: 顶部菜单工具栏
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-09-10 12:27:27
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-09-18 12:34:55
+ */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { SelectLang, useModel } from '@umijs/max';
 import { Space } from 'antd';
@@ -5,6 +13,7 @@ import React from 'react';
 import HeaderSearch from '../HeaderSearch';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
+
 
 export type SiderTheme = 'light' | 'dark';
 
@@ -42,9 +51,9 @@ const GlobalHeaderRight: React.FC = () => {
             value: 'Pro Layout',
           },
         ]}
-        // onSearch={value => {
-        //   console.log('input', value);
-        // }}
+      // onSearch={value => {
+      //   console.log('input', value);
+      // }}
       />
       <span
         className={styles.action}
@@ -55,7 +64,7 @@ const GlobalHeaderRight: React.FC = () => {
         <QuestionCircleOutlined />
       </span>
       <Avatar />
-      <SelectLang className={styles.action} />
+      <SelectLang className={styles.action} reload={false} />
     </Space>
   );
 };

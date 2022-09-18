@@ -1,16 +1,22 @@
-import Footer from '@/components/Footer';
-import RightContent from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
+
+// 引入第三方库
+import { LinkOutlined } from '@ant-design/icons'; // antd 图标
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-import { SettingDrawer } from '@ant-design/pro-components';
+import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
-import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from '@/utils/umiRequest';
+import { useLocalStorageState } from 'ahooks'; // ahook 函数
+import { message, Tabs } from 'antd'; // antd 组件库
+
+
+// 引入业务组件
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { useLocalStorageState } from 'ahooks';
-import { message, Tabs } from 'antd';
-import { formatMessage } from '@/utils'
+import defaultSettings from '../config/defaultSettings'; // 全局默认配置
+import { initLocalesLang, formatMessage } from '@/utils' // 全局工具函数
+import Footer from '@/components/Footer'; // 全局底部版权组件
+import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
+import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -23,6 +29,9 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
+  // 初始化多语言
+  initLocalesLang()
+
   const umi_layout = window.localStorage.getItem('umi_layout')
   const fetchUserInfo = async () => {
     try {

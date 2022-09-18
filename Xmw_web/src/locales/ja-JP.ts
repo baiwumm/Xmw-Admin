@@ -4,16 +4,8 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 16:38:19
+ * @LastEditTime: 2022-09-18 12:29:29
  */
-import menu from './ja-JP/menu';
-import pages from './ja-JP/pages';
-import pwa from './ja-JP/pwa';
-import settingDrawer from './ja-JP/settingDrawer';
 
 export default {
-  ...menu,
-  ...settingDrawer,
-  ...pwa,
-  ...pages,
 };

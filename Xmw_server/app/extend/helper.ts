@@ -4,21 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-13 10:42:18
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 17:37:27
+ * @LastEditTime: 2022-09-18 12:19:36
  */
+import { LangModel } from '../interface/system'
 
 module.exports = {
     /**
      * @description: 
-     * @param {any} source: 源数据
+     * @param {any} resource: 源数据
      * @param {string} id
      * @param {string} parentId
      * @param {string} children
      * @return {*}
      * @author: Cyan
      */
-    initializeTree(source: any, id: string, parentId: string, children: string) {
-        let temp = JSON.parse(JSON.stringify(source))
+    initializeTree(resource: any, id: string, parentId: string, children: string) {
+        let temp = JSON.parse(JSON.stringify(resource))
         // 以id为键，当前对象为值，存入一个新的对象中
         let tempObj = {}
         for (let i in temp) {
@@ -32,4 +33,40 @@ module.exports = {
             return father[parentId] === null || !tempObj[father[parentId]]
         })
     },
+
+    /**
+     * @description: 将树形数据转成层级对象，主要是国际化数据
+     * @param {LangModel} resource
+     * @param {string} lang
+     * @param {string} name
+     * @return {*}
+     * @author: Cyan
+     */
+    initializeLang(resource: LangModel[], lang: string, name = 'name') {
+        const result = {}
+        // 遍历数组
+        for (let i = 0; i < resource.length; i++) {
+            let resourceItem = resource[i]
+            // 递归函数
+            function recursive(obj: LangModel, serilKey = '') {
+                // 拼接对象名
+                let pKey = serilKey
+                pKey += pKey ? `.${obj[name]}` : obj[name]
+                // 当前层级是否有数据，给 result 赋值
+                if (obj[lang]) {
+                    result[pKey] = obj[lang]
+                }
+                // 判断是否有子级，有就递归遍历
+                if (obj.children?.length && Array.isArray(obj.children)) {
+                    for (let j = 0; j < obj.children.length; j++) {
+                        let child = obj.children[j]
+                        recursive(child, pKey)
+                    }
+                }
+            }
+            // 循环执行
+            recursive(resourceItem)
+        }
+        return result
+    }
 }

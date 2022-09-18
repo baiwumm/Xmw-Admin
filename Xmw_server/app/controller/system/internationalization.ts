@@ -4,9 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 17:12:17
+ * @LastEditTime: 2022-09-18 12:19:02
  */
 import BaseController from '../base'
+import { LOCALES_LANG } from '../../public/enum'
 
 /**
  * @description: BaseController 里面的方法不解构执行，目前原因暂不明￣□￣｜｜
@@ -132,6 +133,48 @@ export default class Internationalization extends BaseController {
             })
         } catch (error) {
             ctx.logger.info('delInternational方法报错：' + error)
+            // 返回状态,此处不能用结构，原因暂不明
+            this.resResult(2, error);
+        }
+    }
+
+    /**
+     * @description: 获取当前语言的国际化数据
+     * @return {*}
+     * @author: Cyan
+     */
+    public async getAllLocalesLang() {
+        const { ctx } = this;
+        try {
+            // 查询规则
+            const options = {
+                order: [['created_time', 'desc']], // 排序规则
+                // 指定返回的属性
+                attributes: [
+                    'id',
+                    'name',
+                    ...LOCALES_LANG,
+                    'parent_id'
+                ]
+            }
+            // 根据参数查询数据
+            await this._findAll('XmwInternationalization', options).then(res => {
+                // 判断是否有返回值
+                if (res) {
+                    let result = {}
+                    // 先将数据转成树形结构
+                    let treeLang = ctx.helper.initializeTree(res, 'id', 'parent_id', 'children')
+                    for (let i = 0; i < LOCALES_LANG.length; i++) {
+                        const lang = LOCALES_LANG[i]
+                        result[lang] = ctx.helper.initializeLang(treeLang, lang)
+                    }
+                    // 再转成层级对象返回
+                    this.resResult(1, result);
+                }
+            })
+
+        } catch (error) {
+            ctx.logger.info('getLocalesLang方法报错：' + error)
             // 返回状态,此处不能用结构，原因暂不明
             this.resResult(2, error);
         }

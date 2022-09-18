@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:19:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-17 17:27:23
+ * @LastEditTime: 2022-09-18 11:59:08
  */
 
 /**
@@ -38,3 +38,10 @@ export const RES_STATUS_CODE = {
     [RES_STATUS.SUCCESS]: 200,
     [RES_STATUS.FAILURE]: 400
 }
+
+/**
+ * @description: 多语言配置项
+ * @return {*}
+ * @author: Cyan
+ */
+export const LOCALES_LANG = ['zh-CN', 'en-US', 'ja-JP', 'zh-TW']
