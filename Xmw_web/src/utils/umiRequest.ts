@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-14 15:09:35
+ * @LastEditTime: 2022-09-19 20:20:56
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -44,7 +44,6 @@ export const errorConfig: RequestConfig = {
          * @author: Cyan
          */
         errorHandler: (error: any, opts: any) => {
-            console.log(error, opts)
             // 获取报错的响应和请求信息
             const { response, resquest } = error
             // 配置 skipErrorHandler 会跳过默认的错误处理，用于项目中部分特殊的接口
