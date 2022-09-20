@@ -4,17 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-19 19:53:48
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-19 21:23:28
+ * @LastEditTime: 2022-09-20 10:21:30
  */
 // 引入第三方库
 import { FC } from 'react'
-import { ReloadOutlined, VerticalRightOutlined, VerticalLeftOutlined } from '@ant-design/icons' // antd 图标
+import { ReloadOutlined, VerticalRightOutlined, VerticalLeftOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标
 import { message, Tabs, Badge, Dropdown, Menu, Button } from 'antd'; // antd 组件库
 
 // 引入工具函数
 import { formatMessage } from '@/utils' // 全局工具函数
 
 const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dropByCacheKey, local, activeKey } }) => {
+    // 使用 iconfont.cn 资源
+    const IconFont = createFromIconfontCN({
+        scriptUrl: process.env.ICONFONT_URL,
+    });
     /**
      * @description: 标签页右键菜单
      * @return {*}
@@ -43,7 +47,9 @@ const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dro
     );
     // 格式换多标签名称
     const formatMessagePath = (pathname: string) => {
-        return formatMessage('menu' + pathname.replace(/\//g, '.'))
+        return (
+            <span><IconFont type="icon-workbench" />{formatMessage('menu' + pathname.replace(/\//g, '.'))}</span>
+        )
     }
 
     /**

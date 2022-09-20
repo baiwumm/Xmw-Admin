@@ -4,18 +4,28 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-19 21:12:23
+ * @LastEditTime: 2022-09-20 15:08:52
  */
-import Footer from '@/components/Footer'; // 全局底部版权组件
-import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
+// 引入第三方库
 import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
 import { history, Link } from '@umijs/max';
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
-import { LinkOutlined } from '@ant-design/icons'; // antd 图标
+import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+
+// 引入业务组件间
+import Footer from '@/components/Footer'; // 全局底部版权组件
+import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
+import styles from './index.less'
+
+const loginPath = '/user/login'; // 登录路由
+
+
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
+    // 使用 iconfont.cn 资源
+    const IconFont = createFromIconfontCN({
+        scriptUrl: process.env.ICONFONT_URL,
+    });
     const [umiLayout, setUmiLayout] = useLocalStorageState<Partial<LayoutSettings> | undefined>(
         'umi_layout',
         {
@@ -41,35 +51,18 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                 history.push(loginPath);
             }
         },
-        layoutBgImgList: [
-            {
-                src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
-                left: 85,
-                bottom: 100,
-                height: '303px',
-            },
-            {
-                src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
-                bottom: -68,
-                right: -45,
-                height: '303px',
-            },
-            {
-                src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
-                bottom: 0,
-                left: 0,
-                width: '331px',
-            },
-        ],
-        links: isDev
-            ? [
-                <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-                    <LinkOutlined />
-                    <span>OpenAPI 文档</span>
-                </Link>,
-            ]
-            : [],
-        menuHeaderRender: undefined,
+        /* 自定义菜单项的 render 方法 */
+        menuItemRender: (menuItemProps: any, defaultDom: any) => {
+            return (
+                /* 渲染二级菜单图标 */
+                <Link to={menuItemProps.path} className={styles.renderLink}>
+                    {/* 分组布局不用渲染图标，避免重复 */}
+                    {!(umiLayout.siderMenuType === 'group') && menuItemProps.pro_layout_parentKeys?.length &&
+                        <IconFont type={menuItemProps.icon} className={styles.renderIcon} />}
+                    {defaultDom}
+                </Link>
+            );
+        },
         // 自定义 403 页面
         // unAccessible: <div>unAccessible</div>,
         // 增加一个 loading 的状态
@@ -83,7 +76,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                             disableUrlParams
                             enableDarkTheme
                             settings={initialState?.settings}
-                            onSettingChange={(settings) => {
+                            onSettingChange={(settings: LayoutSettings) => {
                                 setUmiLayout(settings)
                                 setInitialState((preInitialState: any) => ({
                                     ...preInitialState,
