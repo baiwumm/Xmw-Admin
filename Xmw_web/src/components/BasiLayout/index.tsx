@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-20 15:08:52
+ * @LastEditTime: 2022-09-21 15:06:05
  */
 // 引入第三方库
 import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
@@ -57,7 +57,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                 /* 渲染二级菜单图标 */
                 <Link to={menuItemProps.path} className={styles.renderLink}>
                     {/* 分组布局不用渲染图标，避免重复 */}
-                    {!(umiLayout.siderMenuType === 'group') && menuItemProps.pro_layout_parentKeys?.length &&
+                    {!(umiLayout?.siderMenuType === 'group') && menuItemProps.pro_layout_parentKeys?.length &&
                         <IconFont type={menuItemProps.icon} className={styles.renderIcon} />}
                     {defaultDom}
                 </Link>

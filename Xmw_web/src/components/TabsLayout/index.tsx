@@ -4,17 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-19 19:53:48
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-20 10:21:30
+ * @LastEditTime: 2022-09-21 15:11:32
  */
 // 引入第三方库
 import { FC } from 'react'
-import { ReloadOutlined, VerticalRightOutlined, VerticalLeftOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标
+import { useLocation, useIntl } from '@umijs/max'
+import { ReloadOutlined, VerticalRightOutlined, VerticalLeftOutlined, PicCenterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标
 import { message, Tabs, Badge, Dropdown, Menu, Button } from 'antd'; // antd 组件库
+import { indexOf, slice, remove } from 'lodash'
 
 // 引入工具函数
 import { formatMessage } from '@/utils' // 全局工具函数
 
-const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dropByCacheKey, local, activeKey } }) => {
+const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, dropByCacheKey, local, activeKey } }) => {
+    const intl = useIntl();
+    // 获取当前路由信息
+    const location = useLocation();
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
@@ -24,30 +29,38 @@ const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dro
      * @return {*}
      * @author: Cyan
      */
-    const menu = (
-        <Menu
-            items={[
-                {
-                    label: <Button type="text" size="small" icon={<ReloadOutlined />} >刷新</Button>,
-                    key: 'ReloadOutlined',
-                },
-                {
-                    type: 'divider',
-                },
-                {
-                    label: <Button type="text" size="small" icon={<VerticalRightOutlined />} >关闭左侧</Button>,
-                    key: 'VerticalRightOutlined',
-                },
-                {
-                    label: <Button type="text" size="small" icon={<VerticalLeftOutlined />} >关闭右侧</Button>,
-                    key: 'VerticalLeftOutlined',
-                }
-            ]}
-        />
-    );
+    const RightMenu = (pathname: string) => {
+        return (
+            <Menu
+                items={[
+                    {
+                        label: <Button type="text" size="small" icon={<ReloadOutlined />} disabled={pathname !== location.pathname}>{formatMessage('components.TabsLayout.reload')}</Button>,
+                        key: 'reload',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<PicCenterOutlined />}>{formatMessage('components.TabsLayout.closeOthers')}</Button>,
+                        key: 'closeOthers',
+                    },
+                    {
+                        type: 'divider',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<VerticalRightOutlined />} >{formatMessage('components.TabsLayout.closeTabLeft')}</Button>,
+                        key: 'closeTabLeft',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<VerticalLeftOutlined />} >{formatMessage('components.TabsLayout.closeTabRight')}</Button>,
+                        key: 'closeTabRight',
+                    }
+                ]}
+                onClick={({ key }) => handlerNavigateTabs(key, pathname)}
+            />
+        )
+    }
     // 格式换多标签名称
     const formatMessagePath = (pathname: string) => {
         return (
+            /* ***** 这里暂时获取不到每个tab对应的icon  */
             <span><IconFont type="icon-workbench" />{formatMessage('menu' + pathname.replace(/\//g, '.'))}</span>
         )
     }
@@ -60,10 +73,83 @@ const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dro
      */
     const TabsMenuRender = (pathname: string) => {
         return (
-            <Dropdown overlay={menu} trigger={['contextMenu']}>
+            <Dropdown overlay={RightMenu(pathname)} trigger={['contextMenu']}>
                 <Badge status={activeKey === pathname ? 'processing' : 'success'} text={formatMessagePath(pathname)} />
             </Dropdown>
         )
+    }
+
+    /**
+     * @description: 操作多标签页 Tabs 操作
+     * @param {string} type:操作类型，targetKey: 当前关闭的 tab
+     * @return {*}
+     * @author: Cyan
+     */
+    const handlerNavigateTabs = (type: string, targetKey?: any) => {
+        // 获取当前 Tabs 上的全部路由
+        const allTabsRoutes = Object.keys(keepElements.current)
+        // 要重新导航到新 Tab 的路由
+        let navigateRoute = activeKey
+        // 当前点击的路由的索引
+        let currentRouteKey = indexOf(allTabsRoutes, navigateRoute === targetKey ? navigateRoute : targetKey)
+        switch (type) {
+            // 点击当前刷新
+            case 'reload':
+                // 这里暂时没想到具体怎么实现
+                // navigate(targetKey)
+                break;
+            // 关闭左侧标签
+            case 'closeTabLeft':
+            case 'closeTabRight':
+                // 判断是点击关闭左侧还是关闭右侧
+                const isCloseTabLeft = type === 'closeTabLeft'
+                // 判断是否在最左侧
+                if (currentRouteKey === (isCloseTabLeft ? 0 : allTabsRoutes.length - 1)) {
+                    message.info(intl.formatMessage({ id: `components.TabsLayout.message.${isCloseTabLeft ? 'closeTabLeft' : 'closeTabRight'}` }));
+                } else {
+                    // 获取当前 isCloseTabLeft 侧的全部路由
+                    const allTabsRoutesOfLeft = isCloseTabLeft ? slice(allTabsRoutes, 0, currentRouteKey) : slice(allTabsRoutes, currentRouteKey + 1)
+                    allTabsRoutesOfLeft.forEach(route => dropByCacheKey(route))
+                }
+                break;
+            // 关闭其它标签
+            case 'closeOthers':
+                // 判断是否只有一个
+                if (allTabsRoutes.length === 1) {
+                    message.info(intl.formatMessage({ id: 'components.TabsLayout.message.closeOthers' }))
+                } else {
+                    // 获取除了当前tab的全部标签
+                    const othersTabsRoutes = remove(allTabsRoutes, route => route != targetKey)
+                    othersTabsRoutes.forEach(route => dropByCacheKey(route))
+                }
+                break;
+            // 点击关闭当前标签
+            case 'close':
+                // 当长度只有1，就不能关闭
+                if (allTabsRoutes.length === 1) {
+                    message.info(intl.formatMessage({ id: 'components.TabsLayout.message.close' }));
+                } else {
+                    // 判断关闭的 tab 是不是当前路由
+                    const isCloseRoute = navigateRoute === targetKey
+                    // 如果超过1个，则判断当前关闭的路由的位置，
+                    // 如果在最左侧，则向后移一位，如果在右侧，则向左移一位
+                    if (isCloseRoute) {
+                        if (currentRouteKey === 0) {
+                            // 如果是在最左侧
+                            navigateRoute = allTabsRoutes[currentRouteKey + 1]
+                        } else {
+                            // 不是最左侧则往左移一位
+                            navigateRoute = allTabsRoutes[currentRouteKey - 1]
+                        }
+                        // 定位导航到新的路由
+                        navigate(navigateRoute);
+                    }
+                    // 销毁当前关闭的路由
+                    dropByCacheKey(targetKey);
+                }
+                break;
+        }
+
     }
     return (
         <div className="rumtime-keep-alive-tabs-layout" hidden={!isKeep}>
@@ -75,38 +161,10 @@ const TabsLayout: FC<any> = ({ tabsConfig: { isKeep, keepElements, navigate, dro
                 activeKey={activeKey}
                 type="editable-card"
                 /* 删除路由标签页的回调 */
-                onEdit={(targetKey: string) => {
-                    console.log(targetKey)
-                    let newActiveKey = activeKey;
-                    let lastIndex = -1;
-                    const newPanel = Object.keys(keepElements.current);
-                    console.log(Object.values(keepElements.current))
-                    console.log(newPanel)
-                    for (let i = 0; i < newPanel.length; i++) {
-                        if (newPanel[i] === targetKey) {
-                            lastIndex = i - 1;
-                        }
-                    }
-                    const newPanes = newPanel.filter((pane) => pane !== targetKey);
-                    if (newPanes.length && newActiveKey === targetKey) {
-                        if (lastIndex >= 0) {
-                            newActiveKey = newPanes[lastIndex];
-                        } else {
-                            newActiveKey = newPanes[0];
-                        }
-                    }
-                    if (lastIndex === -1 && targetKey === location.pathname) {
-                        message.info('至少要保留一个窗口');
-                    } else {
-                        dropByCacheKey(targetKey);
-                        if (newActiveKey !== location.pathname) {
-                            navigate(newActiveKey);
-                        }
-                    }
-                }}
+                onEdit={(targetKey: any) => handlerNavigateTabs('close', targetKey)}
                 /* 这里拿到的是路由名称，想要国际化，我们把pathname转化一下 */
                 items={Object.entries(keepElements.current).map(
-                    ([pathname, element]: any) => (
+                    ([pathname]: any) => (
                         // 渲染 Badge 标签
                         { label: TabsMenuRender(pathname), key: pathname }
                     ),

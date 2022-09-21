@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-20 10:09:17
+ * @LastEditTime: 2022-09-21 13:58:09
  */
 
 // 引入第三方库
@@ -77,8 +77,8 @@ export const layout: RunTimeLayoutConfig = BasiLayout
  * @author: Cyan
  */
 export const getCustomTabs = () => {
-  return (tabsConfig: any) => {
-    return <TabsLayout tabsConfig={{ ...tabsConfig }} />
+  return (tabsProps: any) => {
+    return <TabsLayout tabsProps={{ ...tabsProps }} />
   };
 };
 
