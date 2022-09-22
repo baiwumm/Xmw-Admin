@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 18:46:13
+ * @LastEditTime: 2022-09-22 16:27:45
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -122,8 +122,8 @@ const TableTemplate: FC = () => {
             filters: true,
             onFilter: true,
             valueEnum: {
-                0: { text: formatMessage('global.status.normal'), status: 'Default' },
-                1: { text: formatMessage('global.status.disable'), status: 'Success' },
+                0: { text: formatMessage('global.status.disable'), status: 'Default' },
+                1: { text: formatMessage('global.status.normal'), status: 'Success' },
             },
         },
         {

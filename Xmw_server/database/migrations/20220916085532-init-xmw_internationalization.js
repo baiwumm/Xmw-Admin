@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 16:55:32
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 00:30:28
+ * @LastEditTime: 2022-09-22 16:23:15
  */
 'use strict';
 
@@ -25,7 +25,8 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
+    // 在执行数据库降级时调用的函数，删除 xmw_internationalization 表
     await queryInterface.dropTable('xmw_internationalization');
   }
 };

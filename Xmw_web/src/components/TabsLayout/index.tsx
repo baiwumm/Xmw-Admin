@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 19:53:48
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-21 15:11:32
+ * @LastEditTime: 2022-09-22 16:18:13
  */
 // 引入第三方库
 import { FC } from 'react'
@@ -95,8 +95,9 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
         switch (type) {
             // 点击当前刷新
             case 'reload':
-                // 这里暂时没想到具体怎么实现
-                // navigate(targetKey)
+                // 这里暂时没想到具体怎么实现，先暂时这样
+                dropByCacheKey(targetKey)
+                navigate(targetKey)
                 break;
             // 关闭左侧标签
             case 'closeTabLeft':
@@ -134,13 +135,8 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
                     // 如果超过1个，则判断当前关闭的路由的位置，
                     // 如果在最左侧，则向后移一位，如果在右侧，则向左移一位
                     if (isCloseRoute) {
-                        if (currentRouteKey === 0) {
-                            // 如果是在最左侧
-                            navigateRoute = allTabsRoutes[currentRouteKey + 1]
-                        } else {
-                            // 不是最左侧则往左移一位
-                            navigateRoute = allTabsRoutes[currentRouteKey - 1]
-                        }
+                        // 如果是在最左侧,不是最左侧则往左移一位
+                        navigateRoute = allTabsRoutes[currentRouteKey === 0?currentRouteKey + 1:currentRouteKey - 1]
                         // 定位导航到新的路由
                         navigate(navigateRoute);
                     }
