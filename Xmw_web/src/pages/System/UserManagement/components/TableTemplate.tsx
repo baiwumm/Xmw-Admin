@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 15:37:57
+ * @LastEditTime: 2022-09-23 10:34:17
  */
 // 引入第三方库
 import { FC } from 'react';
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 
 // 引入业务组件
-import { getUserList } from '@/services/system/user-management' // 用户接口
+// import { getUserList } from '@/services/system/user-management' // 用户接口
 import { TableItem } from '../utils/interface' //interface 接口
 import { columns } from '../utils/config'
 
@@ -21,22 +21,22 @@ const TableTemplate: FC = () => {
     return (
         <ProTable<TableItem>
             columns={columns}
-            request={async (params = {}) => {
-                {
-                    // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-                    // 如果需要转化参数可以在这里进行修改
-                    const result = await getUserList(params);
-                    return {
-                        data: result.resData?.data,
-                        // success 请返回 true，
-                        // 不然 table 会停止解析数据，即使有数据
-                        success: result.resCode === 200,
-                        // 不传会使用 data 的长度，如果是分页一定要传
-                        total: result.resData?.total,
-                    }
-                }
-            }
-            }
+            // request={async (params = {}) => {
+            //     {
+            //         // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+            //         // 如果需要转化参数可以在这里进行修改
+            //         const result = await getUserList(params);
+            //         return {
+            //             data: result.resData?.data,
+            //             // success 请返回 true，
+            //             // 不然 table 会停止解析数据，即使有数据
+            //             success: result.resCode === 200,
+            //             // 不传会使用 data 的长度，如果是分页一定要传
+            //             total: result.resData?.total,
+            //         }
+            //     }
+            // }
+            // }
             rowKey="user_id"
             pagination={{
                 pageSize: 5,

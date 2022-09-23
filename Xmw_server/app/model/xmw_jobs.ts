@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-22 16:35:54
+ * @LastEditTime: 2022-09-23 10:09:50
  */
 'use strict';
 
@@ -20,7 +20,7 @@ module.exports = (app) => {
       leader: { type: UUID, allowNull: true, comment: '负责人' },
       founder: { type: UUID, allowNull: true, comment: '创建人' },
       created_time: { type: DATE, allowNull: false, comment: '创建日期' },
-      update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },,
+      update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     });
 
     return xmw_jobs;

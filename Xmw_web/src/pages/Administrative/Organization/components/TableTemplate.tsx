@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-22 16:27:45
+ * @LastEditTime: 2022-09-23 10:26:15
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -18,7 +18,6 @@ import moment from 'moment'
 // 引入业务组件
 import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
 import FormTemplate from './FormTemplate'  // 表单组件
-import { TableItem } from '../utils/interface' //interface 接口
 import { ORG_TYPE_TAGS } from '../utils/enum'
 import { formatMessage } from '@/utils' // 引入工具类
 
@@ -30,7 +29,7 @@ const TableTemplate: FC = () => {
     // 获取树形数据传递给drawerForm
     const [treeData, setTreeData] = useState<any>([])
     // 当前行数据
-    const [record, setRecord] = useState<TableItem>()
+    const [record, setRecord] = useState<API.ORGANIZATION>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -85,7 +84,7 @@ const TableTemplate: FC = () => {
     );
 
     // 操作下拉框
-    const dropdownMenuClick = (record: TableItem) => {
+    const dropdownMenuClick = (record: API.ORGANIZATION) => {
         setRecord(record)
         set_parent_id(record?.org_id)
     }
@@ -94,7 +93,7 @@ const TableTemplate: FC = () => {
 * @return {*}
 * @author: Cyan
 */
-    const columns: ProColumns<TableItem>[] = [
+    const columns: ProColumns<API.ORGANIZATION>[] = [
         {
             title: formatMessage('pages.administrative.organization.org_name'),
             dataIndex: 'org_name',
@@ -170,7 +169,7 @@ const TableTemplate: FC = () => {
     ]
 
     return (
-        <ProTable<TableItem>
+        <ProTable<API.ORGANIZATION>
             actionRef={tableRef}
             columns={columns}
             request={async params => {

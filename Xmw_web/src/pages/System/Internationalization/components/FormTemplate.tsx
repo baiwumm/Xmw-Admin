@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 18:06:33
+ * @LastEditTime: 2022-09-23 10:32:13
  */
 
 // 引入第三方库
@@ -16,14 +16,14 @@ import { Button, Form, message } from 'antd'; // antd 组件库
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveInternational } from '@/services/system/internationalization' // 国际化接口
-import { TableItem, FormTemplateProps } from '../utils/interface' // 公共 interface
+import { FormTemplateProps } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
     // 初始化表单
-    const [form] = Form.useForm<TableItem>();
+    const [form] = Form.useForm<API.INTERNATIONALIZATION>();
     // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<TableItem | undefined>(formData)
+    const [cloneFormData, setCloneFormData] = useState<API.INTERNATIONALIZATION | undefined>(formData)
     const formTitle = cloneFormData && cloneFormData.id ? `${formatMessage(['global.table.operation.edit', 'pages.setting.internationalization.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.setting.internationalization.title'])
     // 提交表单
     const handlerSubmit = async (values: any) => {
@@ -45,7 +45,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         return result
     }
     return (
-        <ModalForm<TableItem>
+        <ModalForm<API.INTERNATIONALIZATION>
             title={formTitle}
             width={500}
             grid

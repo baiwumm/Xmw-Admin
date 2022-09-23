@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 18:44:58
+ * @LastEditTime: 2022-09-23 10:39:22
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -18,7 +18,6 @@ import moment from 'moment'
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
-import { TableItem } from '../utils/interface' //interface 接口
 import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
@@ -27,9 +26,9 @@ const TableTemplate: FC = () => {
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState<any>([])
+    const [treeData, setTreeData] = useState<API.INTERNATIONALIZATION[]>([])
     // 当前行数据
-    const [record, setRecord] = useState<TableItem>()
+    const [record, setRecord] = useState<API.INTERNATIONALIZATION>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -84,7 +83,7 @@ const TableTemplate: FC = () => {
     );
 
     // 操作下拉框
-    const dropdownMenuClick = (record: TableItem) => {
+    const dropdownMenuClick = (record: API.INTERNATIONALIZATION) => {
         setRecord(record)
         set_parent_id(record?.id)
     }
@@ -93,7 +92,7 @@ const TableTemplate: FC = () => {
 * @return {*}
 * @author: Cyan
 */
-    const columns: ProColumns<TableItem>[] = [
+    const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
         {
             title: formatMessage('pages.setting.internationalization.name'),
             dataIndex: 'name',
@@ -167,7 +166,7 @@ const TableTemplate: FC = () => {
     ]
 
     return (
-        <ProTable<TableItem>
+        <ProTable<API.INTERNATIONALIZATION>
             actionRef={tableRef}
             columns={columns}
             request={async params => {

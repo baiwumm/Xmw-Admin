@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 18:07:59
+ * @LastEditTime: 2022-09-23 10:27:57
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -15,14 +15,13 @@ import {
     ProFormTreeSelect
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
-import { TableItem } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 
-const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
+const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
     return (
         <>
             {/* 父级 */}

@@ -4,17 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 17:56:51
+ * @LastEditTime: 2022-09-23 10:31:54
  */
 // 引入第三方库
 import { FC } from 'react';
 import { ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
-import { TableItem } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
 
-const FormTemplateItem: FC<{ treeData: TableItem[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
+const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
     return (
         <>
             {/* 父级 */}
