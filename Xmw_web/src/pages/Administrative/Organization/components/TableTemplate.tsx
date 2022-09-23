@@ -1,10 +1,10 @@
 /*
- * @Description: 国际化-表格列表
+ * @Description: 组织管理-表格列表
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 10:26:15
+ * @LastEditTime: 2022-09-23 14:16:28
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -27,7 +27,7 @@ const TableTemplate: FC = () => {
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState<any>([])
+    const [treeData, setTreeData] = useState<API.ORGANIZATION[]>([])
     // 当前行数据
     const [record, setRecord] = useState<API.ORGANIZATION>()
     // 判断是否是添加子级
@@ -37,18 +37,20 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (org_id: any) => {
+    const handlerDelete = async (org_id: string | undefined) => {
         Modal.confirm({
             title: intl.formatMessage({ id: 'global.message.delete.title' }),
             content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                await delOrganization(org_id).then(res => {
-                    if (res.resCode === 200) {
-                        message.success(res.resMsg)
-                        // 刷新表格
-                        reloadTable()
-                    }
-                })
+                if(org_id){
+                    await delOrganization(org_id).then(res => {
+                        if (res.resCode === 200) {
+                            message.success(res.resMsg)
+                            // 刷新表格
+                            reloadTable()
+                        }
+                    })
+                }
             }
         })
 
@@ -151,7 +153,7 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: formatMessage('pages.administrative.organization.describe'),
+            title: formatMessage('global.table.describe'),
             dataIndex: 'describe',
             ellipsis: true,
             hideInSearch: true

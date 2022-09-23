@@ -1,14 +1,15 @@
 /*
- * @Description: 国际化-表格列表
+ * @Description: 岗位管理-表格列表
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:03:44
+ * @LastEditTime: 2022-09-23 16:35:45
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-import { useIntl } from '@umijs/max'
+// import { useRequest } from 'ahooks';
+import { useIntl,useRequest } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
@@ -16,19 +17,22 @@ import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // ant
 import moment from 'moment'
 
 // 引入业务组件
-import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
+import { getJobsList, delJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
+import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
+    // 获取组织树形数据
+    const { data:orgTree} = useRequest(getOrganizationList);
     const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState<API.INTERNATIONALIZATION[]>([])
+    const [treeData, setTreeData] = useState<API.JOBSMANAMENT[]>([])
     // 当前行数据
-    const [record, setRecord] = useState<API.INTERNATIONALIZATION>()
+    const [record, setRecord] = useState<API.JOBSMANAMENT>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -36,13 +40,13 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (id: string | undefined) => {
+    const handlerDelete = async (jobs_id: string | undefined) => {
         Modal.confirm({
             title: intl.formatMessage({ id: 'global.message.delete.title' }),
             content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if(id){
-                    await delInternational(id).then(res => {
+                if(jobs_id){
+                    await delJobs(jobs_id).then(res => {
                         if (res.resCode === 200) {
                             message.success(res.resMsg)
                             // 刷新表格
@@ -77,7 +81,7 @@ const TableTemplate: FC = () => {
                     key: 'edit',
                 },
                 {
-                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.jobs_id)} block>{formatMessage('global.table.operation.delete')}</Button>,
                     key: 'delete',
                 },
             ]}
@@ -85,45 +89,37 @@ const TableTemplate: FC = () => {
     );
 
     // 操作下拉框
-    const dropdownMenuClick = (record: API.INTERNATIONALIZATION) => {
+    const dropdownMenuClick = (record: API.JOBSMANAMENT) => {
         setRecord(record)
-        set_parent_id(record?.id)
+        set_parent_id(record?.jobs_id)
     }
     /**
 * @description: proTable columns 配置项
 * @return {*}
 * @author: Cyan
 */
-    const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
+    const columns: ProColumns<API.JOBSMANAMENT>[] = [
         {
-            title: formatMessage('pages.setting.internationalization.name'),
-            dataIndex: 'name',
+            title: formatMessage('pages.administrative.jobs-management.jobs_name'),
+            dataIndex: 'jobs_name',
             ellipsis: true,
-            render: text => <Tag color="success">{text}</Tag>
+            render: text => <Tag color="processing">{text}</Tag>
         },
         {
-            title: formatMessage('pages.setting.internationalization.zh-CN'),
-            dataIndex: 'zh-CN',
+            title: formatMessage('pages.administrative.jobs-management.org_name'),
+            dataIndex: 'org_id',
             ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.setting.internationalization.en-US'),
-            dataIndex: 'en-US',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.setting.internationalization.ja-JP'),
-            dataIndex: 'ja-JP',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.setting.internationalization.zh-TW'),
-            dataIndex: 'zh-TW',
-            ellipsis: true,
-            hideInSearch: true,
+            valueType:'treeSelect',
+            fieldProps:{
+                allowClear:true,
+                fieldNames: {
+                    label: 'org_name',
+                    value: 'org_id'
+                },
+                options:orgTree,
+                placeholder: formatMessage('global.form.placeholder.seleted')
+            },
+            render: text => <Tag color="cyan">{text}</Tag>
         },
         {
             title: formatMessage('global.table.created_time'),
@@ -151,24 +147,25 @@ const TableTemplate: FC = () => {
             },
         },
         {
+            title: formatMessage('global.table.describe'),
+            dataIndex: 'describe',
+            ellipsis: true,
+            hideInSearch: true
+        },
+        {
             title: formatMessage('global.table.operation'),
             valueType: 'option',
             width: 120,
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
-                    <Button size="small">
-                        {oprationName}
-                        <DownOutlined />
-                    </Button>
-                </Dropdown>
+                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">{oprationName}<DownOutlined /></Button></Dropdown>
             ]
         },
     ]
 
     return (
-        <ProTable<API.INTERNATIONALIZATION>
+        <ProTable<API.JOBSMANAMENT>
             actionRef={tableRef}
             columns={columns}
             request={async params => {
@@ -176,7 +173,7 @@ const TableTemplate: FC = () => {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
                     let result: any = {}
-                    await getInternationalList(params).then(res => {
+                    await getJobsList(params).then(res => {
                         result = res
                         setTreeData(result.resData)
                     })
@@ -191,11 +188,11 @@ const TableTemplate: FC = () => {
                 }
             }
             }
-            rowKey="id"
+            rowKey="jobs_id"
             pagination={false}
             // 工具栏
             toolBarRender={() => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} />
+                <FormTemplate treeData={treeData} reloadTable={reloadTable} orgTree={orgTree}/>
             ]}
         >
 

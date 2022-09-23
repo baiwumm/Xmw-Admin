@@ -4,36 +4,37 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:20:31
+ * @LastEditTime: 2022-09-23 16:30:43
  */
 
 // 引入第三方库
 import { FC, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
-import { ModalForm } from '@ant-design/pro-components'; // 高级组件
+import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { saveInternational } from '@/services/system/internationalization' // 国际化接口
+import { saveJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { FormTemplateProps } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id,orgTree }) => {
     // 初始化表单
-    const [form] = Form.useForm<API.INTERNATIONALIZATION>();
+    const [form] = Form.useForm<API.JOBSMANAMENT>();
     // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<API.INTERNATIONALIZATION | undefined>(formData)
-    const formTitle = cloneFormData && cloneFormData.id ? `${formatMessage(['global.table.operation.edit', 'pages.setting.internationalization.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.setting.internationalization.title'])
+    const [cloneFormData, setCloneFormData] = useState<API.JOBSMANAMENT | undefined>(formData)
+    // 表单标题
+    const formTitle = cloneFormData && cloneFormData.jobs_id ? `${formatMessage(['global.table.operation.edit', 'pages.administrative.jobs-management.title'])}：${cloneFormData.jobs_name}` : formatMessage(['global.table.operation.add', 'pages.administrative.jobs-management.title'])
     // 提交表单
-    const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
+    const handlerSubmit = async (values: API.JOBSMANAMENT) => {
         // 提交数据
         let result = false
         const params = { ...cloneFormData, ...values }
         parent_id && (params.parent_id = parent_id)
         // 删除 children 属性
         params.children && delete params.children
-        await saveInternational(params).then(res => {
+        await saveJobs(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
                 reloadTable()
@@ -45,7 +46,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         return result
     }
     return (
-        <ModalForm<API.INTERNATIONALIZATION>
+        <DrawerForm<API.JOBSMANAMENT>
             title={formTitle}
             width={500}
             grid
@@ -57,10 +58,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 </Button>
             }
             autoFocusFirstInput
-            modalProps={{
+            drawerProps={{
                 destroyOnClose: false,
                 maskClosable: false,
-                onCancel: () => form.resetFields()
+                onClose: () => form.resetFields()
             }}
             // 提交数据时，禁用取消按钮的超时时间（毫秒）。
             submitTimeout={2000}
@@ -77,8 +78,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 }
             }}
         >
-            <FormTemplateItem treeData={treeData} parent_id={parent_id} />
-        </ModalForm>
+            <FormTemplateItem treeData={treeData} parent_id={parent_id} orgTree={orgTree}/>
+        </DrawerForm>
     );
 };
 

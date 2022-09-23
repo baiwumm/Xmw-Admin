@@ -3,6 +3,7 @@
 
 import 'egg';
 import ExportBase from '../../../app/controller/base';
+import ExportAdministrativeJobsManagement from '../../../app/controller/administrative/jobsManagement';
 import ExportAdministrativeOrganization from '../../../app/controller/administrative/organization';
 import ExportSystemInternationalization from '../../../app/controller/system/internationalization';
 import ExportSystemUserManagement from '../../../app/controller/system/userManagement';
@@ -11,6 +12,7 @@ declare module 'egg' {
   interface IController {
     base: ExportBase;
     administrative: {
+      jobsManagement: ExportAdministrativeJobsManagement;
       organization: ExportAdministrativeOrganization;
     }
     system: {

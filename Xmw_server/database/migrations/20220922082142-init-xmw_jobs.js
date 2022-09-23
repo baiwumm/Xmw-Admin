@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-22 16:21:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-22 16:33:49
+ * @LastEditTime: 2022-09-23 14:56:41
  */
 'use strict';
 
@@ -16,7 +16,7 @@ module.exports = {
       jobs_name: { type: STRING(32), allowNull: false, comment: '岗位名称' },
       org_id: { type: UUID, allowNull: false, comment: '所属组织id' },
       parent_id: { type: UUID, allowNull: true, comment: '父级id' },
-      describe: { type: STRING(200), allowNull: true, comment: '描述' },
+      describe: { type: STRING(200), allowNull: false, comment: '描述' },
       leader: { type: UUID, allowNull: true, comment: '负责人' },
       founder: { type: UUID, allowNull: true, comment: '创建人' },
       created_time: { type: DATE, allowNull: false, comment: '创建日期' },

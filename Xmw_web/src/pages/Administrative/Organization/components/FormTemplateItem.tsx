@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 10:27:57
+ * @LastEditTime: 2022-09-23 16:35:13
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -95,8 +95,8 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
             {/* 描述 */}
             <ProFormTextArea
                 name="describe"
-                label={formatMessage('pages.administrative.organization.describe')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.administrative.organization.describe'])}
+                label={formatMessage('global.table.describe')}
+                placeholder={formatMessage(['global.form.placeholder', 'global.table.describe'])}
                 colProps={{ span: 24 }}
                 fieldProps={{
                     showCount: true,

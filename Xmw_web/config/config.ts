@@ -106,7 +106,9 @@ export default defineConfig({
    * @description 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
    * @doc https://umijs.org/docs/max/request
    */
-  request: {},
+  request: {
+    dataField: 'resData'
+  },
   /**
    * @name 权限插件
    * @description 基于 initialState 的权限插件，必须先打开 initialState
@@ -141,7 +143,7 @@ export default defineConfig({
    */
   define: {
     'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_faxqhuimsdk.js'
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_8fsl77r7o8u.js'
     }
   },
 
