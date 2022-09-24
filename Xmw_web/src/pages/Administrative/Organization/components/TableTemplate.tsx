@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:16:28
+ * @LastEditTime: 2022-09-24 22:18:12
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
 import { useIntl } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined,createFromIconfontCN } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -23,6 +23,10 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
+    // 使用 iconfont.cn 资源
+    const IconFont = createFromIconfontCN({
+        scriptUrl: process.env.ICONFONT_URL,
+    });
     const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
@@ -100,7 +104,7 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.administrative.organization.org_name'),
             dataIndex: 'org_name',
             ellipsis: true,
-            render: text => <Tag color="processing">{text}</Tag>
+            render: text => <Space><IconFont type="icon-organization" /><span>{text}</span></Space>
         },
         {
             title: formatMessage('pages.administrative.organization.org_code'),

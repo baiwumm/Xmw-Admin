@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-21 15:06:05
+ * @LastEditTime: 2022-09-24 23:14:06
  */
 // 引入第三方库
 import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
@@ -75,7 +75,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                         <SettingDrawer
                             disableUrlParams
                             enableDarkTheme
-                            settings={initialState?.settings}
+                            settings={umiLayout}
                             onSettingChange={(settings: LayoutSettings) => {
                                 setUmiLayout(settings)
                                 setInitialState((preInitialState: any) => ({
@@ -88,6 +88,6 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                 </>
             );
         },
-        ...initialState?.settings,
+        ...umiLayout,
     };
 }

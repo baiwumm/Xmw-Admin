@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:32:03
+ * @LastEditTime: 2022-09-24 10:21:17
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -15,10 +15,9 @@ import {
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import { formatMessage } from '@/utils' // 引入工具类
-import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
+import { FormTemplateItemProps } from '../utils/interface' // 公共 interface
 
-
-const FormTemplateItem: FC<{ treeData: API.JOBSMANAMENT[], parent_id: string | undefined,orgTree:API.ORGANIZATION[] }> = ({ treeData, parent_id,orgTree }) => {
+const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id,orgTree }) => {
     return (
         <>
             {/* 父级 */}
@@ -67,6 +66,7 @@ const FormTemplateItem: FC<{ treeData: API.JOBSMANAMENT[], parent_id: string | u
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
                     placeholder: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']),
                 }}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']) }]}
             />
             {/* 描述 */}
             <ProFormTextArea

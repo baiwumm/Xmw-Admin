@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:02
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-20 09:58:10
+ * @LastEditTime: 2022-09-24 19:14:31
  */
 import { Settings as LayoutSettings } from '@ant-design/pro-components';
 
@@ -17,7 +17,7 @@ const Settings: LayoutSettings & {
 } = {
   navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
+  colorPrimary: '#1890ff',
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: true,

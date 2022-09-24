@@ -4,15 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:35:45
+ * @LastEditTime: 2022-09-24 22:57:32
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-// import { useRequest } from 'ahooks';
 import { useIntl,useRequest } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined,createFromIconfontCN } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -24,8 +23,12 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
+    // 使用 iconfont.cn 资源
+    const IconFont = createFromIconfontCN({
+        scriptUrl: process.env.ICONFONT_URL,
+    });
     // 获取组织树形数据
-    const { data:orgTree} = useRequest(getOrganizationList);
+    const { data:orgTree}:any = useRequest(getOrganizationList);
     const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
@@ -67,6 +70,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
+                        orgTree={orgTree}
                         triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
                     />,
                     key: 'addChild',
@@ -76,6 +80,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={record}
+                        orgTree={orgTree}
                         triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
                     />,
                     key: 'edit',
@@ -103,7 +108,7 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.administrative.jobs-management.jobs_name'),
             dataIndex: 'jobs_name',
             ellipsis: true,
-            render: text => <Tag color="processing">{text}</Tag>
+            render: text => <Space><IconFont type="icon-jobs" /><span>{text}</span></Space>
         },
         {
             title: formatMessage('pages.administrative.jobs-management.org_name'),

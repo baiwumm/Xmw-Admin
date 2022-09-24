@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-21 13:58:09
+ * @LastEditTime: 2022-09-25 01:11:44
  */
 
 // 引入第三方库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import { message, Tabs, Badge, Dropdown, Menu, Button } from 'antd'; // antd 组件库
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 import TabsLayout from '@/components/TabsLayout' // 多标签页
@@ -22,7 +21,6 @@ import { initLocalesLang } from '@/utils' // 全局工具函数
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
 
 const loginPath = '/user/login';
-const { TabPane } = Tabs
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */

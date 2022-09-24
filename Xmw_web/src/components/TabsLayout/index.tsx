@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 19:53:48
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-22 16:18:13
+ * @LastEditTime: 2022-09-24 23:18:15
  */
 // 引入第三方库
 import { FC } from 'react'
@@ -60,8 +60,8 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
     // 格式换多标签名称
     const formatMessagePath = (pathname: string) => {
         return (
-            /* ***** 这里暂时获取不到每个tab对应的icon  */
-            <span><IconFont type="icon-workbench" />{formatMessage('menu' + pathname.replace(/\//g, '.'))}</span>
+            /* ***** 这里暂时获取不到每个tab对应的icon <IconFont type="icon-workbench" />  */
+            <span>{formatMessage('menu' + pathname.replace(/\//g, '.'))}</span>
         )
     }
 
