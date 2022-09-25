@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 01:11:44
+ * @LastEditTime: 2022-09-25 11:47:53
  */
 
 // 引入第三方库
@@ -74,11 +74,11 @@ export const layout: RunTimeLayoutConfig = BasiLayout
  * @return {*}
  * @author: Cyan
  */
-export const getCustomTabs = () => {
-  return (tabsProps: any) => {
-    return <TabsLayout tabsProps={{ ...tabsProps }} />
-  };
-};
+// export const getCustomTabs = () => {
+//   return (tabsProps: any) => {
+//     return <TabsLayout tabsProps={{ ...tabsProps }} />
+//   };
+// };
 
 /**
  * @description: request 配置，可以配置错误处理，它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。

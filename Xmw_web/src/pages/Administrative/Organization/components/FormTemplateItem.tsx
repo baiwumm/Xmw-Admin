@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:35:13
+ * @LastEditTime: 2022-09-25 18:18:33
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -83,7 +83,7 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
             {/* 状态 */}
             <ProFormRadio.Group
                 name="status"
-                colProps={{ span: 10 }}
+                colProps={{ span: 8 }}
                 initialValue={'1'}
                 fieldProps={{
                     buttonStyle: "solid"

@@ -17,19 +17,18 @@ body,
   left: unset;
 }
 
-canvas {
-  display: block;
+// 设置 settingDrawer 为主题色
+.ant-pro-setting-drawer-handle{
+  background-color: @primary-color;
 }
 
-body {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-ul,
-ol {
-  list-style: none;
+// 设置菜单图标颜色跟随主题色
+.ant-menu-item .ant-menu-item-icon, 
+.ant-menu-submenu-title .ant-menu-item-icon, 
+.ant-menu-item .anticon, 
+.ant-menu-submenu-title .anticon,
+.ant-pro-base-menu .ant-pro-base-menu-item-icon{
+  color: @primary-color;
 }
 
 @media (max-width: @screen-xs) {

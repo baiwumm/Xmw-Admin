@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 22:18:12
+ * @LastEditTime: 2022-09-25 12:11:01
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-import { useIntl } from '@umijs/max'
+import { useIntl,useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined,createFromIconfontCN } from '@ant-design/icons' // antd 图标库
@@ -23,6 +23,8 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
+    // 初始化状态
+  const { initialState } = useModel('@@initialState');
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
@@ -104,7 +106,7 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.administrative.organization.org_name'),
             dataIndex: 'org_name',
             ellipsis: true,
-            render: text => <Space><IconFont type="icon-organization" /><span>{text}</span></Space>
+            render: text => <Space><IconFont type="icon-organization" style={{color:initialState?.settings?.colorPrimary,fontSize:'16px'}}/><span>{text}</span></Space>
         },
         {
             title: formatMessage('pages.administrative.organization.org_code'),
@@ -128,7 +130,7 @@ const TableTemplate: FC = () => {
             onFilter: true,
             valueEnum: {
                 0: { text: formatMessage('global.status.disable'), status: 'Default' },
-                1: { text: formatMessage('global.status.normal'), status: 'Success' },
+                1: { text: formatMessage('global.status.normal'), status: 'Processing' },
             },
         },
         {

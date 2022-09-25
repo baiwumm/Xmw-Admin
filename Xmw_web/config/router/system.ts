@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 18:23:19
+ * @LastEditTime: 2022-09-25 14:29:20
  */
 export default {
     path: '/system',
     name: 'system',
-    icon: 'icon-setting',
+    icon: 'icon-system',
     routes: [
         {
             path: '/system',
@@ -18,19 +18,19 @@ export default {
         {
             path: '/system/user-management',
             name: 'user-management',
-            icon: 'icon-user',
+            icon: 'icon-user-management',
             component: './System/UserManagement',
         },
         {
             path: '/system/internationalization',
             name: 'internationalization',
-            icon: 'icon-duoyuyan',
+            icon: 'icon-internationalization',
             component: './System/Internationalization',
         },
         {
             path: '/system/operation-log',
             name: 'operation-log',
-            icon: 'icon-log',
+            icon: 'icon-operation-log',
             component: './System/OperationLog',
         },
     ],

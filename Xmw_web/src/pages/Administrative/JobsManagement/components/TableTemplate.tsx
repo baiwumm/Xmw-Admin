@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 22:57:32
+ * @LastEditTime: 2022-09-25 17:53:55
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-import { useIntl,useRequest } from '@umijs/max'
+import { useIntl,useRequest,useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined,createFromIconfontCN } from '@ant-design/icons' // antd 图标库
@@ -23,6 +23,8 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
+    // 初始化状态
+  const { initialState } = useModel('@@initialState');
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
@@ -108,7 +110,7 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.administrative.jobs-management.jobs_name'),
             dataIndex: 'jobs_name',
             ellipsis: true,
-            render: text => <Space><IconFont type="icon-jobs" /><span>{text}</span></Space>
+            render: text => <Space><IconFont type="icon-jobs-management" style={{color:initialState?.settings?.colorPrimary,fontSize:'16px'}}/><span>{text}</span></Space>
         },
         {
             title: formatMessage('pages.administrative.jobs-management.org_name'),
@@ -124,7 +126,7 @@ const TableTemplate: FC = () => {
                 options:orgTree,
                 placeholder: formatMessage('global.form.placeholder.seleted')
             },
-            render: text => <Tag color="cyan">{text}</Tag>
+            render: text => <Tag color={initialState?.settings?.colorPrimary}>{text}</Tag>
         },
         {
             title: formatMessage('global.table.created_time'),

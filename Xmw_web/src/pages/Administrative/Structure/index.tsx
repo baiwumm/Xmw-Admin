@@ -4,17 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-09-24 11:16:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 23:17:28
+ * @LastEditTime: 2022-09-25 18:26:27
  */
 import { FC, useState } from 'react'
 import { Space, Checkbox, Select } from 'antd'
-import { useRequest } from '@umijs/max'
+// import { useRequest } from '@umijs/max'
 import { useBoolean } from 'ahooks';
 import { PageContainer, ProCard } from '@ant-design/pro-components' // antd 高级组件
 import OrgTree from 'react-org-tree';
 import { formatMessage } from '@/utils' // 引入工具类
-import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
-import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
+// import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
+// import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import styles from './index.less'
 
 
@@ -31,11 +31,9 @@ const Structure: FC = () => {
         { value: 'bg-tomato', label: '红彤彤' }
     ]
     // 获取组织树形数据
-    const { data:orgTree} = useRequest(getOrganizationList);
-    console.log(orgTree)
-    // 获取岗位树形数据
-    const { data:jobsTree} = useRequest(getJobsList);
-    console.log(jobsTree)
+    // const { data:orgTree} = useRequest(getOrganizationList);
+    // // 获取岗位树形数据
+    // const { data:jobsTree} = useRequest(getJobsList);
     const data = {
         id: 0,
         label: 'XXX股份有限公司',

@@ -8,10 +8,10 @@ import routes from './routes';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  keepalive: [/./],
-  tabsLayout: {
-    hasCustomTabs: true,
-  },
+  // keepalive: [/./],
+  // tabsLayout: {
+  //   hasCustomTabs: true,
+  // },
   /**
    * @name 开启 hash 模式
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
@@ -143,7 +143,7 @@ export default defineConfig({
    */
   define: {
     'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_5n7apfyd2xh.js'
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_h0bsljd9ob8.js'
     }
   },
 

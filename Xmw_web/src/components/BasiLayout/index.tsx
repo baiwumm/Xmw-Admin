@@ -4,18 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 23:14:06
+ * @LastEditTime: 2022-09-25 20:27:37
  */
 // 引入第三方库
-import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
+import { SettingDrawer,PageLoading } from '@ant-design/pro-components'; // 高级组件
 import { history, Link } from '@umijs/max';
+import { Space, Button } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
+import { last } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 // 引入业务组件间
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
+import {appList} from './config'
 import styles from './index.less'
 
 const loginPath = '/user/login'; // 登录路由
@@ -51,6 +54,24 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                 history.push(loginPath);
             }
         },
+        /* 自定义面包屑 */
+        breadcrumbProps: {
+            itemRender: (route: any) => {
+                return (
+                    <Link to={route.path}>
+                        <Space>
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: initialState?.settings?.colorPrimary }} />}
+                                style={{color:initialState?.settings?.colorPrimary}}>
+                                {route.breadcrumbName}
+                            </Button>
+                        </Space>
+                    </Link>
+                )
+            }
+        },
         /* 自定义菜单项的 render 方法 */
         menuItemRender: (menuItemProps: any, defaultDom: any) => {
             return (
@@ -63,11 +84,11 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
                 </Link>
             );
         },
-        // 自定义 403 页面
-        // unAccessible: <div>unAccessible</div>,
+        // 跨站点导航列表
+        appList,
         // 增加一个 loading 的状态
         childrenRender: (children: any, props: any) => {
-            // if (initialState?.loading) return <PageLoading />;
+            if (initialState?.loading) return <PageLoading />;
             return (
                 <>
                     {children}
