@@ -1,10 +1,10 @@
 /*
- * @Description: 系统设置-国际化模块接口
+ * @Description: 系统设置-国际化-API
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:03:39
+ * @LastEditTime: 2022-09-26 17:57:25
  */
 import { request } from '@umijs/max';
 import { Data, Result } from '@/global/interface'

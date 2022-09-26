@@ -1,10 +1,10 @@
 /*
- * @Description: 智能行政-岗位管理模块接口
+ * @Description: 智能行政-岗位管理-API
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 13:43:13
+ * @LastEditTime: 2022-09-26 17:57:34
  */
 import { request } from '@umijs/max';
 import { Data, Result } from '@/global/interface'

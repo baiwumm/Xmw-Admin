@@ -1,10 +1,10 @@
 /*
- * @Description: 智能行政-组织管理模块接口
+ * @Description: 智能行政-组织管理-API
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 13:43:20
+ * @LastEditTime: 2022-09-26 17:57:40
  */
 import { request } from '@umijs/max';
 import { Data, Result } from '@/global/interface'
