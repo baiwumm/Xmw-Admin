@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:20:31
+ * @LastEditTime: 2022-09-27 14:09:18
  */
 
 // 引入第三方库
@@ -15,25 +15,25 @@ import { Button, Form, message } from 'antd'; // antd 组件库
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { saveInternational } from '@/services/system/internationalization' // 国际化接口
+import { saveMenu } from '@/services/system/menu-management' // 菜单管理接口
 import { FormTemplateProps } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id,menuData }) => {
     // 初始化表单
-    const [form] = Form.useForm<API.INTERNATIONALIZATION>();
+    const [form] = Form.useForm<API.MENUMANAGEMENT>();
     // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<API.INTERNATIONALIZATION | undefined>(formData)
-    const formTitle = cloneFormData && cloneFormData.id ? `${formatMessage(['global.table.operation.edit', 'pages.system.internationalization.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.system.internationalization.title'])
+    const [cloneFormData, setCloneFormData] = useState<API.MENUMANAGEMENT | undefined>(formData)
+    const formTitle = cloneFormData && cloneFormData.menu_id ? `${formatMessage(['global.table.operation.edit', 'pages.system.menu-management.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.system.menu-management.title'])
     // 提交表单
-    const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
+    const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
         // 提交数据
         let result = false
         const params = { ...cloneFormData, ...values }
         parent_id && (params.parent_id = parent_id)
         // 删除 children 属性
-        params.children && delete params.children
-        await saveInternational(params).then(res => {
+        params.routes && delete params.routes
+        await saveMenu(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
                 reloadTable()
@@ -45,9 +45,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         return result
     }
     return (
-        <ModalForm<API.INTERNATIONALIZATION>
+        <ModalForm<API.MENUMANAGEMENT>
             title={formTitle}
-            width={500}
+            width={600}
             grid
             form={form}
             trigger={triggerDom ||
@@ -77,7 +77,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 }
             }}
         >
-            <FormTemplateItem treeData={treeData} parent_id={parent_id} />
+            <FormTemplateItem treeData={treeData} parent_id={parent_id} menuData={menuData}/>
         </ModalForm>
     );
 };

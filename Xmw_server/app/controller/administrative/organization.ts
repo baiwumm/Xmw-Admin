@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 10:59:59
+ * @LastEditTime: 2022-09-27 17:03:21
  */
 
 import BaseController from '../base'
@@ -35,7 +35,7 @@ export default class Organization extends BaseController {
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                order: [['created_time', 'desc']], // 排序规则
+                order: [['sort','desc'],['created_time', 'desc']], // 排序规则
                 where
             }
 

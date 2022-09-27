@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:13:28
+ * @LastEditTime: 2022-09-27 17:00:20
  */
 'use strict';
 
 module.exports = (app) => {
-    const { STRING, DATE, UUID, UUIDV4 } = app.Sequelize;
+    const { STRING, DATE, UUID, UUIDV4,INTEGER } = app.Sequelize;
 
     const xmw_organization = app.model.define('xmw_organization', {
         org_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '组织id' },
@@ -22,6 +22,7 @@ module.exports = (app) => {
         update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
         founder: { type: UUID, allowNull: true, comment: '创建人' },
         parent_id: { type: UUID, allowNull: true, comment: '父级id' },
+        sort: { type: INTEGER, allowNull: false, comment: '排序' },
         status: { type: STRING(10), allowNull: false, comment: '部门状态' },
     });
 

@@ -4,14 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 10:21:17
+ * @LastEditTime: 2022-09-27 17:01:45
  */
 // 引入第三方库
 import { FC } from 'react';
 import {
     ProFormText,
     ProFormTextArea,
-    ProFormTreeSelect
+    ProFormTreeSelect,
+    ProFormDigit
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import { formatMessage } from '@/utils' // 引入工具类
@@ -67,6 +68,17 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id,orgTr
                     placeholder: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']),
                 }}
                 rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']) }]}
+            />
+            {/* 排序 */}
+            <ProFormDigit
+                label={formatMessage('global.table.sort')}
+                name="sort"
+                colProps={{ span: 24 }}
+                min={1}
+                max={99}
+                initialValue={1}
+                tooltip={formatMessage('global.table.sort.tooltip')}
+                fieldProps={{ precision: 0 }}
             />
             {/* 描述 */}
             <ProFormTextArea

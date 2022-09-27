@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 13:49:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 20:39:42
+ * @LastEditTime: 2022-09-19 09:16:22
  */
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 
@@ -32,7 +32,7 @@ export default (appInfo: EggAppInfo) => {
     port: 3306,
     database: 'react_umi_xmw',
     username: "root",
-    password: "root",
+    password: "123456",
     // 配置数据库时间为东八区北京时间
     timezone: '+08:00',
     define: {

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 09:00:41
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:06:56
+ * @LastEditTime: 2022-09-27 15:57:53
  */
 /**
  * @description: 请求状态码
@@ -46,6 +46,22 @@ export const APP_STATUS_OPTS = [
     },
     {
         label: '禁用',
+        value: '0'
+    }
+]
+
+export const APP_FLAG = {
+    0: '否',
+    1: '是'
+}
+
+export const APP_FLAG_OPTS = [
+    {
+        label: '是',
+        value: '1'
+    },
+    {
+        label: '否',
         value: '0'
     }
 ]

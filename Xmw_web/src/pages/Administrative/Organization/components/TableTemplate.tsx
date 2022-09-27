@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 12:11:01
+ * @LastEditTime: 2022-09-27 17:04:03
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -132,6 +132,14 @@ const TableTemplate: FC = () => {
                 0: { text: formatMessage('global.status.disable'), status: 'Default' },
                 1: { text: formatMessage('global.status.normal'), status: 'Processing' },
             },
+        },
+        {
+            title: formatMessage('global.table.sort'),
+            dataIndex: 'sort',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            render: text => <Tag color="purple">{text}</Tag>
         },
         {
             title: formatMessage('global.table.created_time'),

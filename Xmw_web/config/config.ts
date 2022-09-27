@@ -143,7 +143,7 @@ export default defineConfig({
    */
   define: {
     'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_h0bsljd9ob8.js'
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_yt2bq5yfbmr.js'
     }
   },
 

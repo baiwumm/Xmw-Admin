@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:25:59
+ * @LastEditTime: 2022-09-27 09:49:30
  */
 import { FC } from 'react';
 import { Button } from 'antd'; // antd 组件
@@ -12,7 +12,7 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const OperationLog: FC = () => {
     return (
-        <Button type="primary">{formatMessage('pages.setting.operation-log')}</Button>
+        <Button type="primary">{formatMessage('pages.system.operation-log')}</Button>
     )
 }
 export default OperationLog

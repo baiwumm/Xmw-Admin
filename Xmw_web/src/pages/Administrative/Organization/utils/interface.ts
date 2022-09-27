@@ -3,7 +3,7 @@
  * @return {*}
  * @author: Cyan
  */
-export interface FormTemplateProps {
+export type FormTemplateProps = {
     treeData: API.ORGANIZATION[],
     reloadTable: any,
     formData?: any,

@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:14:16
+ * @LastEditTime: 2022-09-27 17:00:08
  */
 'use strict';
 
 module.exports = (app) => {
-    const { STRING, DATE, UUID, UUIDV4 } = app.Sequelize;
+    const { STRING, DATE, UUID, UUIDV4,INTEGER } = app.Sequelize;
 
     const xmw_jobs = app.model.define('xmw_jobs', {
       jobs_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '岗位id' },
@@ -19,6 +19,7 @@ module.exports = (app) => {
       describe: { type: STRING(200), allowNull: false, comment: '描述' },
       leader: { type: UUID, allowNull: true, comment: '负责人' },
       founder: { type: UUID, allowNull: true, comment: '创建人' },
+      sort: { type: INTEGER, allowNull: false, comment: '排序' },
       created_time: { type: DATE, allowNull: false, comment: '创建日期' },
       update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     });

@@ -1,36 +1,37 @@
 /*
- * @Description: 国际化-表格列表
+ * @Description: 菜单管理-表格列表
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:48:19
+ * @LastEditTime: 2022-09-27 14:28:20
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-import { useIntl, useModel } from '@umijs/max'
+import { useIntl,useRequest } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
-import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
+import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜单管理接口
+import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
-    // 初始化状态
-    const { initialState } = useModel('@@initialState');
     const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给modalForm
-    const [treeData, setTreeData] = useState<API.INTERNATIONALIZATION[]>([])
+    const [treeData, setTreeData] = useState<API.MENUMANAGEMENT[]>([])
+    // 获取树形数据传递给modalForm
+    const [menuData, setMenuData] = useState<any>([])
     // 当前行数据
-    const [record, setRecord] = useState<API.INTERNATIONALIZATION>()
+    const [record, setRecord] = useState<API.MENUMANAGEMENT>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -38,13 +39,13 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (id: string | undefined) => {
+    const handlerDelete = async (menu_id: string | undefined) => {
         Modal.confirm({
             title: intl.formatMessage({ id: 'global.message.delete.title' }),
             content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if (id) {
-                    await delInternational(id).then(res => {
+                if(menu_id){
+                    await delMenu(menu_id).then(res => {
                         if (res.resCode === 200) {
                             message.success(res.resMsg)
                             // 刷新表格
@@ -66,6 +67,7 @@ const TableTemplate: FC = () => {
                         reloadTable={reloadTable}
                         parent_id={parent_id}
                         triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
+                        menuData={menuData}
                     />,
                     key: 'addChild',
                 },
@@ -75,11 +77,12 @@ const TableTemplate: FC = () => {
                         reloadTable={reloadTable}
                         formData={record}
                         triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
+                        menuData={menuData}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.menu_id)} >{formatMessage('global.table.operation.delete')}</Button>,
                     key: 'delete',
                 },
             ]}
@@ -87,52 +90,21 @@ const TableTemplate: FC = () => {
     );
 
     // 操作下拉框
-    const dropdownMenuClick = (record: API.INTERNATIONALIZATION) => {
+    const dropdownMenuClick = (record: API.MENUMANAGEMENT) => {
         setRecord(record)
-        set_parent_id(record?.id)
+        set_parent_id(record?.menu_id)
     }
     /**
 * @description: proTable columns 配置项
 * @return {*}
 * @author: Cyan
 */
-    const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
+    const columns: ProColumns<API.MENUMANAGEMENT>[] = [
         {
-            title: formatMessage('pages.system.internationalization.name'),
+            title: formatMessage('pages.system.menu-management.name'),
             dataIndex: 'name',
             ellipsis: true,
-            render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
-        },
-        {
-            title: formatMessage('pages.system.internationalization.zh-CN'),
-            dataIndex: 'zh-CN',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.system.internationalization.en-US'),
-            dataIndex: 'en-US',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.system.internationalization.ja-JP'),
-            dataIndex: 'ja-JP',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('pages.system.internationalization.zh-TW'),
-            dataIndex: 'zh-TW',
-            ellipsis: true,
-            hideInSearch: true,
-        },
-        {
-            title: formatMessage('global.table.sort'),
-            dataIndex: 'sort',
-            ellipsis: true,
-            hideInSearch: true,
-            render: text => <Tag color="purple">{text}</Tag>
+            render: text => <Tag color="success">{text}</Tag>
         },
         {
             title: formatMessage('global.table.created_time'),
@@ -176,8 +148,14 @@ const TableTemplate: FC = () => {
         },
     ]
 
+    // 获取当前菜单数据
+    useRequest(async () => await getInternationalList({isMenu:true}),{
+        onSuccess:(result)=>{
+            setMenuData(result)
+        }
+    })
     return (
-        <ProTable<API.INTERNATIONALIZATION>
+        <ProTable<API.MENUMANAGEMENT>
             actionRef={tableRef}
             columns={columns}
             request={async params => {
@@ -185,7 +163,7 @@ const TableTemplate: FC = () => {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
                     let result: any = {}
-                    await getInternationalList(params).then(res => {
+                    await getMenuList(params).then(res => {
                         result = res
                         setTreeData(result.resData)
                     })
@@ -200,11 +178,11 @@ const TableTemplate: FC = () => {
                 }
             }
             }
-            rowKey="id"
+            rowKey="menu_id"
             pagination={false}
             // 工具栏
             toolBarRender={() => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} />
+                <FormTemplate treeData={treeData} reloadTable={reloadTable} menuData={menuData}/>
             ]}
         >
 

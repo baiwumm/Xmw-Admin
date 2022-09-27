@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:14:48
+ * @LastEditTime: 2022-09-27 17:03:15
  */
 
 import BaseController from '../base'
@@ -40,7 +40,7 @@ export default class JobsManagement extends BaseController {
                         attributes: ['org_name']
                     }
                 ],
-                order: [['created_time', 'desc']], // 排序规则
+                order: [['sort','desc'],['created_time', 'desc']], // 排序规则
                 where
             }
 

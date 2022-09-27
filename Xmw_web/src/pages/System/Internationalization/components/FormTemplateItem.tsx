@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 10:31:54
+ * @LastEditTime: 2022-09-27 16:49:14
  */
 // 引入第三方库
 import { FC } from 'react';
-import { ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormText, ProFormTreeSelect,ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import { formatMessage } from '@/utils' // 引入工具类
 
@@ -39,20 +39,20 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="name"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.setting.internationalization.name')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.name'])}
+                label={formatMessage('pages.system.internationalization.name')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.name'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.setting.internationalization.name']) }]}
+                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.system.internationalization.name']) }]}
             />
             {/* 中文 */}
             <ProFormText
                 name="zh-CN"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.setting.internationalization.zh-CN')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.zh-CN'])}
+                label={formatMessage('pages.system.internationalization.zh-CN')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.zh-CN'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -62,8 +62,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="en-US"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.setting.internationalization.en-US')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.en-US'])}
+                label={formatMessage('pages.system.internationalization.en-US')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.en-US'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -73,8 +73,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="ja-JP"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.setting.internationalization.ja-JP')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.ja-JP'])}
+                label={formatMessage('pages.system.internationalization.ja-JP')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.ja-JP'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -84,12 +84,23 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="zh-TW"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.setting.internationalization.zh-TW')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.setting.internationalization.zh-TW'])}
+                label={formatMessage('pages.system.internationalization.zh-TW')}
+                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.zh-TW'])}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
                 }}
+            />
+            {/* 排序 */}
+            <ProFormDigit
+                label={formatMessage('global.table.sort')}
+                name="sort"
+                colProps={{ span: 24 }}
+                min={1}
+                max={99}
+                initialValue={1}
+                tooltip={formatMessage('global.table.sort.tooltip')}
+                fieldProps={{ precision: 0 }}
             />
         </>
     )

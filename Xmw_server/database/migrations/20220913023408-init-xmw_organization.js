@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-13 10:34:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-22 16:22:49
+ * @LastEditTime: 2022-09-27 16:59:42
  */
 'use strict';
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const { STRING, DATE, UUID, UUIDV4 } = Sequelize;
+    const { STRING, DATE, UUID, UUIDV4,INTEGER } = Sequelize;
     await queryInterface.createTable('xmw_organization', {
       org_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '组织id' },
       org_name: { type: STRING(32), allowNull: false, comment: '组织名称' },
@@ -22,6 +22,7 @@ module.exports = {
       update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
       founder: { type: UUID, allowNull: true, comment: '创建人' },
       parent_id: { type: UUID, allowNull: true, comment: '父级id' },
+      sort: { type: INTEGER, allowNull: false, comment: '排序' },
       status: { type: STRING(10), allowNull: false, comment: '部门状态' },
     });
   },

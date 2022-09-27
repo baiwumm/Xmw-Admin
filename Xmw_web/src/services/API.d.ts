@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 13:53:20
+ * @LastEditTime: 2022-09-27 10:19:19
  */
 declare namespace API {
     /**
@@ -45,6 +45,38 @@ declare namespace API {
         children?: JOBSMANAMENT[]
     }
 
+    type MENUMANAGEMENT = {
+        menu_id:string,
+        name?:string
+        path?:string
+        icon?:string
+        component?:string,
+        redirect?:string,
+        parent_id:string,
+        sort:number,
+        founder?:string,
+        status:string,
+        target?:string
+        permission:string,
+        access:string,
+        menu_type:string,
+        layout?:string,
+        hideChildrenInMenu?:string,
+        hideInMenu?:string,
+        hideInBreadcrumb?:string,
+        headerRender?:string,
+        footerRender?:string,
+        menuRender?:string,
+        menuHeaderRender?:string,
+        flatMenu?:string,
+        fixedHeader?:string,
+        fixSiderbar?:string,
+        navTheme?:string,
+        headerTheme?:string,
+        created_time?: Date,
+        update_time?: Date,
+        routes?:MENUMANAGEMENT[]
+    }
     /**
      * @description: 系统设置-国际化
      * @return {*}

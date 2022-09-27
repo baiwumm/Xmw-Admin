@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:19:02
+ * @LastEditTime: 2022-09-27 16:56:36
  */
 import BaseController from '../base'
 import { LOCALES_LANG } from '../../public/enum'
@@ -25,22 +25,27 @@ export default class Internationalization extends BaseController {
         try {
             const { Op } = app.Sequelize;
             // 获取数据参数
-            let { name, start_time, end_time } = ctx.params
+            let { name, start_time, end_time, isMenu } = ctx.params
             // 根据参数拼接查询条件
             let where: any = {}
             if (name) where.name = { [Op.substring]: name }
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                order: [['created_time', 'desc']], // 排序规则
+                order: [['sort','desc'],['created_time', 'desc']], // 排序规则
                 where
             }
-
             // 根据参数查询数据
-            await this._findAll('XmwInternationalization', options).then(result => {
+            await this._findAll('XmwInternationalization', options).then(res => {
                 // 判断是否有返回值
-                if (result) {
-                    this.resResult(1, ctx.helper.initializeTree(result, 'id', 'parent_id', 'children'));
+                if (res) {
+                    const result = ctx.helper.initializeTree(res, 'id', 'parent_id', 'children')
+                    // 如果是isMenu，则返回只有menu的名称
+                    if(isMenu){
+                        this.resResult(1, result.filter(element=>element.name == 'menu')[0].children);
+                    }else{
+                        this.resResult(1, result);
+                    }
                 }
             })
         } catch (error) {

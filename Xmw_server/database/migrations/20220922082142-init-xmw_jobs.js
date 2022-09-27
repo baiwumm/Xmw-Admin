@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-22 16:21:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:56:41
+ * @LastEditTime: 2022-09-27 16:59:56
  */
 'use strict';
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const { STRING, DATE, UUID, UUIDV4 } = Sequelize;
+    const { STRING, DATE, UUID, UUIDV4,INTEGER } = Sequelize;
     await queryInterface.createTable('xmw_jobs', {
       jobs_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '岗位id' },
       jobs_name: { type: STRING(32), allowNull: false, comment: '岗位名称' },
@@ -20,6 +20,7 @@ module.exports = {
       leader: { type: UUID, allowNull: true, comment: '负责人' },
       founder: { type: UUID, allowNull: true, comment: '创建人' },
       created_time: { type: DATE, allowNull: false, comment: '创建日期' },
+      sort: { type: INTEGER, allowNull: false, comment: '排序' },
       update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     });
   },

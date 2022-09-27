@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-16 17:43:16
+ * @LastEditTime: 2022-09-27 09:50:11
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -16,7 +16,7 @@ import { formatMessage } from '@/utils' // 引入工具类
 
 const Internationalization: FC = () => {
     return (
-        <PageContainer title={formatMessage('pages.setting.internationalization')}>
+        <PageContainer title={formatMessage('pages.system.internationalization')}>
             {/* 表格列表 */}
             <TableTemplate />
         </PageContainer>
