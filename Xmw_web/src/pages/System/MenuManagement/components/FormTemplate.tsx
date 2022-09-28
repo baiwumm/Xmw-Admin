@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 14:09:18
+ * @LastEditTime: 2022-09-28 16:42:20
  */
 
 // 引入第三方库
 import { FC, useState } from 'react';
+import { getLocale } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
-import { ModalForm } from '@ant-design/pro-components'; // 高级组件
+import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
 
 // 引入业务组件
@@ -24,7 +25,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const [form] = Form.useForm<API.MENUMANAGEMENT>();
     // 深克隆一份表单数据
     const [cloneFormData, setCloneFormData] = useState<API.MENUMANAGEMENT | undefined>(formData)
-    const formTitle = cloneFormData && cloneFormData.menu_id ? `${formatMessage(['global.table.operation.edit', 'pages.system.menu-management.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.system.menu-management.title'])
+    const formTitle = cloneFormData && cloneFormData.menu_id ? `${formatMessage(['global.table.operation.edit', 'pages.system.menu-management.title'])}：${cloneFormData[getLocale()]}` : formatMessage(['global.table.operation.add', 'pages.system.menu-management.title'])
     // 提交表单
     const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
         // 提交数据
@@ -32,7 +33,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         const params = { ...cloneFormData, ...values }
         parent_id && (params.parent_id = parent_id)
         // 删除 children 属性
-        params.routes && delete params.routes
+        params.children && delete params.children
         await saveMenu(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -45,9 +46,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         return result
     }
     return (
-        <ModalForm<API.MENUMANAGEMENT>
+        <DrawerForm<API.MENUMANAGEMENT>
             title={formTitle}
-            width={600}
+            width={550}
             grid
             form={form}
             trigger={triggerDom ||
@@ -57,10 +58,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 </Button>
             }
             autoFocusFirstInput
-            modalProps={{
+            drawerProps={{
                 destroyOnClose: false,
                 maskClosable: false,
-                onCancel: () => form.resetFields()
+                onClose: () => form.resetFields()
             }}
             // 提交数据时，禁用取消按钮的超时时间（毫秒）。
             submitTimeout={2000}
@@ -78,7 +79,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             }}
         >
             <FormTemplateItem treeData={treeData} parent_id={parent_id} menuData={menuData}/>
-        </ModalForm>
+        </DrawerForm>
     );
 };
 

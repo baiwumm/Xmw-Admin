@@ -4,35 +4,47 @@
  * @Author: Cyan
  * @Date: 2022-09-26 17:30:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-26 17:50:39
+ * @LastEditTime: 2022-09-28 18:25:34
  */
 
 import BaseController from '../base'
+// import {LOCALES_LANG} from '../../public/enum'
 /**
  * @description: BaseController 里面的方法不解构执行，目前原因暂不明￣□￣｜｜
  * @return {*}
  * @author: Cyan
  */
 
-export default class MenuManagement extends BaseController{
+export default class MenuManagement extends BaseController {
     /**
      * @description: 获取菜单列表
      * @return {*}
      * @author: Cyan
      */
-     public async getMenuList() {
+    public async getMenuList() {
         const { ctx, app } = this;
         try {
-            const { Op } = app.Sequelize;
+            const { Op, col } = app.Sequelize;
             // 获取数据参数
-            let { name, start_time, end_time } = ctx.params
+            let { menu_type, status, start_time, end_time } = ctx.params
             // 根据参数拼接查询条件
             let where: any = {}
-            if (name) where.name = { [Op.substring]: name }
+            if (menu_type) where.menu_type = { [Op.eq]: menu_type }
+            if (status) where.status = { [Op.eq]: status }
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                order: [['created_time', 'desc']], // 排序规则
+                attributes: { include: [col('u.zh-CN'), col('u.en-US'), col('u.ja-JP'), col('u.zh-TW')] },
+                // 联表查询
+                include: [
+                    {
+                        model: app.model.XmwInternationalization,
+                        as: 'u',
+                        attributes: []
+                    }
+                ],
+                raw: true,
+                order: [['sort', 'desc'], ['created_time', 'desc']], // 排序规则
                 where
             }
 
@@ -40,7 +52,7 @@ export default class MenuManagement extends BaseController{
             await this._findAll('XmwMenu', options).then(result => {
                 // 判断是否有返回值
                 if (result) {
-                    this.resResult(1, ctx.helper.initializeTree(result, 'id', 'parent_id', 'routes'));
+                    this.resResult(1, ctx.helper.initializeTree(result, 'menu_id', 'parent_id', 'children'));
                 }
             })
         } catch (error) {
@@ -54,17 +66,23 @@ export default class MenuManagement extends BaseController{
      * @return {*}
      * @author: Cyan
      */
-     public async saveMenu() {
+    public async saveMenu() {
         const { ctx, app } = this;
         try {
             const { Op } = app.Sequelize;
             // 获取数据参数
             let { menu_id, ...params } = ctx.params
+            // 按钮不能处于顶级
+            if (params.menu_type === 'button' && !params.parent_id) {
+                return this.resResult(-1, {}, '按钮不能处于顶级，只能是叶子结点！');
+            }
             // 判断名称是否存在
             const options: any = {
                 where: {
-                    // 路由不能相同
-                    path: params.path,
+                    [Op.or]: {
+                        // 权限标识不能相同
+                        permission: params.permission
+                    }
                 }
             }
             // 如果是编辑，则要加上这个条件：id != 自己
@@ -76,7 +94,7 @@ export default class MenuManagement extends BaseController{
             // 如果有结果，则证明已存在
             const exist = await this._findOne('XmwMenu', options)
             if (exist) {
-                return this.resResult(-1, {}, '同一层级名称不能相同！');
+                return this.resResult(-1, {}, '权限标识已存在！');
             }
 
             // 根据 menu_id 判断是新增还是更新操作
@@ -111,7 +129,7 @@ export default class MenuManagement extends BaseController{
      * @return {*}
      * @author: Cyan
      */
-     public async delMenu() {
+    public async delMenu() {
         const { ctx } = this;
         try {
             // 获取 menu_id

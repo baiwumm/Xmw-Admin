@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 17:04:03
+ * @LastEditTime: 2022-09-28 17:30:11
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
-import { useIntl,useModel } from '@umijs/max'
+import { useIntl, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined,createFromIconfontCN } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -24,7 +24,7 @@ import { formatMessage } from '@/utils' // 引入工具类
 const TableTemplate: FC = () => {
     const intl = useIntl();
     // 初始化状态
-  const { initialState } = useModel('@@initialState');
+    const { initialState } = useModel('@@initialState');
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
@@ -48,7 +48,7 @@ const TableTemplate: FC = () => {
             title: intl.formatMessage({ id: 'global.message.delete.title' }),
             content: intl.formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if(org_id){
+                if (org_id) {
                     await delOrganization(org_id).then(res => {
                         if (res.resCode === 200) {
                             message.success(res.resMsg)
@@ -106,7 +106,7 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.administrative.organization.org_name'),
             dataIndex: 'org_name',
             ellipsis: true,
-            render: text => <Space><IconFont type="icon-organization" style={{color:initialState?.settings?.colorPrimary,fontSize:'16px'}}/><span>{text}</span></Space>
+            render: text => <Space><IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} /><span>{text}</span></Space>
         },
         {
             title: formatMessage('pages.administrative.organization.org_code'),

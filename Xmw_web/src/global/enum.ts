@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description: 全局枚举文件
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-13 09:00:41

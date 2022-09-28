@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:32:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:43:44
+ * @LastEditTime: 2022-09-28 13:33:59
  */
 module.exports = (app) => {
     const { STRING, DATE, UUID, UUIDV4,INTEGER } = app.Sequelize;

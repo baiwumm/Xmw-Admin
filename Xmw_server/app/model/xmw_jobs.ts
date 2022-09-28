@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 17:00:08
+ * @LastEditTime: 2022-09-28 14:30:59
  */
 'use strict';
 
@@ -25,8 +25,8 @@ module.exports = (app) => {
     });
 
     xmw_jobs.associate = function(){
-      // 与 xmw_organization 存在一对多关系，所以是hasOne()
-      app.model.XmwJobs.belongsTo(app.model.XmwOrganization, {foreignKey: 'org_id',targetKey:'org_id'});
+      // 与 xmw_organization 存在一对一关系，所以是belongsTo()
+      app.model.XmwJobs.belongsTo(app.model.XmwOrganization, {foreignKey: 'org_id',targetKey:'org_id',as:'u'});
   }
 
     return xmw_jobs;

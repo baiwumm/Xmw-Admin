@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:49:14
+ * @LastEditTime: 2022-09-28 16:15:18
  */
 // 引入第三方库
 import { FC } from 'react';
@@ -24,6 +24,7 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
                 tooltip={formatMessage('global.form.parent_id.tooltip')}
                 fieldProps={{
                     treeData,
+                    allowClear:true,
                     disabled: !!parent_id,
                     defaultValue: parent_id || null,
                     fieldNames: {

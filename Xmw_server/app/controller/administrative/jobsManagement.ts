@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 17:03:15
+ * @LastEditTime: 2022-09-28 14:33:36
  */
 
 import BaseController from '../base'
@@ -23,7 +23,7 @@ export default class JobsManagement extends BaseController {
     public async getJobsList() {
         const { ctx, app } = this;
         try {
-            const { Op } = app.Sequelize;
+            const { Op,col } = app.Sequelize;
             // 获取数据参数
             let { jobs_name, org_id, start_time, end_time } = ctx.params
             // 根据参数拼接查询条件
@@ -33,13 +33,16 @@ export default class JobsManagement extends BaseController {
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
+                attributes:{include:[col('u.org_name')]},
                 // 联表查询
                 include: [
                     {
                         model: app.model.XmwOrganization,
-                        attributes: ['org_name']
+                        as:'u',
+                        attributes: []
                     }
                 ],
+                raw:true,
                 order: [['sort','desc'],['created_time', 'desc']], // 排序规则
                 where
             }

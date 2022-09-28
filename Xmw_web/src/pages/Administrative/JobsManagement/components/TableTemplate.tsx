@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 17:04:54
+ * @LastEditTime: 2022-09-28 14:33:59
  */
 // 引入第三方库
 import { FC, useState, useRef } from 'react';
@@ -126,7 +126,7 @@ const TableTemplate: FC = () => {
                 options: orgTree,
                 placeholder: formatMessage('global.form.placeholder.seleted')
             },
-            render: text => <Tag color={initialState?.settings?.colorPrimary}>{text}</Tag>
+            render: (_,record) => <Tag color={initialState?.settings?.colorPrimary}>{record.org_name}</Tag>
         },
         {
             title: formatMessage('global.table.sort'),

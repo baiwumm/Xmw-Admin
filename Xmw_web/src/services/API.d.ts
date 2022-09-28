@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 10:19:19
+ * @LastEditTime: 2022-09-28 17:32:12
  */
 declare namespace API {
     /**
@@ -42,40 +42,45 @@ declare namespace API {
         update_time?: Date,
         leader?: string,
         founder?: string,
+        org_name: string,
         children?: JOBSMANAMENT[]
     }
 
     type MENUMANAGEMENT = {
-        menu_id:string,
-        name?:string
-        path?:string
-        icon?:string
-        component?:string,
-        redirect?:string,
-        parent_id:string,
-        sort:number,
-        founder?:string,
-        status:string,
-        target?:string
-        permission:string,
-        access:string,
-        menu_type:string,
-        layout?:string,
-        hideChildrenInMenu?:string,
-        hideInMenu?:string,
-        hideInBreadcrumb?:string,
-        headerRender?:string,
-        footerRender?:string,
-        menuRender?:string,
-        menuHeaderRender?:string,
-        flatMenu?:string,
-        fixedHeader?:string,
-        fixSiderbar?:string,
-        navTheme?:string,
-        headerTheme?:string,
+        menu_id: string,
+        name?: string
+        path?: string
+        icon: string
+        component?: string,
+        redirect?: string,
+        parent_id: string,
+        sort: number,
+        founder?: string,
+        status: string,
+        target?: string
+        permission: string,
+        access: string,
+        menu_type: string,
+        layout?: string,
+        hideChildrenInMenu?: string,
+        hideInMenu?: string,
+        hideInBreadcrumb?: string,
+        headerRender?: string,
+        footerRender?: string,
+        menuRender?: string,
+        menuHeaderRender?: string,
+        flatMenu?: string,
+        fixedHeader?: string,
+        fixSiderbar?: string,
+        navTheme?: string,
+        headerTheme?: string,
         created_time?: Date,
         update_time?: Date,
-        routes?:MENUMANAGEMENT[]
+        'zh-CN': string,
+        'en-US': string,
+        'ja-JP': string,
+        'zh-TW': string,
+        children?: MENUMANAGEMENT[]
     }
     /**
      * @description: 系统设置-国际化
@@ -88,6 +93,7 @@ declare namespace API {
         'zh-CN': string,
         'en-US': string,
         'ja-JP': string,
+        'zh-TW': string,
         parent_id?: string
         created_time?: Date,
         update_time?: Date,

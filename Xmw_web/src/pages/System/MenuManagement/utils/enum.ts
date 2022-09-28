@@ -4,8 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:27:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 18:27:45
+ * @LastEditTime: 2022-09-28 16:52:00
  */
+
 export const MENU_TYPE_OPTS = [
     {
         label: '目录',
@@ -86,26 +87,6 @@ export const LAYOUT_OPTS = [
  * @author: Cyan
  */
 export const NAV_THEME_OPTS = [
-    {
-        label: '暗黑风格',
-        value: 'dark'
-    },
-    {
-        label: '亮色风格',
-        value: 'light'
-    },
-    {
-        label: 'realDark',
-        value: 'realDark'
-    },
-]
-
-/**
- * @description: 顶部导航的主题，mix 模式生效
- * @return {*}
- * @author: Cyan
- */
-export const HEADER_THEME_OPTS = [
     {
         label: '暗黑风格',
         value: 'dark'
