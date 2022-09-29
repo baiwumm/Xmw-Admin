@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-26 17:30:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 18:25:34
+ * @LastEditTime: 2022-09-29 16:10:14
  */
 
 import BaseController from '../base'
@@ -76,29 +76,29 @@ export default class MenuManagement extends BaseController {
             if (params.menu_type === 'button' && !params.parent_id) {
                 return this.resResult(-1, {}, '按钮不能处于顶级，只能是叶子结点！');
             }
-            // 判断名称是否存在
-            const options: any = {
-                where: {
-                    [Op.or]: {
-                        // 权限标识不能相同
-                        permission: params.permission
+
+            if (params.permission) {
+                // 判断名称是否存在
+                const options: any = { where: {} }
+                options.where.permission = {
+                    [Op.eq]: params.permission,
+                    [Op.not]: null
+                }
+                // 如果是编辑，则要加上这个条件：menu_id != 自己
+                if (menu_id) {
+                    options.where.menu_id = {
+                        [Op.ne]: menu_id
                     }
                 }
-            }
-            // 如果是编辑，则要加上这个条件：id != 自己
-            if (menu_id) {
-                options.where.menu_id = {
-                    [Op.ne]: menu_id
+                // 如果有结果，则证明已存在
+                const exist = await this._findOne('XmwMenu', options)
+                if (exist) {
+                    return this.resResult(-1, {}, '权限标识已存在！');
                 }
             }
-            // 如果有结果，则证明已存在
-            const exist = await this._findOne('XmwMenu', options)
-            if (exist) {
-                return this.resResult(-1, {}, '权限标识已存在！');
-            }
-
             // 根据 menu_id 判断是新增还是更新操作
             if (menu_id) {
+                console.log(11111)
                 params.update_time = new Date()
                 // 判断父级是否和自己相同
                 if (params.parent_id && params.parent_id === menu_id) {

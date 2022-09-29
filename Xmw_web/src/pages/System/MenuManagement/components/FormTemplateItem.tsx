@@ -4,15 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 17:28:57
+ * @LastEditTime: 2022-09-29 09:42:06
  */
 // 引入第三方库
-import { FC } from 'react';
+import type { FC } from 'react';
 import { ProFormDependency, ProFormTreeSelect, ProFormRadio, ProFormText, ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect, Divider, Typography } from 'antd' // antd 组件库
 import { formatMessage } from '@/utils' // 引入工具类
 import { MENU_TYPE_OPTS } from '../utils/enum'
-import { FormItemProps } from '../utils/interface'
+import type { FormItemProps } from '../utils/interface'
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 import MenuFormRender from './MenuFormRender'
 
@@ -109,7 +109,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
                 tooltip={formatMessage('global.form.parent_id.tooltip')}
                 fieldProps={{
                     treeData,
-                    allowClear:true,
+                    allowClear: true,
                     disabled: !!parent_id,
                     defaultValue: parent_id || null,
                     fieldNames: {

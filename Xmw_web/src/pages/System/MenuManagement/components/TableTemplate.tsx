@@ -4,23 +4,28 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 18:23:01
+ * @LastEditTime: 2022-09-29 15:43:11
  */
 // 引入第三方库
-import { FC, useState, useRef } from 'react';
+import type { FC } from 'react';
+import { useState, useRef } from 'react';
 import { useIntl, useRequest, getLocale, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
-import type { ActionType, ProColumns,ColumnsState } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
-import { Space, Button, Modal, message, Dropdown, Menu,Tag } from 'antd' // antd 组件库
+import type { ActionType, ProColumns, ColumnsState } from '@ant-design/pro-components'
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined } from '@ant-design/icons' // antd 图标库
+import { Space, Button, Modal, message, Dropdown, Menu, Tag, Tooltip } from 'antd' // antd 组件库
 import moment from 'moment'
+import { find } from 'lodash'
 
 // 引入业务组件
 import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜单管理接口
 import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { formatMessage } from '@/utils' // 引入工具类
-import {MENU_TYPE_TAGS} from '../utils/enum'
+import { APP_FLAG_OPTS } from '@/global/enum'
+import type { RenderLable } from '@/global/interface'
+import { MENU_TYPE_TAGS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/enum'
+import { renderColumnsStateMap } from '../utils'
 
 const TableTemplate: FC = () => {
     const intl = useIntl();
@@ -38,15 +43,11 @@ const TableTemplate: FC = () => {
     // 获取树形数据传递给modalForm
     const [menuData, setMenuData] = useState<any>([])
     // 当前行数据
-    const [record, setRecord] = useState<API.MENUMANAGEMENT>()
+    const [currentRecord, setCurrentRecord] = useState<API.MENUMANAGEMENT>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 受控的表格设置栏
-    const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>({
-        redirect: {
-          show: false
-        },
-      });
+    const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>(renderColumnsStateMap());
     // 手动触发刷新表格
     function reloadTable() {
         tableRef?.current?.reload()
@@ -88,14 +89,14 @@ const TableTemplate: FC = () => {
                     label: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
-                        formData={record}
+                        formData={currentRecord}
                         triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
                         menuData={menuData}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.menu_id)} >{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.menu_id)} >{formatMessage('global.table.operation.delete')}</Button>,
                     key: 'delete',
                 },
             ]}
@@ -104,8 +105,15 @@ const TableTemplate: FC = () => {
 
     // 操作下拉框
     const dropdownMenuClick = (record: API.MENUMANAGEMENT) => {
-        setRecord(record)
+        setCurrentRecord(record)
         set_parent_id(record?.menu_id)
+    }
+
+    // 渲染 columns 函数
+    const renderColumns = (record: API.MENUMANAGEMENT, opts: RenderLable[], field: string, color = 'cyan') => {
+        const value = record[field]
+        const renderItem = find(opts, { value })
+        return <Tag color={color}>{renderItem?.label || '-'}</Tag>
     }
     /**
 * @description: proTable columns 配置项
@@ -120,6 +128,8 @@ const TableTemplate: FC = () => {
             ellipsis: true,
             hideInSearch: true,
             valueType: 'treeSelect',
+            width: 140,
+            fixed: 'left',
             fieldProps: {
                 allowClear: true,
                 fieldNames: {
@@ -130,18 +140,20 @@ const TableTemplate: FC = () => {
                 placeholder: formatMessage('global.form.placeholder.seleted')
             },
             render: (_, record) => {
-                return record.redirect?
-                <Tag>{formatMessage('pages.system.menu-management.redirect')}</Tag>:
-                <Space>
-                    <IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
-                    <span>{record[getLocale()]}</span>
-                </Space>
+                return record.redirect ?
+                    <Tag>{formatMessage('pages.system.menu-management.redirect')}</Tag> :
+                    <Space>
+                        <IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
+                        <span>{record[getLocale()]}</span>
+                    </Space>
             }
         },
-         /* 菜单类型 */
+        /* 菜单类型 */
         {
             title: formatMessage('pages.system.menu-management.menu_type'),
             dataIndex: 'menu_type',
+            width: 120,
+            align: 'center',
             filters: true,
             onFilter: true,
             valueEnum: MENU_TYPE_TAGS,
@@ -151,6 +163,7 @@ const TableTemplate: FC = () => {
         {
             title: formatMessage('pages.system.menu-management.path'),
             dataIndex: 'path',
+            width: 120,
             ellipsis: true,
             hideInSearch: true,
         },
@@ -159,31 +172,47 @@ const TableTemplate: FC = () => {
             title: formatMessage('pages.system.menu-management.redirect'),
             dataIndex: 'redirect',
             ellipsis: true,
+            width: 120,
             hideInSearch: true,
         },
         /* 组件路径 */
         {
             title: formatMessage('pages.system.menu-management.component'),
             dataIndex: 'component',
+            width: 120,
             ellipsis: true,
             hideInSearch: true,
         },
         /* 权限标识 */
         {
-            title: formatMessage('pages.system.menu-management.permission'),
+            title: (
+                <>
+                    {formatMessage('pages.system.menu-management.permission')}
+                    <Tooltip placement="top" title={formatMessage('pages.system.menu-management.permission.tooltip')}>
+                        <InfoCircleOutlined style={{ marginInlineStart: 10 }} />
+                    </Tooltip>
+                </>
+            ),
             dataIndex: 'permission',
             ellipsis: true,
             hideInSearch: true,
-            width:250,
+            width: 250,
             render: text => <Tag color="volcano">{text}</Tag>
         },
         /* 权限控制 */
         {
-            title: formatMessage('pages.system.menu-management.access'),
+            title: (
+                <>
+                    {formatMessage('pages.system.menu-management.access')}
+                    <Tooltip placement="top" title={formatMessage('pages.system.menu-management.access.tooltip')}>
+                        <InfoCircleOutlined style={{ marginInlineStart: 10 }} />
+                    </Tooltip>
+                </>
+            ),
             dataIndex: 'access',
             ellipsis: true,
             hideInSearch: true,
-            width:160,
+            width: 160,
             render: text => <Tag color="geekblue">{text}</Tag>
         },
         /* 状态 */
@@ -208,6 +237,136 @@ const TableTemplate: FC = () => {
             width: 100,
             render: text => <Tag color="purple">{text}</Tag>
         },
+        /* 菜单主题 */
+        {
+            title: formatMessage('pages.system.menu-management.navTheme'),
+            dataIndex: 'navTheme',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'navTheme')
+        },
+        /* 顶部菜单主题 */
+        {
+            title: formatMessage('pages.system.menu-management.headerTheme'),
+            dataIndex: 'headerTheme',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'headerTheme')
+        },
+        /* 显示layout布局 */
+        {
+            title: formatMessage('pages.system.menu-management.layout'),
+            dataIndex: 'layout',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, LAYOUT_OPTS, 'layout')
+        },
+        /* 隐藏子路由 */
+        {
+            title: formatMessage('pages.system.menu-management.hideChildrenInMenu'),
+            dataIndex: 'hideChildrenInMenu',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideChildrenInMenu')
+        },
+        /* 隐藏菜单 */
+        {
+            title: formatMessage('pages.system.menu-management.hideInMenu'),
+            dataIndex: 'hideInMenu',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInMenu')
+        },
+        /* 显示在面包屑中 */
+        {
+            title: formatMessage('pages.system.menu-management.hideInBreadcrumb'),
+            dataIndex: 'hideInBreadcrumb',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInBreadcrumb')
+        },
+        /* 显示顶栏 */
+        {
+            title: formatMessage('pages.system.menu-management.headerRender'),
+            dataIndex: 'headerRender',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'headerRender')
+        },
+        /* 显示页脚 */
+        {
+            title: formatMessage('pages.system.menu-management.footerRender'),
+            dataIndex: 'footerRender',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'footerRender')
+        },
+        /* 显示菜单 */
+        {
+            title: formatMessage('pages.system.menu-management.menuRender'),
+            dataIndex: 'menuRender',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuRender')
+        },
+        /* 显示菜单顶栏 */
+        {
+            title: formatMessage('pages.system.menu-management.menuHeaderRender'),
+            dataIndex: 'menuHeaderRender',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuHeaderRender')
+        },
+        /* 子项往上提 */
+        {
+            title: formatMessage('pages.system.menu-management.flatMenu'),
+            dataIndex: 'flatMenu',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'flatMenu')
+        },
+        /* 固定顶栏 */
+        {
+            title: formatMessage('pages.system.menu-management.fixedHeader'),
+            dataIndex: 'fixedHeader',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixedHeader')
+        },
+        /* 固定菜单 */
+        {
+            title: formatMessage('pages.system.menu-management.fixSiderbar'),
+            dataIndex: 'fixSiderbar',
+            ellipsis: true,
+            hideInSearch: true,
+            width: 100,
+            align: 'center',
+            render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixSiderbar')
+        },
         /* 创建时间 */
         {
             title: formatMessage('global.table.created_time'),
@@ -215,6 +374,7 @@ const TableTemplate: FC = () => {
             valueType: 'date',
             hideInSearch: true,
             sorter: true,
+            width: 120,
             render: text => (
                 <Space>
                     <ClockCircleOutlined /><span>{text}</span>
@@ -240,7 +400,7 @@ const TableTemplate: FC = () => {
             valueType: 'option',
             width: 120,
             align: 'center',
-            key: 'option',
+            fixed: 'right',
             render: (_, record) => [
                 <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
                     <Button size="small">
@@ -258,6 +418,7 @@ const TableTemplate: FC = () => {
             setMenuData(result)
         }
     })
+
     return (
         <ProTable<API.MENUMANAGEMENT>
             actionRef={tableRef}
@@ -287,14 +448,13 @@ const TableTemplate: FC = () => {
             columnsState={{
                 value: columnsStateMap,
                 onChange: setColumnsStateMap,
-              }}
+            }}
             // 工具栏
             toolBarRender={() => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} menuData={menuData} />
+                <FormTemplate treeData={treeData} reloadTable={reloadTable} menuData={menuData} key="FormTemplate" />
             ]}
-        >
-
-        </ProTable>
+            scroll={{ x: 1500, y: 800 }}
+        />
     )
 }
 export default TableTemplate

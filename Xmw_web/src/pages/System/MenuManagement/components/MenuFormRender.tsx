@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import { Divider, Typography } from 'antd' // antd 组件库
 import { ProFormRadio, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { TARGET_OPTS, LAYOUT_OPTS, NAV_THEME_OPTS } from '../utils/enum'
@@ -10,7 +10,7 @@ const { Title } = Typography;
 const MenuFormRender: FC = () => {
     return (
         <>
-        <Divider orientation="left"><Title level={3} style={{ marginBottom: 0 }}>路由配置</Title></Divider>
+            <Divider orientation="left"><Title level={3} style={{ marginBottom: 0 }}>路由配置</Title></Divider>
             {/* 显示layout布局 */}
             <ProFormSelect
                 name="layout"
@@ -63,7 +63,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.hideChildrenInMenu')}
                 radioType="button"
-                initialValue={'0'}
+                initialValue={0}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -75,7 +75,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.hideInMenu')}
                 radioType="button"
-                initialValue={'0'}
+                initialValue={0}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -87,7 +87,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.hideInBreadcrumb')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -99,7 +99,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.headerRender')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -111,7 +111,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.footerRender')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -123,7 +123,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.menuRender')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -135,7 +135,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.menuHeaderRender')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -147,7 +147,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.flatMenu')}
                 radioType="button"
-                initialValue={'0'}
+                initialValue={0}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -159,7 +159,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.fixedHeader')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -171,7 +171,7 @@ const MenuFormRender: FC = () => {
                 colProps={{ span: 8 }}
                 label={formatMessage('pages.system.menu-management.fixSiderbar')}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}

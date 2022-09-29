@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 09:54:51
+ * @LastEditTime: 2022-09-29 09:42:27
  */
 // 引入第三方库
-import { FC } from 'react';
+import type { FC } from 'react';
 import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
 
 // 引入业务工具类

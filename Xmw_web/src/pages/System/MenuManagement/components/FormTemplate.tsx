@@ -4,23 +4,25 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 16:42:20
+ * @LastEditTime: 2022-09-29 10:01:33
  */
 
 // 引入第三方库
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { getLocale } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
+import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveMenu } from '@/services/system/menu-management' // 菜单管理接口
-import { FormTemplateProps } from '../utils/interface' // 公共 interface
+import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 import { formatMessage } from '@/utils' // 引入工具类
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id,menuData }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, menuData }) => {
     // 初始化表单
     const [form] = Form.useForm<API.MENUMANAGEMENT>();
     // 深克隆一份表单数据
@@ -30,10 +32,14 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
-        parent_id && (params.parent_id = parent_id)
+        let params = { ...cloneFormData, ...values }
+        if (parent_id) {
+            params.parent_id = parent_id
+        }
         // 删除 children 属性
-        params.children && delete params.children
+        if (params.children) {
+            params = omit(params, ['children'])
+        }
         await saveMenu(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -78,7 +84,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 }
             }}
         >
-            <FormTemplateItem treeData={treeData} parent_id={parent_id} menuData={menuData}/>
+            <FormTemplateItem treeData={treeData} parent_id={parent_id} menuData={menuData} />
         </DrawerForm>
     );
 };
