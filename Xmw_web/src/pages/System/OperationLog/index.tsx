@@ -4,15 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 09:49:30
+ * @LastEditTime: 2022-09-30 10:21:57
  */
-import { FC } from 'react';
+import type { FC } from 'react';
+import { useIntl } from '@umijs/max'
 import { Button } from 'antd'; // antd 组件
-import { formatMessage } from '@/utils' // 引入工具类
 
 const OperationLog: FC = () => {
+    const { formatMessage } = useIntl();
     return (
-        <Button type="primary">{formatMessage('pages.system.operation-log')}</Button>
+        <Button type="primary">{formatMessage({ id: 'pages.system.operation-log' })}</Button>
     )
 }
 export default OperationLog

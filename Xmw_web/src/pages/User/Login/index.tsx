@@ -4,11 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 14:43:01
+ * @LastEditTime: 2022-09-30 11:16:16
  */
 
 // 引入第三方库
-import { FC, useState } from 'react'; // react
+import type { FC } from 'react';
+import { useState } from 'react'; // react
+import { useIntl } from '@umijs/max'
 import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
 import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
 import { LoginForm, ProFormText } from '@ant-design/pro-components'; // antd 高级组件
@@ -17,7 +19,6 @@ import { message, Alert } from 'antd'  // antd 组件
 // 引入业务组件
 import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.less'; // css 样式恩建
-import { formatMessage } from '@/utils' // 国际化工具类
 import { login } from '@/services/ant-design-pro/api';  // 登录接口
 
 // 登录状态弹框提示
@@ -37,6 +38,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: FC = () => {
+  const { formatMessage } = useIntl();
   // 用户登录状态
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   // 初始化状态
@@ -72,7 +74,7 @@ const Login: FC = () => {
       setUserLoginState(msg);
     } catch (error) {
       console.log(error);
-      message.error(formatMessage('pages.login.failure'));
+      message.error(formatMessage({ id: 'pages.login.failure' }));
     }
   };
 
@@ -89,7 +91,7 @@ const Login: FC = () => {
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
           title="React-umi-xmw"
-          subTitle={formatMessage('pages.login.subtitle')}
+          subTitle={formatMessage({ id: 'pages.login.subtitle' })}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
@@ -97,7 +99,7 @@ const Login: FC = () => {
           {/* 错误信息提示 */}
           {status === 'error' && loginType === 'account' && (
             <LoginMessage
-              content={formatMessage('pages.login.accountLogin.errorMessage')}
+              content={formatMessage({ id: 'pages.login.accountLogin.errorMessage' })}
             />
           )}
           {/* 用户名 */}
@@ -107,11 +109,11 @@ const Login: FC = () => {
               size: 'large',
               prefix: <UserOutlined className={'prefixIcon'} />,
             }}
-            placeholder={formatMessage('pages.login.username.placeholder')}
+            placeholder={formatMessage({ id: 'pages.login.username.placeholder' })}
             rules={[
               {
                 required: true,
-                message: formatMessage('pages.login.username.required'),
+                message: formatMessage({ id: 'pages.login.username.required' }),
               },
             ]}
           />
@@ -122,11 +124,11 @@ const Login: FC = () => {
               size: 'large',
               prefix: <LockOutlined className={'prefixIcon'} />,
             }}
-            placeholder={formatMessage('pages.login.password.placeholder')}
+            placeholder={formatMessage({ id: 'pages.login.password.placeholder' })}
             rules={[
               {
                 required: true,
-                message: formatMessage('pages.login.password.required'),
+                message: formatMessage({ id: 'pages.login.password.required' }),
               },
             ]}
           />

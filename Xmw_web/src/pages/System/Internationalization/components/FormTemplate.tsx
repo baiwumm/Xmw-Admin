@@ -4,35 +4,42 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 14:20:31
+ * @LastEditTime: 2022-09-30 10:30:22
  */
 
 // 引入第三方库
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
+import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveInternational } from '@/services/system/internationalization' // 国际化接口
-import { FormTemplateProps } from '../utils/interface' // 公共 interface
-import { formatMessage } from '@/utils' // 引入工具类
+import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
+    const { formatMessage } = useIntl();
     // 初始化表单
     const [form] = Form.useForm<API.INTERNATIONALIZATION>();
     // 深克隆一份表单数据
     const [cloneFormData, setCloneFormData] = useState<API.INTERNATIONALIZATION | undefined>(formData)
-    const formTitle = cloneFormData && cloneFormData.id ? `${formatMessage(['global.table.operation.edit', 'pages.system.internationalization.title'])}：${cloneFormData.name}` : formatMessage(['global.table.operation.add', 'pages.system.internationalization.title'])
+    const formTitle = cloneFormData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${cloneFormData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
-        parent_id && (params.parent_id = parent_id)
+        let params = { ...cloneFormData, ...values }
+        if (parent_id) {
+            params.parent_id = parent_id
+        }
         // 删除 children 属性
-        params.children && delete params.children
+        if (params.children) {
+            params = omit(params, ['children'])
+        }
         await saveInternational(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -53,7 +60,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             trigger={triggerDom ||
                 <Button type="primary">
                     <PlusOutlined />
-                    {formatMessage('global.table.operation.add')}
+                    {formatMessage({ id: 'menu.system.internationalization.add' })}
                 </Button>
             }
             autoFocusFirstInput

@@ -4,36 +4,43 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 10:27:38
+ * @LastEditTime: 2022-09-30 11:20:54
  */
 
 // 引入第三方库
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
+import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveOrganization } from '@/services/administrative/organization' // 组织管理接口
-import { FormTemplateProps } from '../utils/interface' // 公共 interface
-import { formatMessage } from '@/utils' // 引入工具类
+import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
+    const { formatMessage } = useIntl();
     // 初始化表单
     const [form] = Form.useForm<API.ORGANIZATION>();
     // 深克隆一份表单数据
     const [cloneFormData, setCloneFormData] = useState<API.ORGANIZATION | undefined>(formData)
     // 表单标题
-    const formTitle = cloneFormData && cloneFormData.org_id ? `${formatMessage(['global.table.operation.edit', 'pages.administrative.organization.title'])}：${cloneFormData.org_name}` : formatMessage(['global.table.operation.add', 'pages.administrative.organization.title'])
+    const formTitle = cloneFormData?.org_id ? `${formatMessage({ id: 'menu.administrative.organization.edit' }) + formatMessage({ id: 'pages.administrative.organization.title' })}：${cloneFormData.org_name}` : (formatMessage({ id: 'menu.administrative.organization.add' }) + formatMessage({ id: 'pages.administrative.organization.title' }))
     // 提交表单
     const handlerSubmit = async (values: any) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
-        parent_id && (params.parent_id = parent_id)
+        let params = { ...cloneFormData, ...values }
+        if (parent_id) {
+            params.parent_id = parent_id
+        }
         // 删除 children 属性
-        params.children && delete params.children
+        if (params.children) {
+            params = omit(params, ['children'])
+        }
         await saveOrganization(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -54,7 +61,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             trigger={triggerDom ||
                 <Button type="primary">
                     <PlusOutlined />
-                    {formatMessage('global.table.operation.add')}
+                    {formatMessage({ id: 'menu.administrative.organization.add' })}
                 </Button>
             }
             autoFocusFirstInput

@@ -4,36 +4,43 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-23 16:30:43
+ * @LastEditTime: 2022-09-30 11:19:51
  */
 
 // 引入第三方库
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
+import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { saveJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
-import { FormTemplateProps } from '../utils/interface' // 公共 interface
-import { formatMessage } from '@/utils' // 引入工具类
+import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id,orgTree }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, orgTree }) => {
+    const { formatMessage } = useIntl();
     // 初始化表单
     const [form] = Form.useForm<API.JOBSMANAMENT>();
     // 深克隆一份表单数据
     const [cloneFormData, setCloneFormData] = useState<API.JOBSMANAMENT | undefined>(formData)
     // 表单标题
-    const formTitle = cloneFormData && cloneFormData.jobs_id ? `${formatMessage(['global.table.operation.edit', 'pages.administrative.jobs-management.title'])}：${cloneFormData.jobs_name}` : formatMessage(['global.table.operation.add', 'pages.administrative.jobs-management.title'])
+    const formTitle = cloneFormData?.jobs_id ? `${formatMessage({ id: 'menu.administrative.jobs-management.edit' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' })}：${cloneFormData.jobs_name}` : (formatMessage({ id: 'menu.administrative.jobs-management.add' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.JOBSMANAMENT) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
-        parent_id && (params.parent_id = parent_id)
+        let params = { ...cloneFormData, ...values }
+        if (parent_id) {
+            params.parent_id = parent_id
+        }
         // 删除 children 属性
-        params.children && delete params.children
+        if (params.children) {
+            params = omit(params, ['children'])
+        }
         await saveJobs(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -54,7 +61,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             trigger={triggerDom ||
                 <Button type="primary">
                     <PlusOutlined />
-                    {formatMessage('global.table.operation.add')}
+                    {formatMessage({ id: 'menu.administrative.jobs-management.add' })}
                 </Button>
             }
             autoFocusFirstInput
@@ -78,7 +85,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 }
             }}
         >
-            <FormTemplateItem treeData={treeData} parent_id={parent_id} orgTree={orgTree}/>
+            <FormTemplateItem treeData={treeData} parent_id={parent_id} orgTree={orgTree} />
         </DrawerForm>
     );
 };

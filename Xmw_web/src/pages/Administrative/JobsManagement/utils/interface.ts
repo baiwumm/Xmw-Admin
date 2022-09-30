@@ -3,7 +3,7 @@
  * @Author: Cyan
  * @Date: 2022-09-24 08:58:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:22:07
+ * @LastEditTime: 2022-09-30 10:38:07
  */
 /**
  * @description: FormTemplateProps
@@ -11,13 +11,13 @@
  * @author: Cyan
  */
 export type FormTemplateProps = {
-    treeData: API.JOBSMANAMENT[],
-    orgTree:API.ORGANIZATION[],
-    reloadTable: any,
-    formData?: any,
-    triggerDom?: any,
-    parent_id?: string
-}
+  treeData: API.JOBSMANAMENT[];
+  orgTree: API.ORGANIZATION[];
+  reloadTable: any;
+  formData?: any;
+  triggerDom?: any;
+  parent_id?: string;
+};
 
 /**
  * @description: FormTemplateItemProps
@@ -25,7 +25,7 @@ export type FormTemplateProps = {
  * @author: Cyan
  */
 export type FormTemplateItemProps = {
-    treeData: API.JOBSMANAMENT[],
-    orgTree:API.ORGANIZATION[],
-    parent_id?: string
-}
+  treeData: API.JOBSMANAMENT[];
+  orgTree: API.ORGANIZATION[];
+  parent_id?: string;
+};

@@ -4,22 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-24 11:16:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 18:26:27
+ * @LastEditTime: 2022-09-30 11:12:27
  */
-import { FC, useState } from 'react'
+import type { FC } from 'react';
+import { useState } from 'react'
+import { useIntl } from '@umijs/max'
 import { Space, Checkbox, Select } from 'antd'
 // import { useRequest } from '@umijs/max'
 import { useBoolean } from 'ahooks';
 import { PageContainer, ProCard } from '@ant-design/pro-components' // antd 高级组件
 import OrgTree from 'react-org-tree';
-import { formatMessage } from '@/utils' // 引入工具类
 // import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 // import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import styles from './index.less'
 
-
-
 const Structure: FC = () => {
+    const { formatMessage } = useIntl();
     const labelClassNameItem = [
         { value: 'bg-primary', label: '主题背景' },
         { value: 'bg-white', label: '洁白无瑕' },
@@ -66,7 +66,7 @@ const Structure: FC = () => {
     const [expandAll, { set: setExpandAll }] = useBoolean(true);
     const [labelClassName, setLabelClassName] = useState('bg-primary')
     return (
-        <PageContainer title={formatMessage('pages.administrative.structure')}>
+        <PageContainer title={formatMessage({ id: 'pages.administrative.structure' })}>
             <ProCard layout="center" direction="column">
                 <Space>
                     <Checkbox checked={horizontal} onChange={e => setHorizontal(e.target.checked)}>垂直展示</Checkbox>
@@ -80,7 +80,7 @@ const Structure: FC = () => {
                     collapsable={collapsable}
                     expandAll={expandAll}
                     labelClassName={styles[labelClassName]}
-                    props={{label:'org_name',children:'children'}}
+                    props={{ label: 'org_name', children: 'children' }}
                 />
             </ProCard>
         </PageContainer>

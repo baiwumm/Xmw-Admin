@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 17:30:11
+ * @LastEditTime: 2022-09-30 11:20:46
  */
 // 引入第三方库
-import { FC, useState, useRef } from 'react';
+import type { FC } from 'react';
+import { useState, useRef } from 'react';
 import { useIntl, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
@@ -19,23 +20,21 @@ import moment from 'moment'
 import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { ORG_TYPE_TAGS } from '../utils/enum'
-import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
-    const intl = useIntl();
+    const { formatMessage } = useIntl();
     // 初始化状态
     const { initialState } = useModel('@@initialState');
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
     });
-    const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
     const [treeData, setTreeData] = useState<API.ORGANIZATION[]>([])
     // 当前行数据
-    const [record, setRecord] = useState<API.ORGANIZATION>()
+    const [currentRecord, setCurrentRecord] = useState<API.ORGANIZATION>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -45,8 +44,8 @@ const TableTemplate: FC = () => {
     // 删除列表
     const handlerDelete = async (org_id: string | undefined) => {
         Modal.confirm({
-            title: intl.formatMessage({ id: 'global.message.delete.title' }),
-            content: intl.formatMessage({ id: 'global.message.delete.content' }),
+            title: formatMessage({ id: 'global.message.delete.title' }),
+            content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
                 if (org_id) {
                     await delOrganization(org_id).then(res => {
@@ -70,7 +69,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.administrative.organization.add-child' })}</Button>}
                     />,
                     key: 'addChild',
                 },
@@ -78,13 +77,20 @@ const TableTemplate: FC = () => {
                     label: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
-                        formData={record}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
+                        formData={currentRecord}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.administrative.organization.edit' })}</Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} block>{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button
+                        type="text"
+                        size="small"
+                        icon={<DeleteOutlined />}
+                        onClick={() => handlerDelete(currentRecord?.org_id)}
+                        block>
+                        {formatMessage({ id: 'menu.administrative.organization.delete' })}
+                    </Button>,
                     key: 'delete',
                 },
             ]}
@@ -93,7 +99,7 @@ const TableTemplate: FC = () => {
 
     // 操作下拉框
     const dropdownMenuClick = (record: API.ORGANIZATION) => {
-        setRecord(record)
+        setCurrentRecord(record)
         set_parent_id(record?.org_id)
     }
     /**
@@ -103,19 +109,19 @@ const TableTemplate: FC = () => {
 */
     const columns: ProColumns<API.ORGANIZATION>[] = [
         {
-            title: formatMessage('pages.administrative.organization.org_name'),
+            title: formatMessage({ id: 'pages.administrative.organization.org_name' }),
             dataIndex: 'org_name',
             ellipsis: true,
             render: text => <Space><IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} /><span>{text}</span></Space>
         },
         {
-            title: formatMessage('pages.administrative.organization.org_code'),
+            title: formatMessage({ id: 'pages.administrative.organization.org_code' }),
             dataIndex: 'org_code',
             ellipsis: true,
             render: text => <Tag color="cyan">{text}</Tag>
         },
         {
-            title: formatMessage('pages.administrative.organization.org_type'),
+            title: formatMessage({ id: 'pages.administrative.organization.org_type' }),
             dataIndex: 'org_type',
             filters: true,
             onFilter: true,
@@ -123,18 +129,18 @@ const TableTemplate: FC = () => {
             render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
         },
         {
-            title: formatMessage('global.status'),
+            title: formatMessage({ id: 'global.status' }),
             dataIndex: 'status',
             width: 100,
             filters: true,
             onFilter: true,
             valueEnum: {
-                0: { text: formatMessage('global.status.disable'), status: 'Default' },
-                1: { text: formatMessage('global.status.normal'), status: 'Processing' },
+                0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
+                1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
             },
         },
         {
-            title: formatMessage('global.table.sort'),
+            title: formatMessage({ id: 'global.table.sort' }),
             dataIndex: 'sort',
             ellipsis: true,
             hideInSearch: true,
@@ -142,7 +148,7 @@ const TableTemplate: FC = () => {
             render: text => <Tag color="purple">{text}</Tag>
         },
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
@@ -153,7 +159,7 @@ const TableTemplate: FC = () => {
             )
         },
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'dateRange',
             hideInTable: true,
@@ -167,19 +173,27 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: formatMessage('global.table.describe'),
+            title: formatMessage({ id: 'global.table.describe' }),
             dataIndex: 'describe',
             ellipsis: true,
             hideInSearch: true
         },
         {
-            title: formatMessage('global.table.operation'),
+            title: formatMessage({ id: 'global.table.operation' }),
             valueType: 'option',
             width: 120,
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation"><Button size="small">{oprationName}<DownOutlined /></Button></Dropdown>
+                <Dropdown
+                    overlay={DropdownMenu}
+                    onOpenChange={() => dropdownMenuClick(record)}
+                    key="operation">
+                    <Button size="small">
+                        {formatMessage({ id: 'global.table.operation' })}
+                        <DownOutlined />
+                    </Button>
+                </Dropdown>
             ]
         },
     ]
@@ -212,11 +226,9 @@ const TableTemplate: FC = () => {
             pagination={false}
             // 工具栏
             toolBarRender={() => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} />
+                <FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
             ]}
-        >
-
-        </ProTable>
+        />
     )
 }
 export default TableTemplate

@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-29 09:42:06
+ * @LastEditTime: 2022-09-30 09:55:58
  */
 // 引入第三方库
 import type { FC } from 'react';
+import { useIntl } from '@umijs/max'
 import { ProFormDependency, ProFormTreeSelect, ProFormRadio, ProFormText, ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect, Divider, Typography } from 'antd' // antd 组件库
-import { formatMessage } from '@/utils' // 引入工具类
 import { MENU_TYPE_OPTS } from '../utils/enum'
 import type { FormItemProps } from '../utils/interface'
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
@@ -19,6 +19,7 @@ import MenuFormRender from './MenuFormRender'
 const { Title } = Typography;
 
 const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) => {
+    const { formatMessage } = useIntl();
     // 是按钮就显示
     const isMenuRender = (
         <>
@@ -26,8 +27,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormText
                 name="component"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.component')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.component'])}
+                label={formatMessage({ id: 'pages.system.menu-management.component' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.component' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -37,8 +38,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormText
                 name="redirect"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.redirect')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.redirect'])}
+                label={formatMessage({ id: 'pages.system.menu-management.redirect' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.redirect' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 100
@@ -53,21 +54,21 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormText
                 name="path"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.path')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.path'])}
+                label={formatMessage({ id: 'pages.system.menu-management.path' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.path' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 100
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.system.menu-management.path']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.path' }) }]}
             />
             {/* 图标 */}
             <ProFormText
                 name="icon"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.icon')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.icon'])}
-                tooltip={formatMessage('pages.system.menu-management.icon.tooltip')}
+                label={formatMessage({ id: 'pages.system.menu-management.icon' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.icon' })}
+                tooltip={formatMessage({ id: 'pages.system.menu-management.icon.tooltip' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 50
@@ -76,10 +77,10 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormText
                 name="access"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.access')}
+                label={formatMessage({ id: 'pages.system.menu-management.access' })}
                 initialValue={'normalRouteFilter'}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.access'])}
-                tooltip={formatMessage('pages.system.menu-management.access.tooltip')}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.access' })}
+                tooltip={formatMessage({ id: 'pages.system.menu-management.access.tooltip' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 50
@@ -93,7 +94,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormRadio.Group
                 name="menu_type"
                 colProps={{ span: 10 }}
-                label={formatMessage('pages.system.menu-management.menu_type')}
+                label={formatMessage({ id: 'pages.system.menu-management.menu_type' })}
                 radioType="button"
                 initialValue={'dir'}
                 fieldProps={{
@@ -104,9 +105,9 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             {/* 父级 */}
             <ProFormTreeSelect
                 name="parent_id"
-                label={formatMessage('global.form.parent_id')}
+                label={formatMessage({ id: 'global.form.parent_id' })}
                 colProps={{ span: 14 }}
-                tooltip={formatMessage('global.form.parent_id.tooltip')}
+                tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
                 fieldProps={{
                     treeData,
                     allowClear: true,
@@ -118,16 +119,16 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: formatMessage(['global.form.placeholder.seleted', 'global.form.parent_id']),
+                    placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
                 }}
             />
-            <Divider orientation="left"><Title level={3} style={{ marginBottom: 0 }}>基本信息</Title></Divider>
+            <Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}><Title level={4} style={{ marginBottom: '-14px' }}>基本信息</Title></Divider>
             {/* 路由名称 */}
             <ProFormTreeSelect
                 name="name"
-                label={formatMessage('pages.system.menu-management.name')}
+                label={formatMessage({ id: 'pages.system.menu-management.name' })}
                 colProps={{ span: 12 }}
-                tooltip={formatMessage('pages.system.menu-management.name.tooltip')}
+                tooltip={formatMessage({ id: 'pages.system.menu-management.name.tooltip' })}
                 fieldProps={{
                     treeData: menuData,
                     fieldNames: {
@@ -136,9 +137,9 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: formatMessage(['global.form.placeholder.seleted', 'pages.system.menu-management.name']),
+                    placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.menu-management.name' })
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'pages.system.menu-management.name']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.menu-management.name' }) }]}
             />
             <ProFormDependency name={['menu_type']}>
                 {
@@ -163,9 +164,9 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             <ProFormText
                 name="permission"
                 colProps={{ span: 12 }}
-                label={formatMessage('pages.system.menu-management.permission')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.menu-management.permission'])}
-                tooltip={formatMessage('pages.system.menu-management.permission.tooltip')}
+                label={formatMessage({ id: 'pages.system.menu-management.permission' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.permission' })}
+                tooltip={formatMessage({ id: 'pages.system.menu-management.permission.tooltip' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 100
@@ -173,13 +174,13 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
             />
             {/* 排序 */}
             <ProFormDigit
-                label={formatMessage('global.table.sort')}
+                label={formatMessage({ id: 'global.table.sort' })}
                 name="sort"
                 colProps={{ span: 8 }}
                 min={1}
                 max={99}
                 initialValue={1}
-                tooltip={formatMessage('global.table.sort.tooltip')}
+                tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
                 fieldProps={{ precision: 0 }}
             />
             {/* 状态 */}
@@ -190,7 +191,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
-                label={formatMessage('global.status')}
+                label={formatMessage({ id: 'global.status' })}
                 options={APP_STATUS_OPTS}
             />
             <ProFormDependency name={['menu_type']}>

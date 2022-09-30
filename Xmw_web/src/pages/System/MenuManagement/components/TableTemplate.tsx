@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-29 15:43:11
+ * @LastEditTime: 2022-09-30 09:28:42
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -21,21 +21,19 @@ import { find } from 'lodash'
 import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜单管理接口
 import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
-import { formatMessage } from '@/utils' // 引入工具类
 import { APP_FLAG_OPTS } from '@/global/enum'
 import type { RenderLable } from '@/global/interface'
 import { MENU_TYPE_TAGS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/enum'
 import { renderColumnsStateMap } from '../utils'
 
 const TableTemplate: FC = () => {
-    const intl = useIntl();
+    const { formatMessage } = useIntl();
     // 初始化状态
     const { initialState } = useModel('@@initialState');
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
     });
-    const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给modalForm
@@ -55,8 +53,8 @@ const TableTemplate: FC = () => {
     // 删除列表
     const handlerDelete = async (menu_id: string | undefined) => {
         Modal.confirm({
-            title: intl.formatMessage({ id: 'global.message.delete.title' }),
-            content: intl.formatMessage({ id: 'global.message.delete.content' }),
+            title: formatMessage({ id: 'global.message.delete.title' }),
+            content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
                 if (menu_id) {
                     await delMenu(menu_id).then(res => {
@@ -80,7 +78,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.system.menu-management.add-child' })}</Button>}
                         menuData={menuData}
                     />,
                     key: 'addChild',
@@ -90,13 +88,19 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={currentRecord}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.system.menu-management.edit' })}</Button>}
                         menuData={menuData}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.menu_id)} >{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button
+                        block type="text"
+                        size="small"
+                        icon={<DeleteOutlined />}
+                        onClick={() => handlerDelete(currentRecord?.menu_id)} >
+                        {formatMessage({ id: 'menu.system.menu-management.delete' })}
+                    </Button>,
                     key: 'delete',
                 },
             ]}
@@ -123,7 +127,7 @@ const TableTemplate: FC = () => {
     const columns: ProColumns<API.MENUMANAGEMENT>[] = [
         /* 菜单名称 */
         {
-            title: formatMessage('pages.system.menu-management.name'),
+            title: formatMessage({ id: 'pages.system.menu-management.name' }),
             dataIndex: 'xmw_internationalization.zh-CN',
             ellipsis: true,
             hideInSearch: true,
@@ -137,11 +141,11 @@ const TableTemplate: FC = () => {
                     value: 'id'
                 },
                 options: menuData,
-                placeholder: formatMessage('global.form.placeholder.seleted')
+                placeholder: formatMessage({ id: 'global.form.placeholder.seleted' })
             },
             render: (_, record) => {
                 return record.redirect ?
-                    <Tag>{formatMessage('pages.system.menu-management.redirect')}</Tag> :
+                    <Tag>{formatMessage({ id: 'pages.system.menu-management.redirect' })}</Tag> :
                     <Space>
                         <IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
                         <span>{record[getLocale()]}</span>
@@ -150,7 +154,7 @@ const TableTemplate: FC = () => {
         },
         /* 菜单类型 */
         {
-            title: formatMessage('pages.system.menu-management.menu_type'),
+            title: formatMessage({ id: 'pages.system.menu-management.menu_type' }),
             dataIndex: 'menu_type',
             width: 120,
             align: 'center',
@@ -161,7 +165,7 @@ const TableTemplate: FC = () => {
         },
         /* 路由地址 */
         {
-            title: formatMessage('pages.system.menu-management.path'),
+            title: formatMessage({ id: 'pages.system.menu-management.path' }),
             dataIndex: 'path',
             width: 120,
             ellipsis: true,
@@ -169,7 +173,7 @@ const TableTemplate: FC = () => {
         },
         /* 重定向 */
         {
-            title: formatMessage('pages.system.menu-management.redirect'),
+            title: formatMessage({ id: 'pages.system.menu-management.redirect' }),
             dataIndex: 'redirect',
             ellipsis: true,
             width: 120,
@@ -177,7 +181,7 @@ const TableTemplate: FC = () => {
         },
         /* 组件路径 */
         {
-            title: formatMessage('pages.system.menu-management.component'),
+            title: formatMessage({ id: 'pages.system.menu-management.component' }),
             dataIndex: 'component',
             width: 120,
             ellipsis: true,
@@ -187,8 +191,8 @@ const TableTemplate: FC = () => {
         {
             title: (
                 <>
-                    {formatMessage('pages.system.menu-management.permission')}
-                    <Tooltip placement="top" title={formatMessage('pages.system.menu-management.permission.tooltip')}>
+                    {formatMessage({ id: 'pages.system.menu-management.permission' })}
+                    <Tooltip placement="top" title={formatMessage({ id: 'pages.system.menu-management.permission.tooltip' })}>
                         <InfoCircleOutlined style={{ marginInlineStart: 10 }} />
                     </Tooltip>
                 </>
@@ -203,8 +207,8 @@ const TableTemplate: FC = () => {
         {
             title: (
                 <>
-                    {formatMessage('pages.system.menu-management.access')}
-                    <Tooltip placement="top" title={formatMessage('pages.system.menu-management.access.tooltip')}>
+                    {formatMessage({ id: 'pages.system.menu-management.access' })}
+                    <Tooltip placement="top" title={formatMessage({ id: 'pages.system.menu-management.access.tooltip' })}>
                         <InfoCircleOutlined style={{ marginInlineStart: 10 }} />
                     </Tooltip>
                 </>
@@ -217,19 +221,19 @@ const TableTemplate: FC = () => {
         },
         /* 状态 */
         {
-            title: formatMessage('global.status'),
+            title: formatMessage({ id: 'global.status' }),
             dataIndex: 'status',
             width: 100,
             filters: true,
             onFilter: true,
             valueEnum: {
-                0: { text: formatMessage('global.status.disable'), status: 'Default' },
-                1: { text: formatMessage('global.status.normal'), status: 'Processing' },
+                0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
+                1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
             },
         },
         /* 排序 */
         {
-            title: formatMessage('global.table.sort'),
+            title: formatMessage({ id: 'global.table.sort' }),
             dataIndex: 'sort',
             ellipsis: true,
             hideInSearch: true,
@@ -239,7 +243,7 @@ const TableTemplate: FC = () => {
         },
         /* 菜单主题 */
         {
-            title: formatMessage('pages.system.menu-management.navTheme'),
+            title: formatMessage({ id: 'pages.system.menu-management.navTheme' }),
             dataIndex: 'navTheme',
             ellipsis: true,
             hideInSearch: true,
@@ -249,7 +253,7 @@ const TableTemplate: FC = () => {
         },
         /* 顶部菜单主题 */
         {
-            title: formatMessage('pages.system.menu-management.headerTheme'),
+            title: formatMessage({ id: 'pages.system.menu-management.headerTheme' }),
             dataIndex: 'headerTheme',
             ellipsis: true,
             hideInSearch: true,
@@ -259,7 +263,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示layout布局 */
         {
-            title: formatMessage('pages.system.menu-management.layout'),
+            title: formatMessage({ id: 'pages.system.menu-management.layout' }),
             dataIndex: 'layout',
             ellipsis: true,
             hideInSearch: true,
@@ -269,7 +273,7 @@ const TableTemplate: FC = () => {
         },
         /* 隐藏子路由 */
         {
-            title: formatMessage('pages.system.menu-management.hideChildrenInMenu'),
+            title: formatMessage({ id: 'pages.system.menu-management.hideChildrenInMenu' }),
             dataIndex: 'hideChildrenInMenu',
             ellipsis: true,
             hideInSearch: true,
@@ -279,7 +283,7 @@ const TableTemplate: FC = () => {
         },
         /* 隐藏菜单 */
         {
-            title: formatMessage('pages.system.menu-management.hideInMenu'),
+            title: formatMessage({ id: 'pages.system.menu-management.hideInMenu' }),
             dataIndex: 'hideInMenu',
             ellipsis: true,
             hideInSearch: true,
@@ -289,7 +293,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示在面包屑中 */
         {
-            title: formatMessage('pages.system.menu-management.hideInBreadcrumb'),
+            title: formatMessage({ id: 'pages.system.menu-management.hideInBreadcrumb' }),
             dataIndex: 'hideInBreadcrumb',
             ellipsis: true,
             hideInSearch: true,
@@ -299,7 +303,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示顶栏 */
         {
-            title: formatMessage('pages.system.menu-management.headerRender'),
+            title: formatMessage({ id: 'pages.system.menu-management.headerRender' }),
             dataIndex: 'headerRender',
             ellipsis: true,
             hideInSearch: true,
@@ -309,7 +313,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示页脚 */
         {
-            title: formatMessage('pages.system.menu-management.footerRender'),
+            title: formatMessage({ id: 'pages.system.menu-management.footerRender' }),
             dataIndex: 'footerRender',
             ellipsis: true,
             hideInSearch: true,
@@ -319,7 +323,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示菜单 */
         {
-            title: formatMessage('pages.system.menu-management.menuRender'),
+            title: formatMessage({ id: 'pages.system.menu-management.menuRender' }),
             dataIndex: 'menuRender',
             ellipsis: true,
             hideInSearch: true,
@@ -329,7 +333,7 @@ const TableTemplate: FC = () => {
         },
         /* 显示菜单顶栏 */
         {
-            title: formatMessage('pages.system.menu-management.menuHeaderRender'),
+            title: formatMessage({ id: 'pages.system.menu-management.menuHeaderRender' }),
             dataIndex: 'menuHeaderRender',
             ellipsis: true,
             hideInSearch: true,
@@ -339,7 +343,7 @@ const TableTemplate: FC = () => {
         },
         /* 子项往上提 */
         {
-            title: formatMessage('pages.system.menu-management.flatMenu'),
+            title: formatMessage({ id: 'pages.system.menu-management.flatMenu' }),
             dataIndex: 'flatMenu',
             ellipsis: true,
             hideInSearch: true,
@@ -349,7 +353,7 @@ const TableTemplate: FC = () => {
         },
         /* 固定顶栏 */
         {
-            title: formatMessage('pages.system.menu-management.fixedHeader'),
+            title: formatMessage({ id: 'pages.system.menu-management.fixedHeader' }),
             dataIndex: 'fixedHeader',
             ellipsis: true,
             hideInSearch: true,
@@ -359,7 +363,7 @@ const TableTemplate: FC = () => {
         },
         /* 固定菜单 */
         {
-            title: formatMessage('pages.system.menu-management.fixSiderbar'),
+            title: formatMessage({ id: 'pages.system.menu-management.fixSiderbar' }),
             dataIndex: 'fixSiderbar',
             ellipsis: true,
             hideInSearch: true,
@@ -369,7 +373,7 @@ const TableTemplate: FC = () => {
         },
         /* 创建时间 */
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
@@ -382,7 +386,7 @@ const TableTemplate: FC = () => {
             )
         },
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'dateRange',
             hideInTable: true,
@@ -396,7 +400,7 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: formatMessage('global.table.operation'),
+            title: formatMessage({ id: 'global.table.operation' }),
             valueType: 'option',
             width: 120,
             align: 'center',
@@ -404,7 +408,7 @@ const TableTemplate: FC = () => {
             render: (_, record) => [
                 <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
                     <Button size="small">
-                        {oprationName}
+                        {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
                 </Dropdown>

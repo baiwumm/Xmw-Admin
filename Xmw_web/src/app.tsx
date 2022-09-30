@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 11:47:53
+ * @LastEditTime: 2022-09-30 11:30:03
  */
 
 // 引入第三方库
@@ -13,7 +13,7 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
-import TabsLayout from '@/components/TabsLayout' // 多标签页
+// import TabsLayout from '@/components/TabsLayout' // 多标签页
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { initLocalesLang } from '@/utils' // 全局工具函数
@@ -29,10 +29,10 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  locales?: any
 }> {
   // 初始化多语言
-  initLocalesLang()
-
+  const locales = await initLocalesLang()
   const umi_layout = window.localStorage.getItem('umi_layout')
   const fetchUserInfo = async () => {
     try {
@@ -52,11 +52,13 @@ export async function getInitialState(): Promise<{
       fetchUserInfo,
       currentUser,
       settings: umi_layout && JSON.parse(umi_layout) || defaultSettings,
+      locales
     };
   }
   return {
     fetchUserInfo,
     settings: defaultSettings,
+    locales
   };
 }
 

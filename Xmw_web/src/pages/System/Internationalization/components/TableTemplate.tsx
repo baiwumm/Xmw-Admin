@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:48:19
+ * @LastEditTime: 2022-09-30 10:27:23
  */
 // 引入第三方库
-import { FC, useState, useRef } from 'react';
+import type { FC } from 'react';
+import { useState, useRef } from 'react';
 import { useIntl, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
@@ -18,19 +19,17 @@ import moment from 'moment'
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
-import { formatMessage } from '@/utils' // 引入工具类
 
 const TableTemplate: FC = () => {
-    const intl = useIntl();
+    const { formatMessage } = useIntl();
     // 初始化状态
     const { initialState } = useModel('@@initialState');
-    const oprationName = formatMessage('global.table.operation')
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给modalForm
     const [treeData, setTreeData] = useState<API.INTERNATIONALIZATION[]>([])
     // 当前行数据
-    const [record, setRecord] = useState<API.INTERNATIONALIZATION>()
+    const [currentRecord, setCurrentRecord] = useState<API.INTERNATIONALIZATION>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -40,8 +39,8 @@ const TableTemplate: FC = () => {
     // 删除列表
     const handlerDelete = async (id: string | undefined) => {
         Modal.confirm({
-            title: intl.formatMessage({ id: 'global.message.delete.title' }),
-            content: intl.formatMessage({ id: 'global.message.delete.content' }),
+            title: formatMessage({ id: 'global.message.delete.title' }),
+            content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
                 if (id) {
                     await delInternational(id).then(res => {
@@ -65,7 +64,7 @@ const TableTemplate: FC = () => {
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage('global.table.operation.add-child')}</Button>}
+                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.system.internationalization.add-child' })}</Button>}
                     />,
                     key: 'addChild',
                 },
@@ -73,13 +72,19 @@ const TableTemplate: FC = () => {
                     label: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
-                        formData={record}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage('global.table.operation.edit')}</Button>}
+                        formData={currentRecord}
+                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.system.internationalization.edit' })}</Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button block type="text" size="small" icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >{formatMessage('global.table.operation.delete')}</Button>,
+                    label: <Button
+                        block
+                        type="text"
+                        size="small"
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.id)} >
+                        {formatMessage({ id: 'menu.system.internationalization.delete' })}
+                    </Button>,
                     key: 'delete',
                 },
             ]}
@@ -88,7 +93,7 @@ const TableTemplate: FC = () => {
 
     // 操作下拉框
     const dropdownMenuClick = (record: API.INTERNATIONALIZATION) => {
-        setRecord(record)
+        setCurrentRecord(record)
         set_parent_id(record?.id)
     }
     /**
@@ -98,44 +103,44 @@ const TableTemplate: FC = () => {
 */
     const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
         {
-            title: formatMessage('pages.system.internationalization.name'),
+            title: formatMessage({ id: 'pages.system.internationalization.name' }),
             dataIndex: 'name',
             ellipsis: true,
             render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
         },
         {
-            title: formatMessage('pages.system.internationalization.zh-CN'),
+            title: formatMessage({ id: 'pages.system.internationalization.zh-CN' }),
             dataIndex: 'zh-CN',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: formatMessage('pages.system.internationalization.en-US'),
+            title: formatMessage({ id: 'pages.system.internationalization.en-US' }),
             dataIndex: 'en-US',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: formatMessage('pages.system.internationalization.ja-JP'),
+            title: formatMessage({ id: 'pages.system.internationalization.ja-JP' }),
             dataIndex: 'ja-JP',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: formatMessage('pages.system.internationalization.zh-TW'),
+            title: formatMessage({ id: 'pages.system.internationalization.zh-TW' }),
             dataIndex: 'zh-TW',
             ellipsis: true,
             hideInSearch: true,
         },
         {
-            title: formatMessage('global.table.sort'),
+            title: formatMessage({ id: 'global.table.sort' }),
             dataIndex: 'sort',
             ellipsis: true,
             hideInSearch: true,
             render: text => <Tag color="purple">{text}</Tag>
         },
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
@@ -146,7 +151,7 @@ const TableTemplate: FC = () => {
             )
         },
         {
-            title: formatMessage('global.table.created_time'),
+            title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'dateRange',
             hideInTable: true,
@@ -160,7 +165,7 @@ const TableTemplate: FC = () => {
             },
         },
         {
-            title: formatMessage('global.table.operation'),
+            title: formatMessage({ id: 'global.table.operation' }),
             valueType: 'option',
             width: 120,
             align: 'center',
@@ -168,7 +173,7 @@ const TableTemplate: FC = () => {
             render: (_, record) => [
                 <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
                     <Button size="small">
-                        {oprationName}
+                        {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
                 </Dropdown>
@@ -204,11 +209,9 @@ const TableTemplate: FC = () => {
             pagination={false}
             // 工具栏
             toolBarRender={() => [
-                <FormTemplate treeData={treeData} reloadTable={reloadTable} />
+                <FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
             ]}
-        >
-
-        </ProTable>
+        />
     )
 }
 export default TableTemplate

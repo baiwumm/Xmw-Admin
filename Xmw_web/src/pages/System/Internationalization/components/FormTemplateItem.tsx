@@ -4,27 +4,27 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 16:15:18
+ * @LastEditTime: 2022-09-30 10:34:00
  */
 // 引入第三方库
-import { FC } from 'react';
-import { ProFormText, ProFormTreeSelect,ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
+import type { FC } from 'react';
+import { useIntl } from '@umijs/max'
+import { ProFormText, ProFormTreeSelect, ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
-import { formatMessage } from '@/utils' // 引入工具类
-
 
 const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
+    const { formatMessage } = useIntl();
     return (
         <>
             {/* 父级 */}
             <ProFormTreeSelect
                 name="parent_id"
-                label={formatMessage('global.form.parent_id')}
+                label={formatMessage({ id: 'global.form.parent_id' })}
                 colProps={{ span: 24 }}
-                tooltip={formatMessage('global.form.parent_id.tooltip')}
+                tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
                 fieldProps={{
                     treeData,
-                    allowClear:true,
+                    allowClear: true,
                     disabled: !!parent_id,
                     defaultValue: parent_id || null,
                     fieldNames: {
@@ -33,27 +33,27 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: formatMessage(['global.form.placeholder.seleted', 'global.form.parent_id']),
+                    placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
                 }}
             />
             {/* 国际化字段 */}
             <ProFormText
                 name="name"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.system.internationalization.name')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.name'])}
+                label={formatMessage({ id: 'pages.system.internationalization.name' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.name' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.system.internationalization.name']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.name' }) }]}
             />
             {/* 中文 */}
             <ProFormText
                 name="zh-CN"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.system.internationalization.zh-CN')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.zh-CN'])}
+                label={formatMessage({ id: 'pages.system.internationalization.zh-CN' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.zh-CN' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -63,8 +63,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="en-US"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.system.internationalization.en-US')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.en-US'])}
+                label={formatMessage({ id: 'pages.system.internationalization.en-US' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.en-US' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -74,8 +74,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="ja-JP"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.system.internationalization.ja-JP')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.ja-JP'])}
+                label={formatMessage({ id: 'pages.system.internationalization.ja-JP' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.ja-JP' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -85,8 +85,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             <ProFormText
                 name="zh-TW"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.system.internationalization.zh-TW')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.system.internationalization.zh-TW'])}
+                label={formatMessage({ id: 'pages.system.internationalization.zh-TW' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.zh-TW' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
@@ -94,13 +94,13 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             />
             {/* 排序 */}
             <ProFormDigit
-                label={formatMessage('global.table.sort')}
+                label={formatMessage({ id: 'global.table.sort' })}
                 name="sort"
                 colProps={{ span: 24 }}
                 min={1}
                 max={99}
                 initialValue={1}
-                tooltip={formatMessage('global.table.sort.tooltip')}
+                tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
                 fieldProps={{ precision: 0 }}
             />
         </>

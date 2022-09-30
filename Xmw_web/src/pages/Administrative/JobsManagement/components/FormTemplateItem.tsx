@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 16:15:24
+ * @LastEditTime: 2022-09-30 10:54:21
  */
 // 引入第三方库
-import { FC } from 'react';
+import type { FC } from 'react';
+import { useIntl } from '@umijs/max'
 import {
     ProFormText,
     ProFormTextArea,
@@ -15,21 +16,21 @@ import {
     ProFormDigit
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
-import { formatMessage } from '@/utils' // 引入工具类
-import { FormTemplateItemProps } from '../utils/interface' // 公共 interface
+import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
 
-const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id,orgTree }) => {
+const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree }) => {
+    const { formatMessage } = useIntl();
     return (
         <>
             {/* 父级 */}
             <ProFormTreeSelect
                 name="parent_id"
-                label={formatMessage('global.form.parent_id')}
+                label={formatMessage({ id: 'global.form.parent_id' })}
                 colProps={{ span: 24 }}
-                tooltip={formatMessage('global.form.parent_id.tooltip')}
+                tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
                 fieldProps={{
                     treeData,
-                    allowClear:true,
+                    allowClear: true,
                     disabled: !!parent_id,
                     defaultValue: parent_id || undefined,
                     fieldNames: {
@@ -38,25 +39,25 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id,orgTr
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: formatMessage(['global.form.placeholder.seleted', 'global.form.parent_id']),
+                    placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
                 }}
             />
             {/* 岗位名称 */}
             <ProFormText
                 name="jobs_name"
                 colProps={{ span: 24 }}
-                label={formatMessage('pages.administrative.jobs-management.jobs_name')}
-                placeholder={formatMessage(['global.form.placeholder', 'pages.administrative.jobs-management.jobs_name'])}
+                label={formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'pages.administrative.jobs-management.jobs_name']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' }) }]}
             />
             {/* 所属组织 */}
             <ProFormTreeSelect
                 name="org_id"
-                label={formatMessage('pages.administrative.jobs-management.org_name')}
+                label={formatMessage({ id: 'pages.administrative.jobs-management.org_name' })}
                 colProps={{ span: 24 }}
                 request={async () => orgTree}
                 fieldProps={{
@@ -66,32 +67,32 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id,orgTr
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
-                    placeholder: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']),
+                    placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' })
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder.seleted', 'pages.administrative.jobs-management.org_name']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' }) }]}
             />
             {/* 排序 */}
             <ProFormDigit
-                label={formatMessage('global.table.sort')}
+                label={formatMessage({ id: 'global.table.sort' })}
                 name="sort"
                 colProps={{ span: 24 }}
                 min={1}
                 max={99}
                 initialValue={1}
-                tooltip={formatMessage('global.table.sort.tooltip')}
+                tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
                 fieldProps={{ precision: 0 }}
             />
             {/* 描述 */}
             <ProFormTextArea
                 name="describe"
-                label={formatMessage('global.table.describe')}
-                placeholder={formatMessage(['global.form.placeholder', 'global.table.describe'])}
+                label={formatMessage({ id: 'global.table.describe' })}
+                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' })}
                 colProps={{ span: 24 }}
                 fieldProps={{
                     showCount: true,
                     maxLength: 200
                 }}
-                rules={[{ required: true, message: formatMessage(['global.form.placeholder', 'global.table.describe']) }]}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' }) }]}
             />
         </>
     )
