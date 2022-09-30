@@ -4,100 +4,118 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-28 17:32:12
+ * @LastEditTime: 2022-09-30 17:05:37
  */
 declare namespace API {
-    /**
-     * @description: 智能行政-组织管理
-     * @return {*}
-     * @author: Cyan
-     */
-    type ORGANIZATION = {
-        org_id?: string,
-        org_name: string,
-        org_code: string,
-        org_type: string,
-        describe?: string,
-        parent_id?: string
-        status: string,
-        created_time?: Date,
-        update_time?: Date,
-        leader?: string,
-        founder?: string,
-        children?: ORGANIZATION[]
-    }
+  /**
+   * @description: 智能行政-组织管理
+   * @return {*}
+   * @author: Cyan
+   */
+  type ORGANIZATION = {
+    org_id?: string;
+    org_name: string;
+    org_code: string;
+    org_type: string;
+    describe?: string;
+    parent_id?: string;
+    status: string;
+    created_time?: Date;
+    update_time?: Date;
+    leader?: string;
+    founder?: string;
+    children?: ORGANIZATION[];
+  };
 
-    /**
-     * @description: 智能行政-岗位管理
-     * @return {*}
-     * @author: Cyan
-     */
-    type JOBSMANAMENT = {
-        jobs_id?: string,
-        jobs_name: string,
-        org_id: string,
-        describe?: string,
-        parent_id?: string
-        created_time?: Date,
-        update_time?: Date,
-        leader?: string,
-        founder?: string,
-        org_name: string,
-        children?: JOBSMANAMENT[]
-    }
+  /**
+   * @description: 智能行政-岗位管理
+   * @return {*}
+   * @author: Cyan
+   */
+  type JOBSMANAMENT = {
+    jobs_id?: string;
+    jobs_name: string;
+    org_id: string;
+    describe?: string;
+    parent_id?: string;
+    created_time?: Date;
+    update_time?: Date;
+    leader?: string;
+    founder?: string;
+    org_name: string;
+    children?: JOBSMANAMENT[];
+  };
 
-    type MENUMANAGEMENT = {
-        menu_id: string,
-        name?: string
-        path?: string
-        icon: string
-        component?: string,
-        redirect?: string,
-        parent_id: string,
-        sort: number,
-        founder?: string,
-        status: string,
-        target?: string
-        permission: string,
-        access: string,
-        menu_type: string,
-        layout?: string,
-        hideChildrenInMenu?: string,
-        hideInMenu?: string,
-        hideInBreadcrumb?: string,
-        headerRender?: string,
-        footerRender?: string,
-        menuRender?: string,
-        menuHeaderRender?: string,
-        flatMenu?: string,
-        fixedHeader?: string,
-        fixSiderbar?: string,
-        navTheme?: string,
-        headerTheme?: string,
-        created_time?: Date,
-        update_time?: Date,
-        'zh-CN': string,
-        'en-US': string,
-        'ja-JP': string,
-        'zh-TW': string,
-        children?: MENUMANAGEMENT[]
-    }
-    /**
-     * @description: 系统设置-国际化
-     * @return {*}
-     * @author: Cyan
-     */
-    type INTERNATIONALIZATION = {
-        id?: string,
-        name: string,
-        'zh-CN': string,
-        'en-US': string,
-        'ja-JP': string,
-        'zh-TW': string,
-        parent_id?: string
-        created_time?: Date,
-        update_time?: Date,
-        founder?: string,
-        children?: INTERNATIONALIZATION[]
-    }
+  type MENUMANAGEMENT = {
+    menu_id: string;
+    name?: string;
+    path?: string;
+    icon: string;
+    component?: string;
+    redirect?: string;
+    parent_id: string;
+    sort: number;
+    founder?: string;
+    status: string;
+    target?: string;
+    permission: string;
+    access: string;
+    menu_type: string;
+    layout?: string;
+    hideChildrenInMenu?: string;
+    hideInMenu?: string;
+    hideInBreadcrumb?: string;
+    headerRender?: string;
+    footerRender?: string;
+    menuRender?: string;
+    menuHeaderRender?: string;
+    flatMenu?: string;
+    fixedHeader?: string;
+    fixSiderbar?: string;
+    navTheme?: string;
+    headerTheme?: string;
+    created_time?: Date;
+    update_time?: Date;
+    'zh-CN': string;
+    'en-US': string;
+    'ja-JP': string;
+    'zh-TW': string;
+    children?: MENUMANAGEMENT[];
+  };
+
+  /**
+   * @description: 系统设置-角色管理
+   * @return {*}
+   * @author: Cyan
+   */
+  type ROLEMANAGEMENT = {
+    role_id: string;
+    role_name: string;
+    role_code: string;
+    sort: number;
+    founder?: string;
+    status: string;
+    describe?: string;
+    menu_permission?: string[];
+    created_time?: Date;
+    update_time?: Date;
+  };
+  /**
+   * @description: 系统设置-国际化
+   * @return {*}
+   * @author: Cyan
+   */
+  type INTERNATIONALIZATION = {
+    id?: string;
+    name: string;
+    'zh-CN': string;
+    'en-US': string;
+    'ja-JP': string;
+    'zh-TW': string;
+    parent_id?: string;
+    created_time?: Date;
+    update_time?: Date;
+    founder?: string;
+    children?: INTERNATIONALIZATION[];
+  };
 }

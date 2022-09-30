@@ -107,7 +107,7 @@ export default defineConfig({
    * @doc https://umijs.org/docs/max/request
    */
   request: {
-    dataField: 'resData'
+    dataField: 'resData',
   },
   /**
    * @name 权限插件
@@ -143,8 +143,7 @@ export default defineConfig({
    */
   define: {
     'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_yt2bq5yfbmr.js'
-    }
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_ffkxvdizxea.js',
+    },
   },
-
 });

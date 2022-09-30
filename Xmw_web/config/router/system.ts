@@ -4,40 +4,46 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 09:53:04
+ * @LastEditTime: 2022-09-30 17:25:00
  */
 export default {
-    path: '/system',
-    name: 'system',
-    icon: 'icon-system',
-    routes: [
-        {
-            path: '/system',
-            redirect: '/system/user-management',
-        },
-        // {
-        //     path: '/system/user-management',
-        //     name: 'user-management',
-        //     icon: 'icon-user-management',
-        //     component: './System/UserManagement',
-        // },
-        {
-            path: '/system/menu-management',
-            name: 'menu-management',
-            icon: 'icon-menu-management',
-            component: './System/MenuManagement',
-        },
-        {
-            path: '/system/internationalization',
-            name: 'internationalization',
-            icon: 'icon-internationalization',
-            component: './System/Internationalization',
-        },
-        {
-            path: '/system/operation-log',
-            name: 'operation-log',
-            icon: 'icon-operation-log',
-            component: './System/OperationLog',
-        },
-    ],
-}
+  path: '/system',
+  name: 'system',
+  icon: 'icon-system',
+  routes: [
+    {
+      path: '/system',
+      redirect: '/system/user-management',
+    },
+    // {
+    //     path: '/system/user-management',
+    //     name: 'user-management',
+    //     icon: 'icon-user-management',
+    //     component: './System/UserManagement',
+    // },
+    {
+      path: '/system/menu-management',
+      name: 'menu-management',
+      icon: 'icon-menu-management',
+      component: './System/MenuManagement',
+    },
+    {
+      path: '/system/role-management',
+      name: 'role-management',
+      icon: 'icon-role-management',
+      component: './System/RoleManagement',
+    },
+    {
+      path: '/system/internationalization',
+      name: 'internationalization',
+      icon: 'icon-internationalization',
+      component: './System/Internationalization',
+    },
+    {
+      path: '/system/operation-log',
+      name: 'operation-log',
+      icon: 'icon-operation-log',
+      component: './System/OperationLog',
+    },
+  ],
+};

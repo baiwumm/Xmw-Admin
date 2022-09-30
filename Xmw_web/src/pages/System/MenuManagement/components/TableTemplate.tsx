@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 09:28:42
+ * @LastEditTime: 2022-09-30 18:12:04
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -147,8 +147,7 @@ const TableTemplate: FC = () => {
                 return record.redirect ?
                     <Tag>{formatMessage({ id: 'pages.system.menu-management.redirect' })}</Tag> :
                     <Space>
-                        <IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
-                        <span>{record[getLocale()]}</span>
+                        <Tag icon={<IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{record[getLocale()]}</Tag>
                     </Space>
             }
         },

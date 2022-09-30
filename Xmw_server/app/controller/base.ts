@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-15 15:26:04
+ * @LastEditTime: 2022-09-30 18:24:56
  */
 
 import { Controller } from 'egg';
@@ -94,7 +94,7 @@ export default class BaseController extends Controller {
     }
 
     /**
-     * @description: 
+     * @description: 创建数据
      * @param {string} modelName
      * @param {any} source:如果传递的是数组，则是批量新增，对象则是单个新增
      * @return {*}
@@ -103,15 +103,16 @@ export default class BaseController extends Controller {
     async _add(modelName: string, source: object | object[]) {
         const { ctx } = this
         try {
+            let result = {}
             // 判断是单个新增还是批量新增
             if (Array.isArray(source)) {
                 // 批量新增
-                await ctx.model[modelName].bulkCreate(...source)
+                result = await ctx.model[modelName].bulkCreate(...source)
             } else {
                 // 单个新增
-                await ctx.model[modelName].create(source)
+                result = await ctx.model[modelName].create(source)
             }
-            return {}
+            return result
         } catch (error) {
             ctx.logger.info('_add方法报错：' + error)
         }
@@ -140,7 +141,7 @@ export default class BaseController extends Controller {
     }
 
     /**
-     * @description:删除数据
+     * @description:单条删除
      * @param {string} modelName
      * @param {string} id
      * @return {*}
@@ -161,6 +162,32 @@ export default class BaseController extends Controller {
     }
 
     /**
+     * @description: 批量删除
+     * @param {string} modelName
+     * @param {string} idName
+     * @param {string} id
+     * @return {*}
+     * @author: Cyan
+     */
+    async _batchDelete(modelName: string, idName: string, id: string) {
+        const { ctx, app } = this;
+        try {
+            const { Op } = app.Sequelize;
+            // 批量删除
+            let result = await ctx.model[modelName].destroy({
+                where: {
+                    [idName]: {
+                        [Op.eq]: id
+                    }
+                }
+            })
+            return result;
+        } catch (error) {
+            ctx.logger.info('_batchDelete方法报错：' + error)
+        }
+    }
+
+    /**
      * @description: findOne 方法获得它找到的第一个条目
      * @param {string} modelName
      * @param {*} options
@@ -170,8 +197,8 @@ export default class BaseController extends Controller {
     async _findOne(modelName: string, options = {}) {
         const { ctx } = this;
         try {
-            const result = await ctx.model[modelName].findOne(options);
-            return result
+            let result = await ctx.model[modelName].findOne(options);
+            return result;
         } catch (error) {
             ctx.logger.info('_findOne方法报错：' + error)
         }

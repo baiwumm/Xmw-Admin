@@ -6,6 +6,8 @@ import ExportXmwInternationalization from '../../../app/model/xmw_internationali
 import ExportXmwJobs from '../../../app/model/xmw_jobs';
 import ExportXmwMenu from '../../../app/model/xmw_menu';
 import ExportXmwOrganization from '../../../app/model/xmw_organization';
+import ExportXmwPermission from '../../../app/model/xmw_permission';
+import ExportXmwRole from '../../../app/model/xmw_role';
 import ExportXmwUsers from '../../../app/model/xmw_users';
 
 declare module 'egg' {
@@ -14,6 +16,8 @@ declare module 'egg' {
     XmwJobs: ReturnType<typeof ExportXmwJobs>;
     XmwMenu: ReturnType<typeof ExportXmwMenu>;
     XmwOrganization: ReturnType<typeof ExportXmwOrganization>;
+    XmwPermission: ReturnType<typeof ExportXmwPermission>;
+    XmwRole: ReturnType<typeof ExportXmwRole>;
     XmwUsers: ReturnType<typeof ExportXmwUsers>;
   }
 }
