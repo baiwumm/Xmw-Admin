@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:13:54
+ * @LastEditTime: 2022-10-01 00:27:32
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -105,7 +105,6 @@ const TableTemplate: FC = () => {
             title: formatMessage({ id: 'pages.system.role-management.role_code' }),
             dataIndex: 'role_code',
             ellipsis: true,
-            hideInSearch: true,
         },
         {
             title: formatMessage({ id: 'global.table.sort' }),
@@ -141,6 +140,12 @@ const TableTemplate: FC = () => {
             },
         },
         {
+            title: formatMessage({ id: 'global.table.describe' }),
+            dataIndex: 'describe',
+            ellipsis: true,
+            hideInSearch: true
+        },
+        {
             title: formatMessage({ id: 'global.table.operation' }),
             valueType: 'option',
             width: 120,
@@ -158,7 +163,7 @@ const TableTemplate: FC = () => {
     ]
 
     // 获取当前菜单数据
-    useRequest(async () => await getMenuList(), {
+    useRequest(async () => await getMenuList({isPremission:true}), {
         onSuccess: (result) => {
             setMenuData(result)
         }
@@ -172,24 +177,26 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: any = {}
+                    let result: any = {},mainData: any = []
                     await getRoleList(params).then(res => {
                         result = res
+                        // 将查询回来的menu_permission对象数组转成menu_id数组
+                        mainData = result.resData.data.map((element: any)=>Object.assign(element,{menu_permission:element.menu_permission?.map((per: any)=>per?.menu_id)}))
                     })
                     return {
-                        data: result.resData,
+                        data: mainData,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
                         success: result.resCode === 200,
                         // 不传会使用 data 的长度，如果是分页一定要传
-                        total: result.resData?.length,
+                        total: result.resData.total,
                     }
                 }
             }
             }
             rowKey="role_id"
             pagination={{
-                pageSize: 10,
+                pageSize: 5,
             }}
             // 工具栏
             toolBarRender={() => [

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-30 16:08:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:25:04
+ * @LastEditTime: 2022-10-01 00:56:26
  */
 import BaseController from '../base'
 
@@ -34,18 +34,21 @@ export default class RoleManagement extends BaseController {
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                limit: Number(current),
-                offset: (Number(current) - 1) * pageSize,
+                // 联表查询
+                include: [
+                    {
+                        model: app.model.XmwPermission,
+                        as: 'menu_permission',
+                        attributes: ['menu_id']
+                    }
+                ],
                 order: [['sort', 'desc'], ['created_time', 'desc']], // 排序规则
-                where
+                where,
+                distinct: true
             }
-
             // 根据参数查询数据
-            await this._findAll('XmwRole', options).then(result => {
-                // 判断是否有返回值
-                if (result) {
-                    this.resResult(1, result);
-                }
+            await this._findAll('XmwRole', options, current, pageSize).then(result => {
+                this.resResult(1, result);
             })
         } catch (error) {
             ctx.logger.info('getRoleList方法报错：' + error)
@@ -88,16 +91,16 @@ export default class RoleManagement extends BaseController {
             if (role_id) {
                 params.update_time = new Date()
                 // 先删除权限表相关的数据
-                await this._batchDelete('XmwRole', 'role_id', role_id)
+                await this._batchDelete('XmwPermission', 'role_id', role_id)
                 // 再执行批量插入
                 let permissionList = menu_permission.map(menu => {
                     return {
                         role_id: role_id,
                         menu_id: menu,
-                        create_time: new Date()
+                        created_time: new Date()
                     }
                 })
-                await this._add('XmwRole', permissionList)
+                await this._add('XmwPermission', permissionList)
                 // 执行更新操作
                 await this._update('XmwRole', params, role_id).then(result => {
                     // 更新成功
@@ -110,12 +113,12 @@ export default class RoleManagement extends BaseController {
                 // 再执行批量插入到xmw_permission
                 let permissionList = menu_permission.map(menu => {
                     return {
-                        // role_id: result.role_id,
+                        role_id: result.role_id,
                         menu_id: menu,
-                        create_time: new Date()
+                        created_time: new Date()
                     }
                 })
-                await this._add('XmwRole', permissionList).then(res => {
+                await this._add('XmwPermission', permissionList).then(res => {
                     // 操作成功
                     res ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
                 })
@@ -138,7 +141,7 @@ export default class RoleManagement extends BaseController {
             // 获取角色 role_id
             let { role_id } = ctx.params
             // 先删除权限表相关的数据
-            // await this._batchDelete('XmwRole', 'role_id', role_id)
+            await this._batchDelete('XmwPermission', 'role_id', role_id)
             // 再删除角色列表的数据
             await this._delete('XmwRole', role_id).then(result => {
                 // 判断是否删除成功

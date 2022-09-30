@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:06:41
+ * @LastEditTime: 2022-10-01 00:19:39
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -53,6 +53,7 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
                         label: 'zh-CN',
                         value: 'menu_id'
                     },
+                    maxTagCount:10,
                     treeCheckable: true,
                     showCheckedStrategy: TreeSelect.SHOW_ALL,
                     placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.role-management.menu_permission' })

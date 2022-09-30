@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-26 17:30:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-29 16:10:14
+ * @LastEditTime: 2022-10-01 00:17:33
  */
 
 import BaseController from '../base'
@@ -26,12 +26,14 @@ export default class MenuManagement extends BaseController {
         try {
             const { Op, col } = app.Sequelize;
             // 获取数据参数
-            let { menu_type, status, start_time, end_time } = ctx.params
+            let { menu_type, status, isPremission, start_time, end_time } = ctx.params
             // 根据参数拼接查询条件
             let where: any = {}
             if (menu_type) where.menu_type = { [Op.eq]: menu_type }
             if (status) where.status = { [Op.eq]: status }
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
+            // 如果是查询菜单权限的，过滤掉重定向有值的数据
+            if (isPremission) where.redirect = { [Op.is]: null }
             // 查询规则
             const options = {
                 attributes: { include: [col('u.zh-CN'), col('u.en-US'), col('u.ja-JP'), col('u.zh-TW')] },

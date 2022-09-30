@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:04:17
+ * @LastEditTime: 2022-09-30 23:18:22
  */
 'use strict';
 
 module.exports = (app) => {
-    const { STRING, DATE, UUID, UUIDV4,INTEGER } = app.Sequelize;
+    const { STRING, DATE, UUID, UUIDV4, INTEGER } = app.Sequelize;
 
     const xmw_role = app.model.define('xmw_role', {
         role_id: { type: UUID, primaryKey: true, allowNull: false, defaultValue: UUIDV4, comment: '角色id' },
@@ -22,6 +22,9 @@ module.exports = (app) => {
         sort: { type: INTEGER, allowNull: false, comment: '排序' },
         status: { type: STRING(10), allowNull: false, comment: '角色状态' },
     });
-
+    xmw_role.associate = function () {
+        // 与 XmwPermission 存在一对多关系，所以是hasMany()
+        app.model.XmwRole.hasMany(app.model.XmwPermission, { foreignKey: 'role_id', as: 'menu_permission' });
+    }
     return xmw_role;
 };

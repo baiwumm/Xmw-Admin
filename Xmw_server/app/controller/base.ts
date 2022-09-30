@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:24:56
+ * @LastEditTime: 2022-10-01 00:56:18
  */
 
 import { Controller } from 'egg';
@@ -103,11 +103,11 @@ export default class BaseController extends Controller {
     async _add(modelName: string, source: object | object[]) {
         const { ctx } = this
         try {
-            let result = {}
+            let result: any = {}
             // 判断是单个新增还是批量新增
             if (Array.isArray(source)) {
                 // 批量新增
-                result = await ctx.model[modelName].bulkCreate(...source)
+                result = await ctx.model[modelName].bulkCreate(source)
             } else {
                 // 单个新增
                 result = await ctx.model[modelName].create(source)

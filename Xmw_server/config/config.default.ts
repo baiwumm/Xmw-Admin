@@ -32,7 +32,7 @@ export default (appInfo: EggAppInfo) => {
     port: 3306,
     database: 'react_umi_xmw',
     username: "root",
-    password: "123456",
+    password: "root",
     // 配置数据库时间为东八区北京时间
     timezone: '+08:00',
     define: {

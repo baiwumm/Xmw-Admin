@@ -26,8 +26,7 @@
     "egg-cors": "^2.2.3",
     "egg-scripts": "^2.6.0",
     "egg-sequelize": "^6.0.0",
-    "mysql2": "^2.3.3",
-    "nanoid": "^4.0.0"
+    "mysql2": "^2.3.3"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.0.0",
