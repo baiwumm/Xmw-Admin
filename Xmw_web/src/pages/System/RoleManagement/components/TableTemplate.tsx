@@ -4,20 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 11:20:44
+ * @LastEditTime: 2022-10-01 19:54:12
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
+import { useBoolean } from 'ahooks';
 import { useIntl, useModel, useRequest } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
+import { Tag, Space, Button, Modal, message, Dropdown, Menu, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
-import { getRoleList, delRole } from '@/services/system/role-management' // 角色管理接口
+import { getRoleList, delRole, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import FormTemplate from './FormTemplate'  // 表单组件
 
@@ -35,6 +36,8 @@ const TableTemplate: FC = () => {
     const [currentRecord, setCurrentRecord] = useState<API.ROLEMANAGEMENT>()
     // 获取树形数据传递给modalForm
     const [menuData, setMenuData] = useState<any>([])
+    const [roleLoading, { setTrue: setRoleLoadingTrue, setFalse: setRoleLoadingFalse }] = useBoolean(false);
+    const [roleId, setRoleId] = useState<string>('')
     // 手动触发刷新表格
     function reloadTable() {
         tableRef?.current?.reload()
@@ -89,6 +92,34 @@ const TableTemplate: FC = () => {
     const dropdownMenuClick = (record: API.ROLEMANAGEMENT) => {
         setCurrentRecord(record)
     }
+
+    // 设置角色状态
+    const changeRoleStatus = async ({ role_id, status }: API.ROLEMANAGEMENT) => {
+        await setRoleStatus({ role_id, status: status === '0' ? '1' : '0' }).then(result => {
+            message.success(result.resMsg)
+            reloadTable()
+        }).finally(() => {
+            setRoleLoadingFalse()
+        })
+    }
+
+    // 渲染设置角色状态
+    const renderRoleStatus = (record: API.ROLEMANAGEMENT) => (
+        <Popconfirm
+            title="确认执行此操作吗?"
+            open={roleId === record.role_id && roleLoading}
+            onConfirm={() => changeRoleStatus(record)}
+            onCancel={() => setRoleLoadingFalse()}
+            key="popconfirm"
+        ><Switch
+                checkedChildren={formatMessage({ id: 'global.status.normal' })}
+                unCheckedChildren={formatMessage({ id: 'global.status.disable' })}
+                checked={record.status === '1'}
+                loading={roleId === record.role_id && roleLoading}
+                onChange={() => { setRoleLoadingTrue(); setRoleId(record.role_id) }}
+            />
+        </Popconfirm>
+    );
     /**
 * @description: proTable columns 配置项
 * @return {*}
@@ -99,12 +130,29 @@ const TableTemplate: FC = () => {
             title: formatMessage({ id: 'pages.system.role-management.role_name' }),
             dataIndex: 'role_name',
             ellipsis: true,
-            render: text => <Space><Tag icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
+            render: text => <Space>
+                <Tag
+                    icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+                    {text}
+                </Tag>
+            </Space>
         },
         {
             title: formatMessage({ id: 'pages.system.role-management.role_code' }),
             dataIndex: 'role_code',
             ellipsis: true,
+        },
+        /* 状态 */
+        {
+            title: formatMessage({ id: 'global.status' }),
+            dataIndex: 'status',
+            filters: true,
+            onFilter: true,
+            valueEnum: {
+                0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
+                1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+            },
+            render: (_, record) => renderRoleStatus(record)
         },
         {
             title: formatMessage({ id: 'global.table.sort' }),
@@ -112,7 +160,6 @@ const TableTemplate: FC = () => {
             ellipsis: true,
             hideInSearch: true,
             sorter: true,
-            width: 100,
             render: text => <Tag color="purple">{text}</Tag>
         },
         {
@@ -165,7 +212,7 @@ const TableTemplate: FC = () => {
     ]
 
     // 获取当前菜单数据
-    useRequest(async () => await getMenuList({isPremission:true}), {
+    useRequest(async () => await getMenuList({ isPremission: true }), {
         onSuccess: (result) => {
             setMenuData(result)
         }
@@ -179,11 +226,11 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: any = {},mainData: any = []
+                    let result: any = {}, mainData: any = []
                     await getRoleList(params).then(res => {
                         result = res
                         // 将查询回来的menu_permission对象数组转成menu_id数组
-                        mainData = result.resData.data.map((element: any)=>Object.assign(element,{menu_permission:element.menu_permission?.map((per: any)=>per?.menu_id)}))
+                        mainData = result.resData.data.map((element: any) => Object.assign(element, { menu_permission: element.menu_permission?.map((per: any) => per?.menu_id) }))
                     })
                     return {
                         data: mainData,

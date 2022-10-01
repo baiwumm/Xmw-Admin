@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-30 16:08:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 09:19:31
+ * @LastEditTime: 2022-10-01 14:19:00
  */
 import BaseController from '../base'
 
@@ -179,6 +179,27 @@ export default class RoleManagement extends BaseController {
             // 事务回滚
             await t.rollback();
             ctx.logger.info('delRole方法报错：' + error)
+            // 返回状态,此处不能用结构，原因暂不明
+            this.resResult(2, error);
+        }
+    }
+
+    /**
+     * @description: 设置角色状态
+     * @return {*}
+     * @author: Cyan
+     */
+    public async setRoleStatus() {
+        const { ctx } = this;
+        try {
+            // 获取角色 role_id 和 参数
+            let { role_id, status } = ctx.params
+            await this._update('XmwRole', { status }, role_id).then(result => {
+                // 更新成功
+                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+            })
+        } catch (error) {
+            ctx.logger.info('setRoleStatus方法报错：' + error)
             // 返回状态,此处不能用结构，原因暂不明
             this.resResult(2, error);
         }

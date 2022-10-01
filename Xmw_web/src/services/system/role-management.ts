@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 16:57:15
+ * @LastEditTime: 2022-10-01 14:20:31
  */
 import { request } from '@umijs/max';
 import type { Data, Result } from '@/global/interface';
@@ -45,5 +45,18 @@ export async function delRole(role_id: string) {
   return request<Result>('/api/system/delRole', {
     method: 'POST',
     data: { role_id },
+  });
+}
+
+/**
+ * @description: 设置角色状态
+ * @param {Data} options
+ * @return {*}
+ * @author: Cyan
+ */
+export async function setRoleStatus(options?: Data) {
+  return request<Result>('/api/system/setRoleStatus', {
+    method: 'POST',
+    data: options || {},
   });
 }

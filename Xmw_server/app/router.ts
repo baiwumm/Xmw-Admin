@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 16:58:15
+ * @LastEditTime: 2022-10-01 14:19:23
  */
 import { Application } from 'egg';
 
@@ -28,6 +28,7 @@ export default (app: Application) => {
   router.get('/system/getRoleList', controller.system.roleManagement.getRoleList); // 获取角色管理列表
   router.post('/system/saveRole', controller.system.roleManagement.saveRole); // 更新角色管理列表
   router.post('/system/delRole', controller.system.roleManagement.delRole); // 删除角色管理列表
+  router.post('/system/setRoleStatus', controller.system.roleManagement.setRoleStatus); // 设置角色状态
   // 系统设置-国际化
   router.get('/system/getInternationalList', controller.system.internationalization.getInternationalList); // 获取国际化列表
   router.get('/system/getAllLocalesLang', controller.system.internationalization.getAllLocalesLang); // 获取国际化多语言层级对象
