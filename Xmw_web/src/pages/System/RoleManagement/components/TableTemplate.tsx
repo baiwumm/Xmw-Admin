@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 00:27:32
+ * @LastEditTime: 2022-10-01 11:20:44
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -111,6 +111,7 @@ const TableTemplate: FC = () => {
             dataIndex: 'sort',
             ellipsis: true,
             hideInSearch: true,
+            sorter: true,
             width: 100,
             render: text => <Tag color="purple">{text}</Tag>
         },
@@ -119,6 +120,7 @@ const TableTemplate: FC = () => {
             dataIndex: 'created_time',
             valueType: 'date',
             hideInSearch: true,
+            sorter: true,
             render: text => (
                 <Space>
                     <ClockCircleOutlined /><span>{text}</span>

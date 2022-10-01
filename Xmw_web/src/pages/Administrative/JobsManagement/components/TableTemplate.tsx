@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 11:19:47
+ * @LastEditTime: 2022-10-01 11:20:12
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -140,12 +140,14 @@ const TableTemplate: FC = () => {
             ellipsis: true,
             hideInSearch: true,
             width: 100,
+            sorter: true,
             render: text => <Tag color="purple">{text}</Tag>
         },
         {
             title: formatMessage({ id: 'global.table.created_time' }),
             dataIndex: 'created_time',
             valueType: 'date',
+            sorter: true,
             hideInSearch: true,
             render: text => (
                 <Space>

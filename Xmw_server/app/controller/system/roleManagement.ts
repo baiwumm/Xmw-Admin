@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-30 16:08:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 00:56:26
+ * @LastEditTime: 2022-10-01 09:19:31
  */
 import BaseController from '../base'
 
@@ -63,6 +63,8 @@ export default class RoleManagement extends BaseController {
      */
     public async saveRole() {
         const { ctx, app } = this;
+        // 设定一个事务
+        const t = await ctx.model.transaction()
         try {
             const { Op } = app.Sequelize;
             // 获取数据参数
@@ -83,7 +85,7 @@ export default class RoleManagement extends BaseController {
                 }
             }
             // 如果有结果，则证明已存在
-            const exist = await this._findOne('XmwRole', options)
+            const exist = await ctx.model['XmwRole'].findOne(options);
             if (exist) {
                 return this.resResult(-1, {}, '名称或者编码已存在！');
             }
@@ -91,7 +93,14 @@ export default class RoleManagement extends BaseController {
             if (role_id) {
                 params.update_time = new Date()
                 // 先删除权限表相关的数据
-                await this._batchDelete('XmwPermission', 'role_id', role_id)
+                await ctx.model['XmwPermission'].destroy({
+                    where: {
+                        role_id: {
+                            [Op.eq]: role_id
+                        }
+                    },
+                    transaction: t
+                })
                 // 再执行批量插入
                 let permissionList = menu_permission.map(menu => {
                     return {
@@ -100,16 +109,14 @@ export default class RoleManagement extends BaseController {
                         created_time: new Date()
                     }
                 })
-                await this._add('XmwPermission', permissionList)
+                await ctx.model['XmwPermission'].bulkCreate(permissionList, { transaction: t })
                 // 执行更新操作
-                await this._update('XmwRole', params, role_id).then(result => {
-                    // 更新成功
-                    result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
-                })
+                const result = await ctx.model['XmwRole'].findByPk(role_id);
+                await result.update(params, { transaction: t });
             } else {
                 params.created_time = new Date()
                 // 先执行新增操作
-                let result = await this._add('XmwRole', params)
+                let result = await ctx.model['XmwRole'].create(params, { transaction: t })
                 // 再执行批量插入到xmw_permission
                 let permissionList = menu_permission.map(menu => {
                     return {
@@ -118,12 +125,15 @@ export default class RoleManagement extends BaseController {
                         created_time: new Date()
                     }
                 })
-                await this._add('XmwPermission', permissionList).then(res => {
-                    // 操作成功
-                    res ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
-                })
+                await ctx.model['XmwPermission'].bulkCreate(permissionList, { transaction: t })
             }
+            // 提交事务
+            await t.commit();
+            // 如果到这里没有出现异常就代表操作全部成功
+            this.resResult(1, {})
         } catch (error) {
+            // 事务回滚
+            await t.rollback();
             ctx.logger.info('saveRole方法报错：' + error)
             // 返回状态,此处不能用结构，原因暂不明
             this.resResult(2, error);
@@ -136,18 +146,38 @@ export default class RoleManagement extends BaseController {
      * @author: Cyan
      */
     public async delRole() {
-        const { ctx } = this;
+        const { ctx, app } = this;
+        // 设定一个事务
+        const t = await ctx.model.transaction()
         try {
+            const { Op } = app.Sequelize;
             // 获取角色 role_id
             let { role_id } = ctx.params
             // 先删除权限表相关的数据
-            await this._batchDelete('XmwPermission', 'role_id', role_id)
-            // 再删除角色列表的数据
-            await this._delete('XmwRole', role_id).then(result => {
-                // 判断是否删除成功
-                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+            await ctx.model['XmwPermission'].destroy({
+                where: {
+                    role_id: {
+                        [Op.eq]: role_id
+                    }
+                },
+                transaction: t
             })
+            // 再删除角色列表的数据
+            await ctx.model['XmwRole'].destroy({
+                where: {
+                    role_id: {
+                        [Op.eq]: role_id
+                    }
+                },
+                transaction: t
+            });
+            // 提交事务
+            await t.commit();
+            // 如果到这里没有出现异常就代表操作全部成功
+            this.resResult(1, {})
         } catch (error) {
+            // 事务回滚
+            await t.rollback();
             ctx.logger.info('delRole方法报错：' + error)
             // 返回状态,此处不能用结构，原因暂不明
             this.resResult(2, error);
