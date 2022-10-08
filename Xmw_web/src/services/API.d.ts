@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 00:27:09
+ * @LastEditTime: 2022-10-08 14:30:16
  */
 declare namespace API {
   /**
@@ -32,7 +32,7 @@ declare namespace API {
    * @return {*}
    * @author: Cyan
    */
-  type JOBSMANAMENT = {
+  type JOBSMANAGEMENT = {
     jobs_id?: string;
     jobs_name: string;
     org_id: string;
@@ -43,9 +43,14 @@ declare namespace API {
     leader?: string;
     founder?: string;
     org_name: string;
-    children?: JOBSMANAMENT[];
+    children?: JOBSMANAGEMENT[];
   };
 
+  /**
+   * @description: 系统设置-菜单管理
+   * @return {*}
+   * @author: Cyan
+   */
   type MENUMANAGEMENT = {
     menu_id: string;
     name?: string;
@@ -81,6 +86,40 @@ declare namespace API {
     'ja-JP': string;
     'zh-TW': string;
     children?: MENUMANAGEMENT[];
+  };
+
+  /**
+   * @description: 系统设置-用户管理
+   * @return {*}
+   * @author: Cyan
+   */
+  type USERMANAGEMENT = {
+    user_id: string;
+    user_name: string;
+    cn_name: string;
+    en_name?: string;
+    work_no: string;
+    password?: string;
+    age: number;
+    email?: string;
+    phone: string;
+    avatar_url?: string;
+    sex: string;
+    status: string;
+    sort: number;
+    token?: string;
+    motto?: string;
+    tag: string;
+    city: string;
+    address: string;
+    jobs_id: string;
+    org_id: string;
+    role_id: string;
+    last_ip?: string;
+    login_num?: number;
+    created_time: Date;
+    update_time?: Date;
+    founder?: string;
   };
 
   /**

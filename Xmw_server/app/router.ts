@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 14:19:23
+ * @LastEditTime: 2022-10-08 13:53:05
  */
 import { Application } from 'egg';
 
@@ -12,6 +12,9 @@ export default (app: Application) => {
   const { controller, router } = app;
 
   router.get('/system/getUserList', controller.system.userManagement.getUserList); // 获取用户管理列表
+  router.post('/system/saveUser', controller.system.userManagement.saveUser); // 更新用户管理列表
+  router.post('/system/delUser', controller.system.userManagement.delUser); // 删除用户管理列表
+  router.post('/system/setUserStatus', controller.system.userManagement.setUserStatus); // 设置用户状态
   // 智能行政-组织管理
   router.get('/administrative/getOrganizationList', controller.administrative.organization.getOrganizationList); // 获取组织管理列表
   router.post('/administrative/saveOrganization', controller.administrative.organization.saveOrganization); // 更新组织管理列表

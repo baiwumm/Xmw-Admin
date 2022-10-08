@@ -24,13 +24,13 @@ import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, orgTree }) => {
     const { formatMessage } = useIntl();
     // 初始化表单
-    const [form] = Form.useForm<API.JOBSMANAMENT>();
+    const [form] = Form.useForm<API.JOBSMANAGEMENT>();
     // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<API.JOBSMANAMENT | undefined>(formData)
+    const [cloneFormData, setCloneFormData] = useState<API.JOBSMANAGEMENT | undefined>(formData)
     // 表单标题
     const formTitle = cloneFormData?.jobs_id ? `${formatMessage({ id: 'menu.administrative.jobs-management.edit' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' })}：${cloneFormData.jobs_name}` : (formatMessage({ id: 'menu.administrative.jobs-management.add' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' }))
     // 提交表单
-    const handlerSubmit = async (values: API.JOBSMANAMENT) => {
+    const handlerSubmit = async (values: API.JOBSMANAGEMENT) => {
         // 提交数据
         let result = false
         let params = { ...cloneFormData, ...values }
@@ -53,7 +53,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         return result
     }
     return (
-        <DrawerForm<API.JOBSMANAMENT>
+        <DrawerForm<API.JOBSMANAGEMENT>
             title={formTitle}
             width={500}
             grid

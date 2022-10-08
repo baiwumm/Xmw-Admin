@@ -34,9 +34,9 @@ const TableTemplate: FC = () => {
     // 获取表格实例
     const tableRef = useRef<ActionType>();
     // 获取树形数据传递给drawerForm
-    const [treeData, setTreeData] = useState<API.JOBSMANAMENT[]>([])
+    const [treeData, setTreeData] = useState<API.JOBSMANAGEMENT[]>([])
     // 当前行数据
-    const [currentRecord, setCurrentRecord] = useState<API.JOBSMANAMENT>()
+    const [currentRecord, setCurrentRecord] = useState<API.JOBSMANAGEMENT>()
     // 判断是否是添加子级
     const [parent_id, set_parent_id] = useState<string | undefined>('')
     // 手动触发刷新表格
@@ -102,7 +102,7 @@ const TableTemplate: FC = () => {
     );
 
     // 操作下拉框
-    const dropdownMenuClick = (record: API.JOBSMANAMENT) => {
+    const dropdownMenuClick = (record: API.JOBSMANAGEMENT) => {
         setCurrentRecord(record)
         set_parent_id(record?.jobs_id)
     }
@@ -111,7 +111,7 @@ const TableTemplate: FC = () => {
 * @return {*}
 * @author: Cyan
 */
-    const columns: ProColumns<API.JOBSMANAMENT>[] = [
+    const columns: ProColumns<API.JOBSMANAGEMENT>[] = [
         {
             title: formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' }),
             dataIndex: 'jobs_name',
@@ -196,7 +196,7 @@ const TableTemplate: FC = () => {
     ]
 
     return (
-        <ProTable<API.JOBSMANAMENT>
+        <ProTable<API.JOBSMANAGEMENT>
             actionRef={tableRef}
             columns={columns}
             request={async params => {

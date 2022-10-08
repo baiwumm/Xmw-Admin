@@ -11,7 +11,7 @@
  * @author: Cyan
  */
 export type FormTemplateProps = {
-  treeData: API.JOBSMANAMENT[];
+  treeData: API.JOBSMANAGEMENT[];
   orgTree: API.ORGANIZATION[];
   reloadTable: any;
   formData?: any;
@@ -25,7 +25,7 @@ export type FormTemplateProps = {
  * @author: Cyan
  */
 export type FormTemplateItemProps = {
-  treeData: API.JOBSMANAMENT[];
+  treeData: API.JOBSMANAGEMENT[];
   orgTree: API.ORGANIZATION[];
   parent_id?: string;
 };

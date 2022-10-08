@@ -1,10 +1,10 @@
 /*
- * @Description: 国际化-角色管理
+ * @Description: 角色管理-表格列表
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 19:54:12
+ * @LastEditTime: 2022-10-08 13:48:56
  */
 // 引入第三方库
 import type { FC } from 'react';
