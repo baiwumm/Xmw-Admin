@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 16:59:41
+ * @LastEditTime: 2022-10-09 18:27:42
  */
 import BaseController from '../base'
 import { LOCALES_LANG } from '../../public/enum'
@@ -37,8 +37,10 @@ export default class Internationalization extends BaseController {
             }
             // 根据参数查询数据
             await this._findAll('XmwInternationalization', options).then(res => {
-                // 判断是否有返回值
-                if (res) {
+                // 判断是否报错，否则返回执行结果
+                if (res.error) {
+                    this.resResult(-10, {})
+                } else {
                     const result = ctx.helper.initializeTree(res, 'id', 'parent_id', 'children')
                     // 如果是isMenu，则返回只有menu的名称
                     if (isMenu) {
@@ -164,8 +166,10 @@ export default class Internationalization extends BaseController {
             }
             // 根据参数查询数据
             await this._findAll('XmwInternationalization', options).then(res => {
-                // 判断是否有返回值
-                if (res) {
+                // 判断是否报错，否则返回执行结果
+                if (res.error) {
+                    this.resResult(-10, {})
+                } else {
                     let result = {}
                     // 先将数据转成树形结构
                     let treeLang = ctx.helper.initializeTree(res, 'id', 'parent_id', 'children')

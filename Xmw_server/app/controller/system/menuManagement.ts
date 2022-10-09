@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-26 17:30:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 17:00:31
+ * @LastEditTime: 2022-10-09 18:25:01
  */
 
 import BaseController from '../base'
@@ -52,10 +52,8 @@ export default class MenuManagement extends BaseController {
 
             // 根据参数查询数据
             await this._findAll('XmwMenu', options).then(result => {
-                // 判断是否有返回值
-                if (result) {
-                    this.resResult(1, ctx.helper.initializeTree(result, 'menu_id', 'parent_id', 'children'));
-                }
+                // 判断是否报错，否则返回执行结果
+                result.error ? this.resResult(-10, {}) : this.resResult(1, ctx.helper.initializeTree(result, 'menu_id', 'parent_id', 'children'));
             })
         } catch (error) {
             ctx.logger.info('getMenuList方法报错：' + error)

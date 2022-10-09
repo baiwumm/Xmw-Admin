@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 16:44:00
+ * @LastEditTime: 2022-10-09 18:23:49
  */
 
 import { Controller } from 'egg';
@@ -56,7 +56,7 @@ export default class BaseController extends Controller {
             return result
         } catch (error) {
             ctx.logger.info('_findAll方法报错：' + error)
-            this.resResult(2, error)
+            return {error}
         }
     }
 

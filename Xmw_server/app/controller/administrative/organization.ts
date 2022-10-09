@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 16:59:55
+ * @LastEditTime: 2022-10-09 18:26:41
  */
 
 import BaseController from '../base'
@@ -41,10 +41,8 @@ export default class Organization extends BaseController {
 
             // 根据参数查询数据
             await this._findAll('XmwOrganization', options).then(result => {
-                // 判断是否有返回值
-                if (result) {
-                    this.resResult(1, ctx.helper.initializeTree(result, 'org_id', 'parent_id', 'children'));
-                }
+                // 判断是否报错，否则返回执行结果
+                result.error ? this.resResult(-10, {}) : this.resResult(1, ctx.helper.initializeTree(result, 'org_id', 'parent_id', 'children'));
             })
         } catch (error) {
             ctx.logger.info('getOrganizationList方法报错：' + error)

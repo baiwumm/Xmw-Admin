@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 16:56:38
+ * @LastEditTime: 2022-10-09 18:23:41
  */
 
 import BaseController from '../base'
@@ -49,7 +49,8 @@ export default class UserManagement extends BaseController {
             }
             // 根据参数查询数据
             await this._findAll('XmwUsers', options, current, pageSize).then(result => {
-                this.resResult(1, result);
+                // 判断是否报错，否则返回执行结果
+                result.error ? this.resResult(-10, {}) : this.resResult(1, result);
             })
         } catch (error) {
             ctx.logger.info('getUserList方法报错：' + error)

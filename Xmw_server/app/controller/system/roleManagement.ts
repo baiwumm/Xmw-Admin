@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-30 16:08:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 14:19:00
+ * @LastEditTime: 2022-10-09 18:24:09
  */
 import BaseController from '../base'
 
@@ -48,7 +48,8 @@ export default class RoleManagement extends BaseController {
             }
             // 根据参数查询数据
             await this._findAll('XmwRole', options, current, pageSize).then(result => {
-                this.resResult(1, result);
+                // 判断是否报错，否则返回执行结果
+                result.error ? this.resResult(-10, {}) : this.resResult(1, result);
             })
         } catch (error) {
             ctx.logger.info('getRoleList方法报错：' + error)
