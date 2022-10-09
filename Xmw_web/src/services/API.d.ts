@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 14:30:16
+ * @LastEditTime: 2022-10-09 17:02:55
  */
 declare namespace API {
   /**
@@ -109,7 +109,7 @@ declare namespace API {
     sort: number;
     token?: string;
     motto?: string;
-    tag: string;
+    tags: string;
     city: string;
     address: string;
     jobs_id: string;

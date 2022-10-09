@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:19:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 11:59:08
+ * @LastEditTime: 2022-10-09 16:56:18
  */
 
 /**
@@ -14,6 +14,7 @@
  */
 export const RES_STATUS = {
     CUSTOM: -1,  // 自定义状态，用于处理一些特殊的结果
+    ERROR:-10, // 一般用于数据库执行出错
     SUCCESS: 1, // 操作成功
     FAILURE: 2, // 操作失败
 }
@@ -24,6 +25,7 @@ export const RES_STATUS = {
  * @author: Cyan
  */
 export const RES_STATUS_TEXT = {
+    [RES_STATUS.ERROR]: '数据库执行出错，请联系后端处理！',
     [RES_STATUS.SUCCESS]: '操作成功！',
     [RES_STATUS.FAILURE]: '操作失败！'
 }
@@ -35,6 +37,7 @@ export const RES_STATUS_TEXT = {
  */
 export const RES_STATUS_CODE = {
     [RES_STATUS.CUSTOM]: -1,
+    [RES_STATUS.ERROR]: -10,
     [RES_STATUS.SUCCESS]: 200,
     [RES_STATUS.FAILURE]: 400
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 14:38:22
+ * @LastEditTime: 2022-10-09 16:56:38
  */
 
 import BaseController from '../base'
@@ -99,9 +99,9 @@ export default class UserManagement extends BaseController {
             } else {
                 params.created_time = new Date()
                 // 新增操作
-                await this._add('XmwUsers', params).then(() => {
-                    // 更新成功
-                    this.resResult(1, {});
+                await this._add('XmwUsers', params).then(({ error }) => {
+                    // 判断是否报错
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             }
         } catch (error) {

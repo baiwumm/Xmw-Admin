@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 11:34:13
+ * @LastEditTime: 2022-10-09 16:56:29
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -82,6 +82,10 @@ export const errorConfig: RequestConfig = {
       switch (data.resCode) {
         // 成功发起请求并成功处理，一般用于更新数据时判断某个字段是否已存在
         case -1:
+          authError(data.resMsg);
+          break;
+        // 成功发起请求，但是服务器内部处理错误，一般用于执行 sql 语句错误
+        case -10:
           authError(data.resMsg);
           break;
         // 成功发起请求，但是内部处理出现错误

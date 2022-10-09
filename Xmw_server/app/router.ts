@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 13:53:05
+ * @LastEditTime: 2022-10-09 15:39:22
  */
 import { Application } from 'egg';
 
 export default (app: Application) => {
   const { controller, router } = app;
-
+  router.get('/user/uploadUserAvatar', controller.user.uploadUserAvatar); // 上传用户头像
+  // 系统设置-用户管理
   router.get('/system/getUserList', controller.system.userManagement.getUserList); // 获取用户管理列表
   router.post('/system/saveUser', controller.system.userManagement.saveUser); // 更新用户管理列表
   router.post('/system/delUser', controller.system.userManagement.delUser); // 删除用户管理列表

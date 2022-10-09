@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 16:56:36
+ * @LastEditTime: 2022-10-09 16:59:41
  */
 import BaseController from '../base'
 import { LOCALES_LANG } from '../../public/enum'
@@ -32,7 +32,7 @@ export default class Internationalization extends BaseController {
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                order: [['sort','desc'],['created_time', 'desc']], // 排序规则
+                order: [['sort', 'desc'], ['created_time', 'desc']], // 排序规则
                 where
             }
             // 根据参数查询数据
@@ -41,9 +41,9 @@ export default class Internationalization extends BaseController {
                 if (res) {
                     const result = ctx.helper.initializeTree(res, 'id', 'parent_id', 'children')
                     // 如果是isMenu，则返回只有menu的名称
-                    if(isMenu){
-                        this.resResult(1, result.filter(element=>element.name == 'menu')[0].children);
-                    }else{
+                    if (isMenu) {
+                        this.resResult(1, result.filter(element => element.name == 'menu')[0].children);
+                    } else {
                         this.resResult(1, result);
                     }
                 }
@@ -99,9 +99,9 @@ export default class Internationalization extends BaseController {
             } else {
                 params.created_time = new Date()
                 // 新增操作
-                await this._add('XmwInternationalization', params).then(() => {
-                    // 更新成功
-                    this.resResult(1, {});
+                await this._add('XmwInternationalization', params).then(({ error }) => {
+                    // 判断是否报错
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             }
         } catch (error) {

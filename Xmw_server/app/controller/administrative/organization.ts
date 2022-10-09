@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-27 17:03:21
+ * @LastEditTime: 2022-10-09 16:59:55
  */
 
 import BaseController from '../base'
@@ -35,7 +35,7 @@ export default class Organization extends BaseController {
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
-                order: [['sort','desc'],['created_time', 'desc']], // 排序规则
+                order: [['sort', 'desc'], ['created_time', 'desc']], // 排序规则
                 where
             }
 
@@ -98,9 +98,9 @@ export default class Organization extends BaseController {
             } else {
                 params.created_time = new Date()
                 // 新增操作
-                await this._add('XmwOrganization', params).then(() => {
-                    // 更新成功
-                    this.resResult(1, {});
+                await this._add('XmwOrganization', params).then(({ error }) => {
+                    // 判断是否报错
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             }
         } catch (error) {

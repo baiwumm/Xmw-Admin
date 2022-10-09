@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 18:33:28
+ * @LastEditTime: 2022-10-09 17:03:12
  */
 
 // 引入第三方库
@@ -15,7 +15,7 @@ import { StepsForm } from '@ant-design/pro-components'; // 高级组件
 import { Form, message, Modal } from 'antd'; // antd 组件库
 
 // 引入业务组件
-import { PersonalInformation, UserInformation, SetPassword } from '../Steps'
+import { PersonalInformation, UserInformation, SetPassword, SetAvatar } from '../Steps'
 import { saveUser } from '@/services/system/user-management' // 用户管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
@@ -30,6 +30,11 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
     const handlerSubmit = async (values: API.USERMANAGEMENT) => {
         // 提交数据
         const params = { ...cloneFormData, ...values }
+        // 将 tags 和 city 转换成 字符串
+        if (params.tags) {
+            params.tags = JSON.stringify(params.tags)
+        }
+        params.city = JSON.stringify(params.city)
         await saveUser(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -40,7 +45,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
     }
     return (
         <StepsForm
-            current={0}
             onFinish={async (values: API.USERMANAGEMENT) => {
                 console.log(values)
                 handlerSubmit(values)
@@ -63,9 +67,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
             {/* 个人信息 */}
             <StepsForm.StepForm
                 title={formatMessage({ id: 'pages.system.user-management.steps-form.personal-information' })}
-                onFinish={async () => {
-                    return true;
-                }}
                 grid
             >
                 <PersonalInformation />
@@ -73,19 +74,20 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
             {/* 用户信息 */}
             <StepsForm.StepForm
                 title={formatMessage({ id: 'pages.system.user-management.steps-form.user-information' })}
-                onFinish={async () => {
-                    return true;
-                }}
                 grid
             >
                 <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />
             </StepsForm.StepForm>
+            {/* 设置头像 */}
+            <StepsForm.StepForm
+                title={formatMessage({ id: 'pages.system.user-management.steps-form.set-avatar' })}
+                grid
+            >
+                <SetAvatar />
+            </StepsForm.StepForm>
             {/* 设置密码 */}
             <StepsForm.StepForm
                 title={formatMessage({ id: 'pages.system.user-management.steps-form.set-password' })}
-                onFinish={async () => {
-                    return true;
-                }}
                 grid
             >
                 <SetPassword />

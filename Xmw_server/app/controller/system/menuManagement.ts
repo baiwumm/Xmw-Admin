@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-26 17:30:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 00:17:33
+ * @LastEditTime: 2022-10-09 17:00:31
  */
 
 import BaseController from '../base'
@@ -114,9 +114,9 @@ export default class MenuManagement extends BaseController {
             } else {
                 params.created_time = new Date()
                 // 新增操作
-                await this._add('XmwMenu', params).then(() => {
-                    // 更新成功
-                    this.resResult(1, {});
+                await this._add('XmwMenu', params).then(({ error }) => {
+                    // 判断是否报错
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             }
         } catch (error) {

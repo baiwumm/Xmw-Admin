@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:55:13
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 18:12:59
+ * @LastEditTime: 2022-10-09 11:40:06
  */
 'use strict';
 
@@ -28,7 +28,7 @@ module.exports = {
       status: { type: STRING(10), allowNull: false, comment: '是否禁用' },
       token: { type: STRING(255), allowNull: true, comment: '登录token' },
       motto: { type: STRING(32), allowNull: true, comment: '座右铭' },
-      tag: { type: STRING(200), allowNull: true, comment: '人物标签' },
+      tags: { type: STRING(200), allowNull: true, comment: '人物标签' },
       city: { type: STRING(200), allowNull: false, comment: '所属城市' },
       address: { type: STRING(200), allowNull: false, comment: '详细地址' },
       jobs_id: { type: UUID, allowNull: false, comment: '岗位id' },
