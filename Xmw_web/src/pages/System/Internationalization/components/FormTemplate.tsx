@@ -4,12 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 10:30:22
+ * @LastEditTime: 2022-10-10 15:29:22
  */
 
 // 引入第三方库
 import type { FC } from 'react';
-import { useState } from 'react';
 import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
@@ -25,14 +24,13 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     const { formatMessage } = useIntl();
     // 初始化表单
     const [form] = Form.useForm<API.INTERNATIONALIZATION>();
-    // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<API.INTERNATIONALIZATION | undefined>(formData)
-    const formTitle = cloneFormData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${cloneFormData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
+    // ModalForm 不同状态下 标题显示
+    const formTitle = formData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
         // 提交数据
         let result = false
-        let params = { ...cloneFormData, ...values }
+        let params = { ...formData, ...values }
         if (parent_id) {
             params.parent_id = parent_id
         }
@@ -80,7 +78,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             onVisibleChange={visiable => {
                 if (visiable) {
                     form.setFieldsValue(formData);
-                    setCloneFormData(formData)
                 }
             }}
         >

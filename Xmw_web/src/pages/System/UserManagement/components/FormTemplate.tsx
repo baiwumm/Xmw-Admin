@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 14:17:25
+ * @LastEditTime: 2022-10-10 15:31:44
  */
 
 // 引入第三方库
@@ -26,6 +26,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
     const { formatMessage } = useIntl();
     // 初始化表单
     const formMapRef = useRef<React.MutableRefObject<ProFormInstance<any> | undefined>[]>([]);
+    // StepsForm 不同状态下 标题显示
     const formTitle = formData?.user_id ? `${formatMessage({ id: 'menu.system.user-management.edit' }) + formatMessage({ id: 'pages.system.user-management.title' })}：${formData.user_name}` : (formatMessage({ id: 'menu.system.user-management.add' }) + formatMessage({ id: 'pages.system.user-management.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.USERMANAGEMENT) => {

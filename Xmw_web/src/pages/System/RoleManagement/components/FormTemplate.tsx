@@ -4,12 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 18:08:56
+ * @LastEditTime: 2022-10-10 15:29:12
  */
 
 // 引入第三方库
 import type { FC } from 'react';
-import { useState } from 'react';
 import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
@@ -24,14 +23,13 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
     const { formatMessage } = useIntl();
     // 初始化表单
     const [form] = Form.useForm<API.ROLEMANAGEMENT>();
-    // 深克隆一份表单数据
-    const [cloneFormData, setCloneFormData] = useState<API.ROLEMANAGEMENT | undefined>(formData)
-    const formTitle = cloneFormData?.role_id ? `${formatMessage({ id: 'menu.system.role-management.edit' }) + formatMessage({ id: 'pages.system.role-management.title' })}：${cloneFormData.role_name}` : (formatMessage({ id: 'menu.system.role-management.add' }) + formatMessage({ id: 'pages.system.role-management.title' }))
+    // ModalForm 不同状态下 标题显示
+    const formTitle = formData?.role_id ? `${formatMessage({ id: 'menu.system.role-management.edit' }) + formatMessage({ id: 'pages.system.role-management.title' })}：${formData.role_name}` : (formatMessage({ id: 'menu.system.role-management.add' }) + formatMessage({ id: 'pages.system.role-management.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.ROLEMANAGEMENT) => {
         // 提交数据
         let result = false
-        const params = { ...cloneFormData, ...values }
+        const params = { ...formData, ...values }
         await saveRole(params).then(res => {
             if (res.resCode === 200) {
                 message.success(res.resMsg);
@@ -72,7 +70,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
             onVisibleChange={visiable => {
                 if (visiable) {
                     form.setFieldsValue(formData);
-                    setCloneFormData(formData)
                 }
             }}
         >
