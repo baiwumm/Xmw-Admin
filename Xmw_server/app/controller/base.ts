@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 11:17:05
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 18:23:49
+ * @LastEditTime: 2022-10-10 10:10:02
  */
 
 import { Controller } from 'egg';
@@ -56,7 +56,7 @@ export default class BaseController extends Controller {
             return result
         } catch (error) {
             ctx.logger.info('_findAll方法报错：' + error)
-            return {error}
+            return { error }
         }
     }
 
@@ -127,7 +127,7 @@ export default class BaseController extends Controller {
      * @return {*}
      * @author: Cyan
      */
-    async _update(modelName: string, source: object, id: string) {
+    async _update(modelName: string, source: object, id: string): Promise<any>  {
         const { ctx } = this
         try {
             // 判断这条数据是否存在，不存在则直接返回
@@ -138,6 +138,7 @@ export default class BaseController extends Controller {
             return true
         } catch (error) {
             ctx.logger.info('_update方法报错：' + error)
+            return { error }
         }
     }
 
@@ -148,7 +149,7 @@ export default class BaseController extends Controller {
      * @return {*}
      * @author: Cyan
      */
-    async _delete(modelName: string, id: string) {
+    async _delete(modelName: string, id: string): Promise<any> {
         const { ctx } = this;
         try {
             // 判断数据是否存在，不存在则直接返回
@@ -159,6 +160,7 @@ export default class BaseController extends Controller {
             return true;
         } catch (error) {
             ctx.logger.info('_delete方法报错：' + error)
+            return { error }
         }
     }
 

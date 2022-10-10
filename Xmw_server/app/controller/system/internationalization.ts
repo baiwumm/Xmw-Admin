@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-16 17:03:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 18:27:42
+ * @LastEditTime: 2022-10-10 10:13:03
  */
 import BaseController from '../base'
 import { LOCALES_LANG } from '../../public/enum'
@@ -94,9 +94,9 @@ export default class Internationalization extends BaseController {
                     return this.resResult(-1, {}, '父级不能和自己相同！');
                 }
                 // 执行更新操作
-                await this._update('XmwInternationalization', params, id).then(result => {
-                    // 更新成功
-                    result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+                await this._update('XmwInternationalization', params, id).then(({ error }) => {
+                    // 判断是否更新成功
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             } else {
                 params.created_time = new Date()
@@ -134,9 +134,9 @@ export default class Internationalization extends BaseController {
                 return this.resResult(-1, {}, '当前数据存在子级，不能删除！');
             }
             // 不存在子级则执行删除操作
-            await this._delete('XmwInternationalization', id).then(result => {
+            await this._delete('XmwInternationalization', id).then(({ error }) => {
                 // 判断是否删除成功
-                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+                error ? this.resResult(-10, {}) : this.resResult(1, {});
             })
         } catch (error) {
             ctx.logger.info('delInternational方法报错：' + error)

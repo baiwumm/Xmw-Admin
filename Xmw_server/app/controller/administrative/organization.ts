@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 18:26:41
+ * @LastEditTime: 2022-10-10 10:16:10
  */
 
 import BaseController from '../base'
@@ -89,9 +89,9 @@ export default class Organization extends BaseController {
                     return this.resResult(-1, {}, '父级不能和自己相同！');
                 }
                 // 执行更新操作
-                await this._update('XmwOrganization', params, org_id).then(result => {
-                    // 更新成功
-                    result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+                await this._update('XmwOrganization', params, org_id).then(({ error }) => {
+                    // 判断是否更新成功
+                    error ? this.resResult(-10, {}) : this.resResult(1, {});
                 })
             } else {
                 params.created_time = new Date()
@@ -129,9 +129,9 @@ export default class Organization extends BaseController {
                 return this.resResult(-1, {}, '当前数据存在子级，不能删除！');
             }
             // 不存在子级则执行删除操作
-            await this._delete('XmwOrganization', org_id).then(result => {
+            await this._delete('XmwOrganization', org_id).then(({ error }) => {
                 // 判断是否删除成功
-                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+                error ? this.resResult(-10, {}) : this.resResult(1, {});
             })
         } catch (error) {
             ctx.logger.info('delOrganization方法报错：' + error)

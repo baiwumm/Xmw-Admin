@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-30 16:08:56
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 18:24:09
+ * @LastEditTime: 2022-10-10 10:12:19
  */
 import BaseController from '../base'
 
@@ -195,9 +195,9 @@ export default class RoleManagement extends BaseController {
         try {
             // 获取角色 role_id 和 参数
             let { role_id, status } = ctx.params
-            await this._update('XmwRole', { status }, role_id).then(result => {
-                // 更新成功
-                result ? this.resResult(1, {}) : this.resResult(-1, {}, '数据主键不存在！');
+            await this._update('XmwRole', { status }, role_id).then(({ error }) => {
+                // 判断是否更新成功
+                error ? this.resResult(-10, {}) : this.resResult(1, {});
             })
         } catch (error) {
             ctx.logger.info('setRoleStatus方法报错：' + error)
