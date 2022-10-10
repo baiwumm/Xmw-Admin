@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 18:02:36
+ * @LastEditTime: 2022-10-10 14:29:36
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -31,6 +31,10 @@ const PersonalInformation: FC = () => {
                         required: true,
                         message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.user_name' }),
                         whitespace: true
+                    },
+                    {
+                        pattern: /^[a-zA-Z0-9_-]{4,16}$/,
+                        message: formatMessage({ id: 'pages.system.user-management.user_name.rules' }),
                     }
                 ]}
             />

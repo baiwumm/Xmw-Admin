@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 09:00:41
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 17:34:27
+ * @LastEditTime: 2022-10-10 14:55:55
  */
 /**
  * @description: 请求状态码
@@ -67,8 +67,8 @@ export const APP_FLAG_OPTS = [
 ];
 
 export const APP_SEX = {
-  0: '否',
-  1: '是',
+  0: '女',
+  1: '男',
 };
 
 export const APP_SEX_OPTS = [

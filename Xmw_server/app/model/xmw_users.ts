@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 11:40:13
+ * @LastEditTime: 2022-10-10 14:23:31
  */
 'use strict';
 
@@ -39,6 +39,15 @@ module.exports = (app) => {
     update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     founder: { type: UUID, allowNull: true, comment: '创建人' },
   });
+
+  xmw_users.associate = function () {
+    // 与 xmw_jobs 存在一对一关系，所以是belongsTo()
+    app.model.XmwUsers.belongsTo(app.model.XmwJobs, { foreignKey: 'jobs_id', targetKey: 'jobs_id', as: 'j' });
+    // 与 xmw_organization 存在一对一关系，所以是belongsTo()
+    app.model.XmwUsers.belongsTo(app.model.XmwOrganization, { foreignKey: 'org_id', targetKey: 'org_id', as: 'o' });
+    // 与 xmw_role 存在一对一关系，所以是belongsTo()
+    app.model.XmwUsers.belongsTo(app.model.XmwRole, { foreignKey: 'role_id', targetKey: 'role_id', as: 'r' });
+  }
 
   return xmw_users;
 };

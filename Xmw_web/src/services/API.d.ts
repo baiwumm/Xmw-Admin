@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 17:02:55
+ * @LastEditTime: 2022-10-10 13:55:38
  */
 declare namespace API {
   /**
@@ -99,7 +99,8 @@ declare namespace API {
     cn_name: string;
     en_name?: string;
     work_no: string;
-    password?: string;
+    password: string;
+    confirmPassword?: string;
     age: number;
     email?: string;
     phone: string;

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 10:11:07
+ * @LastEditTime: 2022-10-10 15:25:06
  */
 
 import BaseController from '../base'
@@ -24,25 +24,38 @@ export default class UserManagement extends BaseController {
     public async getUserList() {
         const { ctx, app } = this;
         try {
-            const { Op } = app.Sequelize;
+            const { Op, col } = app.Sequelize;
             // 获取数据参数
-            let { user_name, work_no, status, start_time, end_time, pageSize, current } = ctx.params
+            let { user_name, work_no, sex, status, start_time, end_time, pageSize, current } = ctx.params
             // 根据参数拼接查询条件
             let where: any = {}
             if (user_name) where.user_name = { [Op.substring]: user_name }
             if (work_no) where.work_no = { [Op.substring]: work_no }
+            if (sex) where.sex = { [Op.eq]: sex }
             if (status) where.status = { [Op.eq]: status }
             if (start_time && end_time) where.created_time = { [Op.between]: [start_time, end_time] }
             // 查询规则
             const options = {
+                attributes: { include: [col('o.org_name'), col('j.jobs_name'), col('r.role_name')] },
                 // 联表查询
-                // include: [
-                //     {
-                //         model: app.model.XmwPermission,
-                //         as: 'menu_permission',
-                //         attributes: ['menu_id']
-                //     }
-                // ],
+                include: [
+                    {
+                        model: app.model.XmwJobs,
+                        as: 'j',
+                        attributes: []
+                    },
+                    {
+                        model: app.model.XmwOrganization,
+                        as: 'o',
+                        attributes: []
+                    },
+                    {
+                        model: app.model.XmwRole,
+                        as: 'r',
+                        attributes: []
+                    }
+                ],
+                raw: true,
                 order: [['sort', 'desc'], ['created_time', 'desc']], // 排序规则
                 where,
                 distinct: true
@@ -50,7 +63,18 @@ export default class UserManagement extends BaseController {
             // 根据参数查询数据
             await this._findAll('XmwUsers', options, current, pageSize).then(result => {
                 // 判断是否报错，否则返回执行结果
-                result.error ? this.resResult(-10, {}) : this.resResult(1, result);
+                if (result.error) {
+                    return this.resResult(-10, {})
+                } else {
+                    result.data.forEach(element => {
+                        // 数据回显处理
+                        if (element.tags) {
+                            element.tags = JSON.parse(element.tags)
+                        }
+                        element.city = JSON.parse(element.city)
+                    })
+                    return this.resResult(1, result)
+                }
             })
         } catch (error) {
             ctx.logger.info('getUserList方法报错：' + error)
@@ -72,9 +96,11 @@ export default class UserManagement extends BaseController {
             // 判断名称是否存在
             const options: any = {
                 where: {
-                    // 用户名和工号不能相同
-                    user_name: params.user_name,
-                    work_no: params.work_no,
+                    [Op.or]: {
+                        // 用户名和工号不能相同
+                        user_name: params.user_name,
+                        work_no: params.work_no,
+                    }
                 }
             }
             // 如果是编辑，则要加上这个条件：user_id != 自己

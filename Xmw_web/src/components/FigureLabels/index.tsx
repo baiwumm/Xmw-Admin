@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 14:10:24
+ * @LastEditTime: 2022-10-10 11:32:30
  */
 import type { FC } from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -14,10 +14,11 @@ import { Input, Tag, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 type IProps = {
+    value?: string[]
     onChange?: (value: string[]) => void;
 }
 
-const FigureLabels: FC<IProps> = ({ onChange }) => {
+const FigureLabels: FC<IProps> = ({ value, onChange }) => {
     // 自定义默认标签
     const [tags, setTags] = useState<string[]>([]);
     // 控制 input 框显隐
@@ -45,6 +46,13 @@ const FigureLabels: FC<IProps> = ({ onChange }) => {
             editInputRef.current?.focus();
         }
     }, [editInputIndex]);
+
+    // 拿到表单数据回显
+    useEffect(() => {
+        if (value) {
+            setTags(value)
+        }
+    }, [value])
 
     // 表单收集字段
     const triggerChange = (changedValue: string[]) => {
