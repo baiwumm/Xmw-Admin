@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 13:59:40
+ * @LastEditTime: 2022-10-10 18:25:39
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
@@ -18,19 +18,19 @@ import CryptoJS from 'crypto-js'; // AES/DES加密
  * @author: Cyan
  */
 export const initLocalesLang = async () => {
-  const { resData } = await getAllLocalesLang();
-  try {
-    if (resData) {
-      Object.keys(resData).forEach((lang) => {
-        // 初始化多语言配置
-        addLocale(lang, resData[lang], ANTD_LANGS[lang]);
-      });
-    }
-    return resData;
-  } catch (error: any) {
-    message.error(error);
-  }
-  return undefined;
+  await getAllLocalesLang()
+    .then((result) => {
+      const data = result.resData;
+      if (data) {
+        Object.keys(data).forEach((lang) => {
+          // 初始化多语言配置
+          addLocale(lang, data[lang], ANTD_LANGS[lang]);
+        });
+      }
+    })
+    .catch((error) => {
+      message.error(error);
+    });
 };
 
 const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六进制数作为密钥

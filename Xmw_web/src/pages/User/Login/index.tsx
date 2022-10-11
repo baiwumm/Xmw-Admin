@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 11:16:16
+ * @LastEditTime: 2022-10-11 10:06:38
  */
 
 // 引入第三方库
@@ -65,9 +65,11 @@ const Login: FC = () => {
         // 获取用户信息
 
         await fetchUserInfo();
-        const urlParams = new URL(window.location.href).searchParams;
-        // 路由跳转
-        history.push(urlParams.get('redirect') || '/');
+        setTimeout(() => {
+          const urlParams = new URL(window.location.href).searchParams;
+          // 路由跳转
+          history.push(urlParams.get('redirect') || '/');
+        }, 100)
         return;
       }
       // 如果失败去设置用户错误信息
