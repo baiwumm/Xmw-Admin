@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 16:07:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 15:25:06
+ * @LastEditTime: 2022-10-11 13:47:55
  */
 
 import BaseController from '../base'
@@ -97,9 +97,10 @@ export default class UserManagement extends BaseController {
             const options: any = {
                 where: {
                     [Op.or]: {
-                        // 用户名和工号不能相同
+                        // 用户名和工号、手机号码不能相同
                         user_name: params.user_name,
                         work_no: params.work_no,
+                        phone: params.phone,
                     }
                 }
             }
@@ -112,7 +113,7 @@ export default class UserManagement extends BaseController {
             // 如果有结果，则证明已存在
             const exist = await this._findOne('XmwUsers', options)
             if (exist) {
-                return this.resResult(-1, {}, '用户名或工号已存在！');
+                return this.resResult(-1, {}, '用户名或工号或手机号码已存在！');
             }
 
             // 根据 user_id 判断是新增还是更新操作
