@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 17:19:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 14:23:31
+ * @LastEditTime: 2022-10-12 09:52:58
  */
 'use strict';
 
@@ -34,7 +34,8 @@ module.exports = (app) => {
     org_id: { type: UUID, allowNull: false, comment: '组织id' },
     role_id: { type: UUID, allowNull: false, comment: '权限id' },
     login_num: { type: INTEGER, allowNull: false, defaultValue: 0, comment: '登录次数' },
-    last_ip: { type: STRING(20), allowNull: true, validate: { isIP: true }, comment: '最后一次登录id' },
+    last_ip: { type: STRING(20), allowNull: true, validate: { isIP: true }, comment: '最后一次登录ip' },
+    last_time: { type: DATE, allowNull: true, comment: '最后一次登录时间' },
     created_time: { type: DATE, allowNull: false, comment: '创建日期' },
     update_time: { type: DATE, allowNull: true, comment: '最后更新时间' },
     founder: { type: UUID, allowNull: true, comment: '创建人' },

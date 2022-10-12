@@ -10,6 +10,11 @@ const plugin: EggPlugin = {
   cors: {
     enable: true,
     package: 'egg-cors',
+  },
+  //引入egg-jwt包
+  jwt: {
+    enable: true,
+    package: 'egg-jwt',
   }
 };
 

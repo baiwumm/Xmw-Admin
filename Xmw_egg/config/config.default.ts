@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-09 13:49:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 09:19:17
+ * @LastEditTime: 2022-10-11 18:33:31
  */
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 
@@ -53,11 +53,15 @@ export default (appInfo: EggAppInfo) => {
     origin: "*", //允许任何跨域，若只允许个别IP跨域，则：origin:['http://localhost:8080']
     allowMethods: 'GET,PUT,POST,DELETE', // 被允许的请求方式
   };
-  const userConfig = {};
+
+  /* 自定义 token 的加密条件字符串 */
+  config.jwt = {
+    secret: 'Cyan'
+  };
+  config.expiresIn = 3 * 24 * 60 * 60;// token过期时间 单位秒，默认3天
 
   // the return config will combines to EggAppConfig
   return {
     ...config,
-    ...userConfig,
   };
 };
