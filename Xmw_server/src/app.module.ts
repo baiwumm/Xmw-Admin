@@ -4,10 +4,20 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-13 09:28:27
+ * @LastEditTime: 2022-10-13 16:57:58
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import {
+  XmwUsers,
+  XmwRole,
+  XmwPermission,
+  XmwOrganization,
+  XmwMenu,
+  XmwJobs,
+  XmwInternationalization,
+} from './models';
+import { UserModule } from './logical/user/user.module';
 
 @Module({
   imports: [
@@ -29,8 +39,18 @@ import { SequelizeModule } from '@nestjs/sequelize';
         dateStrings: true,
         typeCast: true,
       },
-      models: [], // 要开始使用`User`模型，我们需要通过将其插入到`forRoot()`方法选项的`models`数组中来让`Sequelize`知道它的存在。
+      // 我们需要通过将其插入到`forRoot()`方法选项的`models`数组中来让`Sequelize`知道它的存在。
+      models: [
+        XmwUsers,
+        XmwRole,
+        XmwPermission,
+        XmwOrganization,
+        XmwMenu,
+        XmwJobs,
+        XmwInternationalization,
+      ],
     }),
+    UserModule,
   ],
 })
 export class AppModule {}
