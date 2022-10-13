@@ -1,8 +1,0 @@
-{
-  "extends": "@eggjs/tsconfig",
-  "exclude": [
-    "app/public",
-    "app/views",
-    "node_modules*"
-  ]
-}
