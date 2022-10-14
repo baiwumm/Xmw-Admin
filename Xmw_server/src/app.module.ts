@@ -4,51 +4,27 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-13 16:57:58
+ * @LastEditTime: 2022-10-14 14:08:48
  */
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
-import {
-  XmwUsers,
-  XmwRole,
-  XmwPermission,
-  XmwOrganization,
-  XmwMenu,
-  XmwJobs,
-  XmwInternationalization,
-} from './models';
-import { UserModule } from './logical/user/user.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './modules/logical/user/user.module';
 
 @Module({
   imports: [
-    SequelizeModule.forRoot({
-      dialect: 'mysql', // 数据库类型，sequelize支持  Postgres, MySQL, MariaDB, SQLite 以及 Microsoft SQL Server. 且对数据库版本有要求。可移步官网查看
-      host: '127.0.0.1', // 主机ip
-      port: 3306, // 数据库端口 mysql默认在3306端口
-      username: 'root', // 数据库用户名
-      password: '123456', // 数据库密码
-      database: 'react_umi_xmw', // 具体数据库
-      timezone: '+08:00', // 配置数据库时间为东八区北京时间
-      define: {
-        timestamps: false, // 不需要sequelize自动添加时间戳
-        freezeTableName: true, // 使用原始的表名称，不需要sequelize对表名称做额外处理
-      },
-      logging: true, // 打印日志
-      // 时间格式化
-      dialectOptions: {
-        dateStrings: true,
-        typeCast: true,
-      },
-      // 我们需要通过将其插入到`forRoot()`方法选项的`models`数组中来让`Sequelize`知道它的存在。
-      models: [
-        XmwUsers,
-        XmwRole,
-        XmwPermission,
-        XmwOrganization,
-        XmwMenu,
-        XmwJobs,
-        XmwInternationalization,
-      ],
+    // typeOrm 连接 mysql
+    TypeOrmModule.forRoot({
+      type: 'mysql', //数据库类型
+      username: 'root', //账号
+      password: '123456', //密码
+      host: 'localhost', //host
+      port: 3306, //
+      database: 'react_umi_xmw', //库名
+      entities: [__dirname + '/**/*.entity{.ts,.js}'], //实体文件
+      synchronize: true, //synchronize字段代表是否自动将实体类同步到数据库
+      retryDelay: 500, //重试连接数据库间隔
+      retryAttempts: 10, //重试连接数据库的次数
+      autoLoadEntities: true, //如果为true,将自动加载实体 forFeature()方法注册的每个实体都将自动添加到配置对象的实体数组中
     }),
     UserModule,
   ],

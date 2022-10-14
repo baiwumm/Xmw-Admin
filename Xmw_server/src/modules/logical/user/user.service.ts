@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-10-13 16:40:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-13 17:04:07
+ * @LastEditTime: 2022-10-14 10:07:16
  */
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
-  findOne(username: string): string {
+  findOne(username: string): any {
     if (username === 'Kid') {
-      return 'Kid is here';
+      return { data: 'Kid is here', code: -1 };
     }
-    return 'No one here';
+    return { data: 'No one here', code: 100 };
   }
 }
