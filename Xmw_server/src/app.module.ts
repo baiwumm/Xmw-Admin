@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-14 14:08:48
+ * @LastEditTime: 2022-10-15 12:46:50
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,10 +16,10 @@ import { UserModule } from './modules/logical/user/user.module';
     TypeOrmModule.forRoot({
       type: 'mysql', //数据库类型
       username: 'root', //账号
-      password: '123456', //密码
+      password: 'root', //密码
       host: 'localhost', //host
       port: 3306, //
-      database: 'react_umi_xmw', //库名
+      database: 'react_typeorm', //库名
       entities: [__dirname + '/**/*.entity{.ts,.js}'], //实体文件
       synchronize: true, //synchronize字段代表是否自动将实体类同步到数据库
       retryDelay: 500, //重试连接数据库间隔

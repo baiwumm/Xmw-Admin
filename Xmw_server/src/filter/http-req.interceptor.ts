@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 09:58:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-14 13:51:02
+ * @LastEditTime: 2022-10-15 14:54:29
  */
 import {
   Injectable,
@@ -26,10 +26,15 @@ export class HttpReqTransformInterceptor<T>
     next: CallHandler,
   ): Observable<ResponseModel> {
     return next.handle().pipe(
-      map((data) => {
-        // 报装返回体，设计返回的逻辑
-        console.log(data);
-        return { data, code: 200, msg: '', success: true };
+      map((response) => {
+        /**
+         * @description: response 将返回一个对象
+         * @description: 报装返回体，设计返回的逻辑
+         * @author: Cyan
+         */
+        // 设置默认值，默认请求成功，如果是请求失败或者自定义的需要在Service里面返回
+        const initResponse = { data: {}, code: 200, msg: '', success: true };
+        return Object.assign(initResponse, response);
       }),
     );
   }
