@@ -4,12 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 12:29:44
+ * @LastEditTime: 2022-10-15 20:27:23
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { HttpReqTransformInterceptor } from '@/filter/http-req.interceptor';
+import { HttpReqTransformInterceptor } from '@/filter/http-req.interceptor'; // 全局响应拦截器
+import App_configuration from './config/configuration'; // 全局配置
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new HttpReqTransformInterceptor());
   // 开启一个全局验证管道
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  // 全局添加接口前缀
+  app.setGlobalPrefix('cyan');
+  await app.listen(App_configuration().port);
 }
 bootstrap();
