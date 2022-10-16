@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 20:48:09
+ * @LastEditTime: 2022-10-15 22:08:40
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import App_globalConfig from './config/configuration'; // 全局配置
 import DatabaseConfig from './config/database'; // 数据库配置
 import { UserModule } from './modules/logical/user/user.module'; // 用户管理模块
+import { InternationalModule } from './modules/system/international/international.module'; // 系统设置-国际化
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserModule } from './modules/logical/user/user.module'; // 用户管理
       inject: [ConfigService],
     }),
     UserModule,
+    InternationalModule,
   ],
 })
 export class AppModule {}

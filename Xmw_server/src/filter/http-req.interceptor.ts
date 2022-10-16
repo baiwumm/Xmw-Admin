@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 09:58:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 14:54:29
+ * @LastEditTime: 2022-10-16 10:34:04
  */
 import {
   Injectable,
@@ -15,6 +15,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { RES_CODE_MAP } from '@/common/enum'; // 返回体结构
 import { ResponseModel } from '@/common/interface'; // 返回体结构
 
 @Injectable()
@@ -34,6 +35,11 @@ export class HttpReqTransformInterceptor<T>
          */
         // 设置默认值，默认请求成功，如果是请求失败或者自定义的需要在Service里面返回
         const initResponse = { data: {}, code: 200, msg: '', success: true };
+        // 合并对象
+        Object.assign(initResponse, response);
+        // 处理参数
+        !initResponse.msg &&
+          (initResponse.msg = RES_CODE_MAP[initResponse.code]);
         return Object.assign(initResponse, response);
       }),
     );

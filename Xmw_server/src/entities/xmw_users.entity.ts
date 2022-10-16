@@ -1,10 +1,10 @@
 /*
- * @Description: xmw_users Entity
+ * @Description: XmwUsers Entity
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-14 14:18:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 15:27:35
+ * @LastEditTime: 2022-10-16 17:44:42
  */
 import {
   Entity,
@@ -121,9 +121,9 @@ export class XmwUsers {
   @Max(999)
   sort: number;
 
-  //是否禁用
+  //用户状态
   @Column('tinyint', {
-    comment: '是否禁用（0:禁用，1:正常）',
+    comment: '用户状态（0:禁用，1:正常）',
   })
   status: number;
 

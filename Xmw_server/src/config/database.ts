@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 20:04:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 20:22:12
+ * @LastEditTime: 2022-10-16 19:02:25
  */
 import { registerAs } from '@nestjs/config';
 
@@ -21,4 +21,6 @@ export default registerAs('database', () => ({
   retryDelay: 500, //重试连接数据库间隔
   retryAttempts: 10, //重试连接数据库的次数
   autoLoadEntities: true, //如果为true,将自动加载实体 forFeature()方法注册的每个实体都将自动添加到配置对象的实体数组中
+  time_zone: '+8:00', // 服务器上配置的时区
+  dateStrings: true, // 日期类型
 }));
