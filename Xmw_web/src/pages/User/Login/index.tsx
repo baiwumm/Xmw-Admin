@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-11 17:45:29
+ * @LastEditTime: 2022-10-17 10:46:33
  */
 
 // 引入第三方库
@@ -51,7 +51,7 @@ const Login: FC = () => {
     try {
       // 调用登录接口
       const msg = await login({ ...values, type: loginType });
-      if (msg.status === 'ok') {
+      if (msg.status) {
         // 如果登录成功，提示信息
         // message.success(formatMessage('pages.login.success'));
         // 获取用户信息

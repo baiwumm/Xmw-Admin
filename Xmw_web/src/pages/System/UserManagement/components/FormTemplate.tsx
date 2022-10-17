@@ -42,8 +42,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
         // 删除参数多余的属性
         params = omit(params, ['confirmPassword'])
         await saveUser(params).then(res => {
-            if (res.resCode === 200) {
-                message.success(res.resMsg);
+            if (res.code === 200) {
+                message.success(res.msg);
                 reloadTable()
                 setModalVisibleFalse()
             }

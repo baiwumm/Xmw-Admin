@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 18:25:39
+ * @LastEditTime: 2022-10-17 10:35:42
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
@@ -20,7 +20,7 @@ import CryptoJS from 'crypto-js'; // AES/DES加密
 export const initLocalesLang = async () => {
   await getAllLocalesLang()
     .then((result) => {
-      const data = result.resData;
+      const data = result.data;
       if (data) {
         Object.keys(data).forEach((lang) => {
           // 初始化多语言配置

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-10 17:27:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-11 09:50:17
+ * @LastEditTime: 2022-10-17 10:35:39
  */
 import { getAllLocalesLang } from '@/services/system/internationalization'; //获取国际化多语言层级对象
 
@@ -24,7 +24,7 @@ export default {
       const response = yield call(getAllLocalesLang, payload);
       yield put({
         type: 'changeLocales',
-        payload: response.resData,
+        payload: response.data,
       });
       return response;
     },

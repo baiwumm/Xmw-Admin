@@ -31,8 +31,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
         let result = false
         const params = { ...formData, ...values }
         await saveRole(params).then(res => {
-            if (res.resCode === 200) {
-                message.success(res.resMsg);
+            if (res.code === 200) {
+                message.success(res.msg);
                 reloadTable()
                 // 重置表单
                 form.resetFields()

@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 13:53:39
+ * @LastEditTime: 2022-10-17 10:41:49
  */
 import { request } from '@umijs/max';
-import type { Data, Result } from '@/global/interface';
+import type { Data, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取用户列表
@@ -16,7 +16,7 @@ import type { Data, Result } from '@/global/interface';
  * @author: Cyan
  */
 export async function getUserList(options?: Data) {
-  return request<Result>('/api/system/getUserList', {
+  return request<ResponseModel>('/api/system/getUserList', {
     method: 'GET',
     params: options || {},
   });
@@ -29,7 +29,7 @@ export async function getUserList(options?: Data) {
  * @author: Cyan
  */
 export async function saveUser(options?: Data) {
-  return request<Result>('/api/system/saveUser', {
+  return request<ResponseModel>('/api/system/saveUser', {
     method: 'POST',
     data: options || {},
   });
@@ -42,7 +42,7 @@ export async function saveUser(options?: Data) {
  * @author: Cyan
  */
 export async function delUser(user_id: string) {
-  return request<Result>('/api/system/delUser', {
+  return request<ResponseModel>('/api/system/delUser', {
     method: 'POST',
     data: { user_id },
   });
@@ -55,7 +55,7 @@ export async function delUser(user_id: string) {
  * @author: Cyan
  */
 export async function setUserStatus(options?: Data) {
-  return request<Result>('/api/system/setUserStatus', {
+  return request<ResponseModel>('/api/system/setUserStatus', {
     method: 'POST',
     data: options || {},
   });

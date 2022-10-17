@@ -4,11 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-26 17:58:48
+ * @LastEditTime: 2022-10-17 10:41:34
  */
 import { request } from '@umijs/max';
-import { Data, Result } from '@/global/interface'
-
+import type { Data, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取菜单列表
@@ -17,10 +16,10 @@ import { Data, Result } from '@/global/interface'
  * @author: Cyan
  */
 export async function getMenuList(options?: Data) {
-    return request<Result>('/api/system/getMenuList', {
-        method: 'GET',
-        params: options || {},
-    });
+  return request<ResponseModel>('/api/system/getMenuList', {
+    method: 'GET',
+    params: options || {},
+  });
 }
 
 /**
@@ -30,10 +29,10 @@ export async function getMenuList(options?: Data) {
  * @author: Cyan
  */
 export async function saveMenu(options?: Data) {
-    return request<Result>('/api/system/saveMenu', {
-        method: 'POST',
-        data: options || {},
-    });
+  return request<ResponseModel>('/api/system/saveMenu', {
+    method: 'POST',
+    data: options || {},
+  });
 }
 
 /**
@@ -43,8 +42,8 @@ export async function saveMenu(options?: Data) {
  * @author: Cyan
  */
 export async function delMenu(menu_id: string) {
-    return request<Result>('/api/system/delMenu', {
-        method: 'POST',
-        data: { menu_id },
-    });
+  return request<ResponseModel>('/api/system/delMenu', {
+    method: 'POST',
+    data: { menu_id },
+  });
 }

@@ -1,3 +1,11 @@
+/*
+ * @Description: International Module
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-10-17 08:54:02
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-10-17 10:19:39
+ */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InternationalService } from './international.service'; // International Service

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 09:48:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 20:32:45
+ * @LastEditTime: 2022-10-17 09:22:37
  */
 import { registerAs } from '@nestjs/config';
 

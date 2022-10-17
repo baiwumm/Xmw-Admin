@@ -4,11 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 23:58:29
+ * @LastEditTime: 2022-10-17 10:41:25
  */
 import { request } from '@umijs/max';
-import type { Data, Result } from '@/global/interface'
-
+import type { Data, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取国际化列表
@@ -17,10 +16,10 @@ import type { Data, Result } from '@/global/interface'
  * @author: Cyan
  */
 export async function getInternationalList(options?: Data) {
-    return request<Result>('/api/system/getInternationalList', {
-        method: 'GET',
-        params: options || {},
-    });
+  return request<ResponseModel>('/api/system/getInternationalList', {
+    method: 'GET',
+    params: options || {},
+  });
 }
 
 /**
@@ -30,10 +29,10 @@ export async function getInternationalList(options?: Data) {
  * @author: Cyan
  */
 export async function getAllLocalesLang(options?: Data) {
-    return request<Result>('/api/system/getAllLocalesLang', {
-        method: 'GET',
-        params: options || {},
-    });
+  return request<ResponseModel>('/api/system/getAllLocalesLang', {
+    method: 'GET',
+    params: options || {},
+  });
 }
 
 /**
@@ -43,10 +42,10 @@ export async function getAllLocalesLang(options?: Data) {
  * @author: Cyan
  */
 export async function saveInternational(options?: Data) {
-    return request<Result>('/api/system/saveInternational', {
-        method: 'POST',
-        data: options || {},
-    });
+  return request<ResponseModel>('/api/system/saveInternational', {
+    method: 'POST',
+    data: options || {},
+  });
 }
 
 /**
@@ -56,8 +55,8 @@ export async function saveInternational(options?: Data) {
  * @author: Cyan
  */
 export async function delInternational(id: string) {
-    return request<Result>('/api/system/delInternational', {
-        method: 'POST',
-        data: { id },
-    });
+  return request<ResponseModel>('/api/system/delInternational', {
+    method: 'POST',
+    data: { id },
+  });
 }

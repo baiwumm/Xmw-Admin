@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 22:49:15
+ * @LastEditTime: 2022-10-17 09:25:57
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
@@ -16,6 +16,7 @@ import { HttpReqTransformInterceptor } from '@/interceptor/http-req.interceptor'
 import { TransformInterceptor } from './interceptor/transform.interceptor'; // 全局拦截器，用来收集日志
 import App_configuration from './config/configuration'; // 全局配置
 import { logger } from './middleware/logger.middleware'; // 日志收集中间件
+import { Logger } from '@/utils/log4js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -38,10 +39,15 @@ async function bootstrap() {
     .addBearerAuth()
     .setDescription('一个完善的HttpNodejs服务')
     .setVersion('1.0')
-    .addTag('Http')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger-doc', app, document);
-  await app.listen(App_configuration().port);
+  await app.listen(App_configuration().port, () => {
+    Logger.info(
+      `服务已经启动,接口请访问:http://wwww.localhost:${
+        App_configuration().port
+      }`,
+    );
+  });
 }
 bootstrap();

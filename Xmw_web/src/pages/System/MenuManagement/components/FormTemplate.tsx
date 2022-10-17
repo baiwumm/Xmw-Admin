@@ -39,8 +39,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params = omit(params, ['children'])
         }
         await saveMenu(params).then(res => {
-            if (res.resCode === 200) {
-                message.success(res.resMsg);
+            if (res.code === 200) {
+                message.success(res.msg);
                 reloadTable()
                 // 重置表单
                 form.resetFields()

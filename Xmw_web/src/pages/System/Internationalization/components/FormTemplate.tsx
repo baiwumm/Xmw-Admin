@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 15:29:22
+ * @LastEditTime: 2022-10-17 10:44:52
  */
 
 // 引入第三方库
@@ -39,8 +39,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params = omit(params, ['children'])
         }
         await saveInternational(params).then(res => {
-            if (res.resCode === 200) {
-                message.success(res.resMsg);
+            if (res.code === 200) {
+                message.success(res.msg);
                 reloadTable()
                 // 重置表单
                 form.resetFields()

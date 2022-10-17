@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-08 13:48:56
+ * @LastEditTime: 2022-10-17 10:44:04
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -50,8 +50,8 @@ const TableTemplate: FC = () => {
             onOk: async () => {
                 if (role_id) {
                     await delRole(role_id).then(res => {
-                        if (res.resCode === 200) {
-                            message.success(res.resMsg)
+                        if (res.code === 200) {
+                            message.success(res.msg)
                             // 刷新表格
                             reloadTable()
                         }
@@ -96,7 +96,7 @@ const TableTemplate: FC = () => {
     // 设置角色状态
     const changeRoleStatus = async ({ role_id, status }: API.ROLEMANAGEMENT) => {
         await setRoleStatus({ role_id, status: status === '0' ? '1' : '0' }).then(result => {
-            message.success(result.resMsg)
+            message.success(result.msg)
             reloadTable()
         }).finally(() => {
             setRoleLoadingFalse()
@@ -230,15 +230,15 @@ const TableTemplate: FC = () => {
                     await getRoleList(params).then(res => {
                         result = res
                         // 将查询回来的menu_permission对象数组转成menu_id数组
-                        mainData = result.resData.data.map((element: any) => Object.assign(element, { menu_permission: element.menu_permission?.map((per: any) => per?.menu_id) }))
+                        mainData = result.data.data.map((element: any) => Object.assign(element, { menu_permission: element.menu_permission?.map((per: any) => per?.menu_id) }))
                     })
                     return {
                         data: mainData,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
-                        success: result.resCode === 200,
+                        success: result.code === 200,
                         // 不传会使用 data 的长度，如果是分页一定要传
-                        total: result.resData.total,
+                        total: result.data.total,
                     }
                 }
             }

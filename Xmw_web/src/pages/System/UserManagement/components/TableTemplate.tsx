@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 15:23:42
+ * @LastEditTime: 2022-10-17 10:44:11
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -62,8 +62,8 @@ const TableTemplate: FC = () => {
             onOk: async () => {
                 if (user_id) {
                     await delUser(user_id).then(res => {
-                        if (res.resCode === 200) {
-                            message.success(res.resMsg)
+                        if (res.code === 200) {
+                            message.success(res.msg)
                             // 刷新表格
                             reloadTable()
                         }
@@ -105,7 +105,7 @@ const TableTemplate: FC = () => {
     // 设置用户状态
     const changeUserStatus = async ({ user_id, status }: API.USERMANAGEMENT) => {
         await setUserStatus({ user_id, status: status === '0' ? '1' : '0' }).then(result => {
-            message.success(result.resMsg)
+            message.success(result.msg)
             reloadTable()
         }).finally(() => {
             setUserLoadingFalse()
@@ -353,12 +353,12 @@ const TableTemplate: FC = () => {
                             result = res
                         })
                         return {
-                            data: result.resData.data,
+                            data: result.data.data,
                             // success 请返回 true，
                             // 不然 table 会停止解析数据，即使有数据
-                            success: result.resCode === 200,
+                            success: result.code === 200,
                             // 不传会使用 data 的长度，如果是分页一定要传
-                            total: result.resData.total,
+                            total: result.data.total,
                         }
                     }
                 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 11:20:12
+ * @LastEditTime: 2022-10-17 10:44:32
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -51,8 +51,8 @@ const TableTemplate: FC = () => {
             onOk: async () => {
                 if (jobs_id) {
                     await delJobs(jobs_id).then(res => {
-                        if (res.resCode === 200) {
-                            message.success(res.resMsg)
+                        if (res.code === 200) {
+                            message.success(res.msg)
                             // 刷新表格
                             reloadTable()
                         }
@@ -206,15 +206,15 @@ const TableTemplate: FC = () => {
                     let result: any = {}
                     await getJobsList(params).then(res => {
                         result = res
-                        setTreeData(result.resData)
+                        setTreeData(result.data)
                     })
                     return {
-                        data: result.resData,
+                        data: result.data,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
-                        success: result.resCode === 200,
+                        success: result.code === 200,
                         // 不传会使用 data 的长度，如果是分页一定要传
-                        total: result.resData?.length,
+                        total: result.data?.length,
                     }
                 }
             }

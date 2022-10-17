@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-01 14:20:31
+ * @LastEditTime: 2022-10-17 10:41:41
  */
 import { request } from '@umijs/max';
-import type { Data, Result } from '@/global/interface';
+import type { Data, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取角色列表
@@ -16,7 +16,7 @@ import type { Data, Result } from '@/global/interface';
  * @author: Cyan
  */
 export async function getRoleList(options?: Data) {
-  return request<Result>('/api/system/getRoleList', {
+  return request<ResponseModel>('/api/system/getRoleList', {
     method: 'GET',
     params: options || {},
   });
@@ -29,7 +29,7 @@ export async function getRoleList(options?: Data) {
  * @author: Cyan
  */
 export async function saveRole(options?: Data) {
-  return request<Result>('/api/system/saveRole', {
+  return request<ResponseModel>('/api/system/saveRole', {
     method: 'POST',
     data: options || {},
   });
@@ -42,7 +42,7 @@ export async function saveRole(options?: Data) {
  * @author: Cyan
  */
 export async function delRole(role_id: string) {
-  return request<Result>('/api/system/delRole', {
+  return request<ResponseModel>('/api/system/delRole', {
     method: 'POST',
     data: { role_id },
   });
@@ -55,7 +55,7 @@ export async function delRole(role_id: string) {
  * @author: Cyan
  */
 export async function setRoleStatus(options?: Data) {
-  return request<Result>('/api/system/setRoleStatus', {
+  return request<ResponseModel>('/api/system/setRoleStatus', {
     method: 'POST',
     data: options || {},
   });

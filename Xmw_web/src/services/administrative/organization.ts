@@ -4,11 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-26 17:57:40
+ * @LastEditTime: 2022-10-17 10:41:13
  */
 import { request } from '@umijs/max';
-import { Data, Result } from '@/global/interface'
-
+import type { Data, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取组织管理列表
@@ -17,10 +16,10 @@ import { Data, Result } from '@/global/interface'
  * @author: Cyan
  */
 export async function getOrganizationList(options?: Data) {
-    return request<Result>('/api/administrative/getOrganizationList', {
-        method: 'GET',
-        params: options || {},
-    });
+  return request<ResponseModel>('/api/administrative/getOrganizationList', {
+    method: 'GET',
+    params: options || {},
+  });
 }
 
 /**
@@ -30,10 +29,10 @@ export async function getOrganizationList(options?: Data) {
  * @author: Cyan
  */
 export async function saveOrganization(options?: Data) {
-    return request<Result>('/api/administrative/saveOrganization', {
-        method: 'POST',
-        data: options || {},
-    });
+  return request<ResponseModel>('/api/administrative/saveOrganization', {
+    method: 'POST',
+    data: options || {},
+  });
 }
 
 /**
@@ -43,8 +42,8 @@ export async function saveOrganization(options?: Data) {
  * @author: Cyan
  */
 export async function delOrganization(org_id: string) {
-    return request<Result>('/api/administrative/delOrganization', {
-        method: 'POST',
-        data: { org_id },
-    });
+  return request<ResponseModel>('/api/administrative/delOrganization', {
+    method: 'POST',
+    data: { org_id },
+  });
 }

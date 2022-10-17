@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-09 16:56:29
+ * @LastEditTime: 2022-10-17 10:42:35
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -79,18 +79,18 @@ export const errorConfig: RequestConfig = {
       // 拦截响应数据，进行个性化处理
       const { data } = response as any;
       // 根据返回状态码，统一处理，需要前端和后端沟通确认
-      switch (data.resCode) {
+      switch (data.code) {
         // 成功发起请求并成功处理，一般用于更新数据时判断某个字段是否已存在
         case -1:
-          authError(data.resMsg);
+          authError(data.msg);
           break;
         // 成功发起请求，但是服务器内部处理错误，一般用于执行 sql 语句错误
         case -10:
-          authError(data.resMsg);
+          authError(data.msg);
           break;
         // 成功发起请求，但是内部处理出现错误
         case 400:
-          authError(data.resMsg);
+          authError(data.msg);
           break;
       }
       return response;
