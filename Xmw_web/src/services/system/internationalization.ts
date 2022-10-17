@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:41:25
+ * @LastEditTime: 2022-10-17 16:54:57
  */
 import { request } from '@umijs/max';
 import type { Data, ResponseModel } from '@/global/interface';
@@ -16,7 +16,7 @@ import type { Data, ResponseModel } from '@/global/interface';
  * @author: Cyan
  */
 export async function getInternationalList(options?: Data) {
-  return request<ResponseModel>('/api/system/getInternationalList', {
+  return request<ResponseModel>('/api/system/international', {
     method: 'GET',
     params: options || {},
   });
@@ -29,34 +29,47 @@ export async function getInternationalList(options?: Data) {
  * @author: Cyan
  */
 export async function getAllLocalesLang(options?: Data) {
-  return request<ResponseModel>('/api/system/getAllLocalesLang', {
+  return request<ResponseModel>('/api/system/international/allLocales', {
     method: 'GET',
     params: options || {},
   });
 }
 
 /**
- * @description: 保存国际化数据
+ * @description: 新增国际化数据
  * @param {Data} options
  * @return {*}
  * @author: Cyan
  */
-export async function saveInternational(options?: Data) {
-  return request<ResponseModel>('/api/system/saveInternational', {
+export async function createInternational(options?: Data) {
+  return request<ResponseModel>('/api/system/international', {
     method: 'POST',
     data: options || {},
   });
 }
 
 /**
- * @description: 删除国际化列表
- * @param {Data} id
+ * @description: 更新国际化数据
+ * @param {Data} options
+ * @return {*}
+ * @author: Cyan
+ */
+export async function updateInternational(options?: Data) {
+  return request<ResponseModel>('/api/system/international', {
+    method: 'PUT',
+    data: options || {},
+  });
+}
+
+/**
+ * @description: 删除国际化数据
+ * @param {Data} options
  * @return {*}
  * @author: Cyan
  */
 export async function delInternational(id: string) {
-  return request<ResponseModel>('/api/system/delInternational', {
-    method: 'POST',
+  return request<ResponseModel>('/api/system/international', {
+    method: 'DELETE',
     data: { id },
   });
 }

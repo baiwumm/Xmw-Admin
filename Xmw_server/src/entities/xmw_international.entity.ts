@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 09:58:54
+ * @LastEditTime: 2022-10-17 17:17:49
  */
 import {
   Entity,
@@ -14,9 +14,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { IsInt, Min, Max, IsUUID } from 'class-validator'; // entity validator
-
-@Entity()
+@Entity({ name: 'xmw_international' })
 export class XmwInternational {
   @PrimaryGeneratedColumn('uuid', { comment: 'id' })
   id: string;
@@ -66,7 +64,6 @@ export class XmwInternational {
     nullable: true,
     comment: '父级id',
   })
-  @IsUUID()
   parent_id: string;
 
   //创建人
@@ -75,16 +72,12 @@ export class XmwInternational {
     nullable: true,
     comment: '创建人',
   })
-  @IsUUID()
   founder: string;
 
   //排序
   @Column('int', {
     comment: '排序',
   })
-  @IsInt()
-  @Min(1)
-  @Max(999)
   sort: number;
 
   // 创建时间
@@ -92,6 +85,12 @@ export class XmwInternational {
   created_time: Date;
 
   // 最后一次更新时间
-  @UpdateDateColumn({ nullable: true, comment: '最后一次更新时间' })
+  @UpdateDateColumn({
+    nullable: true,
+    comment: '最后一次更新时间',
+  })
   updated_time: Date;
+
+  //子级
+  children?: XmwInternational[];
 }

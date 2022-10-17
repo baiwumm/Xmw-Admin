@@ -1,10 +1,18 @@
+/*
+ * @Description: 日志收集管理中间件
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-10-17 08:54:02
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-10-17 18:26:01
+ */
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { Logger } from '../utils/log4js';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: () => void) {
+  use(req: Request, res: Response, next: NextFunction) {
     const code = res.statusCode; // 响应状态码
     next();
     // 组装日志信息
@@ -22,21 +30,21 @@ export class LoggerMiddleware implements NestMiddleware {
 }
 
 // 函数式中间件
-export function logger(req: Request, res: Response, next: () => any) {
+export function logger(req: Request, res: Response, next: NextFunction) {
   const code = res.statusCode; // 响应状态码
   next();
   // 组装日志信息
-  const logFormat = ` >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    Request original url: ${req.originalUrl}
-    Method: ${req.method}
-    IP: ${req.ip}
-    Status code: ${code}
-    Parmas: ${JSON.stringify(req.params)}
-    Query: ${JSON.stringify(req.query)}
-    Body: ${JSON.stringify(
-      req.body,
-    )} \n  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  `;
+  const logFormat = `
+      --------------------- Logger中间件，日志收集 ---------------------
+      Request original url: ${req.originalUrl}
+      Method: ${req.method}
+      IP: ${req.ip}
+      Status code: ${code}
+      Parmas: ${JSON.stringify(req.params)}
+      Query: ${JSON.stringify(req.query)}
+      Body: ${JSON.stringify(req.body)} 
+      --------------------- Logger中间件，日志收集 --------------------- 
+      `;
   // 根据状态码，进行日志类型区分
   if (code >= 500) {
     Logger.error(logFormat);

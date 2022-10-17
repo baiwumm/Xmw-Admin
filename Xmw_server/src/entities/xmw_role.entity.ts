@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:14:32
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 17:44:48
+ * @LastEditTime: 2022-10-17 18:16:44
  */
 import {
   Entity,
@@ -14,9 +14,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { IsInt, Min, Max, IsUUID, IsNotEmpty, Length } from 'class-validator'; // entity validator
-
-@Entity()
+@Entity({ name: 'xmw_role' })
 export class XmwRole {
   @PrimaryGeneratedColumn('uuid', { comment: '角色id' })
   role_id: string;
@@ -26,8 +24,6 @@ export class XmwRole {
     length: 20,
     comment: '角色名称',
   })
-  @IsNotEmpty({ message: '角色名称不能为空' })
-  @Length(2, 20, { message: '角色名称的长度在2到20之间' })
   role_name: string;
 
   //角色编码
@@ -42,7 +38,6 @@ export class XmwRole {
     length: 200,
     comment: '角色描述',
   })
-  @IsUUID()
   describe: string;
 
   //创建人
@@ -51,7 +46,6 @@ export class XmwRole {
     nullable: true,
     comment: '创建人',
   })
-  @IsUUID()
   founder: string;
 
   //角色状态
@@ -64,9 +58,6 @@ export class XmwRole {
   @Column('int', {
     comment: '排序',
   })
-  @IsInt()
-  @Min(1)
-  @Max(999)
   sort: number;
 
   // 创建时间

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:14:32
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 17:44:37
+ * @LastEditTime: 2022-10-17 18:16:35
  */
 import {
   Entity,
@@ -13,9 +13,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-import { IsUUID } from 'class-validator'; // entity validator
-
-@Entity()
+@Entity({ name: 'xmw_permission' })
 export class XmwPermission {
   @PrimaryGeneratedColumn('uuid', { comment: '权限id' })
   permission_id: string;
@@ -26,7 +24,6 @@ export class XmwPermission {
     nullable: true,
     comment: '角色id',
   })
-  @IsUUID()
   role_id: string;
 
   //菜单id
@@ -35,7 +32,6 @@ export class XmwPermission {
     nullable: true,
     comment: '菜单id',
   })
-  @IsUUID()
   menu_id: string;
 
   // 创建时间

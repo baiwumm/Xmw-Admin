@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 20:50:59
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 20:51:33
+ * @LastEditTime: 2022-10-17 15:50:13
  */
 import * as path from 'path';
 const baseLogPath = path.resolve(__dirname, '../../logs'); // 日志要写入哪个目录

@@ -4,9 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:50:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 09:48:24
+ * @LastEditTime: 2022-10-17 14:39:39
  */
-import { LangModel } from '@/common/interface';
+import { XmwInternational } from '@/entities/xmw_international.entity'; // 数据库实体
 /**
  * @description: 多语言配置项
  * @return {*}
@@ -53,7 +53,7 @@ export const initializeTree = (
  * @author: Cyan
  */
 export const initializeLang = (
-  resource: LangModel[],
+  resource: XmwInternational[],
   lang: string,
   name = 'name',
 ) => {
@@ -62,7 +62,7 @@ export const initializeLang = (
   for (let i = 0; i < resource.length; i++) {
     const resourceItem = resource[i];
     // 递归函数
-    function recursive(obj: LangModel, serilKey = '') {
+    function recursive(obj: XmwInternational, serilKey = '') {
       // 拼接对象名
       let pKey = serilKey;
       pKey += pKey ? `.${obj[name]}` : obj[name];

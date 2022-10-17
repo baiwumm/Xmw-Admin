@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:44:52
+ * @LastEditTime: 2022-10-17 18:06:11
  */
 
 // 引入第三方库
@@ -17,7 +17,7 @@ import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { saveInternational } from '@/services/system/internationalization' // 国际化接口
+import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
@@ -38,7 +38,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         if (params.children) {
             params = omit(params, ['children'])
         }
-        await saveInternational(params).then(res => {
+        // 执行数据库操作
+        await (params.id ? updateInternational : createInternational)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);
                 reloadTable()
@@ -76,7 +77,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
                 return isSuccess
             }}
             onVisibleChange={visiable => {
-                if (visiable) {
+                if (visiable && formData) {
                     form.setFieldsValue(formData);
                 }
             }}

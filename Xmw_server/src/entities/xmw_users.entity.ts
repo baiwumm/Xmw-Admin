@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 14:18:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 17:44:42
+ * @LastEditTime: 2022-10-17 18:17:32
  */
 import {
   Entity,
@@ -13,20 +13,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {
-  IsNotEmpty,
-  Length,
-  IsInt,
-  Min,
-  Max,
-  IsEmail,
-  IsIP,
-  IsJWT,
-  IsMobilePhone,
-  IsUUID,
-} from 'class-validator'; // entity validator
 
-@Entity()
+@Entity({ name: 'xmw_users' })
 export class XmwUsers {
   //用户id
   @PrimaryGeneratedColumn('uuid', { comment: '用户id' })
@@ -37,8 +25,6 @@ export class XmwUsers {
     length: 20,
     comment: '用户名',
   })
-  @IsNotEmpty({ message: '用户名不能为空' })
-  @Length(4, 20, { message: '用户名的长度在4到20之间' })
   user_name: string;
 
   //用户工号
@@ -75,9 +61,6 @@ export class XmwUsers {
   @Column('int', {
     comment: '年龄',
   })
-  @IsInt()
-  @Min(1)
-  @Max(120)
   age: number;
 
   //电子邮箱
@@ -86,7 +69,6 @@ export class XmwUsers {
     nullable: true,
     comment: '电子邮箱',
   })
-  @IsEmail()
   email: string;
 
   //电话号码
@@ -94,7 +76,6 @@ export class XmwUsers {
     length: 11,
     comment: '电话号码',
   })
-  @IsMobilePhone()
   phone: string;
 
   //头像地址
@@ -116,9 +97,6 @@ export class XmwUsers {
   @Column('int', {
     comment: '排序',
   })
-  @IsInt()
-  @Min(1)
-  @Max(999)
   sort: number;
 
   //用户状态
@@ -133,7 +111,6 @@ export class XmwUsers {
     nullable: true,
     comment: 'token',
   })
-  @IsJWT()
   token: string;
 
   //座右铭
@@ -169,7 +146,6 @@ export class XmwUsers {
     length: 36,
     comment: '岗位id',
   })
-  @IsUUID()
   jobs_id: string;
 
   //组织id
@@ -177,7 +153,6 @@ export class XmwUsers {
     length: 36,
     comment: '组织id',
   })
-  @IsUUID()
   org_id: string;
 
   //角色id
@@ -185,7 +160,6 @@ export class XmwUsers {
     length: 36,
     comment: '角色id',
   })
-  @IsUUID()
   role_id: string;
 
   //创建人
@@ -193,7 +167,6 @@ export class XmwUsers {
     length: 36,
     comment: '创建人',
   })
-  @IsUUID()
   founder: string;
 
   //登录次数
@@ -208,7 +181,6 @@ export class XmwUsers {
     nullable: true,
     comment: '最后一次登录ip',
   })
-  @IsIP(4)
   login_last_ip: number;
 
   //最后一次登录时间

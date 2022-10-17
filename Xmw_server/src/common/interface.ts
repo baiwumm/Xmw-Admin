@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 10:38:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:39:22
+ * @LastEditTime: 2022-10-17 14:39:43
  */
 
 /**
@@ -34,23 +34,4 @@ export type ResponseModel<T = Data[]> = {
   data: T;
   msg?: string;
   success?: boolean;
-};
-
-/**
- * @description: 国际化
- * @return {*}
- * @author: Cyan
- */
-export type LangModel = {
-  id: string;
-  name: string;
-  'zh-CN'?: string;
-  'en-US'?: string;
-  'ja-JP'?: string;
-  'zh-TW'?: string;
-  parent_id?: string;
-  founder?: string;
-  created_time: Date;
-  update_time?: Date;
-  children?: LangModel[];
 };

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 17:44:07
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 19:00:58
+ * @LastEditTime: 2022-10-17 18:15:41
  */
 import {
   Entity,
@@ -13,20 +13,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import {
-  IsNotEmpty,
-  Length,
-  IsInt,
-  Min,
-  Max,
-  IsEmail,
-  IsIP,
-  IsJWT,
-  IsMobilePhone,
-  IsUUID,
-} from 'class-validator'; // entity validator
 
-@Entity()
+@Entity({ name: 'xmw_menu' })
 export class XmwMenu {
   //菜单id
   @PrimaryGeneratedColumn('uuid', { comment: '菜单id' })
@@ -38,7 +26,6 @@ export class XmwMenu {
     nullable: true,
     comment: '国际化对应的name',
   })
-  @IsUUID()
   name: string;
 
   //菜单类型
@@ -86,7 +73,6 @@ export class XmwMenu {
     nullable: true,
     comment: '父级id',
   })
-  @IsUUID()
   parent_id: string;
 
   //当path是一个url，点击新窗口打开
@@ -203,16 +189,12 @@ export class XmwMenu {
     nullable: true,
     comment: '创建人',
   })
-  @IsUUID()
   founder: string;
 
   //排序
   @Column('int', {
     comment: '排序',
   })
-  @IsInt()
-  @Min(1)
-  @Max(999)
   sort: number;
 
   //菜单状态

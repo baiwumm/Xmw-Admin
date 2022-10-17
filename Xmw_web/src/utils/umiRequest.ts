@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:42:35
+ * @LastEditTime: 2022-10-17 18:04:09
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
-import { HTTP_CODES } from '@/global/enum'; // 请求状态码
 // import { Result as ResponseStructure } from '@/global/interface' // 与后端约定的响应数据格式
 
 /**
@@ -51,7 +50,7 @@ export const errorConfig: RequestConfig = {
       if (response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        authError(HTTP_CODES[error.response.status]);
+        authError(response.data.msg);
       } else if (resquest) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，

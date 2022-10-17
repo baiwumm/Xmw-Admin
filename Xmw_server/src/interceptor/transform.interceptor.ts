@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 22:04:12
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:32:01
+ * @LastEditTime: 2022-10-17 18:25:13
  */
 import {
   CallHandler,
@@ -22,13 +22,15 @@ export class TransformInterceptor implements NestInterceptor {
     const req = context.getArgByIndex(1).req;
     return next.handle().pipe(
       map((data) => {
-        const logFormat = ` <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    Request original url: ${req.originalUrl}
-    Method: ${req.method}
-    IP: ${req.ip}
-    User: ${JSON.stringify(req.user)}
-    Response data:\n ${JSON.stringify(data.body)}
-    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`;
+        const logFormat = `
+            --------------------- Logger 日志 ---------------------
+            Request original url: ${req.originalUrl}
+            Method: ${req.method}
+            IP: ${req.ip}
+            User: ${JSON.stringify(req.user)}
+            Response data:\n ${JSON.stringify(data.body)}
+            --------------------- Logger 日志 ---------------------
+            `;
         Logger.info(logFormat);
         Logger.access(logFormat);
         return data;

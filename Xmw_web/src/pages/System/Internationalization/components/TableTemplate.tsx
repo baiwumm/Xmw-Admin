@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:45:15
+ * @LastEditTime: 2022-10-17 14:19:35
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -19,6 +19,7 @@ import moment from 'moment'
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
+import type { Data } from '@/global/interface'
 
 const TableTemplate: FC = () => {
     const { formatMessage } = useIntl();
@@ -160,8 +161,8 @@ const TableTemplate: FC = () => {
             search: {
                 transform: (value) => {
                     return {
-                        start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-                        end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+                        start_time: moment(value[0]).format('YYYY-MM-DD 00:00:00'),
+                        end_time: moment(value[1]).format('YYYY-MM-DD 23:59:59'),
                     };
                 },
             },
@@ -191,7 +192,7 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: any = {}
+                    let result: Data = {}
                     await getInternationalList(params).then(res => {
                         result = res
                         setTreeData(result.data)

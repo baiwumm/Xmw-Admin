@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-16 17:44:59
+ * @LastEditTime: 2022-10-17 18:15:16
  */
 import {
   Entity,
@@ -14,9 +14,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { IsInt, Min, Max, IsUUID, IsNotEmpty, Length } from 'class-validator'; // entity validator
-
-@Entity()
+@Entity({ name: 'xmw_jobs' })
 export class XmwJobs {
   @PrimaryGeneratedColumn('uuid', { comment: '岗位id' })
   jobs_id: string;
@@ -26,8 +24,6 @@ export class XmwJobs {
     length: 20,
     comment: '岗位名称',
   })
-  @IsNotEmpty({ message: '岗位名称不能为空' })
-  @Length(2, 20, { message: '岗位名称的长度在2到20之间' })
   jobs_name: string;
 
   //组织id
@@ -35,7 +31,6 @@ export class XmwJobs {
     length: 36,
     comment: '组织id',
   })
-  @IsUUID()
   org_id: string;
 
   //父级id
@@ -44,7 +39,6 @@ export class XmwJobs {
     nullable: true,
     comment: '父级id',
   })
-  @IsUUID()
   parent_id: string;
 
   //岗位负责人
@@ -53,7 +47,6 @@ export class XmwJobs {
     nullable: true,
     comment: '岗位负责人',
   })
-  @IsUUID()
   leader: string;
 
   //岗位描述
@@ -61,7 +54,6 @@ export class XmwJobs {
     length: 200,
     comment: '岗位描述',
   })
-  @IsUUID()
   describe: string;
 
   //创建人
@@ -70,16 +62,12 @@ export class XmwJobs {
     nullable: true,
     comment: '创建人',
   })
-  @IsUUID()
   founder: string;
 
   //排序
   @Column('int', {
     comment: '排序',
   })
-  @IsInt()
-  @Min(1)
-  @Max(999)
   sort: number;
 
   // 创建时间
