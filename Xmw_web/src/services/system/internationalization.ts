@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 16:54:57
+ * @LastEditTime: 2022-10-18 18:23:43
  */
 import { request } from '@umijs/max';
 import type { Data, ResponseModel } from '@/global/interface';
@@ -67,9 +67,9 @@ export async function updateInternational(options?: Data) {
  * @return {*}
  * @author: Cyan
  */
-export async function delInternational(id: string) {
+export async function delInternational(international_id: string) {
   return request<ResponseModel>('/api/system/international', {
     method: 'DELETE',
-    data: { id },
+    data: { international_id },
   });
 }

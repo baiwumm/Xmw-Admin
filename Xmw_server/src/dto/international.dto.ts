@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-17 09:34:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 14:27:46
+ * @LastEditTime: 2022-10-18 18:07:25
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsEmail } from 'class-validator'; // entity validator
+import { IsNotEmpty } from 'class-validator'; // entity validator
 
 /**
  * @description: 查询国际化列表参数 Dto
@@ -21,7 +21,7 @@ export class InternationalListEto {
     default: 'international',
     required: false,
   })
-  name?: string;
+  international_name?: string;
 
   @ApiProperty({
     type: Date,
@@ -56,17 +56,17 @@ export class InternationalListEto {
 export class InternationalResponseEto {
   @ApiProperty({
     type: String,
-    description: 'id',
+    description: '国际化id',
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
   })
-  id: string;
+  international_id: string;
 
   @ApiProperty({
     type: String,
     description: '国际化字段',
     default: 'international',
   })
-  name: string;
+  international_name: string;
 
   @ApiProperty({
     type: String,
@@ -140,11 +140,11 @@ export class InternationalResponseEto {
 export class InternationalSaveEto {
   @ApiProperty({
     type: String,
-    description: 'id',
+    description: '国际化id',
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
     required: false,
   })
-  id?: string;
+  international_id?: string;
 
   @ApiProperty({
     type: String,
@@ -160,7 +160,7 @@ export class InternationalSaveEto {
     default: 'international',
   })
   @IsNotEmpty({ message: '国际化字段不能为空' })
-  name: string;
+  international_name: string;
 
   @ApiProperty({
     type: String,
@@ -210,8 +210,8 @@ export class InternationalSaveEto {
 export class InternationalDeleteEto {
   @ApiProperty({
     type: String,
-    description: 'id',
+    description: 'international_id',
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
   })
-  id?: string;
+  international_id?: string;
 }

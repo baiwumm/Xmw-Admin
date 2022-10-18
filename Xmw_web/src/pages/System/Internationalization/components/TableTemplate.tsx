@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 16:00:53
+ * @LastEditTime: 2022-10-18 18:20:34
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useModel } from '@umijs/max'
-import { ProTable } from '@ant-design/pro-components' // antd 高级组件
+import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
+import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
@@ -38,14 +38,14 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (id: string | undefined) => {
+    const handlerDelete = async (international_id: string | undefined) => {
         Modal.confirm({
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: () => {
                 return new Promise<void>(async (resolve, reject): Promise<void> => {
-                    if (id) {
-                        await delInternational(id).then(res => {
+                    if (international_id) {
+                        await delInternational(international_id).then(res => {
                             if (res.code === 200) {
                                 message.success(res.msg)
                                 // 刷新表格
@@ -61,59 +61,57 @@ const TableTemplate: FC = () => {
         })
 
     }
-    //    下拉框菜单渲染
+    //  下拉框菜单渲染
     const DropdownMenu = (record: API.INTERNATIONALIZATION) => {
         return (
-            <Menu
-                items={[
-                    {
-                        label: <FormTemplate
-                            treeData={treeData}
-                            reloadTable={reloadTable}
-                            parent_id={parent_id}
-                            triggerDom={
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<ClusterOutlined />}
-                                    block
-                                    onClick={() => set_parent_id(record?.id)}
-                                >
-                                    {formatMessage({ id: 'menu.system.internationalization.add-child' })}
-                                </Button>}
-                        />,
-                        key: 'addChild',
-                    },
-                    {
-                        label: <FormTemplate
-                            treeData={treeData}
-                            reloadTable={reloadTable}
-                            formData={currentRecord}
-                            triggerDom={
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<EditOutlined />}
-                                    block
-                                    onClick={() => setCurrentRecord(record)}
-                                >
-                                    {formatMessage({ id: 'menu.system.internationalization.edit' })}
-                                </Button>}
-                        />,
-                        key: 'edit',
-                    },
-                    {
-                        label: <Button
-                            block
-                            type="text"
-                            size="small"
-                            icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >
-                            {formatMessage({ id: 'menu.system.internationalization.delete' })}
-                        </Button>,
-                        key: 'delete',
-                    },
-                ]}
-            />
+            [
+                {
+                    name: <FormTemplate
+                        treeData={treeData}
+                        reloadTable={reloadTable}
+                        parent_id={parent_id}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<ClusterOutlined />}
+                                block
+                                onClick={() => set_parent_id(record?.international_id)}
+                            >
+                                {formatMessage({ id: 'menu.system.internationalization.add-child' })}
+                            </Button>}
+                    />,
+                    key: 'addChild',
+                },
+                {
+                    name: <FormTemplate
+                        treeData={treeData}
+                        reloadTable={reloadTable}
+                        formData={currentRecord}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<EditOutlined />}
+                                block
+                                onClick={() => setCurrentRecord(record)}
+                            >
+                                {formatMessage({ id: 'menu.system.internationalization.edit' })}
+                            </Button>}
+                    />,
+                    key: 'edit',
+                },
+                {
+                    name: <Button
+                        block
+                        type="text"
+                        size="small"
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.international_id)} >
+                        {formatMessage({ id: 'menu.system.internationalization.delete' })}
+                    </Button>,
+                    key: 'delete',
+                },
+            ]
         );
     }
     /**
@@ -124,7 +122,7 @@ const TableTemplate: FC = () => {
     const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
         {
             title: formatMessage({ id: 'pages.system.internationalization.name' }),
-            dataIndex: 'name',
+            dataIndex: 'international_name',
             ellipsis: true,
             render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
         },
@@ -192,14 +190,22 @@ const TableTemplate: FC = () => {
             width: 120,
             align: 'center',
             key: 'option',
-            render: (_, record) => [
-                <Dropdown overlay={DropdownMenu(record)} key="operation" >
-                    <Button size="small">
-                        {formatMessage({ id: 'global.table.operation' })}
-                        <DownOutlined />
-                    </Button>
-                </Dropdown >
-            ]
+            render: (_, record) => {
+                console.log('recordrecord', record)
+                return (
+                    [
+                        <TableDropdown
+                            key="actionGroup"
+                            menus={DropdownMenu(record)}
+                        >
+                            <Button size="small">
+                                {formatMessage({ id: 'global.table.operation' })}
+                                <DownOutlined />
+                            </Button>
+                        </TableDropdown>,
+                    ]
+                )
+            },
         },
     ]
 
@@ -225,7 +231,7 @@ const TableTemplate: FC = () => {
                 }
             }
             }
-            rowKey="id"
+            rowKey="international_id"
             pagination={false}
             // 工具栏
             toolBarRender={() => [

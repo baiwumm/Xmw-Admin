@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 15:54:36
+ * @LastEditTime: 2022-10-18 18:15:58
  */
 
 // 引入第三方库
@@ -25,7 +25,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     // 初始化表单
     const [form] = Form.useForm<API.INTERNATIONALIZATION>();
     // ModalForm 不同状态下 标题显示
-    const formTitle = formData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
+    const formTitle = formData?.international_id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.international_name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
         // 提交数据
@@ -40,7 +40,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params = omit(params, ['children', 'value', 'label'])
         }
         // 执行数据库操作
-        await (params.id ? updateInternational : createInternational)(params).then(res => {
+        await (params.international_id ? updateInternational : createInternational)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);
                 reloadTable()

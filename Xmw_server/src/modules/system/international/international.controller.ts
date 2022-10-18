@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 14:48:17
+ * @LastEditTime: 2022-10-18 18:09:38
  */
 import {
   Controller,
   Get,
   Post,
   Put,
-  Param,
   Delete,
   Query,
   Body,
@@ -106,9 +105,11 @@ export class InternationalController {
    */
   @Delete()
   async deleteInternational(
-    @Body() { id }: InternationalDeleteEto,
+    @Body() { international_id }: InternationalDeleteEto,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.internationalService.deleteInternational(id);
+    const response = await this.internationalService.deleteInternational(
+      international_id,
+    );
     return response;
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 15:52:31
+ * @LastEditTime: 2022-10-18 18:19:50
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,7 +15,6 @@ import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全�
 import {
   InternationalListEto,
   InternationalSaveEto,
-  InternationalDeleteEto,
 } from '@/dto/international.dto';
 
 @Injectable()
@@ -35,18 +34,31 @@ export class InternationalService {
     const result: ResData = {};
     // 查询数据
     const sqlData = await this.internationaRepository.find({
-      select: ['id', 'name', 'zh-CN', 'en-US', 'ja-JP', 'zh-TW', 'parent_id'], // 指定返回的字段
+      select: [
+        'international_id',
+        'international_name',
+        'zh-CN',
+        'en-US',
+        'ja-JP',
+        'zh-TW',
+        'parent_id',
+      ], // 指定返回的字段
       // 按时间倒序
       order: {
         created_time: 'DESC',
       },
     });
     // 先将数据转成树形结构
-    const treeLang = initializeTree(sqlData, 'id', 'parent_id', 'children');
+    const treeLang = initializeTree(
+      sqlData,
+      'international_id',
+      'parent_id',
+      'children',
+    );
     // 转成层级对象
     for (let i = 0; i < LOCALES_LANG.length; i++) {
       const lang = LOCALES_LANG[i];
-      result[lang] = initializeLang(treeLang, lang);
+      result[lang] = initializeLang(treeLang, lang, 'international_name');
     }
     return result;
   }
@@ -60,10 +72,12 @@ export class InternationalService {
     internationalInfo: InternationalListEto,
   ): Promise<XmwInternational[]> {
     // 解构参数
-    const { name, start_time, end_time, isMenu } = internationalInfo;
+    const { international_name, start_time, end_time, isMenu } =
+      internationalInfo;
     // 查询参数
     const where: ResData = {};
-    if (name) where.name = Like(`%${name}%`);
+    if (international_name)
+      where.international_name = Like(`%${international_name}%`);
     if (start_time && end_time)
       where.created_time = Between(start_time, end_time);
     // 查询数据
@@ -76,10 +90,16 @@ export class InternationalService {
       },
     });
     // 将数据转成树形结构
-    const result = initializeTree(sqlData, 'id', 'parent_id', 'children');
+    const result = initializeTree(
+      sqlData,
+      'international_id',
+      'parent_id',
+      'children',
+    );
     return isMenu
-      ? result.filter((element: XmwInternational) => element.name == 'menu')[0]
-          .children
+      ? result.filter(
+          (element: XmwInternational) => element.international_name == 'menu',
+        )[0].children
       : result;
   }
 
@@ -92,14 +112,18 @@ export class InternationalService {
     internationalInfo: InternationalSaveEto,
   ): Promise<ResponseModel<ResData>> {
     // 解构参数
-    const { name, parent_id } = internationalInfo;
+    const { international_name, parent_id } = internationalInfo;
     // 相同层级名称不能相同
     const exist = await this.internationaRepository.findOne({
-      where: { name },
+      where: { international_name },
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist && exist.parent_id == parent_id) {
-      return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
+      return {
+        data: {},
+        msg: '同一层级 international_name 不能相同！',
+        code: -1,
+      };
     }
     // 如果通过则执行 sql save 语句
     const result = await this.internationaRepository.save(internationalInfo);
@@ -112,24 +136,36 @@ export class InternationalService {
    * @author: Cyan
    */
   async updateInternational(
-    params: InternationalSaveEto,
+    internationalInfo: InternationalSaveEto,
   ): Promise<ResponseModel<ResData>> {
     // 解构参数
-    const { id, name, parent_id } = params;
+    const { international_id, international_name, parent_id } =
+      internationalInfo;
     // 判断 parent_id 是否和 id相同
-    if (parent_id && parent_id === id) {
+    if (parent_id && parent_id === international_id) {
       return { data: {}, msg: '父级不能和自己相同！', code: -1 };
     }
     // 相同层级名称不能相同
     const exist = await this.internationaRepository.findOne({
-      where: { name, parent_id, id: Not(id) },
+      where: {
+        international_name,
+        parent_id,
+        international_id: Not(international_id),
+      },
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
+      return {
+        data: {},
+        msg: '同一层级 international_name 不能相同！',
+        code: -1,
+      };
     }
     // 如果通过则执行 sql update 语句
-    const result = await this.internationaRepository.update(id, params);
+    const result = await this.internationaRepository.update(
+      international_id,
+      internationalInfo,
+    );
     return { data: result };
   }
 
@@ -138,17 +174,19 @@ export class InternationalService {
    * @return {*}
    * @author: Cyan
    */
-  async deleteInternational(id: string): Promise<ResponseModel<ResData>> {
+  async deleteInternational(
+    international_id: string,
+  ): Promise<ResponseModel<ResData>> {
     // 判断当前数据是否有子级，如果有数据的parent_id是id，则存在子级
     const exist = await this.internationaRepository.findOne({
-      where: { parent_id: id },
+      where: { parent_id: international_id },
     });
     // 如果有结果，则证明已存在
     if (exist) {
       return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
     }
     // 如果通过则执行 sql delete 语句
-    const result = await this.internationaRepository.delete(id);
+    const result = await this.internationaRepository.delete(international_id);
     return { data: result };
   }
 }

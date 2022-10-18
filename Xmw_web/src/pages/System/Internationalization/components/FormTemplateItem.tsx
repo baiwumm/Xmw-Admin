@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 10:34:00
+ * @LastEditTime: 2022-10-18 18:21:01
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -28,8 +28,8 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
                     disabled: !!parent_id,
                     defaultValue: parent_id || null,
                     fieldNames: {
-                        label: 'name',
-                        value: 'id'
+                        label: 'international_name',
+                        value: 'international_id'
                     },
                     treeDefaultExpandAll: true,
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
@@ -38,7 +38,7 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
             />
             {/* 国际化字段 */}
             <ProFormText
-                name="name"
+                name="international_name"
                 colProps={{ span: 24 }}
                 label={formatMessage({ id: 'pages.system.internationalization.name' })}
                 placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.internationalization.name' })}

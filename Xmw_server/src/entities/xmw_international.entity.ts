@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 17:17:49
+ * @LastEditTime: 2022-10-18 18:05:56
  */
 import {
   Entity,
@@ -16,15 +16,15 @@ import {
 
 @Entity({ name: 'xmw_international' })
 export class XmwInternational {
-  @PrimaryGeneratedColumn('uuid', { comment: 'id' })
-  id: string;
+  @PrimaryGeneratedColumn('uuid', { comment: '国际化id' })
+  international_id: string;
 
   //国际化字段
   @Column('varchar', {
     length: 32,
     comment: '国际化字段',
   })
-  name: string;
+  international_name: string;
 
   //中文
   @Column('varchar', {
