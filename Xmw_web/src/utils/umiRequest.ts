@@ -4,15 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:04:09
+ * @LastEditTime: 2022-10-18 11:14:50
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
-// import { Result as ResponseStructure } from '@/global/interface' // 与后端约定的响应数据格式
-
 /**
  * @description: 防抖函数统一处理异常错误
  * @param {*} debounce
@@ -31,10 +29,6 @@ const authError = debounce((content, duration = 3, status = 'error') => {
 export const errorConfig: RequestConfig = {
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
-    // 错误抛出
-    errorThrower: (res) => {
-      console.log('抛出错误。。。。', res);
-    },
     /**
      * @description:
      * @param {any} error:错误信息
@@ -50,7 +44,7 @@ export const errorConfig: RequestConfig = {
       if (response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        authError(response.data.msg);
+        authError(response.data.msg || '服务器内部发生错误！');
       } else if (resquest) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -79,12 +73,8 @@ export const errorConfig: RequestConfig = {
       const { data } = response as any;
       // 根据返回状态码，统一处理，需要前端和后端沟通确认
       switch (data.code) {
-        // 成功发起请求并成功处理，一般用于更新数据时判断某个字段是否已存在
+        // 成功发起请求并成功处理，一般用于数据库字段校验
         case -1:
-          authError(data.msg);
-          break;
-        // 成功发起请求，但是服务器内部处理错误，一般用于执行 sql 语句错误
-        case -10:
           authError(data.msg);
           break;
         // 成功发起请求，但是内部处理出现错误

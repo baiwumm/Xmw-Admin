@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:06:11
+ * @LastEditTime: 2022-10-18 15:54:36
  */
 
 // 引入第三方库
@@ -34,9 +34,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         if (parent_id) {
             params.parent_id = parent_id
         }
-        // 删除 children 属性
+        // 删除 多余的 属性
+        // 这里不清楚编辑最顶级数据时，formData会自动加上label和value两个属性，原因未知
         if (params.children) {
-            params = omit(params, ['children'])
+            params = omit(params, ['children', 'value', 'label'])
         }
         // 执行数据库操作
         await (params.id ? updateInternational : createInternational)(params).then(res => {

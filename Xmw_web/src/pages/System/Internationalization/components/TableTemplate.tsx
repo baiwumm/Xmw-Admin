@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 14:19:35
+ * @LastEditTime: 2022-10-18 16:00:53
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -19,7 +19,7 @@ import moment from 'moment'
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
-import type { Data } from '@/global/interface'
+import type { ResData } from '@/global/interface'
 
 const TableTemplate: FC = () => {
     const { formatMessage } = useIntl();
@@ -42,66 +42,85 @@ const TableTemplate: FC = () => {
         Modal.confirm({
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
-            onOk: async () => {
-                if (id) {
-                    await delInternational(id).then(res => {
-                        if (res.code === 200) {
-                            message.success(res.msg)
-                            // 刷新表格
-                            reloadTable()
-                        }
-                    })
-                }
+            onOk: () => {
+                return new Promise<void>(async (resolve, reject): Promise<void> => {
+                    if (id) {
+                        await delInternational(id).then(res => {
+                            if (res.code === 200) {
+                                message.success(res.msg)
+                                // 刷新表格
+                                reloadTable()
+                                resolve()
+                            }
+                        })
+                        reject()
+                    }
+                })
+
             }
         })
 
     }
     //    下拉框菜单渲染
-    const DropdownMenu = (
-        <Menu
-            items={[
-                {
-                    label: <FormTemplate
-                        treeData={treeData}
-                        reloadTable={reloadTable}
-                        parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.system.internationalization.add-child' })}</Button>}
-                    />,
-                    key: 'addChild',
-                },
-                {
-                    label: <FormTemplate
-                        treeData={treeData}
-                        reloadTable={reloadTable}
-                        formData={currentRecord}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.system.internationalization.edit' })}</Button>}
-                    />,
-                    key: 'edit',
-                },
-                {
-                    label: <Button
-                        block
-                        type="text"
-                        size="small"
-                        icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.id)} >
-                        {formatMessage({ id: 'menu.system.internationalization.delete' })}
-                    </Button>,
-                    key: 'delete',
-                },
-            ]}
-        />
-    );
-
-    // 操作下拉框
-    const dropdownMenuClick = (record: API.INTERNATIONALIZATION) => {
-        setCurrentRecord(record)
-        set_parent_id(record?.id)
+    const DropdownMenu = (record: API.INTERNATIONALIZATION) => {
+        return (
+            <Menu
+                items={[
+                    {
+                        label: <FormTemplate
+                            treeData={treeData}
+                            reloadTable={reloadTable}
+                            parent_id={parent_id}
+                            triggerDom={
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<ClusterOutlined />}
+                                    block
+                                    onClick={() => set_parent_id(record?.id)}
+                                >
+                                    {formatMessage({ id: 'menu.system.internationalization.add-child' })}
+                                </Button>}
+                        />,
+                        key: 'addChild',
+                    },
+                    {
+                        label: <FormTemplate
+                            treeData={treeData}
+                            reloadTable={reloadTable}
+                            formData={currentRecord}
+                            triggerDom={
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<EditOutlined />}
+                                    block
+                                    onClick={() => setCurrentRecord(record)}
+                                >
+                                    {formatMessage({ id: 'menu.system.internationalization.edit' })}
+                                </Button>}
+                        />,
+                        key: 'edit',
+                    },
+                    {
+                        label: <Button
+                            block
+                            type="text"
+                            size="small"
+                            icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >
+                            {formatMessage({ id: 'menu.system.internationalization.delete' })}
+                        </Button>,
+                        key: 'delete',
+                    },
+                ]}
+            />
+        );
     }
     /**
-* @description: proTable columns 配置项
-* @return {*}
-* @author: Cyan
-*/
+    * @description: proTable columns 配置项
+    * @return {*}
+    * @author: Cyan
+    */
     const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
         {
             title: formatMessage({ id: 'pages.system.internationalization.name' }),
@@ -174,12 +193,12 @@ const TableTemplate: FC = () => {
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
+                <Dropdown overlay={DropdownMenu(record)} key="operation" >
                     <Button size="small">
                         {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
-                </Dropdown>
+                </Dropdown >
             ]
         },
     ]
@@ -192,7 +211,7 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: Data = {}
+                    let result: ResData = {}
                     await getInternationalList(params).then(res => {
                         result = res
                         setTreeData(result.data)
@@ -201,9 +220,7 @@ const TableTemplate: FC = () => {
                         data: result.data,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
-                        success: result.code === 200,
-                        // 不传会使用 data 的长度，如果是分页一定要传
-                        total: result.data?.length,
+                        success: result.code === 200
                     }
                 }
             }

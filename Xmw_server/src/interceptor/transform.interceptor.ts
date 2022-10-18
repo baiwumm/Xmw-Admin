@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 22:04:12
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:25:13
+ * @LastEditTime: 2022-10-18 10:41:04
  */
 import {
   CallHandler,
@@ -19,17 +19,19 @@ import { Logger } from '../utils/log4js';
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const req = context.getArgByIndex(1).req;
+    const { originalUrl, method, ip, params, query, body } =
+      context.getArgByIndex(1).req;
     return next.handle().pipe(
       map((data) => {
         const logFormat = `
-            --------------------- Logger 日志 ---------------------
-            Request original url: ${req.originalUrl}
-            Method: ${req.method}
-            IP: ${req.ip}
-            User: ${JSON.stringify(req.user)}
-            Response data:\n ${JSON.stringify(data.body)}
-            --------------------- Logger 日志 ---------------------
+            --------------------- TransformInterceptor 日志 ---------------------
+            Request original url: ${originalUrl}
+            Method: ${method}
+            IP: ${ip}
+            Parmas: ${JSON.stringify(params)}
+            Query: ${JSON.stringify(query)}
+            Body: ${JSON.stringify(body)} 
+            --------------------- TransformInterceptor 日志 ---------------------
             `;
         Logger.info(logFormat);
         Logger.access(logFormat);

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 17:54:37
+ * @LastEditTime: 2022-10-18 13:44:49
  */
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
@@ -16,17 +16,21 @@ import { TransformInterceptor } from './interceptor/transform.interceptor'; // �
 import App_configuration from './config/configuration'; // 全局配置
 import { logger } from './middleware/logger.middleware'; // 日志收集中间件
 import { Logger } from '@/utils/log4js';
+import { ResponseModel } from '@/common/interface'; // 返回体结构
+import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   //日志相关
   app.use(logger); // 所有请求都打印日志
+  // 全局参数校验
+  app.useGlobalPipes(new ValidationPipe());
   // 错误异常捕获 和 过滤处理
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalFilters(new HttpExceptionFilter()); // 全局统一异常返回体
   // 全局响应拦截器，格式化返回体
-  app.useGlobalInterceptors(new HttpReqTransformInterceptor());
+  app.useGlobalInterceptors(new HttpReqTransformInterceptor<ResponseModel>());
   app.useGlobalInterceptors(new TransformInterceptor()); // 全局拦截器，用来收集日志
   // 全局添加接口前缀
   app.setGlobalPrefix(process.env.REQUEST_URL_PREFIX);

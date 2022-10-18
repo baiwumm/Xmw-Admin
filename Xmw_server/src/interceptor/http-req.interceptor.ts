@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 09:58:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 09:16:40
+ * @LastEditTime: 2022-10-18 09:58:02
  */
 import {
   Injectable,
@@ -38,6 +38,8 @@ export class HttpReqTransformInterceptor<T>
         const initResponse = { data: {}, code: 200, msg: '', success: true };
         // 合并对象
         isPlainObject(response) && Object.assign(initResponse, response);
+        // 根据状态码设置 success
+        initResponse.success = initResponse.code === 200;
         // 处理参数
         !initResponse.msg &&
           (initResponse.msg = RES_CODE_MAP[initResponse.code]);

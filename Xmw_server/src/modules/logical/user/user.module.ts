@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-13 16:40:04
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 14:50:37
+ * @LastEditTime: 2022-10-18 10:08:05
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

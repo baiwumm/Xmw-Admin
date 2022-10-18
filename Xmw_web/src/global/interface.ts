@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:39:53
+ * @LastEditTime: 2022-10-18 11:00:28
  */
 
 /**
@@ -12,7 +12,7 @@
  * @return {*}
  * @author: Cyan
  */
-export type Data = Record<string, any>;
+export type ResData = Record<string, any>;
 
 /**
  * @description: 分页查询
@@ -21,7 +21,7 @@ export type Data = Record<string, any>;
  */
 export type PageResModel = {
   total: number;
-  list: Data[];
+  list: ResData[];
 };
 
 /**
@@ -29,9 +29,9 @@ export type PageResModel = {
  * @return {*}
  * @author: Cyan
  */
-export type ResponseModel<T = Data[]> = {
+export type ResponseModel<T = ResData[]> = {
   code?: number;
-  data: T | PageResModel | Data;
+  data: T | PageResModel | ResData;
   msg?: string;
   success?: boolean;
 };

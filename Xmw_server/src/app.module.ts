@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-15 22:08:40
+ * @LastEditTime: 2022-10-18 13:51:28
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,8 +16,9 @@ import { InternationalModule } from './modules/system/international/internationa
 
 @Module({
   imports: [
+    // 全局配置 Module
     ConfigModule.forRoot({
-      // 这个注意哈，我们之前说动态modudle的时候说过这个内容forRoot
+      envFilePath: '.development.env', // 设置 .env 文件路径
       isGlobal: true,
       load: [App_globalConfig, DatabaseConfig],
     }),
