@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 10:28:23
+ * @LastEditTime: 2022-10-19 10:39:33
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -37,7 +37,12 @@ const TableTemplate: FC = () => {
     function reloadTable() {
         tableRef?.current?.reload()
     }
-    // 删除列表
+    /**
+     * @description: 删除国际化数据
+     * @param {string} id
+     * @return {*}
+     * @author: Cyan
+     */
     const handlerDelete = async (id: string | undefined) => {
         Modal.confirm({
             title: formatMessage({ id: 'global.message.delete.title' }),
@@ -61,7 +66,12 @@ const TableTemplate: FC = () => {
         })
 
     }
-    //  下拉框菜单渲染
+    /**
+     * @description: 渲染操作下拉菜单子项
+     * @param {API} record
+     * @return {*}
+     * @author: Cyan
+     */
     const DropdownMenu = (record: API.INTERNATIONALIZATION) => {
         return (
             [
@@ -191,7 +201,6 @@ const TableTemplate: FC = () => {
             align: 'center',
             key: 'option',
             render: (_, record) => {
-                console.log('recordrecord', record)
                 return (
                     [
                         <TableDropdown

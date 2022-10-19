@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 10:28:16
+ * @LastEditTime: 2022-10-19 10:39:41
  */
 
 // 引入第三方库
@@ -35,7 +35,6 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params.parent_id = parent_id
         }
         // 删除 多余的 属性
-        // 这里不清楚编辑最顶级数据时，formData会自动加上label和value两个属性，原因未知
         if (params.children) {
             params = omit(params, ['children'])
         }

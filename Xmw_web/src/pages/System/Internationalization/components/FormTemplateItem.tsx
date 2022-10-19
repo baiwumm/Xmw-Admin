@@ -4,20 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 10:31:13
+ * @LastEditTime: 2022-10-19 11:11:55
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useIntl } from '@umijs/max'
-import { ProFormText, ProFormTreeSelect, ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
-import { TreeSelect } from 'antd' // antd 组件库
+import { ProFormText, ProFormDigit } from '@ant-design/pro-components'; // antd 高级组件
+import { TreeSelect, Form, Col } from 'antd' // antd 组件库
 
 const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: string | undefined }> = ({ treeData, parent_id }) => {
     const { formatMessage } = useIntl();
     return (
         <>
             {/* 父级 */}
-            <ProFormTreeSelect
+            {/* ProFormTreeSelect 回显会自动带上 value 和 label 两个字段 */}
+            {/* <ProFormTreeSelect
                 name="parent_id"
                 label={formatMessage({ id: 'global.form.parent_id' })}
                 colProps={{ span: 24 }}
@@ -35,7 +36,26 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id: st
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
                     placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
                 }}
-            />
+            /> */}
+            <Col span={24}>
+                <Form.Item name="parent_id" label={formatMessage({ id: 'global.form.parent_id' })} initialValue={parent_id || null}>
+                    <TreeSelect
+                        style={{ width: '100%' }}
+                        allowClear
+                        treeData={treeData}
+                        disabled={!!parent_id}
+                        placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })}
+                        treeDefaultExpandAll
+                        fieldNames={
+                            {
+                                label: 'name',
+                                value: 'id'
+                            }
+                        }
+                        showCheckedStrategy={TreeSelect.SHOW_PARENT}
+                    />
+                </Form.Item>
+            </Col>
             {/* 国际化字段 */}
             <ProFormText
                 name="name"
