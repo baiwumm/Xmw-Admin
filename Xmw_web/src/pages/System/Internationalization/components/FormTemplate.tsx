@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:15:58
+ * @LastEditTime: 2022-10-19 10:28:16
  */
 
 // 引入第三方库
@@ -25,7 +25,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
     // 初始化表单
     const [form] = Form.useForm<API.INTERNATIONALIZATION>();
     // ModalForm 不同状态下 标题显示
-    const formTitle = formData?.international_id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.international_name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
+    const formTitle = formData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
     // 提交表单
     const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
         // 提交数据
@@ -37,10 +37,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         // 删除 多余的 属性
         // 这里不清楚编辑最顶级数据时，formData会自动加上label和value两个属性，原因未知
         if (params.children) {
-            params = omit(params, ['children', 'value', 'label'])
+            params = omit(params, ['children'])
         }
         // 执行数据库操作
-        await (params.international_id ? updateInternational : createInternational)(params).then(res => {
+        await (params.id ? updateInternational : createInternational)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);
                 reloadTable()

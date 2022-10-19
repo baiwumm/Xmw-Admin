@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:20:34
+ * @LastEditTime: 2022-10-19 10:28:23
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -38,14 +38,14 @@ const TableTemplate: FC = () => {
         tableRef?.current?.reload()
     }
     // 删除列表
-    const handlerDelete = async (international_id: string | undefined) => {
+    const handlerDelete = async (id: string | undefined) => {
         Modal.confirm({
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: () => {
                 return new Promise<void>(async (resolve, reject): Promise<void> => {
-                    if (international_id) {
-                        await delInternational(international_id).then(res => {
+                    if (id) {
+                        await delInternational(id).then(res => {
                             if (res.code === 200) {
                                 message.success(res.msg)
                                 // 刷新表格
@@ -76,7 +76,7 @@ const TableTemplate: FC = () => {
                                 size="small"
                                 icon={<ClusterOutlined />}
                                 block
-                                onClick={() => set_parent_id(record?.international_id)}
+                                onClick={() => set_parent_id(record?.id)}
                             >
                                 {formatMessage({ id: 'menu.system.internationalization.add-child' })}
                             </Button>}
@@ -106,7 +106,7 @@ const TableTemplate: FC = () => {
                         block
                         type="text"
                         size="small"
-                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.international_id)} >
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.id)} >
                         {formatMessage({ id: 'menu.system.internationalization.delete' })}
                     </Button>,
                     key: 'delete',
@@ -122,7 +122,7 @@ const TableTemplate: FC = () => {
     const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
         {
             title: formatMessage({ id: 'pages.system.internationalization.name' }),
-            dataIndex: 'international_name',
+            dataIndex: 'name',
             ellipsis: true,
             render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
         },
@@ -231,7 +231,7 @@ const TableTemplate: FC = () => {
                 }
             }
             }
-            rowKey="international_id"
+            rowKey="id"
             pagination={false}
             // 工具栏
             toolBarRender={() => [

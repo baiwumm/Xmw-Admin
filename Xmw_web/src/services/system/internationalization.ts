@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:23:43
+ * @LastEditTime: 2022-10-19 09:44:31
  */
 import { request } from '@umijs/max';
-import type { Data, ResponseModel } from '@/global/interface';
+import type { ResData, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取国际化列表
@@ -15,7 +15,7 @@ import type { Data, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getInternationalList(options?: Data) {
+export async function getInternationalList(options?: ResData) {
   return request<ResponseModel>('/api/system/international', {
     method: 'GET',
     params: options || {},
@@ -28,7 +28,7 @@ export async function getInternationalList(options?: Data) {
  * @return {*}
  * @author: Cyan
  */
-export async function getAllLocalesLang(options?: Data) {
+export async function getAllLocalesLang(options?: ResData) {
   return request<ResponseModel>('/api/system/international/allLocales', {
     method: 'GET',
     params: options || {},
@@ -37,11 +37,11 @@ export async function getAllLocalesLang(options?: Data) {
 
 /**
  * @description: 新增国际化数据
- * @param {Data} options
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function createInternational(options?: Data) {
+export async function createInternational(options?: ResData) {
   return request<ResponseModel>('/api/system/international', {
     method: 'POST',
     data: options || {},
@@ -50,11 +50,11 @@ export async function createInternational(options?: Data) {
 
 /**
  * @description: 更新国际化数据
- * @param {Data} options
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function updateInternational(options?: Data) {
+export async function updateInternational(options?: ResData) {
   return request<ResponseModel>('/api/system/international', {
     method: 'PUT',
     data: options || {},
@@ -63,13 +63,13 @@ export async function updateInternational(options?: Data) {
 
 /**
  * @description: 删除国际化数据
- * @param {Data} options
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function delInternational(international_id: string) {
+export async function delInternational(id: string) {
   return request<ResponseModel>('/api/system/international', {
     method: 'DELETE',
-    data: { international_id },
+    data: { id },
   });
 }

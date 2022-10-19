@@ -105,11 +105,9 @@ export class InternationalController {
    */
   @Delete()
   async deleteInternational(
-    @Body() { international_id }: InternationalDeleteEto,
+    @Body() { id }: InternationalDeleteEto,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.internationalService.deleteInternational(
-      international_id,
-    );
+    const response = await this.internationalService.deleteInternational(id);
     return response;
   }
 }

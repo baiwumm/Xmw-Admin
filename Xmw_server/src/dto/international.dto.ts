@@ -21,7 +21,7 @@ export class InternationalListEto {
     default: 'international',
     required: false,
   })
-  international_name?: string;
+  name?: string;
 
   @ApiProperty({
     type: Date,
@@ -59,14 +59,14 @@ export class InternationalResponseEto {
     description: '国际化id',
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
   })
-  international_id: string;
+  id: string;
 
   @ApiProperty({
     type: String,
     description: '国际化字段',
     default: 'international',
   })
-  international_name: string;
+  name: string;
 
   @ApiProperty({
     type: String,
@@ -144,7 +144,7 @@ export class InternationalSaveEto {
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
     required: false,
   })
-  international_id?: string;
+  id?: string;
 
   @ApiProperty({
     type: String,
@@ -160,7 +160,7 @@ export class InternationalSaveEto {
     default: 'international',
   })
   @IsNotEmpty({ message: '国际化字段不能为空' })
-  international_name: string;
+  name: string;
 
   @ApiProperty({
     type: String,
@@ -210,8 +210,8 @@ export class InternationalSaveEto {
 export class InternationalDeleteEto {
   @ApiProperty({
     type: String,
-    description: 'international_id',
+    description: 'id',
     default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
   })
-  international_id?: string;
+  id?: string;
 }

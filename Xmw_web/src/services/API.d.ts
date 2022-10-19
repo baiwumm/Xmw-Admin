@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:14:46
+ * @LastEditTime: 2022-10-19 09:30:52
  */
 declare namespace API {
   /**
@@ -146,8 +146,8 @@ declare namespace API {
    * @author: Cyan
    */
   type INTERNATIONALIZATION = {
-    international_id?: string;
-    international_name: string;
+    id?: string;
+    name: string;
     'zh-CN': string;
     'en-US': string;
     'ja-JP': string;
@@ -157,7 +157,5 @@ declare namespace API {
     update_time?: Date;
     founder?: string;
     children?: INTERNATIONALIZATION[];
-    value?: string;
-    label?: string;
   };
 }
