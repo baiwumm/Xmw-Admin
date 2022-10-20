@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:54:24
+ * @LastEditTime: 2022-10-20 15:33:04
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -56,7 +56,7 @@ export class InternationalService {
   ): Promise<XmwInternational[]> {
     // 解构参数
     const { name, start_time, end_time, isMenu } = internationalInfo;
-    // 查询参数
+    // 拼接查询参数
     const where: ResData = {};
     if (name) where.name = Like(`%${name}%`);
     if (start_time && end_time)
