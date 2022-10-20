@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-20 09:06:18
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:17:45
+ * @LastEditTime: 2022-10-20 17:41:43
  */
-import { ListInternationalDto } from './list-international.dto'; // 查询国际化列表参数 Dto
-import { SaveInternationalDto } from './save-international.dto'; // 保存国际化 Dto
+import { ListInternationalDto } from './list.international.dto'; // 查询国际化列表参数 Dto
+import { SaveInternationalDto } from './save.international.dto'; // 保存国际化 Dto
 import {
   ResponseInternationalDto,
   ResponseLangDto,

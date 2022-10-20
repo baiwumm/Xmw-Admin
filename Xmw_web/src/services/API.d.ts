@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 09:30:52
+ * @LastEditTime: 2022-10-20 18:16:50
  */
 declare namespace API {
   /**
@@ -19,9 +19,10 @@ declare namespace API {
     org_type: string;
     describe?: string;
     parent_id?: string;
-    status: string;
+    status: number;
+    sort: number;
     created_time?: Date;
-    update_time?: Date;
+    updated_time?: Date;
     leader?: string;
     founder?: string;
     children?: ORGANIZATION[];
@@ -39,7 +40,7 @@ declare namespace API {
     describe?: string;
     parent_id?: string;
     created_time?: Date;
-    update_time?: Date;
+    updated_time?: Date;
     leader?: string;
     founder?: string;
     org_name: string;
@@ -80,7 +81,7 @@ declare namespace API {
     navTheme?: string;
     headerTheme?: string;
     created_time?: Date;
-    update_time?: Date;
+    updated_time?: Date;
     'zh-CN': string;
     'en-US': string;
     'ja-JP': string;
@@ -119,7 +120,7 @@ declare namespace API {
     last_ip?: string;
     login_num?: number;
     created_time: Date;
-    update_time?: Date;
+    updated_time?: Date;
     founder?: string;
   };
 
@@ -138,7 +139,7 @@ declare namespace API {
     describe?: string;
     menu_permission?: string[];
     created_time?: Date;
-    update_time?: Date;
+    updated_time?: Date;
   };
   /**
    * @description: 系统设置-国际化
@@ -154,7 +155,7 @@ declare namespace API {
     'zh-TW': string;
     parent_id?: string;
     created_time?: Date;
-    update_time?: Date;
+    updated_time?: Date;
     founder?: string;
     children?: INTERNATIONALIZATION[];
   };

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 10:39:33
+ * @LastEditTime: 2022-10-20 18:20:59
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -200,21 +200,14 @@ const TableTemplate: FC = () => {
             width: 120,
             align: 'center',
             key: 'option',
-            render: (_, record) => {
-                return (
-                    [
-                        <TableDropdown
-                            key="actionGroup"
-                            menus={DropdownMenu(record)}
-                        >
-                            <Button size="small">
-                                {formatMessage({ id: 'global.table.operation' })}
-                                <DownOutlined />
-                            </Button>
-                        </TableDropdown>,
-                    ]
-                )
-            },
+            render: (_, record) => [
+                <TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
+                    <Button size="small">
+                        {formatMessage({ id: 'global.table.operation' })}
+                        <DownOutlined />
+                    </Button>
+                </TableDropdown>,
+            ],
         },
     ]
 

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:44:45
+ * @LastEditTime: 2022-10-20 18:23:11
  */
 
 // 引入第三方库
@@ -17,7 +17,7 @@ import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { saveOrganization } from '@/services/administrative/organization' // 组织管理接口
+import { createOrganization, updateOrganization } from '@/services/administrative/organization' // 组织管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
@@ -38,7 +38,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
         if (params.children) {
             params = omit(params, ['children'])
         }
-        await saveOrganization(params).then(res => {
+        await (params.org_id ? updateOrganization : createOrganization)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);
                 reloadTable()

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 14:04:21
+ * @LastEditTime: 2022-10-20 17:25:57
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -32,6 +32,7 @@ export class ResponseInternationalDto extends ResponseDto {
         sort: '1',
         created_time: '2022-10-01 00:00:00',
         updated_time: '2022-10-02 23:59:59',
+        children: [],
       },
     ],
   })

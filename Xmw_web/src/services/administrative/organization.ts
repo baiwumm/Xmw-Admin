@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:41:13
+ * @LastEditTime: 2022-10-20 18:14:00
  */
 import { request } from '@umijs/max';
-import type { Data, ResponseModel } from '@/global/interface';
+import type { ResData, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取组织管理列表
@@ -15,35 +15,47 @@ import type { Data, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getOrganizationList(options?: Data) {
-  return request<ResponseModel>('/api/administrative/getOrganizationList', {
+export async function getOrganizationList(options?: ResData) {
+  return request<ResponseModel>('/api/administrative/organization', {
     method: 'GET',
     params: options || {},
   });
 }
 
 /**
- * @description: 新增更新组织管理列表
- * @param {Data} options
+ * @description: 新增组织数据
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function saveOrganization(options?: Data) {
-  return request<ResponseModel>('/api/administrative/saveOrganization', {
+export async function createOrganization(options?: ResData) {
+  return request<ResponseModel>('/api/administrative/organization', {
     method: 'POST',
     data: options || {},
   });
 }
 
 /**
- * @description: 删除组织管理列表
- * @param {Data} org_id
+ * @description: 更新组织数据
+ * @param {ResData} options
+ * @return {*}
+ * @author: Cyan
+ */
+export async function updateOrganization({ org_id, ...options }: ResData) {
+  return request<ResponseModel>(`/api/administrative/organization/${org_id}`, {
+    method: 'PUT',
+    data: options || {},
+  });
+}
+
+/**
+ * @description: 删除组织数据
+ * @param {ResData} org_id
  * @return {*}
  * @author: Cyan
  */
 export async function delOrganization(org_id: string) {
-  return request<ResponseModel>('/api/administrative/delOrganization', {
-    method: 'POST',
-    data: { org_id },
+  return request<ResponseModel>(`/api/administrative/delOrganization/${org_id}`, {
+    method: 'DELETE',
   });
 }

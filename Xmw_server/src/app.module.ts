@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 15:15:56
+ * @LastEditTime: 2022-10-20 17:06:51
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,6 +14,7 @@ import DatabaseConfig from './config/database'; // 数据库配置
 import { UserModule } from './modules/logical/user/user.module'; // 用户管理模块
 import { InternationalModule } from './modules/system/international/international.module'; // 系统设置-国际化
 import { JobsManagementModule } from './modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
+import { OrganizationModule } from './modules/administrative/organization/organization.module'; // 智能行政-组织管理
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { JobsManagementModule } from './modules/administrative/jobs-management/j
     UserModule,
     InternationalModule,
     JobsManagementModule,
+    OrganizationModule,
   ],
 })
 export class AppModule {}

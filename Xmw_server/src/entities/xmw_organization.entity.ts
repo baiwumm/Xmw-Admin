@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:16:07
+ * @LastEditTime: 2022-10-20 18:28:18
  */
 import {
   Entity,
@@ -35,8 +35,8 @@ export class XmwOrganization {
 
   //组织类型
   @Column('enum', {
-    enum: [1, 2, 3, 4],
-    comment: '组织类型（1:公司,2:单位,3:部门,4:小组）',
+    enum: ['company', 'unit', 'department', 'team'],
+    comment: '组织类型（company:公司,unit:单位,department:部门,team:小组）',
   })
   org_type: string;
 
@@ -59,7 +59,7 @@ export class XmwOrganization {
   //部门描述
   @Column('varchar', {
     length: 200,
-    comment: '部门描述',
+    comment: '组织描述',
   })
   describe: string;
 

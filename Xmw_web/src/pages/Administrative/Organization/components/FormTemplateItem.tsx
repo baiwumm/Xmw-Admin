@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 11:11:22
+ * @LastEditTime: 2022-10-20 18:26:40
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -12,11 +12,10 @@ import {
     ProFormRadio,
     ProFormText,
     ProFormTextArea,
-    ProFormTreeSelect,
     ProFormDigit
 } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
-import { TreeSelect } from 'antd' // antd 组件库
+import { TreeSelect, Col, Form } from 'antd' // antd 组件库
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
@@ -27,7 +26,7 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
     return (
         <>
             {/* 父级 */}
-            <ProFormTreeSelect
+            {/* <ProFormTreeSelect
                 name="parent_id"
                 label={formatMessage({ id: 'global.form.parent_id' })}
                 colProps={{ span: 24 }}
@@ -45,7 +44,26 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
                     showCheckedStrategy: TreeSelect.SHOW_PARENT,
                     placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' }),
                 }}
-            />
+            /> */}
+            <Col span={24}>
+                <Form.Item name="parent_id" label={formatMessage({ id: 'global.form.parent_id' })} initialValue={parent_id || null}>
+                    <TreeSelect
+                        style={{ width: '100%' }}
+                        allowClear
+                        treeData={treeData}
+                        disabled={!!parent_id}
+                        placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })}
+                        treeDefaultExpandAll
+                        fieldNames={
+                            {
+                                label: 'org_name',
+                                value: 'org_id'
+                            }
+                        }
+                        showCheckedStrategy={TreeSelect.SHOW_PARENT}
+                    />
+                </Form.Item>
+            </Col>
             {/* 组织名称 */}
             <ProFormText
                 name="org_name"
@@ -76,7 +94,7 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
                 colProps={{ span: 14 }}
                 label={formatMessage({ id: 'pages.administrative.organization.org_type' })}
                 radioType="button"
-                initialValue={'1'}
+                initialValue={'company'}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
@@ -86,7 +104,7 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
             <ProFormRadio.Group
                 name="status"
                 colProps={{ span: 8 }}
-                initialValue={'1'}
+                initialValue={1}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}
