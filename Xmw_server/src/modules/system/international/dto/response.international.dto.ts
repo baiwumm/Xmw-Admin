@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:20:54
+ * @LastEditTime: 2022-10-20 14:04:21
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -26,7 +26,7 @@ export class ResponseInternationalDto extends ResponseDto {
         'zh-CN': '登录成功！',
         'en-US': 'Login successful!',
         'ja-JP': 'ログイン成功!',
-        'zh-TW': '\t登錄成功！',
+        'zh-TW': '登錄成功！',
         parent_id: '0c01ef7d-2f6f-440a-b642-62564d41f473',
         founder: '0c01ef7d-2f6f-440a-b642-62564d41f473',
         sort: '1',

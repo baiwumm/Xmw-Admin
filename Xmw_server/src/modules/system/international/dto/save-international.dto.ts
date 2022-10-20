@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:09:03
+ * @LastEditTime: 2022-10-20 14:44:22
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator'; // entity validator
@@ -57,7 +57,7 @@ export class SaveInternationalDto {
   @ApiProperty({
     type: String,
     description: '繁体中文',
-    default: '	登錄成功！',
+    default: '登錄成功！',
     required: false,
   })
   'zh-TW'?: string;

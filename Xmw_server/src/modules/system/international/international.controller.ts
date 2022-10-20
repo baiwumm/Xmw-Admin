@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:18:10
+ * @LastEditTime: 2022-10-20 13:45:17
  */
 import {
   Controller,
@@ -51,7 +51,7 @@ export class InternationalController {
    */
   @Get('allLocales')
   @ApiOkResponse({ type: ResponseLangDto })
-  @ApiOperation({ summary: '获取国际化多语言层级数据' })
+  @ApiOperation({ summary: '获取多语言层级数据' })
   async getAllLocalesLang(): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.getAllLocalesLang();
     return { data: response };
