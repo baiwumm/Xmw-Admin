@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:19:50
+ * @LastEditTime: 2022-10-20 10:54:24
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,10 +12,7 @@ import { Like, Between, Repository, Not } from 'typeorm';
 import { XmwInternational } from '@/entities/xmw_international.entity'; // 数据库实体
 import { ResData, ResponseModel } from '@/common/interface'; // interface
 import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全局工具函数
-import {
-  InternationalListEto,
-  InternationalSaveEto,
-} from '@/dto/international.dto';
+import { ListInternationalDto, SaveInternationalDto } from './dto';
 
 @Injectable()
 export class InternationalService {
@@ -34,7 +31,6 @@ export class InternationalService {
     const result: ResData = {};
     // 查询数据
     const sqlData = await this.internationaRepository.find({
-      select: ['id', 'name', 'zh-CN', 'en-US', 'ja-JP', 'zh-TW', 'parent_id'], // 指定返回的字段
       // 按时间倒序
       order: {
         created_time: 'DESC',
@@ -56,7 +52,7 @@ export class InternationalService {
    * @author: Cyan
    */
   async getInternationalList(
-    internationalInfo: InternationalListEto,
+    internationalInfo: ListInternationalDto,
   ): Promise<XmwInternational[]> {
     // 解构参数
     const { name, start_time, end_time, isMenu } = internationalInfo;
@@ -88,7 +84,7 @@ export class InternationalService {
    * @author: Cyan
    */
   async createInternational(
-    internationalInfo: InternationalSaveEto,
+    internationalInfo: SaveInternationalDto,
   ): Promise<ResponseModel<ResData>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
@@ -115,10 +111,11 @@ export class InternationalService {
    * @author: Cyan
    */
   async updateInternational(
-    internationalInfo: InternationalSaveEto,
+    id: string,
+    internationalInfo: SaveInternationalDto,
   ): Promise<ResponseModel<ResData>> {
     // 解构参数
-    const { id, name, parent_id } = internationalInfo;
+    const { name, parent_id } = internationalInfo;
     // 判断 parent_id 是否和 id相同
     if (parent_id && parent_id === id) {
       return { data: {}, msg: '父级不能和自己相同！', code: -1 };

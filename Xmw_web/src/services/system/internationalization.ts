@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 09:44:31
+ * @LastEditTime: 2022-10-20 09:58:15
  */
 import { request } from '@umijs/max';
 import type { ResData, ResponseModel } from '@/global/interface';
@@ -41,7 +41,7 @@ export async function getAllLocalesLang(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function createInternational(options?: ResData) {
+export async function createInternational(options: ResData) {
   return request<ResponseModel>('/api/system/international', {
     method: 'POST',
     data: options || {},
@@ -54,8 +54,8 @@ export async function createInternational(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function updateInternational(options?: ResData) {
-  return request<ResponseModel>('/api/system/international', {
+export async function updateInternational({ id, ...options }: ResData) {
+  return request<ResponseModel>(`/api/system/international/${id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -63,13 +63,12 @@ export async function updateInternational(options?: ResData) {
 
 /**
  * @description: 删除国际化数据
- * @param {ResData} options
+ * @param {id} string
  * @return {*}
  * @author: Cyan
  */
 export async function delInternational(id: string) {
-  return request<ResponseModel>('/api/system/international', {
+  return request<ResponseModel>(`/api/system/international/${id}`, {
     method: 'DELETE',
-    data: { id },
   });
 }

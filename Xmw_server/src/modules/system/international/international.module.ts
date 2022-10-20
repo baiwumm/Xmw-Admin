@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-17 08:54:02
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:19:39
+ * @LastEditTime: 2022-10-19 17:19:13
  */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InternationalService } from './international.service'; // International Service
 import { InternationalController } from './international.controller'; // International Controller
-import { XmwInternational } from '@/entities/xmw_international.entity'; // xmw_users 实体
+import { XmwInternational } from '@/entities/xmw_international.entity'; // xmw_international 实体
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用

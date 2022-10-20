@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 18:09:38
+ * @LastEditTime: 2022-10-20 10:18:10
  */
 import {
   Controller,
@@ -14,6 +14,7 @@ import {
   Delete,
   Query,
   Body,
+  Param,
 } from '@nestjs/common';
 import { InternationalService } from './international.service'; // International Service
 import {
@@ -21,14 +22,16 @@ import {
   ApiTags,
   ApiHeader,
   ApiOkResponse,
+  ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel } from '@/common/interface'; // TS类型注解
+import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
-  InternationalListEto,
-  InternationalResponseEto,
-  InternationalSaveEto,
-  InternationalDeleteEto,
-} from '@/dto/international.dto'; // Swagger Dto
+  ListInternationalDto,
+  SaveInternationalDto,
+  ResponseInternationalDto,
+  ResponseLangDto,
+} from './dto';
 
 /* swagger 文档 */
 @ApiTags('系统设置-国际化')
@@ -47,6 +50,8 @@ export class InternationalController {
    * @author: Cyan
    */
   @Get('allLocales')
+  @ApiOkResponse({ type: ResponseLangDto })
+  @ApiOperation({ summary: '获取国际化多语言层级数据' })
   async getAllLocalesLang(): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.getAllLocalesLang();
     return { data: response };
@@ -58,9 +63,10 @@ export class InternationalController {
    * @author: Cyan
    */
   @Get()
-  @ApiOkResponse({ type: InternationalResponseEto, isArray: true })
+  @ApiOkResponse({ type: ResponseInternationalDto })
+  @ApiOperation({ summary: '获取国际化列表' })
   async getInternationalList(
-    @Query() internationalInfo: InternationalListEto,
+    @Query() internationalInfo: ListInternationalDto,
   ): Promise<ResponseModel> {
     const response = await this.internationalService.getInternationalList(
       internationalInfo,
@@ -74,8 +80,10 @@ export class InternationalController {
    * @author: Cyan
    */
   @Post()
+  @ApiOkResponse({ type: ResponseDto })
+  @ApiOperation({ summary: '创建国际化数据' })
   async createInternational(
-    @Body() internationalInfo: InternationalSaveEto,
+    @Body() internationalInfo: SaveInternationalDto,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.createInternational(
       internationalInfo,
@@ -88,11 +96,15 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
-  @Put()
+  @Put('/:id')
+  @ApiOkResponse({ type: ResponseDto })
+  @ApiOperation({ summary: '更新国际化数据' })
   async updateInternational(
-    @Body() internationalInfo: InternationalSaveEto,
+    @Param('id') id: string,
+    @Body() internationalInfo: SaveInternationalDto,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.updateInternational(
+      id,
       internationalInfo,
     );
     return response;
@@ -103,9 +115,11 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
-  @Delete()
+  @Delete('/:id')
+  @ApiOkResponse({ type: ResponseDto })
+  @ApiOperation({ summary: '删除国际化数据' })
   async deleteInternational(
-    @Body() { id }: InternationalDeleteEto,
+    @Param('id') id: string,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.deleteInternational(id);
     return response;

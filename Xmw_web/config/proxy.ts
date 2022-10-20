@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:54:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:33:03
+ * @LastEditTime: 2022-10-20 10:32:59
  */
 /**
  * @name 代理的配置
@@ -26,7 +26,7 @@ export default {
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
-      pathRewrite: { '^/api': '/cyan' },
+      pathRewrite: { '^/api': '/v1' },
     },
   },
   /**
