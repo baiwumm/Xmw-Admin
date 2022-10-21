@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 17:50:45
+ * @LastEditTime: 2022-10-21 09:34:52
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator'; // entity validator
@@ -64,7 +64,6 @@ export class SaveOrganizationDto {
     description: '组织描述',
     default:
       '阿里巴巴集团控股有限公司（简称：阿里巴巴集团）是马云带领下的18位创始人于1999年在浙江省杭州市创立的公司。',
-    required: false,
   })
-  describe?: string;
+  describe: string;
 }

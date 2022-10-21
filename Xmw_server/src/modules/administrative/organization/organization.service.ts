@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 18:38:30
+ * @LastEditTime: 2022-10-21 09:59:16
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Between, Repository, Not } from 'typeorm';
+import { Like, Between, Repository } from 'typeorm';
 import { ResData, ResponseModel } from '@/common/interface'; // interface
 import { XmwOrganization } from '@/entities/xmw_organization.entity'; // xmw_jobs 实体
 import { initializeTree } from '@/utils'; // 全局工具函数
@@ -71,7 +71,7 @@ export class OrganizationService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return { data: {}, msg: '组织名称已存在！', code: -1 };
+      return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
     }
     // 如果通过则执行 sql save 语句
     const result = await this.organizationRepository.save(organizationInfo);
@@ -94,13 +94,16 @@ export class OrganizationService {
       return { data: {}, msg: '父级不能和自己相同！', code: -1 };
     }
     // 相同层级名称不能相同
-    const exist = await this.organizationRepository.findOne({
-      where: [{ org_name }, { org_code }],
-      // org_id: Not(org_id),
-    });
+    const exist = await this.organizationRepository
+      .createQueryBuilder('o')
+      .where(
+        '(o.org_name = :org_name OR o.org_code = :org_code)  AND org_id != :org_id',
+        { org_name, org_code, org_id },
+      )
+      .getOne();
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '组织名称已存在！', code: -1 };
+      return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
     }
     // 如果通过则执行 sql update 语句
     const result = await this.organizationRepository.update(

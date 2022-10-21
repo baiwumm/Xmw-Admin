@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 18:26:40
+ * @LastEditTime: 2022-10-21 09:56:09
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -74,7 +74,12 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_name' }) }]}
+                rules={[
+                    { required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_name' }) },
+                    {
+                        validator: (_, value) => value.length < 2 ? Promise.reject(new Error(formatMessage({ id: 'pages.administrative.organization.org_name.validator' }))) : Promise.resolve()
+                    }
+                ]}
             />
             {/* 组织编码 */}
             <ProFormText
@@ -132,6 +137,7 @@ const FormTemplateItem: FC<{ treeData: API.ORGANIZATION[], parent_id: string | u
                     showCount: true,
                     maxLength: 200
                 }}
+                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' }) }]}
             />
         </>
     )
