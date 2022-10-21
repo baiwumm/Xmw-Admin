@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 18:11:18
+ * @LastEditTime: 2022-10-21 13:48:22
  */
 import {
   Controller,
@@ -45,14 +45,14 @@ export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) {}
 
   /**
-   * @description: 获取国际化列表
+   * @description: 获取组织管理列表
    * @return {*}
    * @author: Cyan
    */
   @Get()
   @ApiOkResponse({ type: ResponseOrganizationDto })
   @ApiOperation({ summary: '获取组织管理列表' })
-  async getInternationalList(
+  async getOrganizationList(
     @Query() organizationInfo: ListOrganizationDto,
   ): Promise<ResponseModel> {
     const response = await this.organizationService.getOrganizationList(
@@ -79,13 +79,13 @@ export class OrganizationController {
   }
 
   /**
-   * @description: 更新国际化数据
+   * @description: 更新组织数据
    * @return {*}
    * @author: Cyan
    */
   @Put('/:org_id')
   @ApiOkResponse({ type: ResponseDto })
-  @ApiOperation({ summary: '更新国际化数据' })
+  @ApiOperation({ summary: '更新组织数据' })
   async updateOrganization(
     @Param('org_id') org_id: string,
     @Body() organizationInfo: SaveOrganizationDto,
@@ -105,7 +105,7 @@ export class OrganizationController {
   @Delete('/:org_id')
   @ApiOkResponse({ type: ResponseDto })
   @ApiOperation({ summary: '删除组织数据' })
-  async deleteInternational(
+  async deleteOrganization(
     @Param('org_id') org_id: string,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.organizationService.deleteOrganization(org_id);

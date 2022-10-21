@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 17:56:10
+ * @LastEditTime: 2022-10-21 10:31:46
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -96,8 +96,8 @@ export class InternationalService {
     if (exist && exist.parent_id == parent_id) {
       return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
     }
-    // 如果通过则执行 sql save 语句
-    const result = await this.internationaRepository.save(internationalInfo);
+    // 如果通过则执行 sql insert 语句
+    const result = await this.internationaRepository.insert(internationalInfo);
     return { data: result };
   }
 
@@ -125,10 +125,10 @@ export class InternationalService {
       return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
     }
     // 如果通过则执行 sql update 语句
-    const result = await this.internationaRepository.update(
+    const result = await this.internationaRepository.save({
       id,
-      internationalInfo,
-    );
+      ...internationalInfo,
+    });
     return { data: result };
   }
 

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 20:04:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 13:56:30
+ * @LastEditTime: 2022-10-21 10:20:44
  */
 import { registerAs } from '@nestjs/config';
 
@@ -22,13 +22,5 @@ export default registerAs('database', () => ({
   retryAttempts: 10, //重试连接数据库的次数
   autoLoadEntities: true, //如果为true,将自动加载实体 forFeature()方法注册的每个实体都将自动添加到配置对象的实体数组中
   // 配置数据库时间为东八区北京时间
-  timezone: '+08:00',
-  define: {
-    timestamps: false,
-    freezeTableName: true,
-  },
-  dialectOptions: {
-    dateStrings: true,
-    typeCast: true,
-  },
+  timezone: 'Z',
 }));

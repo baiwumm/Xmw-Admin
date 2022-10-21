@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 09:59:16
+ * @LastEditTime: 2022-10-21 11:12:41
  */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -73,8 +73,8 @@ export class OrganizationService {
     if (exist) {
       return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
     }
-    // 如果通过则执行 sql save 语句
-    const result = await this.organizationRepository.save(organizationInfo);
+    // 如果通过则执行 sql insert 语句
+    const result = await this.organizationRepository.insert(organizationInfo);
     return { data: result };
   }
 
@@ -93,7 +93,7 @@ export class OrganizationService {
     if (parent_id && parent_id === org_id) {
       return { data: {}, msg: '父级不能和自己相同！', code: -1 };
     }
-    // 相同层级名称不能相同
+    // 组织名称不能相同
     const exist = await this.organizationRepository
       .createQueryBuilder('o')
       .where(
@@ -105,11 +105,11 @@ export class OrganizationService {
     if (exist) {
       return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
     }
-    // 如果通过则执行 sql update 语句
-    const result = await this.organizationRepository.update(
+    // 如果通过则执行 sql save 语句
+    const result = await this.organizationRepository.save({
       org_id,
-      organizationInfo,
-    );
+      ...organizationInfo,
+    });
     return { data: result };
   }
 

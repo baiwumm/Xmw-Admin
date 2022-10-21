@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 09:47:40
+ * @LastEditTime: 2022-10-21 14:18:52
  */
 import { request } from '@umijs/max';
 import type { ResData, ResponseModel } from '@/global/interface';
@@ -15,7 +15,7 @@ import type { ResData, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getOrganizationList(options?: ResData) {
+export async function getOrganizationList(options?: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/administrative/organization', {
     method: 'GET',
     params: options || {},
@@ -28,7 +28,7 @@ export async function getOrganizationList(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function createOrganization(options?: ResData) {
+export async function createOrganization(options?: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/administrative/organization', {
     method: 'POST',
     data: options || {},
@@ -41,7 +41,7 @@ export async function createOrganization(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function updateOrganization({ org_id, ...options }: ResData) {
+export async function updateOrganization({ org_id, ...options }: ResData): Promise<ResponseModel> {
   return request<ResponseModel>(`/api/administrative/organization/${org_id}`, {
     method: 'PUT',
     data: options || {},
@@ -54,7 +54,7 @@ export async function updateOrganization({ org_id, ...options }: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function delOrganization(org_id: string) {
+export async function delOrganization(org_id: string): Promise<ResponseModel> {
   return request<ResponseModel>(`/api/administrative/organization/${org_id}`, {
     method: 'DELETE',
   });

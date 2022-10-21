@@ -4,22 +4,23 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:44:32
+ * @LastEditTime: 2022-10-21 14:27:51
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useRequest, useModel } from '@umijs/max'
-import { ProTable } from '@ant-design/pro-components' // antd 高级组件
+import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Dropdown, Menu } from 'antd' // antd 组件库
+import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
 import { getJobsList, delJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import FormTemplate from './FormTemplate'  // 表单组件
+import type { ResData } from '@/global/interface'
 
 const TableTemplate: FC = () => {
     const { formatMessage } = useIntl();
@@ -49,63 +50,85 @@ const TableTemplate: FC = () => {
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if (jobs_id) {
-                    await delJobs(jobs_id).then(res => {
-                        if (res.code === 200) {
-                            message.success(res.msg)
-                            // 刷新表格
-                            reloadTable()
-                        }
-                    })
-                }
+                return new Promise<void>(async (resolve, reject): Promise<void> => {
+                    if (jobs_id) {
+                        await delJobs(jobs_id).then(res => {
+                            if (res.code === 200) {
+                                message.success(res.msg)
+                                // 刷新表格
+                                reloadTable()
+                                resolve()
+                            }
+                        })
+                        reject()
+                    }
+                })
+
             }
         })
 
     }
-    //    下拉框菜单渲染
-    const DropdownMenu = (
-        <Menu
-            items={[
+    /**
+    * @description: 渲染操作下拉菜单子项
+    * @param {API} record
+    * @return {*}
+    * @author: Cyan
+    */
+    const DropdownMenu = (record: API.JOBSMANAGEMENT) => {
+        return (
+            [
                 {
-                    label: <FormTemplate
+                    name: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
                         orgTree={orgTree}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.administrative.jobs-management.add-child' })}</Button>}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<ClusterOutlined />}
+                                block
+                                onClick={() => set_parent_id(record?.jobs_id)}
+                            >
+                                {formatMessage({ id: 'menu.administrative.jobs-management.add-child' })}
+                            </Button>}
                     />,
                     key: 'addChild',
                 },
                 {
-                    label: <FormTemplate
+                    name: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={currentRecord}
                         orgTree={orgTree}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.administrative.jobs-management.edit' })}</Button>}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<EditOutlined />}
+                                block
+                                onClick={() => setCurrentRecord(record)}
+                            >
+                                {formatMessage({ id: 'menu.administrative.jobs-management.edit' })}
+                            </Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button
+                    name: <Button
+                        block
                         type="text"
                         size="small"
-                        icon={<DeleteOutlined />}
-                        onClick={() => handlerDelete(currentRecord?.jobs_id)}
-                        block>
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.jobs_id)} >
                         {formatMessage({ id: 'menu.administrative.jobs-management.delete' })}
                     </Button>,
                     key: 'delete',
                 },
-            ]}
-        />
-    );
-
-    // 操作下拉框
-    const dropdownMenuClick = (record: API.JOBSMANAGEMENT) => {
-        setCurrentRecord(record)
-        set_parent_id(record?.jobs_id)
+            ]
+        );
     }
+
     /**
 * @description: proTable columns 配置项
 * @return {*}
@@ -182,15 +205,12 @@ const TableTemplate: FC = () => {
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown
-                    overlay={DropdownMenu}
-                    onOpenChange={() => dropdownMenuClick(record)}
-                    key="operation">
+                <TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
                     <Button size="small">
                         {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
-                </Dropdown>
+                </TableDropdown>,
             ]
         },
     ]
@@ -203,7 +223,7 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: any = {}
+                    let result: ResData = {}
                     await getJobsList(params).then(res => {
                         result = res
                         setTreeData(result.data)

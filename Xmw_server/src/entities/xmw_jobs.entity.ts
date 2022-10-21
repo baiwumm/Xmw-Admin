@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:15:16
+ * @LastEditTime: 2022-10-21 16:28:30
  */
 import {
   Entity,
@@ -12,7 +12,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { XmwOrganization } from './xmw_organization.entity'; // 组织管理实体
 
 @Entity({ name: 'xmw_jobs' })
 export class XmwJobs {
@@ -77,4 +80,9 @@ export class XmwJobs {
   // 最后一次更新时间
   @UpdateDateColumn({ nullable: true, comment: '最后一次更新时间' })
   updated_time: Date;
+
+  // // 与组织管理形成一对一关系
+  // @OneToOne(() => XmwOrganization)
+  // @JoinColumn()
+  // org_name: string;
 }

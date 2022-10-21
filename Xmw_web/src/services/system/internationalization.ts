@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 09:58:15
+ * @LastEditTime: 2022-10-21 14:19:03
  */
 import { request } from '@umijs/max';
 import type { ResData, ResponseModel } from '@/global/interface';
@@ -41,7 +41,7 @@ export async function getAllLocalesLang(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function createInternational(options: ResData) {
+export async function createInternational(options: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/system/international', {
     method: 'POST',
     data: options || {},
@@ -54,7 +54,7 @@ export async function createInternational(options: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function updateInternational({ id, ...options }: ResData) {
+export async function updateInternational({ id, ...options }: ResData): Promise<ResponseModel> {
   return request<ResponseModel>(`/api/system/international/${id}`, {
     method: 'PUT',
     data: options || {},
@@ -67,7 +67,7 @@ export async function updateInternational({ id, ...options }: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function delInternational(id: string) {
+export async function delInternational(id: string): Promise<ResponseModel> {
   return request<ResponseModel>(`/api/system/international/${id}`, {
     method: 'DELETE',
   });

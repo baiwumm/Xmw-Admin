@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 18:16:50
+ * @LastEditTime: 2022-10-21 14:07:16
  */
 declare namespace API {
   /**
@@ -13,15 +13,15 @@ declare namespace API {
    * @author: Cyan
    */
   type ORGANIZATION = {
-    org_id?: string;
+    org_id: string;
     org_name: string;
     org_code: string;
     org_type: string;
-    describe?: string;
+    describe: string;
     parent_id?: string;
     status: number;
     sort: number;
-    created_time?: Date;
+    created_time: Date;
     updated_time?: Date;
     leader?: string;
     founder?: string;
@@ -34,12 +34,12 @@ declare namespace API {
    * @author: Cyan
    */
   type JOBSMANAGEMENT = {
-    jobs_id?: string;
+    jobs_id: string;
     jobs_name: string;
     org_id: string;
-    describe?: string;
+    describe: string;
     parent_id?: string;
-    created_time?: Date;
+    created_time: Date;
     updated_time?: Date;
     leader?: string;
     founder?: string;
