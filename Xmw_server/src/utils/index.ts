@@ -4,9 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:50:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 14:39:39
+ * @LastEditTime: 2022-10-24 14:39:16
  */
-import { XmwInternational } from '@/entities/xmw_international.entity'; // 数据库实体
+import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 /**
  * @description: 多语言配置项
  * @return {*}

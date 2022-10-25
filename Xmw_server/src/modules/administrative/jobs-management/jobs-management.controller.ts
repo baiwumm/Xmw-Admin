@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 13:48:47
+ * @LastEditTime: 2022-10-24 15:17:36
  */
 import {
   Controller,
@@ -24,7 +24,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/common/interface'; // TS类型注解
+import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListJobsManagementDto,
@@ -103,7 +103,7 @@ export class JobsManagementController {
   @ApiOperation({ summary: '删除岗位数据' })
   async deleteJobs(
     @Param('jobs_id') jobs_id: string,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number>> {
     const response = await this.jobsManagementService.deleteJobs(jobs_id);
     return response;
   }

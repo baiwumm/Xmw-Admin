@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 10:59:41
+ * @LastEditTime: 2022-10-24 14:44:23
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
-import { ResData } from '@/common/interface';
+import { ResData } from '@/global/interface';
 
 /**
  * @description: 组织管理列表响应体结构 Dto

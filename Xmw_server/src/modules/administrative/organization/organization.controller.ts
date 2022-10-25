@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 13:48:22
+ * @LastEditTime: 2022-10-24 15:14:12
  */
 import {
   Controller,
@@ -24,7 +24,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/common/interface'; // TS类型注解
+import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListOrganizationDto,
@@ -107,7 +107,7 @@ export class OrganizationController {
   @ApiOperation({ summary: '删除组织数据' })
   async deleteOrganization(
     @Param('org_id') org_id: string,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number>> {
     const response = await this.organizationService.deleteOrganization(org_id);
     return response;
   }

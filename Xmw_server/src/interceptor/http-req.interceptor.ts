@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 09:58:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 09:58:02
+ * @LastEditTime: 2022-10-24 14:41:48
  */
 import {
   Injectable,
@@ -16,8 +16,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isPlainObject } from 'lodash';
 
-import { RES_CODE_MAP } from '@/common/enum'; // 返回体结构
-import { ResponseModel } from '@/common/interface'; // 返回体结构
+import { RES_CODE_MAP } from '@/global/enum'; // 返回体结构
+import { ResponseModel } from '@/global/interface'; // 返回体结构
 
 @Injectable()
 export class HttpReqTransformInterceptor<T>

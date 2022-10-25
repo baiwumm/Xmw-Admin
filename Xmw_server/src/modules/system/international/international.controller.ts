@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 13:45:17
+ * @LastEditTime: 2022-10-24 15:08:12
  */
 import {
   Controller,
@@ -24,7 +24,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/common/interface'; // TS类型注解
+import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListInternationalDto,
@@ -120,7 +120,7 @@ export class InternationalController {
   @ApiOperation({ summary: '删除国际化数据' })
   async deleteInternational(
     @Param('id') id: string,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number>> {
     const response = await this.internationalService.deleteInternational(id);
     return response;
   }

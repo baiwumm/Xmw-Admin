@@ -4,22 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 10:31:46
+ * @LastEditTime: 2022-10-24 15:08:04
  */
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Between, Repository, Not } from 'typeorm';
-import { XmwInternational } from '@/entities/xmw_international.entity'; // 数据库实体
-import { ResData, ResponseModel } from '@/common/interface'; // interface
+import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
+import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
+import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全局工具函数
 import { ListInternationalDto, SaveInternationalDto } from './dto';
 
 @Injectable()
 export class InternationalService {
   constructor(
-    // 使用 InjectRepository 注入参数，注册数据库实体
-    @InjectRepository(XmwInternational)
-    private readonly internationaRepository: Repository<XmwInternational>,
+    // 使用 InjectModel 注入参数，注册数据库实体
+    @InjectModel(XmwInternational)
+    private readonly internationaModel: typeof XmwInternational,
   ) {}
 
   /**
@@ -30,11 +30,8 @@ export class InternationalService {
   async getAllLocalesLang(): Promise<ResData> {
     const result: ResData = {};
     // 查询数据
-    const sqlData = await this.internationaRepository.find({
-      // 按时间倒序
-      order: {
-        created_time: 'DESC',
-      },
+    const sqlData = await this.internationaModel.findAll({
+      order: [['created_time', 'desc']], // 排序规则,
     });
     // 先将数据转成树形结构
     const treeLang = initializeTree(sqlData, 'id', 'parent_id', 'children');
@@ -58,17 +55,17 @@ export class InternationalService {
     const { name, start_time, end_time, isMenu } = internationalInfo;
     // 拼接查询参数
     const where: ResData = {};
-    if (name) where.name = Like(`%${name}%`);
+    if (name) where.name = { [Op.substring]: name };
     if (start_time && end_time)
-      where.created_time = Between(start_time, end_time);
+      where.created_time = { [Op.between]: [start_time, end_time] };
     // 查询数据
-    const sqlData = await this.internationaRepository.find({
+    const sqlData = await this.internationaModel.findAll({
       where,
       // 按时间倒序
-      order: {
-        sort: 'DESC',
-        created_time: 'DESC',
-      },
+      order: [
+        ['sort', 'desc'],
+        ['created_time', 'desc'],
+      ], // 排序规则,
     });
     // 将数据转成树形结构
     const result = initializeTree(sqlData, 'id', 'parent_id', 'children');
@@ -89,7 +86,7 @@ export class InternationalService {
     // 解构参数
     const { name, parent_id } = internationalInfo;
     // 相同层级名称不能相同
-    const exist = await this.internationaRepository.findOne({
+    const exist = await this.internationaModel.findOne({
       where: { name },
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
@@ -97,7 +94,7 @@ export class InternationalService {
       return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
     }
     // 如果通过则执行 sql insert 语句
-    const result = await this.internationaRepository.insert(internationalInfo);
+    const result = await this.internationaModel.create(internationalInfo);
     return { data: result };
   }
 
@@ -117,17 +114,16 @@ export class InternationalService {
       return { data: {}, msg: '父级不能和自己相同！', code: -1 };
     }
     // 相同层级名称不能相同
-    const exist = await this.internationaRepository.findOne({
-      where: { name, parent_id, id: Not(id) },
+    const exist = await this.internationaModel.findOne({
+      where: { name, parent_id, id: { [Op.ne]: id } },
     });
     // 如果有结果，则证明已存在
     if (exist) {
       return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
     }
     // 如果通过则执行 sql update 语句
-    const result = await this.internationaRepository.save({
-      id,
-      ...internationalInfo,
+    const result = await this.internationaModel.update(internationalInfo, {
+      where: { id },
     });
     return { data: result };
   }
@@ -137,9 +133,11 @@ export class InternationalService {
    * @return {*}
    * @author: Cyan
    */
-  async deleteInternational(id: string): Promise<ResponseModel<ResData>> {
+  async deleteInternational(
+    id: string,
+  ): Promise<ResponseModel<ResData | number>> {
     // 判断当前数据是否有子级，如果有数据的parent_id是id，则存在子级
-    const exist = await this.internationaRepository.findOne({
+    const exist = await this.internationaModel.findOne({
       where: { parent_id: id },
     });
     // 如果有结果，则证明已存在
@@ -147,7 +145,7 @@ export class InternationalService {
       return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
     }
     // 如果通过则执行 sql delete 语句
-    const result = await this.internationaRepository.delete(id);
+    const result = await this.internationaModel.destroy({ where: { id } });
     return { data: result };
   }
 }

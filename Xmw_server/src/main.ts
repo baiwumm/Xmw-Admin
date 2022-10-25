@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 13:44:49
+ * @LastEditTime: 2022-10-24 14:23:58
  */
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
@@ -16,7 +16,7 @@ import { TransformInterceptor } from './interceptor/transform.interceptor'; // �
 import App_configuration from './config/configuration'; // 全局配置
 import { logger } from './middleware/logger.middleware'; // 日志收集中间件
 import { Logger } from '@/utils/log4js';
-import { ResponseModel } from '@/common/interface'; // 返回体结构
+import { ResponseModel } from '@/global/interface'; // 返回体结构
 import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
 
 async function bootstrap() {

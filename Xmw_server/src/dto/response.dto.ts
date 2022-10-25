@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:23:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 18:37:59
+ * @LastEditTime: 2022-10-24 14:44:47
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { ResData } from '@/common/interface';
+import { ResData } from '@/global/interface';
 
 export class ResponseDto {
   @ApiProperty({

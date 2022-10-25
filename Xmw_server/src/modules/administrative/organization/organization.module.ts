@@ -4,17 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 17:05:42
+ * @LastEditTime: 2022-10-24 15:17:52
  */
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { OrganizationService } from './organization.service'; // Organization Service
 import { OrganizationController } from './organization.controller'; // Organization Controller
-import { XmwOrganization } from '@/entities/xmw_organization.entity'; // xmw_jobs 实体
+import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用
-  imports: [TypeOrmModule.forFeature([XmwOrganization])],
+  imports: [SequelizeModule.forFeature([XmwOrganization])],
   // 由 Nest 注入器实例化的提供者，并且可以至少在整个模块中共享
   controllers: [OrganizationController],
   // 通过 @Module 装饰器映射 Crotroller

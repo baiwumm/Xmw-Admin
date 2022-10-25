@@ -2,17 +2,16 @@
  * @Description: 应用程序的根模块(Module)
  * @Version: 2.0
  * @Author: Cyan
- * @Date: 2022-10-12 17:06:37
+ * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 17:06:51
+ * @LastEditTime: 2022-10-24 14:54:38
  */
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
 import App_globalConfig from './config/configuration'; // 全局配置
 import DatabaseConfig from './config/database'; // 数据库配置
-import { UserModule } from './modules/logical/user/user.module'; // 用户管理模块
-import { InternationalModule } from './modules/system/international/international.module'; // 系统设置-国际化
+import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
 import { JobsManagementModule } from './modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
 import { OrganizationModule } from './modules/administrative/organization/organization.module'; // 智能行政-组织管理
 
@@ -24,8 +23,7 @@ import { OrganizationModule } from './modules/administrative/organization/organi
       isGlobal: true,
       load: [App_globalConfig, DatabaseConfig],
     }),
-    // typeOrm 连接 mysql
-    TypeOrmModule.forRootAsync({
+    SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       // 注入 database 配置
       useFactory: async (configService: ConfigService) => {
@@ -33,7 +31,6 @@ import { OrganizationModule } from './modules/administrative/organization/organi
       },
       inject: [ConfigService],
     }),
-    UserModule,
     InternationalModule,
     JobsManagementModule,
     OrganizationModule,

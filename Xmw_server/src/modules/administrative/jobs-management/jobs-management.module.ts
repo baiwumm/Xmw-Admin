@@ -1,20 +1,20 @@
 /*
- * @Description:
+ * @Description: JobsManagement Module
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 15:15:22
+ * @LastEditTime: 2022-10-24 15:18:21
  */
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 import { JobsManagementController } from './jobs-management.controller'; // JobsManagement Controller
-import { XmwJobs } from '@/entities/xmw_jobs.entity'; // xmw_jobs 实体
+import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用
-  imports: [TypeOrmModule.forFeature([XmwJobs])],
+  imports: [SequelizeModule.forFeature([XmwJobs])],
   // 由 Nest 注入器实例化的提供者，并且可以至少在整个模块中共享
   controllers: [JobsManagementController],
   // 通过 @Module 装饰器映射 Crotroller
