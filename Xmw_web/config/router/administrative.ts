@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 14:06:14
+ * @LastEditTime: 2022-10-25 10:28:35
  */
 export default {
     path: '/administrative',
@@ -27,11 +27,11 @@ export default {
             icon: 'icon-jobs-management',
             component: './Administrative/JobsManagement',
         },
-        {
-            path: '/administrative/structure',
-            name: 'structure',
-            icon: 'icon-structure',
-            component: './Administrative/Structure',
-        }
+        // {
+        //     path: '/administrative/structure',
+        //     name: 'structure',
+        //     icon: 'icon-structure',
+        //     component: './Administrative/Structure',
+        // }
     ],
 }

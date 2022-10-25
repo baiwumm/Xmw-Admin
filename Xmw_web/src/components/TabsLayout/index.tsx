@@ -4,78 +4,28 @@
  * @Author: Cyan
  * @Date: 2022-09-19 19:53:48
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-24 23:18:15
+ * @LastEditTime: 2022-10-25 10:01:53
  */
 // 引入第三方库
-import { FC } from 'react'
+import type { FC } from 'react'
 import { useLocation, useIntl } from '@umijs/max'
 import { ReloadOutlined, VerticalRightOutlined, VerticalLeftOutlined, PicCenterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标
 import { message, Tabs, Badge, Dropdown, Menu, Button } from 'antd'; // antd 组件库
 import { indexOf, slice, remove } from 'lodash'
 
-// 引入工具函数
-import { formatMessage } from '@/utils' // 全局工具函数
-
 const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, dropByCacheKey, local, activeKey } }) => {
-    const intl = useIntl();
+    const { formatMessage } = useIntl();
     // 获取当前路由信息
     const location = useLocation();
     // 使用 iconfont.cn 资源
     const IconFont = createFromIconfontCN({
         scriptUrl: process.env.ICONFONT_URL,
     });
-    /**
-     * @description: 标签页右键菜单
-     * @return {*}
-     * @author: Cyan
-     */
-    const RightMenu = (pathname: string) => {
-        return (
-            <Menu
-                items={[
-                    {
-                        label: <Button type="text" size="small" icon={<ReloadOutlined />} disabled={pathname !== location.pathname}>{formatMessage('components.TabsLayout.reload')}</Button>,
-                        key: 'reload',
-                    },
-                    {
-                        label: <Button type="text" size="small" icon={<PicCenterOutlined />}>{formatMessage('components.TabsLayout.closeOthers')}</Button>,
-                        key: 'closeOthers',
-                    },
-                    {
-                        type: 'divider',
-                    },
-                    {
-                        label: <Button type="text" size="small" icon={<VerticalRightOutlined />} >{formatMessage('components.TabsLayout.closeTabLeft')}</Button>,
-                        key: 'closeTabLeft',
-                    },
-                    {
-                        label: <Button type="text" size="small" icon={<VerticalLeftOutlined />} >{formatMessage('components.TabsLayout.closeTabRight')}</Button>,
-                        key: 'closeTabRight',
-                    }
-                ]}
-                onClick={({ key }) => handlerNavigateTabs(key, pathname)}
-            />
-        )
-    }
     // 格式换多标签名称
     const formatMessagePath = (pathname: string) => {
         return (
             /* ***** 这里暂时获取不到每个tab对应的icon <IconFont type="icon-workbench" />  */
-            <span>{formatMessage('menu' + pathname.replace(/\//g, '.'))}</span>
-        )
-    }
-
-    /**
-     * @description: 多标签 label 渲染
-     * @param {string} pathname: 路由
-     * @return {*}
-     * @author: Cyan
-     */
-    const TabsMenuRender = (pathname: string) => {
-        return (
-            <Dropdown overlay={RightMenu(pathname)} trigger={['contextMenu']}>
-                <Badge status={activeKey === pathname ? 'processing' : 'success'} text={formatMessagePath(pathname)} />
-            </Dropdown>
+            <span>{formatMessage({id:'menu' + pathname.replace(/\//g, '.')})}</span>
         )
     }
 
@@ -91,7 +41,7 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
         // 要重新导航到新 Tab 的路由
         let navigateRoute = activeKey
         // 当前点击的路由的索引
-        let currentRouteKey = indexOf(allTabsRoutes, navigateRoute === targetKey ? navigateRoute : targetKey)
+        const currentRouteKey = indexOf(allTabsRoutes, navigateRoute === targetKey ? navigateRoute : targetKey)
         switch (type) {
             // 点击当前刷新
             case 'reload':
@@ -106,7 +56,7 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
                 const isCloseTabLeft = type === 'closeTabLeft'
                 // 判断是否在最左侧
                 if (currentRouteKey === (isCloseTabLeft ? 0 : allTabsRoutes.length - 1)) {
-                    message.info(intl.formatMessage({ id: `components.TabsLayout.message.${isCloseTabLeft ? 'closeTabLeft' : 'closeTabRight'}` }));
+                    message.info(formatMessage({ id: `components.TabsLayout.message.${isCloseTabLeft ? 'closeTabLeft' : 'closeTabRight'}` }));
                 } else {
                     // 获取当前 isCloseTabLeft 侧的全部路由
                     const allTabsRoutesOfLeft = isCloseTabLeft ? slice(allTabsRoutes, 0, currentRouteKey) : slice(allTabsRoutes, currentRouteKey + 1)
@@ -117,7 +67,7 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
             case 'closeOthers':
                 // 判断是否只有一个
                 if (allTabsRoutes.length === 1) {
-                    message.info(intl.formatMessage({ id: 'components.TabsLayout.message.closeOthers' }))
+                    message.info(formatMessage({ id: 'components.TabsLayout.message.closeOthers' }))
                 } else {
                     // 获取除了当前tab的全部标签
                     const othersTabsRoutes = remove(allTabsRoutes, route => route != targetKey)
@@ -128,7 +78,7 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
             case 'close':
                 // 当长度只有1，就不能关闭
                 if (allTabsRoutes.length === 1) {
-                    message.info(intl.formatMessage({ id: 'components.TabsLayout.message.close' }));
+                    message.info(formatMessage({ id: 'components.TabsLayout.message.close' }));
                 } else {
                     // 判断关闭的 tab 是不是当前路由
                     const isCloseRoute = navigateRoute === targetKey
@@ -145,6 +95,54 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
                 }
                 break;
         }
+
+    /**
+     * @description: 标签页右键菜单
+     * @return {*}
+     * @author: Cyan
+     */
+     const RightMenu = (pathname: string) => {
+        return (
+            <Menu
+                items={[
+                    {
+                        label: <Button type="text" size="small" icon={<ReloadOutlined />} disabled={pathname !== location.pathname}>{formatMessage({id:'components.TabsLayout.reload'})}</Button>,
+                        key: 'reload',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<PicCenterOutlined />}>{formatMessage({id:'components.TabsLayout.closeOthers'})}</Button>,
+                        key: 'closeOthers',
+                    },
+                    {
+                        type: 'divider',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<VerticalRightOutlined />} >{formatMessage({id:'components.TabsLayout.closeTabLeft'})}</Button>,
+                        key: 'closeTabLeft',
+                    },
+                    {
+                        label: <Button type="text" size="small" icon={<VerticalLeftOutlined />} >{formatMessage({id:'components.TabsLayout.closeTabRight'})}</Button>,
+                        key: 'closeTabRight',
+                    }
+                ]}
+                onClick={({ key }) => handlerNavigateTabs(key, pathname)}
+            />
+        )
+    }
+
+    /**
+     * @description: 多标签 label 渲染
+     * @param {string} pathname: 路由
+     * @return {*}
+     * @author: Cyan
+     */
+     const TabsMenuRender = (pathname: string) => {
+        return (
+            <Dropdown overlay={RightMenu(pathname)} trigger={['contextMenu']}>
+                <Badge status={activeKey === pathname ? 'processing' : 'success'} text={formatMessagePath(pathname)} />
+            </Dropdown>
+        )
+    }
 
     }
     return (
@@ -165,8 +163,7 @@ const TabsLayout: FC<any> = ({ tabsProps: { isKeep, keepElements, navigate, drop
                         { label: TabsMenuRender(pathname), key: pathname }
                     ),
                 )}
-            >
-            </Tabs>
+             />
         </div>
     );
 }
