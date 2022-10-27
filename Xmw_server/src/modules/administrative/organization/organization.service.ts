@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-25 09:36:45
+ * @LastEditTime: 2022-10-27 11:31:32
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import type { WhereOptions } from 'sequelize';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { initializeTree } from '@/utils'; // 全局工具函数
@@ -34,7 +35,7 @@ export class OrganizationService {
     const { org_name, org_code, org_type, status, start_time, end_time } =
       organizationInfo;
     // 拼接查询参数
-    const where: ResData = {};
+    const where: WhereOptions = {};
     if (org_name) where.org_name = { [Op.substring]: org_name };
     if (org_code) where.org_code = { [Op.substring]: org_code };
     if (org_type) where.org_type = { [Op.eq]: org_type };

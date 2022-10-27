@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-25 10:28:54
+ * @LastEditTime: 2022-10-27 10:00:53
  */
 export default {
   path: '/system',
@@ -21,12 +21,12 @@ export default {
     //   icon: 'icon-user-management',
     //   component: './System/UserManagement',
     // },
-    // {
-    //   path: '/system/menu-management',
-    //   name: 'menu-management',
-    //   icon: 'icon-menu-management',
-    //   component: './System/MenuManagement',
-    // },
+    {
+      path: '/system/menu-management',
+      name: 'menu-management',
+      icon: 'icon-menu-management',
+      component: './System/MenuManagement',
+    },
     // {
     //   path: '/system/role-management',
     //   name: 'role-management',

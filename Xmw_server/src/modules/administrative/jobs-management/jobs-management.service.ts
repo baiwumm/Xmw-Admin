@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 16:31:14
+ * @LastEditTime: 2022-10-27 11:31:13
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import type { WhereOptions } from 'sequelize';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
@@ -32,7 +33,7 @@ export class JobsManagementService {
     // 解构参数
     const { jobs_name, org_id, start_time, end_time } = jobsInfo;
     // 拼接查询参数
-    const where: ResData = {};
+    const where: WhereOptions = {};
     if (jobs_name) where.jobs_name = { [Op.substring]: jobs_name };
     if (org_id) where.org_id = org_id;
     if (start_time && end_time)

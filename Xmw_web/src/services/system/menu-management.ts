@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:41:34
+ * @LastEditTime: 2022-10-27 16:36:35
  */
 import { request } from '@umijs/max';
-import type { Data, ResponseModel } from '@/global/interface';
+import type { ResData, ResponseModel } from '@/global/interface';
 
 /**
  * @description:  获取菜单列表
@@ -15,35 +15,47 @@ import type { Data, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getMenuList(options?: Data) {
-  return request<ResponseModel>('/api/system/getMenuList', {
+export async function getMenuList(options?: ResData) {
+  return request<ResponseModel>('/api/system/menu-management', {
     method: 'GET',
     params: options || {},
   });
 }
 
 /**
- * @description: 保存菜单数据
- * @param {Data} options
+ * @description: 新增菜单数据
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function saveMenu(options?: Data) {
-  return request<ResponseModel>('/api/system/saveMenu', {
+ export async function createMenu(options: ResData): Promise<ResponseModel> {
+  return request<ResponseModel>('/api/system/menu-management', {
     method: 'POST',
     data: options || {},
   });
 }
 
 /**
- * @description: 删除菜单列表
- * @param {Data} menu_id
+ * @description: 更新菜单数据
+ * @param {ResData} options
  * @return {*}
  * @author: Cyan
  */
-export async function delMenu(menu_id: string) {
-  return request<ResponseModel>('/api/system/delMenu', {
-    method: 'POST',
-    data: { menu_id },
+ export async function updateMenu({ menu_id, ...options }: ResData): Promise<ResponseModel> {
+  return request<ResponseModel>(`/api/system/menu-management/${menu_id}`, {
+    method: 'PUT',
+    data: options || {},
+  });
+}
+
+/**
+ * @description: 删除菜单列表
+ * @param {ResData} menu_id
+ * @return {*}
+ * @author: Cyan
+ */
+export async function delMenu(menu_id: string): Promise<ResponseModel> {
+  return request<ResponseModel>(`/api/system/menu-management/${menu_id}`, {
+    method: 'DELETE',
   });
 }

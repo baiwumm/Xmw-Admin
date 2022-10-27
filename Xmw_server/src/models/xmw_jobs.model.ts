@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 16:31:06
+ * @LastEditTime: 2022-10-27 11:19:32
  */
 import {
   Column,
@@ -15,7 +15,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { XmwOrganization } from '@/models/xmw_organization.model';
-import { jobsAttributes } from '@/global/attributes';
+import type { jobsAttributes } from '@/attributes/administrative';
 
 @Table({ tableName: 'xmw_jobs' })
 export class XmwJobs
@@ -32,32 +32,20 @@ export class XmwJobs
   jobs_id: string;
 
   //岗位名称
-  @Column({
-    type: DataType.STRING(20),
-    allowNull: false,
-    comment: '岗位名称',
-  })
+  @Column({ type: DataType.STRING(20), allowNull: false, comment: '岗位名称' })
   jobs_name: string;
 
   //所属组织id
   @ForeignKey(() => XmwOrganization)
-  @Column({
-    type: DataType.UUID,
-    allowNull: false,
-    comment: '所属组织id',
-  })
+  @Column({ type: DataType.UUID, allowNull: false, comment: '所属组织id' })
   org_id: string;
 
   //父级id
-  @Column({
-    type: DataType.UUID,
-    allowNull: true,
-    comment: '父级id',
-  })
+  @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //岗位负责人
-  @Column({ type: DataType.UUID, allowNull: true, comment: '岗位负责人' })
+  @Column({ type: DataType.UUID, comment: '岗位负责人' })
   leader?: string;
 
   //岗位描述
@@ -65,7 +53,7 @@ export class XmwJobs
   describe: string;
 
   //创建人
-  @Column({ type: DataType.UUID, allowNull: true, comment: '创建人' })
+  @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
   //排序

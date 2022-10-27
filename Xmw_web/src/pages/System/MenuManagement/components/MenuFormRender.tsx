@@ -82,13 +82,13 @@ const MenuFormRender: FC = () => {
                 }}
                 options={APP_FLAG_OPTS}
             />
-            {/* 显示在面包屑中 */}
+            {/* 在面包屑中隐藏 */}
             <ProFormRadio.Group
                 name="hideInBreadcrumb"
                 colProps={{ span: 8 }}
                 label={formatMessage({ id: 'pages.system.menu-management.hideInBreadcrumb' })}
                 radioType="button"
-                initialValue={1}
+                initialValue={0}
                 fieldProps={{
                     buttonStyle: "solid"
                 }}

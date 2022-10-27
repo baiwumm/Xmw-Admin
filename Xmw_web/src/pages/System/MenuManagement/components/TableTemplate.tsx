@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:43:37
+ * @LastEditTime: 2022-10-27 15:35:23
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useRequest, getLocale, useModel } from '@umijs/max'
-import { ProTable } from '@ant-design/pro-components' // antd 高级组件
+import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined } from '@ant-design/icons' // antd 图标库
-import { Space, Button, Modal, message, Dropdown, Menu, Tag, Tooltip } from 'antd' // antd 组件库
+import { Space, Button, Modal, message, Tag, Tooltip } from 'antd' // antd 组件库
 import moment from 'moment'
 import { find } from 'lodash'
 
@@ -50,67 +50,95 @@ const TableTemplate: FC = () => {
     function reloadTable() {
         tableRef?.current?.reload()
     }
-    // 删除列表
+    /**
+     * @description: 删除菜单数据
+     * @param {string} menu_id
+     * @return {*}
+     * @author: Cyan
+     */
     const handlerDelete = async (menu_id: string | undefined) => {
         Modal.confirm({
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if (menu_id) {
-                    await delMenu(menu_id).then(res => {
-                        if (res.code === 200) {
-                            message.success(res.msg)
-                            // 刷新表格
-                            reloadTable()
-                        }
-                    })
-                }
+                return new Promise<void>(async (resolve, reject): Promise<void> => {
+                    if (menu_id) {
+                        await delMenu(menu_id).then(res => {
+                            if (res.code === 200) {
+                                message.success(res.msg)
+                                // 刷新表格
+                                reloadTable()
+                                resolve()
+                            }
+                        })
+                        reject()
+                    }
+                })
+
             }
         })
 
     }
-    //    下拉框菜单渲染
-    const DropdownMenu = (
-        <Menu
-            items={[
+
+    /**
+     * @description: 渲染操作下拉菜单子项
+     * @param {API} record
+     * @return {*}
+     * @author: Cyan
+     */
+    const DropdownMenu = (record: API.MENUMANAGEMENT) => {
+        return (
+            [
                 {
-                    label: <FormTemplate
+                    name: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
                         parent_id={parent_id}
-                        triggerDom={<Button type="text" size="small" icon={<ClusterOutlined />} block>{formatMessage({ id: 'menu.system.menu-management.add-child' })}</Button>}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<ClusterOutlined />}
+                                block
+                                onClick={() => set_parent_id(record?.menu_id)}
+                            >
+                                {formatMessage({ id: 'menu.system.menu-management.add-child' })}
+                            </Button>}
                         menuData={menuData}
                     />,
                     key: 'addChild',
                 },
                 {
-                    label: <FormTemplate
+                    name: <FormTemplate
                         treeData={treeData}
                         reloadTable={reloadTable}
                         formData={currentRecord}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.system.menu-management.edit' })}</Button>}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<EditOutlined />}
+                                block
+                                onClick={() => setCurrentRecord(record)}
+                            >
+                                {formatMessage({ id: 'menu.system.menu-management.edit' })}
+                            </Button>}
                         menuData={menuData}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button
-                        block type="text"
+                    name: <Button
+                        block
+                        type="text"
                         size="small"
-                        icon={<DeleteOutlined />}
-                        onClick={() => handlerDelete(currentRecord?.menu_id)} >
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.menu_id)} >
                         {formatMessage({ id: 'menu.system.menu-management.delete' })}
                     </Button>,
                     key: 'delete',
                 },
-            ]}
-        />
-    );
-
-    // 操作下拉框
-    const dropdownMenuClick = (record: API.MENUMANAGEMENT) => {
-        setCurrentRecord(record)
-        set_parent_id(record?.menu_id)
+            ]
+        );
     }
 
     // 渲染 columns 函数
@@ -405,12 +433,12 @@ const TableTemplate: FC = () => {
             align: 'center',
             fixed: 'right',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
+                <TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
                     <Button size="small">
                         {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
-                </Dropdown>
+                </TableDropdown>,
             ]
         },
     ]

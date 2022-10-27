@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-25 09:31:36
+ * @LastEditTime: 2022-10-27 11:20:08
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-import { orgAttributes } from '@/global/attributes';
+import type { orgAttributes } from '@/attributes/administrative';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
@@ -24,19 +24,11 @@ export class XmwOrganization
   org_id: string;
 
   //组织名称
-  @Column({
-    type: DataType.STRING(20),
-    allowNull: false,
-    comment: '组织名称',
-  })
+  @Column({ type: DataType.STRING(20), allowNull: false, comment: '组织名称' })
   org_name: string;
 
   //组织编码
-  @Column({
-    type: DataType.STRING(32),
-    allowNull: false,
-    comment: '组织编码',
-  })
+  @Column({ type: DataType.STRING(32), allowNull: false, comment: '组织编码' })
   org_code: string;
 
   //组织类型
@@ -49,15 +41,11 @@ export class XmwOrganization
   org_type: string;
 
   //父级id
-  @Column({
-    type: DataType.UUID,
-    allowNull: true,
-    comment: '父级id',
-  })
+  @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //组织负责人
-  @Column({ type: DataType.UUID, allowNull: true, comment: '组织负责人' })
+  @Column({ type: DataType.UUID, comment: '组织负责人' })
   leader?: string;
 
   //组织描述
@@ -65,7 +53,7 @@ export class XmwOrganization
   describe: string;
 
   //创建人
-  @Column({ type: DataType.UUID, allowNull: true, comment: '创建人' })
+  @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
   //排序

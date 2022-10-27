@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 15:08:04
+ * @LastEditTime: 2022-10-27 11:31:53
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import type { WhereOptions } from 'sequelize';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全局工具函数
@@ -28,7 +29,7 @@ export class InternationalService {
    * @author: Cyan
    */
   async getAllLocalesLang(): Promise<ResData> {
-    const result: ResData = {};
+    const result: WhereOptions = {};
     // 查询数据
     const sqlData = await this.internationaModel.findAll({
       order: [['created_time', 'desc']], // 排序规则,

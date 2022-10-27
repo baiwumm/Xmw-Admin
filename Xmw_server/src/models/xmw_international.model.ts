@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 14:51:18
+ * @LastEditTime: 2022-10-27 11:20:39
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-import { internationalAttributes } from '@/global/attributes';
+import type { internationalAttributes } from '@/attributes/system';
 
 @Table({ tableName: 'xmw_international', underscored: false })
 export class XmwInternational
@@ -32,47 +32,27 @@ export class XmwInternational
   name: string;
 
   //中文
-  @Column({
-    type: DataType.STRING(200),
-    allowNull: true,
-    comment: '中文',
-  })
+  @Column({ type: DataType.STRING(200), comment: '中文' })
   'zh-CN'?: string;
 
   //英文
-  @Column({
-    type: DataType.STRING(500),
-    allowNull: true,
-    comment: '英文',
-  })
+  @Column({ type: DataType.STRING(500), comment: '英文' })
   'en-US'?: string;
 
   //日文
-  @Column({
-    type: DataType.STRING(200),
-    allowNull: true,
-    comment: '日文',
-  })
+  @Column({ type: DataType.STRING(200), comment: '日文' })
   'ja-JP'?: string;
 
   //繁体中文
-  @Column({
-    type: DataType.STRING(200),
-    allowNull: true,
-    comment: '繁体中文',
-  })
+  @Column({ type: DataType.STRING(200), comment: '繁体中文' })
   'zh-TW'?: string;
 
   //父级id
-  @Column({
-    type: DataType.UUID,
-    allowNull: true,
-    comment: '父级id',
-  })
+  @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //创建人
-  @Column({ type: DataType.UUID, allowNull: true, comment: '创建人' })
+  @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
   //排序
