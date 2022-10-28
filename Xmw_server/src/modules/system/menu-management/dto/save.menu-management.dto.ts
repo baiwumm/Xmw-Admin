@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 14:49:01
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 15:09:54
+ * @LastEditTime: 2022-10-28 18:18:44
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -205,9 +205,9 @@ export class SaveMenuManagementDto {
   sort: number;
 
   @ApiProperty({
-    type: Number,
+    type: String,
     description: '菜单状态',
-    default: 1,
+    default: '1',
   })
-  status: number;
+  status: string;
 }

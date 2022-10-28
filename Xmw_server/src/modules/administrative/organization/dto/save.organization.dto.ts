@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 09:34:52
+ * @LastEditTime: 2022-10-28 18:16:03
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, Length } from 'class-validator'; // entity validator
@@ -46,14 +46,14 @@ export class SaveOrganizationDto {
   org_type: string;
 
   @ApiProperty({
-    type: Number,
+    type: String,
     description: '组织状态',
-    default: 1,
+    default: '1',
   })
-  status: number;
+  status: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '排序',
     default: 1,
   })

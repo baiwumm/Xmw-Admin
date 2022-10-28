@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-21 10:59:21
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 15:10:35
+ * @LastEditTime: 2022-10-28 18:12:39
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -29,7 +29,7 @@ export class ResponseJobsDto extends ResponseDto {
         describe: '研发工程师',
         founder: null,
         sort: 1,
-        created_time: '2022-09-23T15:43:47.000Z',
+        created_time: '2022-09-23 15:43:47',
         updated_time: null,
         children: [],
       },

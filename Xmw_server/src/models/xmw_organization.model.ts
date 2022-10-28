@@ -4,15 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:20:08
+ * @LastEditTime: 2022-10-28 18:17:02
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-import type { orgAttributes } from '@/attributes/administrative';
+import type { OrgAttributes } from '@/attributes/administrative';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
-  extends Model<orgAttributes, orgAttributes>
-  implements orgAttributes
+  extends Model<OrgAttributes, OrgAttributes>
+  implements OrgAttributes
 {
   @Column({
     type: DataType.UUID,
@@ -67,5 +67,5 @@ export class XmwOrganization
     allowNull: false,
     comment: '组织状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: string;
 }

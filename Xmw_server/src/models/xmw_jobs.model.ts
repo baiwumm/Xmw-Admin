@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:19:32
+ * @LastEditTime: 2022-10-28 16:35:54
  */
 import {
   Column,
@@ -15,12 +15,12 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { XmwOrganization } from '@/models/xmw_organization.model';
-import type { jobsAttributes } from '@/attributes/administrative';
+import type { JobsAttributes } from '@/attributes/administrative';
 
 @Table({ tableName: 'xmw_jobs' })
 export class XmwJobs
-  extends Model<jobsAttributes, jobsAttributes>
-  implements jobsAttributes
+  extends Model<JobsAttributes, JobsAttributes>
+  implements JobsAttributes
 {
   @Column({
     type: DataType.UUID,

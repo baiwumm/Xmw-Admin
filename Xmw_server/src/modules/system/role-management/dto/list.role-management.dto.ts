@@ -1,25 +1,33 @@
 /*
- * @Description: 查询菜单管理列表参数 Dto
+ * @Description: 查询角色管理列表参数 Dto
  * @Version: 2.0
  * @Author: Cyan
- * @Date: 2022-10-27 11:33:13
+ * @Date: 2022-10-28 17:47:10
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:18:24
+ * @LastEditTime: 2022-10-28 18:19:06
  */
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ListMenuManagementDto {
+export class ListRoleManagementDto {
   @ApiProperty({
     type: String,
-    description: '菜单类型',
-    default: 'menu',
+    description: '角色名称',
+    default: '超级管理员',
     required: false,
   })
-  menu_type?: string;
+  role_name?: string;
 
   @ApiProperty({
     type: String,
-    description: '菜单状态',
+    description: '角色编码',
+    default: 'Super Admin',
+    required: false,
+  })
+  role_code?: string;
+
+  @ApiProperty({
+    type: String,
+    description: '角色状态',
     enum: ['0', '1'],
     default: '1',
     required: false,
@@ -27,12 +35,18 @@ export class ListMenuManagementDto {
   status?: string;
 
   @ApiProperty({
-    type: Boolean,
-    description: '如果是查询菜单权限的，过滤掉重定向有值的数据',
-    default: false,
-    required: false,
+    type: Number,
+    description: '条数',
+    default: 10,
   })
-  isPremission?: boolean;
+  pageSize: number;
+
+  @ApiProperty({
+    type: Number,
+    description: '当前页码',
+    default: 1,
+  })
+  current: number;
 
   @ApiProperty({
     type: Date,

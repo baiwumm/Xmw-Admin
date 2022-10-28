@@ -4,15 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:20:39
+ * @LastEditTime: 2022-10-28 16:35:29
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
-import type { internationalAttributes } from '@/attributes/system';
+import type { InternationalAttributes } from '@/attributes/system';
 
 @Table({ tableName: 'xmw_international', underscored: false })
 export class XmwInternational
-  extends Model<internationalAttributes, internationalAttributes>
-  implements internationalAttributes
+  extends Model<InternationalAttributes, InternationalAttributes>
+  implements InternationalAttributes
 {
   @Column({
     type: DataType.UUID,

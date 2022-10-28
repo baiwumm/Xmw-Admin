@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 14:44:23
+ * @LastEditTime: 2022-10-28 18:15:48
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -30,10 +30,10 @@ export class ResponseOrganizationDto extends ResponseDto {
         describe:
           '阿里巴巴集团控股有限公司（简称：阿里巴巴集团）是马云带领下的18位创始人于1999年在浙江省杭州市创立的公司。',
         founder: null,
-        status: 1,
+        status: '1',
         sort: 1,
-        created_time: '2022-09-15T07:35:08.000Z',
-        updated_time: '2022-09-15T07:35:08.000Z',
+        created_time: '2022-09-15 07:35:08',
+        updated_time: '2022-09-15 07:35:08',
         children: [],
       },
     ],

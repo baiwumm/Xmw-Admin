@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:10:44
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:15:59
+ * @LastEditTime: 2022-10-28 18:16:58
  */
 
 /**
@@ -12,7 +12,7 @@
  * @return {*}
  * @author: Cyan
  */
-export type menuAttributes = {
+export type MenuAttributes = {
   menu_id: string; // 菜单id
   name: string; // 国际化对应的name
   menu_type: string; // 菜单类型
@@ -39,10 +39,40 @@ export type menuAttributes = {
   fixSiderbar: boolean; // 固定菜单
   founder?: string; // 创建人
   sort: number; // 排序
-  status: number; // 菜单状态
+  status: string; // 菜单状态
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
-  children?: menuAttributes[];
+  children?: MenuAttributes[];
+};
+
+/**
+ * @description: xmw_role Attributes
+ * @return {*}
+ * @author: Cyan
+ */
+export type RoleAttributes = {
+  role_id: string; // 角色id
+  role_name: string; // 角色名称
+  role_code: string; // 角色编码
+  describe: string; // 角色描述
+  founder?: string; // 创建人
+  sort: number; // 排序
+  status: string; // 角色状态
+  created_time?: Date; // 创建时间
+  updated_time?: Date; // 最后一次更新时间
+};
+
+/**
+ * @description: xmw_permission Attributes
+ * @return {*}
+ * @author: Cyan
+ */
+export type PermissionAttributes = {
+  permission_id: string; // 权限id
+  role_id: string; // 角色id
+  menu_id: string; // 菜单id
+  created_time?: Date; // 创建时间
+  updated_time?: Date; // 最后一次更新时间
 };
 
 /**
@@ -50,7 +80,7 @@ export type menuAttributes = {
  * @return {*}
  * @author: Cyan
  */
-export type internationalAttributes = {
+export type InternationalAttributes = {
   id: string; // id
   name: string; // 国际化字段
   'zh-CN'?: string; // 中文
@@ -62,5 +92,5 @@ export type internationalAttributes = {
   sort: number; // 排序
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
-  children?: internationalAttributes[];
+  children?: InternationalAttributes[];
 };

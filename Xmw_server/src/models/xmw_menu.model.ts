@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 16:28:50
+ * @LastEditTime: 2022-10-28 18:19:46
  */
 import {
   Column,
@@ -14,13 +14,13 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import type { menuAttributes } from '@/attributes/system';
+import type { MenuAttributes } from '@/attributes/system';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 
 @Table({ tableName: 'xmw_menu', underscored: false })
 export class XmwMenu
-  extends Model<menuAttributes, menuAttributes>
-  implements menuAttributes
+  extends Model<MenuAttributes, MenuAttributes>
+  implements MenuAttributes
 {
   @Column({
     type: DataType.UUID,
@@ -214,7 +214,7 @@ export class XmwMenu
     allowNull: false,
     comment: '菜单状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: string;
 
   @BelongsTo(() => XmwInternational, { as: 'i' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   interInfo: XmwInternational;
