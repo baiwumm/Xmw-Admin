@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 14:23:58
+ * @LastEditTime: 2022-10-29 10:03:53
  */
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
@@ -45,7 +45,7 @@ async function bootstrap() {
   SwaggerModule.setup(process.env.SWAGGER_SETUP_PATH, app, document);
   await app.listen(App_configuration().port, () => {
     Logger.info(
-      `服务已经启动,接口请访问:http://wwww.localhost:${
+      `服务已经启动,接口请访问:http://www.localhost:${
         App_configuration().port
       }`,
     );

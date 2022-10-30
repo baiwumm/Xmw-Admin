@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:31:53
+ * @LastEditTime: 2022-10-29 22:44:07
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import type { WhereOptions } from 'sequelize';
+import type { WhereOptions } from 'sequelize/types';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全局工具函数

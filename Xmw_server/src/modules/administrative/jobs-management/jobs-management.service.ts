@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 11:31:13
+ * @LastEditTime: 2022-10-29 22:43:59
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import type { WhereOptions } from 'sequelize';
+import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';

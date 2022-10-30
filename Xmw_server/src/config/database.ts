@@ -4,19 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-15 20:04:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 14:51:20
+ * @LastEditTime: 2022-10-29 17:21:46
  */
 import { registerAs } from '@nestjs/config';
-import * as models from '@/models';
-
-// 导入所有模型
-const allModels = [];
-for (const key in models) {
-  if (Object.prototype.hasOwnProperty.call(models, key)) {
-    const element = models[key];
-    allModels.push(element);
-  }
-}
 
 export default registerAs('database', () => ({
   dialect: 'mysql',
@@ -25,8 +15,7 @@ export default registerAs('database', () => ({
   username: process.env.DATABASE_NAME,
   password: process.env.DATABASE_PWD,
   database: process.env.DATABASE_LIB,
-  // models: [__dirname + '../models/*.model{.ts,.js}'],
-  models: allModels,
+  models: [__dirname + '/models/*.model{.ts,.js}'], // 导入所有模型
   logging: true,
   define: {
     timestamps: true, // 是否自动创建时间字段， 默认会自动创建createdAt、updatedAt
