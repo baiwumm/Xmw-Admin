@@ -4,17 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:44:04
+ * @LastEditTime: 2022-10-31 16:59:18
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
 import { useIntl, useModel, useRequest } from '@umijs/max'
-import { ProTable } from '@ant-design/pro-components' // antd 高级组件
+import { ProTable,TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Dropdown, Menu, Switch, Popconfirm } from 'antd' // antd 组件库
+import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
@@ -48,49 +48,64 @@ const TableTemplate: FC = () => {
             title: formatMessage({ id: 'global.message.delete.title' }),
             content: formatMessage({ id: 'global.message.delete.content' }),
             onOk: async () => {
-                if (role_id) {
-                    await delRole(role_id).then(res => {
-                        if (res.code === 200) {
-                            message.success(res.msg)
-                            // 刷新表格
-                            reloadTable()
-                        }
-                    })
-                }
+                return new Promise<void>(async (resolve, reject): Promise<void> => {
+                    if (role_id) {
+                        await delRole(role_id).then(res => {
+                            if (res.code === 200) {
+                                message.success(res.msg)
+                                // 刷新表格
+                                reloadTable()
+                                resolve()
+                            }
+                        })
+                        reject()
+                    }
+                })
+                
             }
         })
 
     }
-    //    下拉框菜单渲染
-    const DropdownMenu = (
-        <Menu
-            items={[
+
+    /**
+     * @description: 渲染操作下拉菜单子项
+     * @param {API} record
+     * @return {*}
+     * @author: Cyan
+     */
+     const DropdownMenu = (record: API.ROLEMANAGEMENT) => {
+        return (
+            [
                 {
-                    label: <FormTemplate
-                        reloadTable={reloadTable}
-                        formData={currentRecord}
-                        menuData={menuData}
-                        triggerDom={<Button type="text" size="small" icon={<EditOutlined />} block>{formatMessage({ id: 'menu.system.role-management.edit' })}</Button>}
+                    name: <FormTemplate
+                    reloadTable={reloadTable}
+                    formData={currentRecord}
+                    menuData={menuData}
+                        triggerDom={
+                            <Button
+                                type="text"
+                                size="small"
+                                icon={<EditOutlined />}
+                                block
+                                onClick={() => setCurrentRecord(record)}
+                            >
+                                {formatMessage({ id: 'menu.system.role-management.edit' })}
+                            </Button>}
                     />,
                     key: 'edit',
                 },
                 {
-                    label: <Button
+                    name: <Button
                         block
                         type="text"
                         size="small"
-                        icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.role_id)} >
+                        icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.role_id)} >
                         {formatMessage({ id: 'menu.system.role-management.delete' })}
                     </Button>,
                     key: 'delete',
                 },
-            ]}
-        />
-    );
-
-    // 操作下拉框
-    const dropdownMenuClick = (record: API.ROLEMANAGEMENT) => {
-        setCurrentRecord(record)
+            ]
+        );
     }
 
     // 设置角色状态
@@ -201,12 +216,12 @@ const TableTemplate: FC = () => {
             align: 'center',
             key: 'option',
             render: (_, record) => [
-                <Dropdown overlay={DropdownMenu} onOpenChange={() => dropdownMenuClick(record)} key="operation">
+                <TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
                     <Button size="small">
                         {formatMessage({ id: 'global.table.operation' })}
                         <DownOutlined />
                     </Button>
-                </Dropdown>
+                </TableDropdown>
             ]
         },
     ]
@@ -226,14 +241,12 @@ const TableTemplate: FC = () => {
                 {
                     // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
                     // 如果需要转化参数可以在这里进行修改
-                    let result: any = {}, mainData: any = []
+                    let result: any = {}
                     await getRoleList(params).then(res => {
                         result = res
-                        // 将查询回来的menu_permission对象数组转成menu_id数组
-                        mainData = result.data.data.map((element: any) => Object.assign(element, { menu_permission: element.menu_permission?.map((per: any) => per?.menu_id) }))
                     })
                     return {
-                        data: mainData,
+                        data: result.data.list,
                         // success 请返回 true，
                         // 不然 table 会停止解析数据，即使有数据
                         success: result.code === 200,

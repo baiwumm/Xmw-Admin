@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 16:36:35
+ * @LastEditTime: 2022-10-31 10:06:08
  */
 import { request } from '@umijs/max';
 import type { ResData, ResponseModel } from '@/global/interface';
@@ -15,7 +15,7 @@ import type { ResData, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getMenuList(options?: ResData) {
+export async function getMenuList(options?: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/system/menu-management', {
     method: 'GET',
     params: options || {},

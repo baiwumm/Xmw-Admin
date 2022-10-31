@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-19 10:39:41
+ * @LastEditTime: 2022-10-31 16:20:04
  */
 
 // 引入第三方库
@@ -35,9 +35,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params.parent_id = parent_id
         }
         // 删除 多余的 属性
-        if (params.children) {
-            params = omit(params, ['children'])
-        }
+        params = omit(params, ['children'])
         // 执行数据库操作
         await (params.id ? updateInternational : createInternational)(params).then(res => {
             if (res.code === 200) {

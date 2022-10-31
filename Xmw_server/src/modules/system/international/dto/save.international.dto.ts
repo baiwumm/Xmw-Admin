@@ -7,7 +7,6 @@
  * @LastEditTime: 2022-10-20 14:44:22
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator'; // entity validator
 /**
  * @description: 保存国际化 Dto
  * @return {*}
@@ -27,7 +26,6 @@ export class SaveInternationalDto {
     description: '国际化字段',
     default: 'international',
   })
-  @IsNotEmpty({ message: '国际化参数不能为空' })
   name: string;
 
   @ApiProperty({

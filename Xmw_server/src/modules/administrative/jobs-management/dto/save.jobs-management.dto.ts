@@ -4,10 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-21 11:02:49
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:13:18
+ * @LastEditTime: 2022-10-31 14:47:28
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, Length } from 'class-validator'; // entity validator
 
 /**
  * @description: 保存岗位数据 Dto
@@ -28,8 +27,6 @@ export class SaveJobsManagementDto {
     description: '岗位名称',
     default: 'UI 设计师',
   })
-  @IsNotEmpty({ message: '岗位名称不能为空' })
-  @Length(2, 32, { message: '岗位名称的长度在2-36个字符' })
   jobs_name: string;
 
   @ApiProperty({

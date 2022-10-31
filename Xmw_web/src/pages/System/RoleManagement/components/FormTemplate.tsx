@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 15:29:12
+ * @LastEditTime: 2022-10-31 16:18:58
  */
 
 // 引入第三方库
@@ -13,10 +13,11 @@ import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
+import {omit} from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { saveRole } from '@/services/system/role-management' // 角色管理接口
+import { createRole,updateRole } from '@/services/system/role-management' // 角色管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom, menuData }) => {
@@ -29,8 +30,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
     const handlerSubmit = async (values: API.ROLEMANAGEMENT) => {
         // 提交数据
         let result = false
-        const params = { ...formData, ...values }
-        await saveRole(params).then(res => {
+        let params = { ...formData, ...values }
+        params = omit(params, ['permission'])
+        await (params.role_id ? updateRole : createRole)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);
                 reloadTable()

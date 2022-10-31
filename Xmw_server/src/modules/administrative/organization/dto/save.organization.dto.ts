@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:16:03
+ * @LastEditTime: 2022-10-31 14:48:14
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, Length } from 'class-validator'; // entity validator
+
 /**
  * @description: 保存组织数据 Dto
  * @return {*}
@@ -27,8 +27,6 @@ export class SaveOrganizationDto {
     description: '组织名称',
     default: '阿里巴巴',
   })
-  @IsNotEmpty({ message: '组织名称不能为空' })
-  @Length(2, 32, { message: '组织名称的长度在2-36个字符' })
   org_name: string;
 
   @ApiProperty({

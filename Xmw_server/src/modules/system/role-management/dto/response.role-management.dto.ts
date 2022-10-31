@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:24:06
+ * @LastEditTime: 2022-10-31 09:59:00
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -25,6 +25,7 @@ export class ResponseRoleManagementDto extends ResponseDto {
           role_id: '79581210-60b7-4c66-b6ae-14b013c3661e',
           role_name: '超级管理员',
           role_code: 'Super Admin',
+          menu_permission: ['79581210-60b7-4c66-b6ae-14b013c3661e'],
           describe: '拥有系统全部权限',
           founder: null,
           status: '1',

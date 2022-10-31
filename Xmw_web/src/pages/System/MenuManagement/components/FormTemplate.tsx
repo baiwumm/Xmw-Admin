@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 15:37:18
+ * @LastEditTime: 2022-10-31 16:19:58
  */
 
 // 引入第三方库
@@ -35,9 +35,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
             params.parent_id = parent_id
         }
         // 删除 children 属性
-        if (params.children) {
-            params = omit(params, ['children'])
-        }
+        params = omit(params, ['children'])
         await (params.menu_id ? updateMenu : createMenu)(params).then(res => {
             if (res.code === 200) {
                 message.success(res.msg);

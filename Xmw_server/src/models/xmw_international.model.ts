@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 16:35:29
+ * @LastEditTime: 2022-10-31 14:46:26
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
 import type { InternationalAttributes } from '@/attributes/system';
+import { NotEmpty } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_international', underscored: false })
 export class XmwInternational
@@ -24,6 +25,7 @@ export class XmwInternational
   id: string;
 
   //国际化字段
+  @NotEmpty({ msg: '国际化字段不能为空' })
   @Column({
     type: DataType.STRING(32),
     allowNull: false,

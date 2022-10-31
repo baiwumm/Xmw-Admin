@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 16:35:54
+ * @LastEditTime: 2022-10-31 14:47:18
  */
 import {
   Column,
@@ -16,6 +16,7 @@ import {
 } from 'sequelize-typescript';
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import type { JobsAttributes } from '@/attributes/administrative';
+import { NotEmpty, Length } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_jobs' })
 export class XmwJobs
@@ -32,6 +33,8 @@ export class XmwJobs
   jobs_id: string;
 
   //岗位名称
+  @NotEmpty({ msg: '岗位名称不能为空' })
+  @Length({ min: 2, max: 32, msg: '岗位名称的长度在2-36个字符' })
   @Column({ type: DataType.STRING(20), allowNull: false, comment: '岗位名称' })
   jobs_name: string;
 

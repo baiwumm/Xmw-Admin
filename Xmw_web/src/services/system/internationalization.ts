@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-21 14:19:03
+ * @LastEditTime: 2022-10-31 10:20:51
  */
 import { request } from '@umijs/max';
 import type { ResData, ResponseModel } from '@/global/interface';
@@ -15,7 +15,7 @@ import type { ResData, ResponseModel } from '@/global/interface';
  * @return {*}
  * @author: Cyan
  */
-export async function getInternationalList(options?: ResData) {
+export async function getInternationalList(options?: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/system/international', {
     method: 'GET',
     params: options || {},
@@ -28,7 +28,7 @@ export async function getInternationalList(options?: ResData) {
  * @return {*}
  * @author: Cyan
  */
-export async function getAllLocalesLang(options?: ResData) {
+export async function getAllLocalesLang(options?: ResData): Promise<ResponseModel> {
   return request<ResponseModel>('/api/system/international/allLocales', {
     method: 'GET',
     params: options || {},

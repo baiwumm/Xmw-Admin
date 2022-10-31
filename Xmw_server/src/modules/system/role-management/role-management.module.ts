@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-29 10:37:21
+ * @LastEditTime: 2022-10-31 13:51:45
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';

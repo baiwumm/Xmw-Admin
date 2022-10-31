@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:17:02
+ * @LastEditTime: 2022-10-31 14:48:09
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
 import type { OrgAttributes } from '@/attributes/administrative';
+import { NotEmpty, Length } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
@@ -24,6 +25,8 @@ export class XmwOrganization
   org_id: string;
 
   //组织名称
+  @NotEmpty({ msg: '组织名称不能为空' })
+  @Length({ min: 2, max: 32, msg: '组织名称的长度在2-36个字符' })
   @Column({ type: DataType.STRING(20), allowNull: false, comment: '组织名称' })
   org_name: string;
 

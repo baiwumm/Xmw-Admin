@@ -4,10 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-28 18:06:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:19:24
+ * @LastEditTime: 2022-10-31 16:53:57
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, Length } from 'class-validator'; // entity validator
 
 /**
  * @description: 保存角色数据 Dto
@@ -20,8 +19,6 @@ export class SaveRoleManagementDto {
     description: '角色名称',
     default: '超级管理员',
   })
-  @IsNotEmpty({ message: '角色名称不能为空' })
-  @Length(2, 32, { message: '角色名称的长度在2-36个字符' })
   role_name: string;
 
   @ApiProperty({
