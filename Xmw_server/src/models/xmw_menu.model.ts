@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:19:46
+ * @LastEditTime: 2022-10-31 17:27:46
  */
 import {
   Column,
@@ -210,9 +210,9 @@ export class XmwMenu
   //菜单状态
   @Column({
     type: DataType.ENUM,
-    values: ['0', '1'],
+    values: ['disable', 'normal'],
     allowNull: false,
-    comment: '菜单状态（0:禁用，1：正常）',
+    comment: '菜单状态（disable:禁用，normal：正常）',
   })
   status: string;
 

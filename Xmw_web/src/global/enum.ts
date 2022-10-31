@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 09:00:41
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:54:01
+ * @LastEditTime: 2022-10-31 17:26:11
  */
 
 /**
@@ -13,18 +13,18 @@
  * @author: Cyan
  */
 export const APP_STATUS = {
-  0: '禁用',
-  1: '正常',
+  disable: '禁用',
+  normal: '正常',
 };
 
 export const APP_STATUS_OPTS = [
   {
     label: '正常',
-    value: "1",
+    value: "normal",
   },
   {
     label: '禁用',
-    value: "0",
+    value: "disable",
   },
 ];
 
