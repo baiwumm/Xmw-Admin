@@ -4,13 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:02:43
+ * @LastEditTime: 2022-11-01 17:41:55
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { cloneDeep } from 'lodash';
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // interface
 import { XmwRole } from '@/models/xmw_role.model'; // 数据库实体
 import { XmwPermission } from '@/models/xmw_permission.model';
@@ -24,6 +23,7 @@ type permissionModel = {
 @Injectable()
 export class RoleManagementService {
   constructor(
+    private sequelize: Sequelize,
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwRole)
     private readonly roleModel: typeof XmwRole,
@@ -97,17 +97,27 @@ export class RoleManagementService {
     if (exist) {
       return { data: {}, msg: '角色名称或角色编码已存在！', code: -1 };
     }
-    // 此处需要添加事务操作，做个标记
-    // 执行 sql insert 语句,插入数据到 xmw_role 表中
-    const result = await this.roleModel.create(roleInfo);
-    // 再把角色对应的权限插入到 xmw_permission 中
-    const permissionData: permissionModel[] = menu_permission.map(
-      (menu_id: string) => {
-        return { role_id: result.role_id, menu_id };
-      },
-    );
-    await this.permissionModel.bulkCreate(permissionData);
-    return { data: result };
+
+    // 开始一个事务并将其保存到变量中
+    const t = await this.sequelize.transaction();
+    try {
+      // 执行 sql insert 语句,插入数据到 xmw_role 表中
+      const result = await this.roleModel.create(roleInfo, { transaction: t });
+      // 再把角色对应的权限插入到 xmw_permission 中
+      const permissionData: permissionModel[] = menu_permission.map(
+        (menu_id: string) => {
+          return { role_id: result.role_id, menu_id };
+        },
+      );
+      await this.permissionModel.bulkCreate(permissionData);
+      // 如果执行到此行,且没有引发任何错误,提交事务
+      await t.commit();
+      return { data: result };
+    } catch (error) {
+      // 如果执行到达此行,则抛出错误,回滚事务
+      await t.rollback();
+      return { data: {}, msg: error, code: -1 };
+    }
   }
 
   /**
@@ -132,21 +142,35 @@ export class RoleManagementService {
     if (exist) {
       return { data: {}, msg: '角色名称或角色编码已存在！', code: -1 };
     }
-    // 此处需要添加事务操作，做个标记
-    // 先删除权限表相关的数据
-    await this.permissionModel.destroy({ where: { role_id } });
-    // 执行 sql update 语句,更新 xmw_role 表数据
-    const result = await this.roleModel.update(roleInfo, {
-      where: { role_id },
-    });
-    // 再把角色对应的权限插入到 xmw_permission 中
-    const permissionData: permissionModel[] = menu_permission.map(
-      (menu_id: string) => {
-        return { role_id, menu_id };
-      },
-    );
-    await this.permissionModel.bulkCreate(permissionData);
-    return { data: result };
+
+    // 开始一个事务并将其保存到变量中
+    const t = await this.sequelize.transaction();
+    try {
+      // 先删除权限表相关的数据
+      await this.permissionModel.destroy({
+        where: { role_id },
+        transaction: t,
+      });
+      // 执行 sql update 语句,更新 xmw_role 表数据
+      const result = await this.roleModel.update(roleInfo, {
+        where: { role_id },
+        transaction: t,
+      });
+      // 再把角色对应的权限插入到 xmw_permission 中
+      const permissionData: permissionModel[] = menu_permission.map(
+        (menu_id: string) => {
+          return { role_id, menu_id };
+        },
+      );
+      await this.permissionModel.bulkCreate(permissionData, { transaction: t });
+      // 如果执行到此行,且没有引发任何错误,提交事务
+      await t.commit();
+      return { data: result };
+    } catch (error) {
+      // 如果执行到达此行,则抛出错误,回滚事务
+      await t.rollback();
+      return { data: {}, msg: error, code: -1 };
+    }
   }
 
   /**
@@ -155,12 +179,27 @@ export class RoleManagementService {
    * @author: Cyan
    */
   async deleteRole(role_id: string): Promise<ResponseModel<ResData | number>> {
-    // 此处需要添加事务操作，做个标记
-    // 先删除 xmw_permission 表关联的数据
-    await this.permissionModel.destroy({ where: { role_id } });
-    // 再删除 xmw_role 关联的数据
-    const result = await this.roleModel.destroy({ where: { role_id } });
-    return { data: result };
+    // 开始一个事务并将其保存到变量中
+    const t = await this.sequelize.transaction();
+    try {
+      // 先删除 xmw_permission 表关联的数据
+      await this.permissionModel.destroy({
+        where: { role_id },
+        transaction: t,
+      });
+      // 再删除 xmw_role 关联的数据
+      const result = await this.roleModel.destroy({
+        where: { role_id },
+        transaction: t,
+      });
+      // 如果执行到此行,且没有引发任何错误,提交事务
+      await t.commit();
+      return { data: result };
+    } catch (error) {
+      // 如果执行到达此行,则抛出错误,回滚事务
+      await t.rollback();
+      return { data: {}, msg: error, code: -1 };
+    }
   }
 
   /**
