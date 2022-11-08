@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:54:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 10:32:59
+ * @LastEditTime: 2022-11-08 16:35:00
  */
 /**
  * @name 代理的配置
@@ -18,33 +18,19 @@
  * @doc https://umijs.org/docs/guides/proxy
  */
 export default {
+  /**
+   * @description: 后端代理配置
+   * @name 详细的代理配置
+   * @doc https://github.com/chimurai/http-proxy-middleware
+   * @author: Cyan
+   */  
   dev: {
-    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/api/': {
-      // 要代理的地址
-      target: ' http://127.0.0.1:3000',
+      target: ' http://127.0.0.1:3000', // 代理地址
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
       pathRewrite: { '^/api': '/v1' },
-    },
-  },
-  /**
-   * @name 详细的代理配置
-   * @doc https://github.com/chimurai/http-proxy-middleware
-   */
-  test: {
-    '/api/': {
-      target: 'https://proapi.azurewebsites.net',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
     },
   },
 };
