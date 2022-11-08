@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 16:10:25
+ * @LastEditTime: 2022-11-08 17:28:35
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -84,7 +84,7 @@ const TableTemplate: FC = () => {
 								size="small"
 								icon={<ClusterOutlined />}
 								block
-								onClick={() => set_parent_id(record?.org_id)}
+								onClick={() => set_parent_id(record.org_id)}
 							>
 								{formatMessage({ id: 'menu.administrative.organization.add-child' })}
 							</Button>}
@@ -114,7 +114,7 @@ const TableTemplate: FC = () => {
 						block
 						type="text"
 						size="small"
-						icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.org_id)} >
+						icon={<DeleteOutlined />} onClick={() => handlerDelete(record.org_id)} >
 						{formatMessage({ id: 'menu.administrative.organization.delete' })}
 					</Button>,
 					key: 'delete',

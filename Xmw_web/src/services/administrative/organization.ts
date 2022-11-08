@@ -4,15 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 16:02:29
+ * @LastEditTime: 2022-11-08 17:05:19
  */
 import { request } from '@umijs/max';
-import type { ResData, ResponseModel } from '@/global/interface';
+import type { ResponseModel } from '@/global/interface';
 import type { TableSearchProps,CreateOrgProps } from '@/pages/Administrative/Organization/utils/interface'
 
 /**
- * @description:  获取组织管理列表
- * @param {object} options
+ * @description: 获取组织管理列表
+ * @param {TableSearchProps} options
  * @return {*}
  * @author: Cyan
  */
@@ -25,11 +25,11 @@ export async function getOrganizationList(options?: TableSearchProps): Promise<R
 
 /**
  * @description: 新增组织数据
- * @param {ResData} options
+ * @param {CreateOrgProps} options
  * @return {*}
  * @author: Cyan
  */
-export async function createOrganization(options?: CreateOrgProps): Promise<ResponseModel<API.ORGANIZATION>> {
+export async function createOrganization(options: CreateOrgProps): Promise<ResponseModel<API.ORGANIZATION>> {
   return request<ResponseModel<API.ORGANIZATION>>('/api/administrative/organization', {
     method: 'POST',
     data: options || {},
@@ -38,11 +38,11 @@ export async function createOrganization(options?: CreateOrgProps): Promise<Resp
 
 /**
  * @description: 更新组织数据
- * @param {ResData} options
+ * @param {API.ORGANIZATION} options
  * @return {*}
  * @author: Cyan
  */
-export async function updateOrganization({ org_id, ...options }: ResData): Promise<ResponseModel<number[]>> {
+export async function updateOrganization({ org_id, ...options }: API.ORGANIZATION): Promise<ResponseModel<number[]>> {
   return request<ResponseModel<number[]>>(`/api/administrative/organization/${org_id}`, {
     method: 'PUT',
     data: options || {},
@@ -51,7 +51,7 @@ export async function updateOrganization({ org_id, ...options }: ResData): Promi
 
 /**
  * @description: 删除组织数据
- * @param {ResData} org_id
+ * @param {string} org_id
  * @return {*}
  * @author: Cyan
  */

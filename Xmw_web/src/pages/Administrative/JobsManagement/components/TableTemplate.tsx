@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 16:03:01
+ * @LastEditTime: 2022-11-08 17:28:09
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -53,7 +53,13 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
-	// 删除列表
+	
+ /**
+  * @description: 删除岗位数据
+  * @param {string} jobs_id
+  * @return {*}
+  * @author: Cyan
+  */	
 	const handlerDelete = async (jobs_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),

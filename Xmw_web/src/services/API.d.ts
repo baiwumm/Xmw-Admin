@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 15:44:58
+ * @LastEditTime: 2022-11-08 17:31:18
  */
 declare namespace API {
   /**
@@ -147,17 +147,22 @@ declare namespace API {
    * @return {*}
    * @author: Cyan
    */
-  type INTERNATIONALIZATION = {
+  type LOCALESLANG = 'zh-CN' | 'en-US' | 'ja-JP' | 'zh-TW'
+  type INTERNATIONALIZATION<T = string> = { [key in LOCALESLANG]: T } & {
     id: string;
     name: string;
-    'zh-CN': string;
-    'en-US': string;
-    'ja-JP': string;
-    'zh-TW': string;
     parent_id: string;
     created_time: Date;
     updated_time: Date;
     founder: string;
-    children: INTERNATIONALIZATION[];
+    sort: number; // 排序
+    children?: INTERNATIONALIZATION[];
   };
+
+  /**
+ * @description: 国际化多语言层级对象
+ * @return {*}
+ * @author: Cyan
+ */
+  type LOCALESLANGAll = Pick<INTERNATIONALIZATION<ResData>, LOCALESLANG>
 }
