@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:23:25
+ * @LastEditTime: 2022-11-03 10:07:47
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -27,7 +27,12 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
                     showCount: true,
                     maxLength: 32
                 }}
-                rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_name' }) }]}
+                rules={[
+                    { required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_name' }) },
+                    {
+                        validator: (_, value) => value.length < 2 ? Promise.reject(new Error(formatMessage({ id: 'pages.system.role-management.role_name.validator' }))) : Promise.resolve()
+                    }
+                ]}
             />
             {/* 角色编码 */}
             <ProFormText

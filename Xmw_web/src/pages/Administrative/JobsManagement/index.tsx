@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-30 10:38:00
+ * @LastEditTime: 2022-11-08 15:41:37
  */
 
 // 引入第三方库
@@ -16,12 +16,12 @@ import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
 import TableTemplate from './components/TableTemplate'
 
 const JobsManagement: FC = () => {
-    const { formatMessage } = useIntl();
-    return (
-        <PageContainer title={formatMessage({ id: 'pages.administrative.jobs-management' })}>
-            {/* 表格列表 */}
-            <TableTemplate />
-        </PageContainer>
-    )
+	const { formatMessage } = useIntl();
+	return (
+		<PageContainer title={formatMessage({ id: 'pages.administrative.jobs-management' })}>
+			{/* 表格列表 */}
+			<TableTemplate />
+		</PageContainer>
+	)
 }
 export default JobsManagement

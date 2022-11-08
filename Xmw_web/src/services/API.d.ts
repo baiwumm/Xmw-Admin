@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:59:26
+ * @LastEditTime: 2022-11-08 15:44:58
  */
 declare namespace API {
   /**
@@ -13,18 +13,18 @@ declare namespace API {
    * @author: Cyan
    */
   type ORGANIZATION = {
-    org_id: string;
-    org_name: string;
-    org_code: string;
-    org_type: string;
-    describe: string;
-    parent_id?: string;
-    status: number;
-    sort: number;
-    created_time: Date;
-    updated_time?: Date;
-    leader?: string;
-    founder?: string;
+    org_id: string; // 组织id
+    org_name: string; // 组织名称
+    org_code: string; // 组织编码
+    org_type: string; // 组织类型
+    describe: string; // 组织描述
+    parent_id: string; // 父级id
+    status: string; // 组织状态
+    sort: number; // 排序
+    created_time: Date; // 创建时间
+    updated_time: Date;  // 最后一次更新时间
+    leader: string; // 岗位负责人
+    founder: string; // 创建人
     children?: ORGANIZATION[];
   };
 
@@ -34,16 +34,17 @@ declare namespace API {
    * @author: Cyan
    */
   type JOBSMANAGEMENT = {
-    jobs_id: string;
-    jobs_name: string;
-    org_id: string;
-    describe: string;
-    parent_id?: string;
-    created_time: Date;
-    updated_time?: Date;
-    leader?: string;
-    founder?: string;
-    org_name: string;
+    jobs_id: string; // 岗位id
+    jobs_name: string; // 岗位名称
+    org_id: string; // 所属组织
+    describe: string; // 岗位描述
+    parent_id: string; // 父级id
+    created_time: Date; // 创建时间
+    updated_time: Date; // 最后一次更新时间
+    leader: string; // 岗位负责人
+    founder: string; // 创建人
+    org_name: string; // 组织名称
+    sort: number; // 排序
     children?: JOBSMANAGEMENT[];
   };
 
@@ -54,34 +55,34 @@ declare namespace API {
    */
   type MENUMANAGEMENT = {
     menu_id: string;
-    name?: string;
-    path?: string;
+    name: string;
+    path: string;
     icon: string;
-    component?: string;
-    redirect?: string;
+    component: string;
+    redirect: string;
     parent_id: string;
     sort: number;
-    founder?: string;
+    founder: string;
     status: string;
-    target?: string;
+    target: string;
     permission: string;
     access: string;
     menu_type: string;
-    layout?: string;
-    hideChildrenInMenu?: string;
-    hideInMenu?: string;
-    hideInBreadcrumb?: string;
-    headerRender?: string;
-    footerRender?: string;
-    menuRender?: string;
+    layout: string;
+    hideChildrenInMenu: string;
+    hideInMenu: string;
+    hideInBreadcrumb: string;
+    headerRender: string;
+    footerRender: string;
+    menuRender: string;
     menuHeaderRender?: string;
-    flatMenu?: string;
-    fixedHeader?: string;
-    fixSiderbar?: string;
-    navTheme?: string;
-    headerTheme?: string;
-    created_time?: Date;
-    updated_time?: Date;
+    flatMenu: string;
+    fixedHeader: string;
+    fixSiderbar: string;
+    navTheme: string;
+    headerTheme: string;
+    created_time: Date;
+    updated_time: Date;
     'zh-CN': string;
     'en-US': string;
     'ja-JP': string;
@@ -98,30 +99,30 @@ declare namespace API {
     user_id: string;
     user_name: string;
     cn_name: string;
-    en_name?: string;
+    en_name: string;
     work_no: string;
     password: string;
-    confirmPassword?: string;
+    confirmPassword: string;
     age: number;
-    email?: string;
+    email: string;
     phone: string;
-    avatar_url?: string;
+    avatar_url: string;
     sex: string;
     status: string;
     sort: number;
-    token?: string;
-    motto?: string;
+    token: string;
+    motto: string;
     tags: string;
     city: string;
     address: string;
     jobs_id: string;
     org_id: string;
     role_id: string;
-    last_ip?: string;
-    login_num?: number;
+    last_ip: string;
+    login_num: number;
     created_time: Date;
-    updated_time?: Date;
-    founder?: string;
+    updated_time: Date;
+    founder: string;
   };
 
   /**
@@ -134,12 +135,12 @@ declare namespace API {
     role_name: string;
     role_code: string;
     sort: number;
-    founder?: string;
+    founder: string;
     status: string;
     describe?: string;
-    menu_permission?: string[];
-    created_time?: Date;
-    updated_time?: Date;
+    menu_permission: string[];
+    created_time: Date;
+    updated_time: Date;
   };
   /**
    * @description: 系统设置-国际化
@@ -147,16 +148,16 @@ declare namespace API {
    * @author: Cyan
    */
   type INTERNATIONALIZATION = {
-    id?: string;
+    id: string;
     name: string;
     'zh-CN': string;
     'en-US': string;
     'ja-JP': string;
     'zh-TW': string;
-    parent_id?: string;
-    created_time?: Date;
-    updated_time?: Date;
-    founder?: string;
-    children?: INTERNATIONALIZATION[];
+    parent_id: string;
+    created_time: Date;
+    updated_time: Date;
+    founder: string;
+    children: INTERNATIONALIZATION[];
   };
 }

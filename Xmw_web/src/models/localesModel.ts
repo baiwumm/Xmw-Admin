@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-10 17:27:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:35:39
+ * @LastEditTime: 2022-11-08 09:55:29
  */
 import { getAllLocalesLang } from '@/services/system/internationalization'; //获取国际化多语言层级对象
 
@@ -39,9 +39,9 @@ export default {
     },
   },
   // 该选项中的函数自定义命名?函数的触发时机是初始时，主要用来初始化模块状态或者做一些准备性工作
-  subscriptions: {
-    loadData({ dispatch }: any) {
-      dispatch({ type: 'initLocales', payload: {} });
-    },
-  },
+  // subscriptions: {
+  //   loadData({ dispatch }: any) {
+  //     dispatch({ type: 'initLocales', payload: {} });
+  //   },
+  // },
 };

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:35:42
+ * @LastEditTime: 2022-11-08 09:53:43
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
@@ -17,19 +17,21 @@ import CryptoJS from 'crypto-js'; // AES/DES加密
  * @return {*}
  * @author: Cyan
  */
-export const initLocalesLang = async () => {
+export const initLocalesLang = async (): Promise<void> => {
   await getAllLocalesLang()
-    .then((result) => {
-      const data = result.data;
+    .then((res) => {
+      if(res.code === 200){
+        const data = res.data;
       if (data) {
         Object.keys(data).forEach((lang) => {
           // 初始化多语言配置
           addLocale(lang, data[lang], ANTD_LANGS[lang]);
         });
       }
+      }
     })
     .catch((error) => {
-      message.error(error);
+      message.error(error.message || error.msg);
     });
 };
 

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 11:00:28
+ * @LastEditTime: 2022-11-08 14:29:05
  */
 
 /**
@@ -29,9 +29,9 @@ export type PageResModel = {
  * @return {*}
  * @author: Cyan
  */
-export type ResponseModel<T = ResData[]> = {
+export type ResponseModel<T> = {
   code?: number;
-  data: T | PageResModel | ResData;
+  data: T;
   msg?: string;
   success?: boolean;
 };

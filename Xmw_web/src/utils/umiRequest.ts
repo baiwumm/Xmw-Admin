@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 11:14:50
+ * @LastEditTime: 2022-11-03 10:37:24
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -75,11 +75,11 @@ export const errorConfig: RequestConfig = {
       switch (data.code) {
         // 成功发起请求并成功处理，一般用于数据库字段校验
         case -1:
-          authError(data.msg);
+          authError(JSON.stringify(data.msg));
           break;
         // 成功发起请求，但是内部处理出现错误
         case 400:
-          authError(data.msg);
+          authError(JSON.stringify(data.msg));
           break;
       }
       return response;

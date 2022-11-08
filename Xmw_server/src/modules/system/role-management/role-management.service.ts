@@ -4,12 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-01 17:41:55
+ * @LastEditTime: 2022-11-08 10:53:28
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Op, Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
+import { Sequelize } from 'sequelize-typescript';
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // interface
 import { XmwRole } from '@/models/xmw_role.model'; // 数据库实体
 import { XmwPermission } from '@/models/xmw_permission.model';
@@ -23,13 +24,14 @@ type permissionModel = {
 @Injectable()
 export class RoleManagementService {
   constructor(
-    private sequelize: Sequelize,
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwRole)
     private readonly roleModel: typeof XmwRole,
 
     @InjectModel(XmwPermission)
     private readonly permissionModel: typeof XmwPermission,
+
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -109,7 +111,7 @@ export class RoleManagementService {
           return { role_id: result.role_id, menu_id };
         },
       );
-      await this.permissionModel.bulkCreate(permissionData);
+      await this.permissionModel.bulkCreate(permissionData, { transaction: t });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
       return { data: result };
