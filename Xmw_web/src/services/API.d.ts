@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:31:18
+ * @LastEditTime: 2022-11-08 18:35:03
  */
 declare namespace API {
   /**
@@ -75,7 +75,7 @@ declare namespace API {
     headerRender: string;
     footerRender: string;
     menuRender: string;
-    menuHeaderRender?: string;
+    menuHeaderRender: string;
     flatMenu: string;
     fixedHeader: string;
     fixSiderbar: string;
@@ -137,8 +137,9 @@ declare namespace API {
     sort: number;
     founder: string;
     status: string;
-    describe?: string;
+    describe: string;
     menu_permission: string[];
+    permission?: {menu_id: string}[];
     created_time: Date;
     updated_time: Date;
   };

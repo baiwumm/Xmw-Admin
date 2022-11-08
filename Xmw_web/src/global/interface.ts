@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 14:29:05
+ * @LastEditTime: 2022-11-08 18:29:12
  */
 
 /**
@@ -19,9 +19,9 @@ export type ResData = Record<string, any>;
  * @return {*}
  * @author: Cyan
  */
-export type PageResModel = {
+export type PageResModel<T> = {
   total: number;
-  list: ResData[];
+  list: T[];
 };
 
 /**
@@ -37,11 +37,11 @@ export type ResponseModel<T> = {
 };
 
 /**
- * @description: 渲染label
+ * @description: 默认分页查询参数
  * @return {*}
  * @author: Cyan
  */
-export type RenderLable = {
-  value: string | number;
-  label: string;
-};
+export type PaginationProps = {
+  current: number; // 当前页码
+  pageSize: number; // 每页条数
+}

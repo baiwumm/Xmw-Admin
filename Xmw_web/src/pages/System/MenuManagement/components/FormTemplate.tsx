@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:19:58
+ * @LastEditTime: 2022-11-08 18:05:51
  */
 
 // 引入第三方库
@@ -17,71 +17,71 @@ import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { createMenu,updateMenu } from '@/services/system/menu-management' // 菜单管理接口
+import { createMenu, updateMenu } from '@/services/system/menu-management' // 菜单管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, menuData }) => {
-    const { formatMessage } = useIntl();
-    // 初始化表单
-    const [form] = Form.useForm<API.MENUMANAGEMENT>();
-    // DrawerForm 不同状态下 标题显示
-    const formTitle = formData?.menu_id ? `${formatMessage({ id: 'menu.system.menu-management.edit' }) + formatMessage({ id: 'pages.system.menu-management.title' })}：${formData[getLocale()]}` : (formatMessage({ id: 'menu.system.menu-management.add' }) + formatMessage({ id: 'pages.system.menu-management.title' }))
-    // 提交表单
-    const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
-        // 提交数据
-        let result = false
-        let params = { ...formData, ...values }
-        if (parent_id) {
-            params.parent_id = parent_id
-        }
-        // 删除 children 属性
-        params = omit(params, ['children'])
-        await (params.menu_id ? updateMenu : createMenu)(params).then(res => {
-            if (res.code === 200) {
-                message.success(res.msg);
-                reloadTable()
-                // 重置表单
-                form.resetFields()
-                result = true
-            }
-        })
-        return result
-    }
-    return (
-        <DrawerForm<API.MENUMANAGEMENT>
-            title={formTitle}
-            width={550}
-            grid
-            form={form}
-            trigger={triggerDom ||
-                <Button type="primary">
-                    <PlusOutlined />
-                    {formatMessage({ id: 'menu.system.menu-management.add' })}
-                </Button>
-            }
-            autoFocusFirstInput
-            drawerProps={{
-                destroyOnClose: false,
-                maskClosable: false,
-                onClose: () => form.resetFields()
-            }}
-            // 提交数据时，禁用取消按钮的超时时间（毫秒）。
-            submitTimeout={2000}
-            onFinish={async (values) => {
-                // 提交数据
-                const isSuccess = await handlerSubmit(values)
-                // 返回true关闭弹框，否则不关闭
-                return isSuccess
-            }}
-            onVisibleChange={visiable => {
-                if (visiable) {
-                    form.setFieldsValue(formData);
-                }
-            }}
-        >
-            <FormTemplateItem treeData={treeData} parent_id={parent_id} menuData={menuData} />
-        </DrawerForm>
-    );
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, internationalData }) => {
+	const { formatMessage } = useIntl();
+	// 初始化表单
+	const [form] = Form.useForm<API.MENUMANAGEMENT>();
+	// DrawerForm 不同状态下 标题显示
+	const formTitle = formData?.menu_id ? `${formatMessage({ id: 'menu.system.menu-management.edit' }) + formatMessage({ id: 'pages.system.menu-management.title' })}：${formData[getLocale()]}` : (formatMessage({ id: 'menu.system.menu-management.add' }) + formatMessage({ id: 'pages.system.menu-management.title' }))
+	// 提交表单
+	const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
+		// 提交数据
+		let result = false
+		let params = { ...formData, ...values }
+		if (parent_id) {
+			params.parent_id = parent_id
+		}
+		// 删除 children 属性
+		params = omit(params, ['children'])
+		await (params.menu_id ? updateMenu : createMenu)(params).then(res => {
+			if (res.code === 200) {
+				message.success(res.msg);
+				reloadTable()
+				// 重置表单
+				form.resetFields()
+				result = true
+			}
+		})
+		return result
+	}
+	return (
+		<DrawerForm<API.MENUMANAGEMENT>
+			title={formTitle}
+			width={550}
+			grid
+			form={form}
+			trigger={triggerDom ||
+				<Button type="primary">
+					<PlusOutlined />
+					{formatMessage({ id: 'menu.system.menu-management.add' })}
+				</Button>
+			}
+			autoFocusFirstInput
+			drawerProps={{
+				destroyOnClose: false,
+				maskClosable: false,
+				onClose: () => form.resetFields()
+			}}
+			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
+			submitTimeout={2000}
+			onFinish={async (values) => {
+				// 提交数据
+				const isSuccess = await handlerSubmit(values)
+				// 返回true关闭弹框，否则不关闭
+				return isSuccess
+			}}
+			onVisibleChange={visiable => {
+				if (visiable && formData) {
+					form.setFieldsValue(formData);
+				}
+			}}
+		>
+			<FormTemplateItem treeData={treeData} parent_id={parent_id} internationalData={internationalData} />
+		</DrawerForm>
+	);
 };
 
 export default FormTemplate

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:25:04
+ * @LastEditTime: 2022-11-08 18:03:32
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -18,7 +18,7 @@ import MenuFormRender from './MenuFormRender'
 
 const { Title } = Typography;
 
-const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) => {
+const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationalData }) => {
     const { formatMessage } = useIntl();
     // 是按钮就显示
     const isMenuRender = (
@@ -130,7 +130,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, menuData }) 
                 colProps={{ span: 12 }}
                 tooltip={formatMessage({ id: 'pages.system.menu-management.name.tooltip' })}
                 fieldProps={{
-                    treeData: menuData,
+                    treeData: internationalData,
                     fieldNames: {
                         label: 'zh-CN',
                         value: 'id'

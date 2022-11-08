@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:32:41
+ * @LastEditTime: 2022-11-08 18:00:11
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -62,7 +62,6 @@ const TableTemplate: FC = () => {
 
 			}
 		})
-
 	}
 	/**
 	 * @description: 渲染操作下拉菜单子项

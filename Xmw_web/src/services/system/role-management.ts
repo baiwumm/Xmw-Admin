@@ -4,32 +4,35 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 10:33:38
+ * @LastEditTime: 2022-11-08 18:32:12
  */
 import { request } from '@umijs/max';
-import type { ResData, ResponseModel } from '@/global/interface';
+import type { PageResModel,ResponseModel } from '@/global/interface';
+import type { TableSearchProps,RoleStatusProps } from '@/pages/System/RoleManagement/utils/interface'
 
 /**
  * @description:  获取角色列表
- * @param {object} options
+ * @param {TableSearchProps} options
  * @return {*}
  * @author: Cyan
  */
-export async function getRoleList(options?: ResData): Promise<ResponseModel> {
-  return request<ResponseModel>('/api/system/role-management', {
+export async function getRoleList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>> {
+  return request<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>>('/api/system/role-management', {
     method: 'GET',
     params: options || {},
   });
 }
 
 /**
- * @description: 创建角色数据
- * @param {Data} options
+ * @description: 新增角色数据
+ * @param {API.ROLEMANAGEMENT} options
  * @return {*}
  * @author: Cyan
  */
-export async function createRole(options: ResData): Promise<ResponseModel> {
-  return request<ResponseModel>('/api/system/role-management', {
+export async function createRole(
+  options: Omit<API.ROLEMANAGEMENT, 'role_id' | 'founder' | 'created_time' | 'updated_time'>
+): Promise<ResponseModel<API.ROLEMANAGEMENT>> {
+  return request<ResponseModel<API.ROLEMANAGEMENT>>('/api/system/role-management', {
     method: 'POST',
     data: options || {},
   });
@@ -37,12 +40,12 @@ export async function createRole(options: ResData): Promise<ResponseModel> {
 
 /**
  * @description: 更新角色数据
- * @param {Data} options
+ * @param {API.ROLEMANAGEMENT} options
  * @return {*}
  * @author: Cyan
  */
- export async function updateRole({ role_id, ...options }: ResData): Promise<ResponseModel> {
-  return request<ResponseModel>(`/api/system/role-management/${role_id}`, {
+export async function updateRole({ role_id, ...options }: API.ROLEMANAGEMENT): Promise<ResponseModel<number[]>> {
+  return request<ResponseModel<number[]>>(`/api/system/role-management/${role_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -50,12 +53,12 @@ export async function createRole(options: ResData): Promise<ResponseModel> {
 
 /**
  * @description: 删除角色数据
- * @param {Data} role_id
+ * @param {string} role_id
  * @return {*}
  * @author: Cyan
  */
-export async function delRole(role_id: string): Promise<ResponseModel> {
-  return request<ResponseModel>(`/api/system/role-management/${role_id}`, {
+export async function delRole(role_id: string): Promise<ResponseModel<number>> {
+  return request<ResponseModel<number>>(`/api/system/role-management/${role_id}`, {
     method: 'DELETE',
   });
 }
@@ -66,9 +69,9 @@ export async function delRole(role_id: string): Promise<ResponseModel> {
  * @return {*}
  * @author: Cyan
  */
-export async function setRoleStatus({role_id,status}: ResData): Promise<ResponseModel> {
-  return request<ResponseModel>(`/api/system/role-management/${role_id}`, {
+export async function setRoleStatus({ role_id, status }: RoleStatusProps): Promise<ResponseModel<number[]>> {
+  return request<ResponseModel<number[]>>(`/api/system/role-management/${role_id}`, {
     method: 'PATCH',
-    data: {status} || {},
+    data: { status } || {},
   });
 }
