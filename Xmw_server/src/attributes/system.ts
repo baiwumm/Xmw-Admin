@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:10:44
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:06:39
+ * @LastEditTime: 2022-11-09 15:31:06
  */
 
 /**
@@ -54,7 +54,7 @@ export type RoleAttributes = {
   role_id: string; // 角色id
   role_name: string; // 角色名称
   role_code: string; // 角色编码
-  menu_permission: string[]; // 权限集合
+  menu_permission: PermissionAttributes[]; // 权限集合
   describe: string; // 角色描述
   founder?: string; // 创建人
   sort: number; // 排序

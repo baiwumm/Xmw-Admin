@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 16:33:09
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:24:20
+ * @LastEditTime: 2022-11-09 15:48:05
  */
 import {
   Column,
@@ -17,10 +17,6 @@ import {
 import type { RoleAttributes } from '@/attributes/system';
 import { XmwPermission } from '@/models/xmw_permission.model';
 import { NotEmpty, Length } from 'sequelize-typescript';
-
-type PermissionModel = {
-  menu_id: string;
-};
 
 @Table({ tableName: 'xmw_role' })
 export class XmwRole
@@ -68,19 +64,6 @@ export class XmwRole
   })
   status: number;
 
-  @Column({
-    type: DataType.VIRTUAL,
-    get() {
-      // 处理权限id，返回一个字符串数组
-      const permission = this.getDataValue('permission') || [];
-      const menu_permission: string[] = permission.map(
-        (per: PermissionModel) => per.menu_id,
-      );
-      return menu_permission;
-    },
-  })
-  menu_permission: string[];
-
-  @HasMany(() => XmwPermission, { as: 'permission' })
-  permission: XmwPermission[];
+  @HasMany(() => XmwPermission, { as: 'menu_permission' })
+  menu_permission: XmwPermission[];
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:13:44
+ * @LastEditTime: 2022-11-09 15:39:42
  */
 declare namespace API {
   /**
@@ -130,6 +130,10 @@ declare namespace API {
    * @return {*}
    * @author: Cyan
    */
+  type ROLEMENU = {
+    menu_id: string;
+    role_id: string
+  }
   type ROLEMANAGEMENT = {
     role_id: string;
     role_name: string;
@@ -138,8 +142,7 @@ declare namespace API {
     founder: string;
     status: number;
     describe: string;
-    menu_permission: string[];
-    permission?: {menu_id: string}[];
+    menu_permission: ROLEMENU[];
     created_time: Date;
     updated_time: Date;
   };

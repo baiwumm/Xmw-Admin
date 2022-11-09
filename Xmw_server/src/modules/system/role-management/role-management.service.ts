@@ -59,13 +59,12 @@ export class RoleManagementService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 分页查询数据
     const { count, rows } = await this.roleModel.findAndCountAll({
-      attributes: { exclude: ['updated_time'] },
       // 联表查询
       include: [
         {
           model: XmwPermission,
-          as: 'permission',
-          attributes: ['menu_id'],
+          as: 'menu_permission',
+          attributes: ['role_id', 'menu_id'],
         },
       ],
       offset: (Number(current) - 1) * pageSize,

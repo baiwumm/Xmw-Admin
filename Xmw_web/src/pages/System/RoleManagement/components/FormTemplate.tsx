@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:35:41
+ * @LastEditTime: 2022-11-09 15:44:07
  */
 
 // 引入第三方库
@@ -13,7 +13,7 @@ import { useIntl } from '@umijs/max'
 import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
 import { Button, Form, message } from 'antd'; // antd 组件库
-import { omit } from 'lodash'
+import {omit} from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
@@ -30,8 +30,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
 	const handlerSubmit = async (values: API.ROLEMANAGEMENT) => {
 		// 提交数据
 		let result = false
-		let params = { ...formData, ...values }
-		params = omit(params, ['permission'])
+		const params = { ...formData, ...values }
 		await (params.role_id ? updateRole : createRole)(params).then(res => {
 			if (res.code === 200) {
 				message.success(res.msg);
@@ -71,7 +70,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
 			}}
 			onVisibleChange={visiable => {
 				if (visiable && formData) {
-					form.setFieldsValue(formData);
+					// menu_permission的值需要单独回显
+					const roleMenus = formData.menu_permission.map((role: API.ROLEMENU)=>role.menu_id)
+					form.setFieldsValue(omit(formData,'menu_permission'));
+					form.setFieldValue('menu_permission',roleMenus)
 				}
 			}}
 		>
