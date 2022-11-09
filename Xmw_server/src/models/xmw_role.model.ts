@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 16:33:09
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:19:57
+ * @LastEditTime: 2022-11-09 10:24:20
  */
 import {
   Column,
@@ -61,12 +61,12 @@ export class XmwRole
 
   //角色状态
   @Column({
-    type: DataType.ENUM,
-    values: ['normal', 'disabled'],
+    type: DataType.INTEGER,
     allowNull: false,
-    comment: '角色状态（disabled:禁用，normal：正常）',
+    defaultValue: 1,
+    comment: '角色状态（0:禁用，1：正常）',
   })
-  status: string;
+  status: number;
 
   @Column({
     type: DataType.VIRTUAL,

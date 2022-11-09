@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 11:33:13
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:18:24
+ * @LastEditTime: 2022-11-09 09:44:29
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -18,13 +18,12 @@ export class ListMenuManagementDto {
   menu_type?: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '菜单状态',
-    enum: ['0', '1'],
-    default: '1',
+    default: 1,
     required: false,
   })
-  status?: string;
+  status?: number;
 
   @ApiProperty({
     type: Boolean,

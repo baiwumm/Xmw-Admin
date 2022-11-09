@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:36:02
+ * @LastEditTime: 2022-11-09 10:26:32
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -80,7 +80,7 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormRadio.Group
 				name="status"
 				colProps={{ span: 8 }}
-				initialValue={'normal'}
+				initialValue={1}
 				fieldProps={{
 					buttonStyle: "solid"
 				}}

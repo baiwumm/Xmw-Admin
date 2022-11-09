@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:28:12
+ * @LastEditTime: 2022-11-09 10:00:45
  */
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
 import type { OrgAttributes } from '@/attributes/administrative';
@@ -65,10 +65,10 @@ export class XmwOrganization
 
   //组织状态
   @Column({
-    type: DataType.ENUM,
-    values: ['disable', 'normal'],
+    type: DataType.INTEGER,
     allowNull: false,
-    comment: '组织状态（disable:禁用，normal：正常）',
+    defaultValue: 1,
+    comment: '组织状态（0:禁用，1：正常）',
   })
-  status: string;
+  status: number;
 }

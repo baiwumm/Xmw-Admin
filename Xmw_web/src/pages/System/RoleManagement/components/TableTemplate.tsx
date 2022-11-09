@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:32:56
+ * @LastEditTime: 2022-11-09 09:49:43
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -109,7 +109,7 @@ const TableTemplate: FC = () => {
 
 	// 设置角色状态
 	const changeRoleStatus = async ({ role_id, status }: RoleStatusProps) => {
-		await setRoleStatus({ role_id, status: status === 'normal' ? 'disable' : 'normal' }).then(result => {
+		await setRoleStatus({ role_id, status: status === 0 ? 1 : 0 }).then(result => {
 			message.success(result.msg)
 			reloadTable()
 		}).finally(() => {
@@ -128,7 +128,7 @@ const TableTemplate: FC = () => {
 		><Switch
 				checkedChildren={formatMessage({ id: 'global.status.normal' })}
 				unCheckedChildren={formatMessage({ id: 'global.status.disable' })}
-				checked={record.status === 'normal'}
+				checked={record.status === 1}
 				loading={roleId === record.role_id && roleLoading}
 				onChange={() => { setRoleLoadingTrue(); setRoleId(record.role_id) }}
 			/>
@@ -163,8 +163,8 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				disable: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
-				normal: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
+				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
 			},
 			render: (_, record) => renderRoleStatus(record)
 		},

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 17:27:46
+ * @LastEditTime: 2022-11-09 10:17:05
  */
 import {
   Column,
@@ -110,94 +110,44 @@ export class XmwMenu
   headerTheme?: string;
 
   //是否隐藏子路由
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    comment: '是否隐藏子路由',
-  })
-  hideChildrenInMenu: boolean;
+  @Column({ type: DataType.INTEGER, comment: '是否隐藏子路由' })
+  hideChildrenInMenu: number;
 
   //是否隐藏菜单，包括子路由
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    comment: '是否隐藏菜单，包括子路由',
-  })
-  hideInMenu: boolean;
+  @Column({ type: DataType.INTEGER, comment: '是否隐藏菜单，包括子路由' })
+  hideInMenu: number;
 
   //是否在面包屑中隐藏
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    comment: '是否在面包屑中隐藏',
-  })
-  hideInBreadcrumb: boolean;
+  @Column({ type: DataType.INTEGER, comment: '是否在面包屑中隐藏' })
+  hideInBreadcrumb: number;
 
   //是否显示顶栏
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '是否显示顶栏',
-  })
-  headerRender: boolean;
+  @Column({ type: DataType.INTEGER, comment: '是否显示顶栏' })
+  headerRender: number;
 
   //是否显示页脚
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '是否显示页脚',
-  })
-  footerRender: boolean;
+  @Column({ type: DataType.INTEGER, comment: '是否显示页脚' })
+  footerRender: number;
 
   //当前路由是否展示菜单
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '当前路由是否展示菜单',
-  })
-  menuRender: boolean;
+  @Column({ type: DataType.INTEGER, comment: '当前路由是否展示菜单' })
+  menuRender: number;
 
   //当前路由是否展示菜单顶栏
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '当前路由是否展示菜单顶栏',
-  })
-  menuHeaderRender: boolean;
+  @Column({ type: DataType.INTEGER, comment: '当前路由是否展示菜单顶栏' })
+  menuHeaderRender: number;
 
   //子项往上提，只是不展示父菜单
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-    comment: '子项往上提，只是不展示父菜单',
-  })
-  flatMenu: boolean;
+  @Column({ type: DataType.INTEGER, comment: '子项往上提，只是不展示父菜单' })
+  flatMenu: number;
 
   //固定顶栏
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '固定顶栏',
-  })
-  fixedHeader: boolean;
+  @Column({ type: DataType.INTEGER, comment: '固定顶栏' })
+  fixedHeader: number;
 
   //固定菜单
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-    comment: '固定菜单',
-  })
-  fixSiderbar: boolean;
+  @Column({ type: DataType.INTEGER, comment: '固定菜单' })
+  fixSiderbar: number;
 
   //创建人
   @Column({ type: DataType.UUID, comment: '创建人' })
@@ -209,12 +159,12 @@ export class XmwMenu
 
   //菜单状态
   @Column({
-    type: DataType.ENUM,
-    values: ['disable', 'normal'],
+    type: DataType.INTEGER,
     allowNull: false,
-    comment: '菜单状态（disable:禁用，normal：正常）',
+    defaultValue: 1,
+    comment: '菜单状态（0:禁用，1：正常）',
   })
-  status: string;
+  status: number;
 
   @BelongsTo(() => XmwInternational, { as: 'i' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   interInfo: XmwInternational;

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:28:35
+ * @LastEditTime: 2022-11-09 09:51:52
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -156,8 +156,8 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				disable: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
-				normal: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
+				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
 			},
 		},
 		{

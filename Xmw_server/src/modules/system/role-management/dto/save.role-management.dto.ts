@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 18:06:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:53:57
+ * @LastEditTime: 2022-11-09 09:39:31
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -43,11 +43,11 @@ export class SaveRoleManagementDto {
   sort: number;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '角色状态',
-    default: '1',
+    default: 1,
   })
-  status: string;
+  status: number;
 
   @ApiProperty({
     type: String,

@@ -31,5 +31,5 @@ export type TableSearchProps = PaginationProps & {
  */
 export type RoleStatusProps = {
   role_id: string;
-  status: string;
+  status: number;
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 14:48:14
+ * @LastEditTime: 2022-11-09 09:52:00
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -44,11 +44,11 @@ export class SaveOrganizationDto {
   org_type: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '组织状态',
-    default: '1',
+    default: 1,
   })
-  status: string;
+  status: number;
 
   @ApiProperty({
     type: Number,

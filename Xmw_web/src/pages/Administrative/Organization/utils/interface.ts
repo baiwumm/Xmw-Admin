@@ -33,7 +33,7 @@ export type CreateOrgProps = {
   parent_id?: string; // 父级id
   org_name: string; // 组织名称
   org_type: string; // 组织编码
-  status: string; // 组织状态
+  status: number; // 组织状态
   sort: number; // 排序
   describe: string; // 组织描述
 }

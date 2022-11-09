@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 16:05:18
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 16:06:18
+ * @LastEditTime: 2022-11-09 09:44:37
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -42,7 +42,7 @@ export class ResponseMenuManagementDto extends ResponseDto {
         fixSiderbar: 1,
         founder: null,
         sort: 1,
-        status: '0',
+        status: 1,
         created_time: '2022-10-27 15:42:56',
         updated_time: '2022-10-27 15:42:56',
         'zh-CN': '指示面板',

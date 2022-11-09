@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 10:53:28
+ * @LastEditTime: 2022-11-09 10:30:48
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -211,7 +211,7 @@ export class RoleManagementService {
    */
   async updateRoleStatus(
     role_id: string,
-    status: string,
+    status: number,
   ): Promise<ResponseModel<ResData>> {
     // 执行 update 更新 xmw_role 状态
     const result = await this.roleModel.update(

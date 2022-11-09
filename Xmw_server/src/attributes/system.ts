@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:10:44
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:54:20
+ * @LastEditTime: 2022-11-09 10:06:39
  */
 
 /**
@@ -27,19 +27,19 @@ export type MenuAttributes = {
   layout?: string; // 是否显示layout布局
   navTheme?: string; // 导航菜单的主题
   headerTheme?: string; // 顶部导航的主题，mix 模式生效
-  hideChildrenInMenu: boolean; // 是否隐藏子路由
-  hideInMenu: boolean; // 是否隐藏菜单，包括子路由
-  hideInBreadcrumb: boolean; // 是否在面包屑中隐藏
-  headerRender: boolean; // 是否显示顶栏
-  footerRender: boolean; // 是否显示页脚
-  menuRender: boolean; // 当前路由是否展示菜单
-  menuHeaderRender: boolean; // 当前路由是否展示菜单顶栏
-  flatMenu: boolean; // 子项往上提，只是不展示父菜单
-  fixedHeader: boolean; // 固定顶栏
-  fixSiderbar: boolean; // 固定菜单
+  hideChildrenInMenu: number; // 是否隐藏子路由
+  hideInMenu: number; // 是否隐藏菜单，包括子路由
+  hideInBreadcrumb: number; // 是否在面包屑中隐藏
+  headerRender: number; // 是否显示顶栏
+  footerRender: number; // 是否显示页脚
+  menuRender: number; // 当前路由是否展示菜单
+  menuHeaderRender: number; // 当前路由是否展示菜单顶栏
+  flatMenu: number; // 子项往上提，只是不展示父菜单
+  fixedHeader: number; // 固定顶栏
+  fixSiderbar: number; // 固定菜单
   founder?: string; // 创建人
   sort: number; // 排序
-  status: string; // 菜单状态
+  status: number; // 菜单状态
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
   children?: MenuAttributes[];
@@ -58,7 +58,7 @@ export type RoleAttributes = {
   describe: string; // 角色描述
   founder?: string; // 创建人
   sort: number; // 排序
-  status: string; // 角色状态
+  status: number; // 角色状态
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
 };

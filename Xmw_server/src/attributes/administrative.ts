@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:12:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:17:23
+ * @LastEditTime: 2022-11-09 10:00:32
  */
 /**
  * @description: xmw_organization Attributes
@@ -21,7 +21,7 @@ export type OrgAttributes = {
   describe: string; // 组织描述
   founder?: string; // 创建人
   sort: number; // 排序
-  status: string; // 组织状态
+  status: number; // 组织状态
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
   children?: OrgAttributes[];

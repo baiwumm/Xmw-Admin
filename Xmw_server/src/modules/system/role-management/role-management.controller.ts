@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 16:54:42
+ * @LastEditTime: 2022-11-09 10:30:05
  */
 import {
   Controller,
@@ -119,7 +119,7 @@ export class RoleManagementController {
   @ApiOperation({ summary: '更新角色状态' })
   async updateRoleStatus(
     @Param('role_id') role_id: string,
-    @Body() status: string,
+    @Body() { status }: { status: number },
   ): Promise<ResponseModel<ResData>> {
     const response = await this.roleManagementService.updateRoleStatus(
       role_id,

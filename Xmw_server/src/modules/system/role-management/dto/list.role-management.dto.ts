@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:47:10
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:19:06
+ * @LastEditTime: 2022-11-09 09:42:56
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -26,13 +26,12 @@ export class ListRoleManagementDto {
   role_code?: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '角色状态',
-    enum: ['0', '1'],
-    default: '1',
+    default: 1,
     required: false,
   })
-  status?: string;
+  status?: number;
 
   @ApiProperty({
     type: Number,

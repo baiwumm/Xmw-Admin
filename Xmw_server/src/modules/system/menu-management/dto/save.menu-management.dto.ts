@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 14:49:01
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:18:44
+ * @LastEditTime: 2022-11-09 10:09:02
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -118,84 +118,84 @@ export class SaveMenuManagementDto {
   target?: string;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '是否隐藏子路由',
     default: false,
     required: false,
   })
-  hideChildrenInMenu?: boolean;
+  hideChildrenInMenu?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '是否隐藏菜单，包括子路由',
     default: false,
     required: false,
   })
-  hideInMenu?: boolean;
+  hideInMenu?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '是否在面包屑中隐藏',
     default: false,
     required: false,
   })
-  hideInBreadcrumb?: boolean;
+  hideInBreadcrumb?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '是否显示顶栏',
     default: false,
     required: false,
   })
-  headerRender?: boolean;
+  headerRender?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '是否显示页脚',
     default: false,
     required: false,
   })
-  footerRender?: boolean;
+  footerRender?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '当前路由是否展示菜单',
     default: false,
     required: false,
   })
-  menuRender?: boolean;
+  menuRender?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '当前路由是否展示菜单顶栏',
     default: false,
     required: false,
   })
-  menuHeaderRender?: boolean;
+  menuHeaderRender?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '子项往上提，只是不展示父菜单',
     default: false,
     required: false,
   })
-  flatMenu?: boolean;
+  flatMenu?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '固定顶栏',
     default: false,
     required: false,
   })
-  fixedHeader?: boolean;
+  fixedHeader?: number;
 
   @ApiProperty({
-    type: Boolean,
+    type: Number,
     description: '固定菜单',
     default: false,
     required: false,
   })
-  fixSiderbar?: boolean;
+  fixSiderbar?: number;
 
   @ApiProperty({
     type: Number,
@@ -205,9 +205,9 @@ export class SaveMenuManagementDto {
   sort: number;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '菜单状态',
-    default: '1',
+    default: 1,
   })
-  status: string;
+  status: number;
 }

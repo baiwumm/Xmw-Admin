@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:35:03
+ * @LastEditTime: 2022-11-09 10:13:44
  */
 declare namespace API {
   /**
@@ -19,7 +19,7 @@ declare namespace API {
     org_type: string; // 组织类型
     describe: string; // 组织描述
     parent_id: string; // 父级id
-    status: string; // 组织状态
+    status: number; // 组织状态
     sort: number; // 排序
     created_time: Date; // 创建时间
     updated_time: Date;  // 最后一次更新时间
@@ -63,22 +63,22 @@ declare namespace API {
     parent_id: string;
     sort: number;
     founder: string;
-    status: string;
+    status: number;
     target: string;
     permission: string;
     access: string;
     menu_type: string;
     layout: string;
-    hideChildrenInMenu: string;
-    hideInMenu: string;
-    hideInBreadcrumb: string;
-    headerRender: string;
-    footerRender: string;
-    menuRender: string;
-    menuHeaderRender: string;
-    flatMenu: string;
-    fixedHeader: string;
-    fixSiderbar: string;
+    hideChildrenInMenu: number;
+    hideInMenu: number;
+    hideInBreadcrumb: number;
+    headerRender: number;
+    footerRender: number;
+    menuRender: number;
+    menuHeaderRender: number;
+    flatMenu: number;
+    fixedHeader: number;
+    fixSiderbar: number;
     navTheme: string;
     headerTheme: string;
     created_time: Date;
@@ -108,7 +108,7 @@ declare namespace API {
     phone: string;
     avatar_url: string;
     sex: string;
-    status: string;
+    status: number;
     sort: number;
     token: string;
     motto: string;
@@ -136,7 +136,7 @@ declare namespace API {
     role_code: string;
     sort: number;
     founder: string;
-    status: string;
+    status: number;
     describe: string;
     menu_permission: string[];
     permission?: {menu_id: string}[];
