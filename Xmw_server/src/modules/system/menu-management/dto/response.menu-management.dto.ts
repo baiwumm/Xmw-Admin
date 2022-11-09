@@ -4,12 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-10-27 16:05:18
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:44:37
+ * @LastEditTime: 2022-11-09 14:57:36
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
 import { ResData } from '@/global/interface';
 
+/**
+ * @description: 菜单列表 Dto
+ * @return {*}
+ * @author: Cyan
+ */
 export class ResponseMenuManagementDto extends ResponseDto {
   @ApiProperty({
     type: Array,
@@ -54,4 +59,46 @@ export class ResponseMenuManagementDto extends ResponseDto {
     ],
   })
   data: ResData[];
+}
+
+/**
+ * @description: 创建菜单数据 Dto
+ * @return {*}
+ * @author: Cyan
+ */
+export class CreateMenuManagementDto extends ResponseDto {
+  @ApiProperty({
+    type: Object,
+    description: '响应体',
+    default: {
+      menu_type: 'menu',
+      parent_id: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+      name: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+      path: '/system/menu-management',
+      component: './System/MenuManagement',
+      redirect: null,
+      icon: 'icon-menu-management',
+      access: 'normalRouteFilter',
+      permission: 'system:menu-management',
+      layout: 'side',
+      navTheme: 'light',
+      headerTheme: 'light',
+      target: '_blank',
+      hideChildrenInMenu: 0,
+      hideInMenu: 0,
+      hideInBreadcrumb: 0,
+      headerRender: 1,
+      footerRender: 1,
+      menuRender: 1,
+      menuHeaderRender: 1,
+      flatMenu: 0,
+      fixedHeader: 1,
+      fixSiderbar: 1,
+      sort: 1,
+      status: 1,
+      created_time: '2022-11-09T06:45:01.108Z',
+      updated_time: '2022-11-09T06:45:01.108Z',
+    },
+  })
+  data: ResData;
 }

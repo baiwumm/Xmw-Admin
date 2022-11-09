@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 15:08:12
+ * @LastEditTime: 2022-11-09 14:52:11
  */
 import {
   Controller,
@@ -25,12 +25,13 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
-import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListInternationalDto,
   SaveInternationalDto,
   ResponseInternationalDto,
   ResponseLangDto,
+  CreateInternationalDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -80,7 +81,7 @@ export class InternationalController {
    * @author: Cyan
    */
   @Post()
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: CreateInternationalDto })
   @ApiOperation({ summary: '创建国际化数据' })
   async createInternational(
     @Body() internationalInfo: SaveInternationalDto,
@@ -97,7 +98,7 @@ export class InternationalController {
    * @author: Cyan
    */
   @Put('/:id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新国际化数据' })
   async updateInternational(
     @Param('id') id: string,
@@ -116,7 +117,7 @@ export class InternationalController {
    * @author: Cyan
    */
   @Delete('/:id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除国际化数据' })
   async deleteInternational(
     @Param('id') id: string,

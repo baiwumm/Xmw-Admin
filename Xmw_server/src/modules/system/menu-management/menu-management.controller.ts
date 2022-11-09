@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-27 16:07:09
+ * @LastEditTime: 2022-11-09 14:42:02
  */
 import {
   Controller,
@@ -25,11 +25,12 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
-import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListMenuManagementDto,
   SaveMenuManagementDto,
   ResponseMenuManagementDto,
+  CreateMenuManagementDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -65,7 +66,7 @@ export class MenuManagementController {
    * @author: Cyan
    */
   @Post()
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: CreateMenuManagementDto })
   @ApiOperation({ summary: '创建菜单数据' })
   async createMenu(
     @Body() menuInfo: SaveMenuManagementDto,
@@ -80,7 +81,7 @@ export class MenuManagementController {
    * @author: Cyan
    */
   @Put('/:menu_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新菜单数据' })
   async updateJobs(
     @Param('menu_id') menu_id: string,
@@ -99,7 +100,7 @@ export class MenuManagementController {
    * @author: Cyan
    */
   @Delete('/:menu_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除菜单数据' })
   async deleteMenu(
     @Param('menu_id') menu_id: string,

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:43:02
+ * @LastEditTime: 2022-11-09 14:57:46
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -35,6 +35,29 @@ export class ResponseRoleManagementDto extends ResponseDto {
         },
       ],
       total: 1,
+    },
+  })
+  data: PageResModel;
+}
+
+/**
+ * @description: 创建角色数据 Dto
+ * @return {*}
+ * @author: Cyan
+ */
+export class CreateRoleManagementDto extends ResponseDto {
+  @ApiProperty({
+    type: Object,
+    description: '响应体',
+    default: {
+      role_name: '超级管理员',
+      role_code: 'Super Admin',
+      menu_permission: ['79581210-60b7-4c66-b6ae-14b013c3661e'],
+      sort: 1,
+      status: 1,
+      describe: '拥有系统全部权限',
+      created_time: '2022-11-09T06:45:01.108Z',
+      updated_time: '2022-11-09T06:45:01.108Z',
     },
   })
   data: PageResModel;

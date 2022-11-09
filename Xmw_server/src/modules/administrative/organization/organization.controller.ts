@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 15:14:12
+ * @LastEditTime: 2022-11-09 14:44:21
  */
 import {
   Controller,
@@ -25,11 +25,12 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
-import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListOrganizationDto,
   ResponseOrganizationDto,
   SaveOrganizationDto,
+  CreateOrganizationDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -67,7 +68,7 @@ export class OrganizationController {
    * @author: Cyan
    */
   @Post()
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: CreateOrganizationDto })
   @ApiOperation({ summary: '创建组织数据' })
   async createOrganization(
     @Body() organizationInfo: SaveOrganizationDto,
@@ -84,7 +85,7 @@ export class OrganizationController {
    * @author: Cyan
    */
   @Put('/:org_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新组织数据' })
   async updateOrganization(
     @Param('org_id') org_id: string,
@@ -103,7 +104,7 @@ export class OrganizationController {
    * @author: Cyan
    */
   @Delete('/:org_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除组织数据' })
   async deleteOrganization(
     @Param('org_id') org_id: string,

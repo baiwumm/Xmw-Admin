@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:14:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 14:44:22
+ * @LastEditTime: 2022-11-09 14:52:55
  */
 import { ApiProperty } from '@nestjs/swagger';
 /**
@@ -61,7 +61,7 @@ export class SaveInternationalDto {
   'zh-TW'?: string;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '排序',
     default: 1,
   })

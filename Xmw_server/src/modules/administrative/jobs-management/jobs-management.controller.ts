@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 15:17:36
+ * @LastEditTime: 2022-11-09 14:49:39
  */
 import {
   Controller,
@@ -25,11 +25,12 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
-import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListJobsManagementDto,
   ResponseJobsDto,
   SaveJobsManagementDto,
+  CreateJobsDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -65,7 +66,7 @@ export class JobsManagementController {
    * @author: Cyan
    */
   @Post()
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: CreateJobsDto })
   @ApiOperation({ summary: '创建岗位数据' })
   async createJobs(
     @Body() jobsInfo: SaveJobsManagementDto,
@@ -80,7 +81,7 @@ export class JobsManagementController {
    * @author: Cyan
    */
   @Put('/:jobs_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新岗位数据' })
   async updateJobs(
     @Param('jobs_id') jobs_id: string,
@@ -99,7 +100,7 @@ export class JobsManagementController {
    * @author: Cyan
    */
   @Delete('/:jobs_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除岗位数据' })
   async deleteJobs(
     @Param('jobs_id') jobs_id: string,

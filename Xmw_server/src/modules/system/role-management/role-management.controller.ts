@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:53:18
+ * @LastEditTime: 2022-11-09 14:37:01
  */
 import {
   Controller,
@@ -26,12 +26,13 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // TS类型注解
-import { ResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ResponseRoleManagementDto,
   ListRoleManagementDto,
   SaveRoleManagementDto,
   UpdateRoleStatusDto,
+  CreateRoleManagementDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -67,7 +68,7 @@ export class RoleManagementController {
    * @author: Cyan
    */
   @Post()
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: CreateRoleManagementDto })
   @ApiOperation({ summary: '创建角色数据' })
   async createRole(
     @Body() roleInfo: SaveRoleManagementDto,
@@ -82,7 +83,7 @@ export class RoleManagementController {
    * @author: Cyan
    */
   @Put('/:role_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色数据' })
   async updateRole(
     @Param('role_id') role_id: string,
@@ -101,7 +102,7 @@ export class RoleManagementController {
    * @author: Cyan
    */
   @Delete('/:role_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除角色数据' })
   async deleteRole(
     @Param('role_id') role_id: string,
@@ -116,7 +117,7 @@ export class RoleManagementController {
    * @author: Cyan
    */
   @Patch('/:role_id')
-  @ApiOkResponse({ type: ResponseDto })
+  @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色状态' })
   async updateRoleStatus(
     @Param('role_id') role_id: string,

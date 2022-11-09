@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 18:06:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:52:40
+ * @LastEditTime: 2022-11-09 14:10:09
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -36,7 +36,7 @@ export class SaveRoleManagementDto {
   menu_permission: string[];
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: '排序',
     default: 1,
   })

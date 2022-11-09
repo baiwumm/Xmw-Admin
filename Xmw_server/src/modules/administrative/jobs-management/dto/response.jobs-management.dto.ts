@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-21 10:59:21
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 18:12:39
+ * @LastEditTime: 2022-11-09 14:48:04
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -36,4 +36,27 @@ export class ResponseJobsDto extends ResponseDto {
     ],
   })
   data: ResData[];
+}
+
+/**
+ * @description: 创建岗位数据 Dto
+ * @return {*}
+ * @author: Cyan
+ */
+export class CreateJobsDto extends ResponseDto {
+  @ApiProperty({
+    type: Object,
+    description: '响应体',
+    default: {
+      parent_id: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+      jobs_name: 'UI 设计师',
+      org_id: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+      sort: 1,
+      describe:
+        '“UI”的本义是用户界面，是英文User和interface的缩写。UI设计师简称UID（User Interface Designer），指从事对软件的人机交互、操作逻辑、界面美观的整体设计工作的人。',
+      created_time: '2022-11-09T06:45:01.108Z',
+      updated_time: '2022-11-09T06:45:01.108Z',
+    },
+  })
+  data: ResData;
 }

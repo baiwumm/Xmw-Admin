@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 14:49:01
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:09:02
+ * @LastEditTime: 2022-11-09 14:40:22
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -120,7 +120,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '是否隐藏子路由',
-    default: false,
+    default: 0,
     required: false,
   })
   hideChildrenInMenu?: number;
@@ -128,7 +128,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '是否隐藏菜单，包括子路由',
-    default: false,
+    default: 0,
     required: false,
   })
   hideInMenu?: number;
@@ -136,7 +136,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '是否在面包屑中隐藏',
-    default: false,
+    default: 0,
     required: false,
   })
   hideInBreadcrumb?: number;
@@ -144,7 +144,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '是否显示顶栏',
-    default: false,
+    default: 1,
     required: false,
   })
   headerRender?: number;
@@ -152,7 +152,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '是否显示页脚',
-    default: false,
+    default: 1,
     required: false,
   })
   footerRender?: number;
@@ -160,7 +160,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '当前路由是否展示菜单',
-    default: false,
+    default: 1,
     required: false,
   })
   menuRender?: number;
@@ -168,7 +168,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '当前路由是否展示菜单顶栏',
-    default: false,
+    default: 1,
     required: false,
   })
   menuHeaderRender?: number;
@@ -176,7 +176,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '子项往上提，只是不展示父菜单',
-    default: false,
+    default: 0,
     required: false,
   })
   flatMenu?: number;
@@ -184,7 +184,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '固定顶栏',
-    default: false,
+    default: 1,
     required: false,
   })
   fixedHeader?: number;
@@ -192,7 +192,7 @@ export class SaveMenuManagementDto {
   @ApiProperty({
     type: Number,
     description: '固定菜单',
-    default: false,
+    default: 1,
     required: false,
   })
   fixSiderbar?: number;
