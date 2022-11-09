@@ -4,15 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:17:05
+ * @LastEditTime: 2022-11-09 17:18:56
  */
 import {
+  PrimaryKey,
   Column,
   Model,
   Table,
   DataType,
   ForeignKey,
   BelongsTo,
+  IsUUID,
+  IsUrl,
+  IsIn,
 } from 'sequelize-typescript';
 import type { MenuAttributes } from '@/attributes/system';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
@@ -22,9 +26,10 @@ export class XmwMenu
   extends Model<MenuAttributes, MenuAttributes>
   implements MenuAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: '菜单id',
@@ -32,6 +37,7 @@ export class XmwMenu
   menu_id: string;
 
   //国际化对应的name
+  @IsUUID(4)
   @ForeignKey(() => XmwInternational)
   @Column({
     type: DataType.UUID,
@@ -41,6 +47,10 @@ export class XmwMenu
   name: string;
 
   //菜单类型
+  @IsIn({
+    args: [['dir', 'menu', 'button']],
+    msg: '菜单类型：menu_type 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['dir', 'menu', 'button'],
@@ -50,6 +60,7 @@ export class XmwMenu
   menu_type: string;
 
   //路由url
+  @IsUrl
   @Column({ type: DataType.STRING(100), comment: '路由url' })
   path?: string;
 
@@ -66,10 +77,15 @@ export class XmwMenu
   redirect?: string;
 
   //父级id
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //当path是一个url，点击新窗口打开
+  @IsIn({
+    args: [['_blank', '_self', '_parent', '_top']],
+    msg: 'target 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['_blank', '_self', '_parent', '_top'],
@@ -86,6 +102,10 @@ export class XmwMenu
   access?: string;
 
   //是否显示layout布局
+  @IsIn({
+    args: [['side', 'top', 'mix']],
+    msg: 'layout 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['side', 'top', 'mix'],
@@ -94,6 +114,10 @@ export class XmwMenu
   layout?: string;
 
   //导航菜单的主题
+  @IsIn({
+    args: [['dark', 'light']],
+    msg: 'navTheme 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['dark', 'light'],
@@ -102,6 +126,10 @@ export class XmwMenu
   navTheme?: string;
 
   //顶部导航的主题，mix 模式生效
+  @IsIn({
+    args: [['dark', 'light']],
+    msg: 'headerTheme 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['dark', 'light'],
@@ -150,6 +178,7 @@ export class XmwMenu
   fixSiderbar: number;
 
   //创建人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
@@ -158,6 +187,10 @@ export class XmwMenu
   sort: number;
 
   //菜单状态
+  @IsIn({
+    args: [[0, 1]],
+    msg: 'status 字段值错误',
+  })
   @Column({
     type: DataType.INTEGER,
     allowNull: false,

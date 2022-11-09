@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 10:38:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-28 17:57:38
+ * @LastEditTime: 2022-11-09 17:57:16
  */
 
 /**
@@ -19,9 +19,9 @@ export type ResData = Record<string, any>;
  * @return {*}
  * @author: Cyan
  */
-export type PageResModel = {
+export type PageResModel<T> = {
   total: number;
-  list: ResData[];
+  list: T;
 };
 
 /**

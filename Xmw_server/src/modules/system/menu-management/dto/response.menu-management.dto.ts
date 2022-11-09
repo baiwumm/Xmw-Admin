@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-27 16:05:18
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:57:36
+ * @LastEditTime: 2022-11-09 18:00:48
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
-import { ResData } from '@/global/interface';
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 
 /**
  * @description: 菜单列表 Dto
@@ -58,7 +58,7 @@ export class ResponseMenuManagementDto extends ResponseDto {
       },
     ],
   })
-  data: ResData[];
+  data: XmwMenu[];
 }
 
 /**
@@ -100,5 +100,5 @@ export class CreateMenuManagementDto extends ResponseDto {
       updated_time: '2022-11-09T06:45:01.108Z',
     },
   })
-  data: ResData;
+  data: XmwMenu;
 }

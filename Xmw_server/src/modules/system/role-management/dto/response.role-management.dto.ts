@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 15:33:50
+ * @LastEditTime: 2022-11-09 17:58:11
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
 import { PageResModel } from '@/global/interface';
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 
 /**
  * @description: 角色管理列表响应体结构 Dto
@@ -57,7 +58,7 @@ export class ResponseRoleManagementDto extends ResponseDto {
       total: 1,
     },
   })
-  data: PageResModel;
+  data: PageResModel<XmwRole[]>;
 }
 
 /**
@@ -80,5 +81,5 @@ export class CreateRoleManagementDto extends ResponseDto {
       updated_time: '2022-11-09T06:45:01.108Z',
     },
   })
-  data: PageResModel;
+  data: PageResModel<XmwRole>;
 }

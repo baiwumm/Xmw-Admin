@@ -4,59 +4,74 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:41:49
+ * @LastEditTime: 2022-11-09 18:25:20
  */
 import { request } from '@umijs/max';
-import type { Data, ResponseModel } from '@/global/interface';
+import type { PageResModel, ResponseModel } from '@/global/interface';
+import type { TableSearchProps, UserStatusProps } from '@/pages/System/UserManagement/utils/interface'
 
 /**
  * @description:  获取用户列表
- * @param {object} options
+ * @param {TableSearchProps} options
  * @return {*}
  * @author: Cyan
  */
-export async function getUserList(options?: Data) {
-  return request<ResponseModel>('/api/system/getUserList', {
+export async function getUserList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.USERMANAGEMENT>>> {
+  return request<ResponseModel<PageResModel<API.USERMANAGEMENT>>>('/api/system/user-management', {
     method: 'GET',
     params: options || {},
   });
 }
 
 /**
- * @description: 保存用户数据
- * @param {Data} options
+ * @description: 新增用户数据
+ * @param {API.USERMANAGEMENT} options
  * @return {*}
  * @author: Cyan
  */
-export async function saveUser(options?: Data) {
-  return request<ResponseModel>('/api/system/saveUser', {
+export async function createUser(
+  options: API.USERMANAGEMENT
+): Promise<ResponseModel<API.USERMANAGEMENT>> {
+  return request<ResponseModel<API.USERMANAGEMENT>>('/api/system/user-management', {
     method: 'POST',
     data: options || {},
   });
 }
 
 /**
- * @description: 删除用户列表
- * @param {Data} user_id
+ * @description: 更新用户数据
+ * @param {API.USERMANAGEMENT} options
  * @return {*}
  * @author: Cyan
  */
-export async function delUser(user_id: string) {
-  return request<ResponseModel>('/api/system/delUser', {
-    method: 'POST',
-    data: { user_id },
+export async function updateUser({ user_id, ...options }: API.USERMANAGEMENT): Promise<ResponseModel<number[]>> {
+  return request<ResponseModel<number[]>>(`/api/system/user-management/${user_id}`, {
+    method: 'PUT',
+    data: options || {},
   });
 }
 
 /**
- * @description: 设置用户状态
+ * @description: 删除用户数据
+ * @param {string} user_id
+ * @return {*}
+ * @author: Cyan
+ */
+export async function delUser(user_id: string): Promise<ResponseModel<number>> {
+  return request<ResponseModel<number>>(`/api/system/user-management/${user_id}`, {
+    method: 'DELETE',
+  });
+}
+
+/**
+ * @description: 设置角色状态
  * @param {Data} options
  * @return {*}
  * @author: Cyan
  */
-export async function setUserStatus(options?: Data) {
-  return request<ResponseModel>('/api/system/setUserStatus', {
-    method: 'POST',
-    data: options || {},
+export async function setUserStatus({ user_id, status }: UserStatusProps): Promise<ResponseModel<number[]>> {
+  return request<ResponseModel<number[]>>(`/api/system/user-management/${user_id}`, {
+    method: 'PATCH',
+    data: { status } || {},
   });
 }

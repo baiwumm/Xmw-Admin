@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:23:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:36:39
+ * @LastEditTime: 2022-11-09 17:58:54
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResData, PageResModel } from '@/global/interface';
@@ -55,7 +55,7 @@ export class UpdateResponseDto extends ResponseDto {
     description: '响应体',
     default: [1],
   })
-  data: PageResModel;
+  data: PageResModel<number[]>;
 }
 
 /**
@@ -69,5 +69,5 @@ export class DeleteResponseDto extends ResponseDto {
     description: '响应体',
     default: 1,
   })
-  data: PageResModel;
+  data: PageResModel<number>;
 }

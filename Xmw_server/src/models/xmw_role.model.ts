@@ -4,29 +4,34 @@
  * @Author: Cyan
  * @Date: 2022-10-28 16:33:09
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 15:48:05
+ * @LastEditTime: 2022-11-09 17:19:22
  */
 import {
+  PrimaryKey,
   Column,
   Model,
   Table,
   DataType,
   ForeignKey,
   HasMany,
+  NotEmpty,
+  Length,
+  IsUUID,
+  IsIn,
 } from 'sequelize-typescript';
 import type { RoleAttributes } from '@/attributes/system';
 import { XmwPermission } from '@/models/xmw_permission.model';
-import { NotEmpty, Length } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_role' })
 export class XmwRole
   extends Model<RoleAttributes, RoleAttributes>
   implements RoleAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @ForeignKey(() => XmwPermission)
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: '角色id',
@@ -48,6 +53,7 @@ export class XmwRole
   describe: string;
 
   //创建人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
@@ -56,6 +62,10 @@ export class XmwRole
   sort: number;
 
   //角色状态
+  @IsIn({
+    args: [[0, 1]],
+    msg: 'status 字段值错误',
+  })
   @Column({
     type: DataType.INTEGER,
     allowNull: false,

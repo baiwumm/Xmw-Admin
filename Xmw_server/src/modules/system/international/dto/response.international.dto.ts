@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:57:29
+ * @LastEditTime: 2022-11-09 18:01:31
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
-import { ResData } from '@/global/interface';
+import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 
 /**
  * @description: 国际化列表响应体结构 Dto
@@ -36,7 +36,7 @@ export class ResponseInternationalDto extends ResponseDto {
       },
     ],
   })
-  data: ResData[];
+  data: XmwInternational[];
 }
 
 /**
@@ -55,7 +55,7 @@ export class ResponseLangDto extends ResponseDto {
       'zh-TW': { 'pages.login.success': '登錄成功！' },
     },
   })
-  data: ResData;
+  data: XmwInternational;
 }
 
 /**
@@ -78,5 +78,5 @@ export class CreateInternationalDto extends ResponseDto {
       updated_time: '2022-11-09T06:45:01.108Z',
     },
   })
-  data: ResData;
+  data: XmwInternational;
 }

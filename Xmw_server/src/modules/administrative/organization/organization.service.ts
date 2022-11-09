@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:59:35
+ * @LastEditTime: 2022-11-09 17:47:11
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
-import { XmwOrganization } from '@/models/xmw_organization.model';
+import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { initializeTree } from '@/utils'; // 全局工具函数
 import { ListOrganizationDto, SaveOrganizationDto } from './dto';
 

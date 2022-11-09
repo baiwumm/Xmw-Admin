@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 14:56:50
+ * @LastEditTime: 2022-11-09 17:52:06
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import App_globalConfig from './config/configuration'; // 全局配置
 import DatabaseConfig from './config/database'; // 数据库配置
+import { UserManagementModule } from '@/modules/system/user-management/user-management.module'; // 系统设置-用户管理
 import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
 import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
 import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
@@ -38,6 +39,7 @@ import { OrganizationModule } from './modules/administrative/organization/organi
     OrganizationModule,
     MenuManagementModule,
     RoleManagementModule,
+    UserManagementModule,
   ],
 })
 export class AppModule {}

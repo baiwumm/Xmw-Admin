@@ -4,20 +4,28 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 14:46:26
+ * @LastEditTime: 2022-11-09 16:49:49
  */
-import { Column, Model, Table, DataType } from 'sequelize-typescript';
+import {
+  PrimaryKey,
+  Column,
+  Model,
+  Table,
+  DataType,
+  NotEmpty,
+  IsUUID,
+} from 'sequelize-typescript';
 import type { InternationalAttributes } from '@/attributes/system';
-import { NotEmpty } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_international', underscored: false })
 export class XmwInternational
   extends Model<InternationalAttributes, InternationalAttributes>
   implements InternationalAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: 'id',
@@ -50,10 +58,12 @@ export class XmwInternational
   'zh-TW'?: string;
 
   //父级id
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //创建人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 

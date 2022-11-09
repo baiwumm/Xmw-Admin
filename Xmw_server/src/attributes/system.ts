@@ -4,8 +4,41 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:10:44
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 15:31:06
+ * @LastEditTime: 2022-11-09 17:41:58
  */
+
+/**
+ * @description: xmw_users Attributes
+ * @return {*}
+ * @author: Cyan
+ */
+export type UserAttributes = {
+  user_id: string; // 用户id
+  user_name: string; // 用户名称
+  work_no: string; // 用户工号
+  password: string; // 密码(加密)
+  cn_name: string; // 中文名
+  en_name?: string; // 英文名
+  age: number; // 年龄
+  email: string; // 电子邮箱
+  phone: string; // 电话号码
+  avatar_url?: string; // 头像地址
+  sex: string; // 用户性别
+  sort: number; // 排序
+  status: number; // 用户状态
+  token?: string; // 用户令牌
+  motto?: string; // 座右铭
+  tags?: string[]; // 人物标签
+  city?: string[]; // 所属城市
+  address?: string; // 详细地址
+  jobs_id: string; // 岗位id
+  org_id: string; // 组织id
+  role_id: string; // 角色id
+  founder?: string; // 创建人
+  login_num: number; // 登录次数
+  login_last_ip?: string; // 最后一次登录ip
+  login_last_time?: Date; // 最后一次登录时间
+};
 
 /**
  * @description: xmw_menu Attributes

@@ -4,28 +4,32 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 14:47:18
+ * @LastEditTime: 2022-11-09 16:51:34
  */
 import {
+  PrimaryKey,
   Column,
   Model,
   Table,
   DataType,
   ForeignKey,
   BelongsTo,
+  NotEmpty,
+  Length,
+  IsUUID,
 } from 'sequelize-typescript';
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import type { JobsAttributes } from '@/attributes/administrative';
-import { NotEmpty, Length } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_jobs' })
 export class XmwJobs
   extends Model<JobsAttributes, JobsAttributes>
   implements JobsAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: '岗位id',
@@ -39,15 +43,18 @@ export class XmwJobs
   jobs_name: string;
 
   //所属组织id
+  @IsUUID(4)
   @ForeignKey(() => XmwOrganization)
   @Column({ type: DataType.UUID, allowNull: false, comment: '所属组织id' })
   org_id: string;
 
   //父级id
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //岗位负责人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '岗位负责人' })
   leader?: string;
 
@@ -56,6 +63,7 @@ export class XmwJobs
   describe: string;
 
   //创建人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 

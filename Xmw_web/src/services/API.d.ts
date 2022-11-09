@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 15:39:42
+ * @LastEditTime: 2022-11-09 18:27:22
  */
 declare namespace API {
   /**
@@ -54,35 +54,35 @@ declare namespace API {
    * @author: Cyan
    */
   type MENUMANAGEMENT = {
-    menu_id: string;
-    name: string;
-    path: string;
-    icon: string;
-    component: string;
-    redirect: string;
-    parent_id: string;
-    sort: number;
-    founder: string;
-    status: number;
-    target: string;
-    permission: string;
-    access: string;
-    menu_type: string;
-    layout: string;
-    hideChildrenInMenu: number;
-    hideInMenu: number;
-    hideInBreadcrumb: number;
-    headerRender: number;
-    footerRender: number;
-    menuRender: number;
-    menuHeaderRender: number;
-    flatMenu: number;
-    fixedHeader: number;
-    fixSiderbar: number;
-    navTheme: string;
-    headerTheme: string;
-    created_time: Date;
-    updated_time: Date;
+    menu_id: string; // 菜单id
+    name: string; // 国际化对应的name
+    menu_type: string; // 菜单类型
+    path?: string; // 路由url
+    icon?: string; // 菜单图标
+    component?: string; // 菜单对应的文件路径
+    redirect?: string; // 路由重定向地址
+    parent_id?: string; // 父级id
+    target?: string; // 当path是一个url，点击新窗口打开
+    permission?: string; // 菜单标识(页面按钮权限控制)
+    access?: string; // 路由和菜单的权限控制
+    layout?: string; // 是否显示layout布局
+    navTheme?: string; // 导航菜单的主题
+    headerTheme?: string; // 顶部导航的主题，mix 模式生效
+    hideChildrenInMenu: number; // 是否隐藏子路由
+    hideInMenu: number; // 是否隐藏菜单，包括子路由
+    hideInBreadcrumb: number; // 是否在面包屑中隐藏
+    headerRender: number; // 是否显示顶栏
+    footerRender: number; // 是否显示页脚
+    menuRender: number; // 当前路由是否展示菜单
+    menuHeaderRender: number; // 当前路由是否展示菜单顶栏
+    flatMenu: number; // 子项往上提，只是不展示父菜单
+    fixedHeader: number; // 固定顶栏
+    fixSiderbar: number; // 固定菜单
+    founder?: string; // 创建人
+    sort: number; // 排序
+    status: number; // 菜单状态
+    created_time: Date; // 创建时间
+    updated_time: Date; // 最后一次更新时间
     'zh-CN': string;
     'en-US': string;
     'ja-JP': string;
@@ -96,33 +96,34 @@ declare namespace API {
    * @author: Cyan
    */
   type USERMANAGEMENT = {
-    user_id: string;
-    user_name: string;
-    cn_name: string;
-    en_name: string;
-    work_no: string;
-    password: string;
-    confirmPassword: string;
-    age: number;
-    email: string;
-    phone: string;
-    avatar_url: string;
-    sex: string;
-    status: number;
-    sort: number;
-    token: string;
-    motto: string;
-    tags: string;
-    city: string;
-    address: string;
-    jobs_id: string;
-    org_id: string;
-    role_id: string;
-    last_ip: string;
-    login_num: number;
-    created_time: Date;
-    updated_time: Date;
-    founder: string;
+    user_id: string; // 用户id
+    user_name: string; // 用户名称
+    work_no: string; // 用户工号
+    password: string; // 密码(加密)
+    confirmPassword?: string // 确认密码
+    cn_name: string; // 中文名
+    en_name?: string; // 英文名
+    age: number; // 年龄
+    email: string; // 电子邮箱
+    phone: string; // 电话号码
+    avatar_url: string; // 头像地址
+    sex: string; // 用户性别
+    sort: number; // 排序
+    status: number; // 用户状态
+    token: string; // 用户令牌
+    motto: string; // 座右铭
+    tags: string[]; // 人物标签
+    city: string[]; // 所属城市
+    address: string; // 详细地址
+    jobs_id: string; // 岗位id
+    org_id: string; // 组织id
+    role_id: string; // 角色id
+    founder: string; // 创建人
+    login_num: number; // 登录次数
+    login_last_ip: string; // 最后一次登录ip
+    login_last_time: Date; // 最后一次登录时间
+    created_time: Date; // 创建时间
+    updated_time: Date; // 最后一次更新时间
   };
 
   /**

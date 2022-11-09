@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 11:03:48
+ * @LastEditTime: 2022-11-09 17:57:35
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -12,7 +12,7 @@ import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { Sequelize } from 'sequelize-typescript';
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // interface
-import { XmwRole } from '@/models/xmw_role.model'; // 数据库实体
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwPermission } from '@/models/xmw_permission.model';
 import { ListRoleManagementDto, SaveRoleManagementDto } from './dto';
 
@@ -39,7 +39,9 @@ export class RoleManagementService {
    * @return {*}
    * @author: Cyan
    */
-  async getRoleList(roleInfo: ListRoleManagementDto): Promise<PageResModel> {
+  async getRoleList(
+    roleInfo: ListRoleManagementDto,
+  ): Promise<PageResModel<XmwRole[]>> {
     // 解构参数
     const {
       role_name,

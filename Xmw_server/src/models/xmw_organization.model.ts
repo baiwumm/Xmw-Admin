@@ -4,21 +4,31 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:00:45
+ * @LastEditTime: 2022-11-09 17:19:12
  */
-import { Column, Model, Table, DataType } from 'sequelize-typescript';
+import {
+  PrimaryKey,
+  Column,
+  Model,
+  Table,
+  DataType,
+  NotEmpty,
+  Length,
+  IsUUID,
+  IsIn,
+} from 'sequelize-typescript';
 import type { OrgAttributes } from '@/attributes/administrative';
-import { NotEmpty, Length } from 'sequelize-typescript';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
   extends Model<OrgAttributes, OrgAttributes>
   implements OrgAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
     primaryKey: true,
-    allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: '组织id',
   })
@@ -35,6 +45,10 @@ export class XmwOrganization
   org_code: string;
 
   //组织类型
+  @IsIn({
+    args: [['company', 'unit', 'department']],
+    msg: '组织类型：org_type 字段值错误',
+  })
   @Column({
     type: DataType.ENUM,
     values: ['company', 'unit', 'department', 'team'],
@@ -44,10 +58,12 @@ export class XmwOrganization
   org_type: string;
 
   //父级id
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '父级id' })
   parent_id?: string;
 
   //组织负责人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '组织负责人' })
   leader?: string;
 
@@ -56,6 +72,7 @@ export class XmwOrganization
   describe: string;
 
   //创建人
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '创建人' })
   founder?: string;
 
@@ -64,6 +81,10 @@ export class XmwOrganization
   sort: number;
 
   //组织状态
+  @IsIn({
+    args: [[0, 1]],
+    msg: 'status 字段值错误',
+  })
   @Column({
     type: DataType.INTEGER,
     allowNull: false,

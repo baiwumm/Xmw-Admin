@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 15:31:27
+ * @LastEditTime: 2022-11-09 17:57:43
  */
 import {
   Controller,
@@ -25,6 +25,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
@@ -57,7 +58,7 @@ export class RoleManagementController {
   @ApiOperation({ summary: '获取角色管理列表' })
   async getRoleList(
     @Query() roleInfo: ListRoleManagementDto,
-  ): Promise<ResponseModel<PageResModel>> {
+  ): Promise<ResponseModel<PageResModel<XmwRole[]>>> {
     const response = await this.roleManagementService.getRoleList(roleInfo);
     return { data: response };
   }

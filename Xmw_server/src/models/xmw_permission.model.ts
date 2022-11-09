@@ -4,15 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:23:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-31 15:25:49
+ * @LastEditTime: 2022-11-09 16:55:47
  */
 import {
+  PrimaryKey,
   Column,
   Model,
   Table,
   DataType,
   ForeignKey,
   BelongsTo,
+  IsUUID,
 } from 'sequelize-typescript';
 import type { PermissionAttributes } from '@/attributes/system';
 import { XmwRole } from '@/models/xmw_role.model';
@@ -22,9 +24,10 @@ export class XmwPermission
   extends Model<PermissionAttributes, PermissionAttributes>
   implements PermissionAttributes
 {
+  @IsUUID(4)
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     allowNull: false,
     defaultValue: DataType.UUIDV4,
     comment: '权限id',
@@ -32,11 +35,13 @@ export class XmwPermission
   permission_id: string;
 
   //角色id
+  @IsUUID(4)
   @ForeignKey(() => XmwRole)
   @Column({ type: DataType.UUID, comment: '角色id' })
   role_id: string;
 
   //菜单id
+  @IsUUID(4)
   @Column({ type: DataType.UUID, comment: '菜单id' })
   menu_id: string;
 
