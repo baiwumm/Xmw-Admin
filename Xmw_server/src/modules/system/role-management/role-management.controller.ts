@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:30:05
+ * @LastEditTime: 2022-11-09 10:53:18
  */
 import {
   Controller,
@@ -31,6 +31,7 @@ import {
   ResponseRoleManagementDto,
   ListRoleManagementDto,
   SaveRoleManagementDto,
+  UpdateRoleStatusDto,
 } from './dto';
 
 /* swagger 文档 */
@@ -119,7 +120,7 @@ export class RoleManagementController {
   @ApiOperation({ summary: '更新角色状态' })
   async updateRoleStatus(
     @Param('role_id') role_id: string,
-    @Body() { status }: { status: number },
+    @Body() { status }: UpdateRoleStatusDto,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.roleManagementService.updateRoleStatus(
       role_id,

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-29 22:43:59
+ * @LastEditTime: 2022-11-09 10:59:24
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -68,7 +68,7 @@ export class JobsManagementService {
    */
   async createJobs(
     jobsInfo: SaveJobsManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | SaveJobsManagementDto>> {
     // 解构参数
     const { jobs_name } = jobsInfo;
     // 组织名称不能相同
@@ -92,7 +92,7 @@ export class JobsManagementService {
   async updateJobs(
     jobs_id: string,
     jobsInfo: SaveJobsManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { jobs_name, parent_id } = jobsInfo;
     // 判断 parent_id 是否和 id相同

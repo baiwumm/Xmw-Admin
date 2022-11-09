@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 18:06:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:39:31
+ * @LastEditTime: 2022-11-09 10:52:40
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -55,4 +55,18 @@ export class SaveRoleManagementDto {
     default: '拥有系统全部权限',
   })
   describe: string;
+}
+
+/**
+ * @description: 更新角色状态 Dto
+ * @return {*}
+ * @author: Cyan
+ */
+export class UpdateRoleStatusDto {
+  @ApiProperty({
+    type: Number,
+    description: '角色状态',
+    default: 1,
+  })
+  status: number;
 }

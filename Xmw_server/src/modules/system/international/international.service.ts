@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-29 22:44:07
+ * @LastEditTime: 2022-11-09 11:02:26
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -83,7 +83,7 @@ export class InternationalService {
    */
   async createInternational(
     internationalInfo: SaveInternationalDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | SaveInternationalDto>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
     // 相同层级名称不能相同
@@ -107,7 +107,7 @@ export class InternationalService {
   async updateInternational(
     id: string,
     internationalInfo: SaveInternationalDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
     // 判断 parent_id 是否和 id相同

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:45:16
+ * @LastEditTime: 2022-11-09 11:03:12
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -70,7 +70,7 @@ export class MenuManagementService {
    */
   async createMenu(
     menuInfo: SaveMenuManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | SaveMenuManagementDto>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
 
@@ -105,7 +105,7 @@ export class MenuManagementService {
   async updateMenu(
     menu_id: string,
     menuInfo: SaveMenuManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
     // 判断 parent_id 是否和 id相同

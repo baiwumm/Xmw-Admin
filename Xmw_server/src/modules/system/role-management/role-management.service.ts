@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:30:48
+ * @LastEditTime: 2022-11-09 11:03:48
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -88,7 +88,9 @@ export class RoleManagementService {
   async createRole({
     menu_permission,
     ...roleInfo
-  }: SaveRoleManagementDto): Promise<ResponseModel<ResData>> {
+  }: SaveRoleManagementDto): Promise<
+    ResponseModel<ResData | SaveRoleManagementDto>
+  > {
     // 解构参数
     const { role_name, role_code } = roleInfo;
     // 角色名称和角色编码不能相同
@@ -130,7 +132,7 @@ export class RoleManagementService {
   async updateRole(
     role_id: string,
     { menu_permission, ...roleInfo }: SaveRoleManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { role_name, role_code } = roleInfo;
     // 角色名称和角色编码不能相同
@@ -212,7 +214,7 @@ export class RoleManagementService {
   async updateRoleStatus(
     role_id: string,
     status: number,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 执行 update 更新 xmw_role 状态
     const result = await this.roleModel.update(
       { status },

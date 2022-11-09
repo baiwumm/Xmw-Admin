@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-29 22:43:50
+ * @LastEditTime: 2022-11-09 10:59:35
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -62,7 +62,7 @@ export class OrganizationService {
    */
   async createOrganization(
     organizationInfo: SaveOrganizationDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | SaveOrganizationDto>> {
     // 解构参数
     const { org_name, org_code } = organizationInfo;
     // 组织名称不能相同
@@ -86,7 +86,7 @@ export class OrganizationService {
   async updateOrganization(
     org_id: string,
     organizationInfo: SaveOrganizationDto,
-  ): Promise<ResponseModel<ResData>> {
+  ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { org_name, org_code, parent_id } = organizationInfo;
     // 判断 parent_id 是否和 id相同
