@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:49:43
+ * @LastEditTime: 2022-11-10 17:33:40
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -20,6 +20,7 @@ import moment from 'moment'
 // 引入业务组件
 import { getRoleList, delRole, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
+import { columnScrollX } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps, RoleStatusProps } from '../utils/interface'
 
@@ -43,8 +44,14 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
-	// 删除列表
-	const handlerDelete = async (role_id: string) => {
+	
+ /**
+  * @description: 删除角色数据
+  * @param {string} role_id
+  * @return {*}
+  * @author: Cyan
+  */	
+	const handlerDelete = async (role_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
@@ -144,6 +151,7 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.system.role-management.role_name' }),
 			dataIndex: 'role_name',
 			ellipsis: true,
+			width:140,
 			render: text => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -154,6 +162,7 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'pages.system.role-management.role_code' }),
 			dataIndex: 'role_code',
+			width:140,
 			ellipsis: true,
 		},
 		/* 状态 */
@@ -162,6 +171,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'status',
 			filters: true,
 			onFilter: true,
+			width:100,
 			valueEnum: {
 				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
 				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
@@ -174,6 +184,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			sorter: true,
+			width:80,
 			render: text => <Tag color="purple">{text}</Tag>
 		},
 		{
@@ -182,6 +193,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			hideInSearch: true,
 			sorter: true,
+			width:120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -206,12 +218,13 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.table.describe' }),
 			dataIndex: 'describe',
 			ellipsis: true,
+			width:100,
 			hideInSearch: true
 		},
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
@@ -260,6 +273,7 @@ const TableTemplate: FC = () => {
 			toolBarRender={() => [
 				<FormTemplate reloadTable={reloadTable} menuData={menuData} key="FormTemplate" />
 			]}
+			scroll={{ x: columnScrollX(columns) }}
 		/>
 	)
 }

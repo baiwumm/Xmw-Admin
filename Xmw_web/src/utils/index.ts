@@ -4,13 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 09:53:43
+ * @LastEditTime: 2022-11-10 17:24:11
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
+import type { ProColumns } from '@ant-design/pro-components'
 import { ANTD_LANGS } from '@/global/lang'; // 多语言配置项
 import { getAllLocalesLang } from '@/services/system/internationalization'; //获取国际化多语言层级对象
 import CryptoJS from 'crypto-js'; // AES/DES加密
+import { isNumber } from 'lodash'
 
 /**
  * @description: 获取国际化多语言层级对象
@@ -20,14 +22,14 @@ import CryptoJS from 'crypto-js'; // AES/DES加密
 export const initLocalesLang = async (): Promise<void> => {
   await getAllLocalesLang()
     .then((res) => {
-      if(res.code === 200){
+      if (res.code === 200) {
         const data = res.data;
-      if (data) {
-        Object.keys(data).forEach((lang) => {
-          // 初始化多语言配置
-          addLocale(lang, data[lang], ANTD_LANGS[lang]);
-        });
-      }
+        if (data) {
+          Object.keys(data).forEach((lang) => {
+            // 初始化多语言配置
+            addLocale(lang, data[lang], ANTD_LANGS[lang]);
+          });
+        }
       }
     })
     .catch((error) => {
@@ -43,7 +45,7 @@ const CRYPTO_IV = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六
  * @return {*}
  * @author: Cyan
  */
-export const encryptionAesPsd = (password: string) => {
+export const encryptionAesPsd = (password: string): string => {
   const encrypted = CryptoJS.AES.encrypt(password, CRYPTO_KEY, {
     iv: CRYPTO_IV,
     mode: CryptoJS.mode.CBC,
@@ -58,7 +60,7 @@ export const encryptionAesPsd = (password: string) => {
  * @return {*}
  * @author: Cyan
  */
-export const decryptionAesPsd = (password: string) => {
+export const decryptionAesPsd = (password: string): string => {
   const decrypted = CryptoJS.AES.decrypt(password, CRYPTO_KEY, {
     iv: CRYPTO_IV,
     mode: CryptoJS.mode.CBC,
@@ -66,3 +68,12 @@ export const decryptionAesPsd = (password: string) => {
   });
   return decrypted.toString(CryptoJS.enc.Utf8); //返回的是解密后的字符串
 };
+
+/**
+ * @description: 计算表格滚动长度
+ * @return {*}
+ * @author: Cyan
+ */
+export const columnScrollX = (columns: ProColumns[]): number => columns.reduce((acc, item) => {
+  return acc + (item.width && isNumber(item.width) ? item.width : 0)
+}, 0);

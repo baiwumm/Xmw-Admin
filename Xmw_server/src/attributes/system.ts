@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:10:44
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:41:58
+ * @LastEditTime: 2022-11-10 13:53:55
  */
 
 /**
@@ -20,9 +20,9 @@ export type UserAttributes = {
   cn_name: string; // 中文名
   en_name?: string; // 英文名
   age: number; // 年龄
-  email: string; // 电子邮箱
+  email?: string; // 电子邮箱
   phone: string; // 电话号码
-  avatar_url?: string; // 头像地址
+  avatar_url?: string; // 用户头像
   sex: string; // 用户性别
   sort: number; // 排序
   status: number; // 用户状态

@@ -73,10 +73,9 @@ export class XmwUser
   @IsEmail
   @Column({
     type: DataType.STRING(50),
-    allowNull: false,
     comment: '电子邮箱',
   })
-  email: string;
+  email?: string;
 
   //电话号码
   @Is({ args: /^1\d{10}$/, msg: '电话号码格式不正确' })
@@ -87,9 +86,9 @@ export class XmwUser
   })
   phone: string;
 
-  //头像地址
+  //用户头像
   @IsUrl
-  @Column({ type: DataType.STRING(200), comment: '头像地址' })
+  @Column({ type: DataType.STRING(200), comment: '用户头像' })
   avatar_url?: string;
 
   //用户性别
@@ -135,7 +134,10 @@ export class XmwUser
     type: DataType.STRING(50),
     comment: '人物标签',
     get() {
-      return this.getDataValue('tags').split(',');
+      const tags = this.getDataValue('tags');
+      if (tags) {
+        return tags.split(',');
+      }
     },
     set(tag: string[]) {
       this.setDataValue('tags', tag.join(','));
@@ -148,7 +150,10 @@ export class XmwUser
     type: DataType.STRING(50),
     comment: '所属城市',
     get() {
-      return this.getDataValue('city').split(',');
+      const city = this.getDataValue('city');
+      if (city) {
+        return city.split(',');
+      }
     },
     set(area: string[]) {
       this.setDataValue('city', area.join(','));

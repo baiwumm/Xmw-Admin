@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:46:41
+ * @LastEditTime: 2022-11-10 14:41:43
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -143,7 +143,7 @@ export class MenuManagementService {
   }
 
   /**
-   * @description: 删除岗位数据
+   * @description: 删除菜单数据
    * @return {*}
    * @author: Cyan
    */

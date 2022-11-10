@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:51:52
+ * @LastEditTime: 2022-11-10 17:40:24
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -18,6 +18,7 @@ import moment from 'moment'
 
 // 引入业务组件
 import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
+import { columnScrollX } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
 import { ORG_TYPE_TAGS } from '../utils/enum'
 import type { TableSearchProps } from '../utils/interface'
@@ -43,7 +44,7 @@ const TableTemplate: FC = () => {
 		tableRef?.current?.reload()
 	}
 	// 删除列表
-	const handlerDelete = async (org_id: string) => {
+	const handlerDelete = async (org_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
@@ -133,12 +134,14 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.administrative.organization.org_name' }),
 			dataIndex: 'org_name',
 			ellipsis: true,
+			width: 140,
 			render: text => <Space><IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} /><span>{text}</span></Space>
 		},
 		{
 			title: formatMessage({ id: 'pages.administrative.organization.org_code' }),
 			dataIndex: 'org_code',
 			ellipsis: true,
+			width: 120,
 			render: text => <Tag color="cyan">{text}</Tag>
 		},
 		{
@@ -146,6 +149,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'org_type',
 			filters: true,
 			onFilter: true,
+			width: 100,
 			valueEnum: ORG_TYPE_TAGS,
 			render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
 		},
@@ -175,6 +179,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			hideInSearch: true,
 			sorter: true,
+			width: 120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -199,12 +204,13 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.table.describe' }),
 			dataIndex: 'describe',
 			ellipsis: true,
+			width: 140,
 			hideInSearch: true
 		},
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
@@ -244,6 +250,7 @@ const TableTemplate: FC = () => {
 			toolBarRender={() => [
 				<FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
 			]}
+			scroll={{ x: columnScrollX(columns) }}
 		/>
 	)
 }

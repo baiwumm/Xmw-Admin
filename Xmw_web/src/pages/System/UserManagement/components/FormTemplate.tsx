@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:30:18
+ * @LastEditTime: 2022-11-10 09:53:49
  */
 
 // 引入第三方库
@@ -25,7 +25,7 @@ import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, jobsData, organizationData, modalVisible, setModalVisibleFalse }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
-	const formMapRef = useRef<React.MutableRefObject<ProFormInstance<any> | undefined>[]>([]);
+	const formMapRef = useRef<React.MutableRefObject<ProFormInstance>[]>([]);
 	// StepsForm 不同状态下 标题显示
 	const formTitle = formData?.user_id ? `${formatMessage({ id: 'menu.system.user-management.edit' }) + formatMessage({ id: 'pages.system.user-management.title' })}：${formData.user_name}` : (formatMessage({ id: 'menu.system.user-management.add' }) + formatMessage({ id: 'pages.system.user-management.title' }))
 	// 提交表单

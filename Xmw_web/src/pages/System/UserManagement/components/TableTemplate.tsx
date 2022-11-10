@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:29:39
+ * @LastEditTime: 2022-11-10 17:17:16
  */
 // 引入第三方库
 import type { FC } from 'react';
+import { useRequest } from 'ahooks'
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
-import { useIntl, useModel, useRequest } from '@umijs/max'
+import { useIntl, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined } from '@ant-design/icons' // antd 图标库
@@ -22,6 +23,8 @@ import { getUserList, delUser, setUserStatus } from '@/services/system/user-mana
 import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
+import type { PageResModel, ResponseModel } from '@/global/interface'
+import { columnScrollX } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
 import { renderColumnsStateMap } from '../utils'
 import type { TableSearchProps } from '../utils/interface'
@@ -55,21 +58,31 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
-	// 删除列表
-	const handlerDelete = async (user_id: string | undefined) => {
+
+	/**
+	 * @description: 删除用户数据
+	 * @param {string} user_id
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	const handlerDelete = async (user_id: string | undefined): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				if (user_id) {
-					await delUser(user_id).then(res => {
-						if (res.code === 200) {
-							message.success(res.msg)
-							// 刷新表格
-							reloadTable()
-						}
-					})
-				}
+				return new Promise<void>(async (resolve, reject): Promise<void> => {
+					if (user_id) {
+						await delUser(user_id).then(res => {
+							if (res.code === 200) {
+								message.success(res.msg)
+								// 刷新表格
+								reloadTable()
+								resolve()
+							}
+						})
+					}
+					reject()
+				})
 			}
 		})
 
@@ -146,6 +159,7 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.system.user-management.user_name' }),
 			dataIndex: 'user_name',
 			ellipsis: true,
+			width: 100,
 			render: text => <Space>
 				<Tag
 					icon={<UserOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -158,19 +172,21 @@ const TableTemplate: FC = () => {
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 80,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.user-management.en_name' }),
 			dataIndex: 'en_name',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 80,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.user-management.avatar_url' }),
 			dataIndex: 'avatar_url',
 			key: 'avatar_url',
 			valueType: 'image',
-			width: 100,
+			width: 80,
 			hideInSearch: true,
 			align: 'center'
 		},
@@ -179,7 +195,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'sex',
 			ellipsis: true,
 			align: 'center',
-			width: 100,
+			width: 60,
 			filters: true,
 			onFilter: true,
 			valueEnum: {
@@ -200,12 +216,14 @@ const TableTemplate: FC = () => {
 			dataIndex: 'work_no',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 80,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.user-management.role_id' }),
 			dataIndex: 'role_name',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 100,
 			render: text => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -218,6 +236,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'org_name',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 100,
 			render: text => <Space>
 				<Tag
 					icon={<IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -230,6 +249,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'jobs_name',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 100,
 			render: text => <Space>
 				<Tag
 					icon={<IconFont type="icon-jobs-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -242,12 +262,13 @@ const TableTemplate: FC = () => {
 			dataIndex: 'age',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 60,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.user-management.phone' }),
 			dataIndex: 'phone',
 			hideInSearch: true,
-			width: 120,
+			width: 100,
 			ellipsis: true,
 		},
 		{
@@ -255,6 +276,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'email',
 			hideInSearch: true,
 			ellipsis: true,
+			width: 120,
 		},
 		/* 状态 */
 		{
@@ -266,6 +288,7 @@ const TableTemplate: FC = () => {
 				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
 				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
 			},
+			width: 80,
 			render: (_, record) => renderRoleStatus(record)
 		},
 		{
@@ -274,6 +297,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			sorter: true,
+			width: 80,
 			render: text => <Tag color="purple">{text}</Tag>
 		},
 		{
@@ -282,6 +306,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			hideInSearch: true,
 			sorter: true,
+			width: 120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -305,9 +330,10 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			key: 'option',
+			fixed: 'right',
 			render: (_, record) => [
 				<Dropdown overlay={DropdownMenu} onOpenChange={() => setCurrentRecord(record)} key="operation">
 					<Button size="small">
@@ -319,24 +345,46 @@ const TableTemplate: FC = () => {
 		},
 	]
 
-	// 获取当前角色数据
-	useRequest(async () => await getRoleList(), {
-		onSuccess: (result: any) => {
-			setRoleData(result)
+	/**
+	 * @description: 获取角色列表
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	useRequest(async params => await getRoleList(params), {
+		defaultParams: [{ current: 1, pageSize: 9999 }],
+		onSuccess: (res: ResponseModel<PageResModel<API.ROLEMANAGEMENT>>) => {
+			if (res.code === 200) {
+				setRoleData(res.data.list)
+			}
 		}
 	})
 
-	// 获取当前岗位数据
+
+	/**
+	 * @description: 获取岗位列表
+	 * @param {*} async
+	 * @return {*}
+	 * @author: Cyan
+	 */
 	useRequest(async () => await getJobsList(), {
-		onSuccess: (result: any) => {
-			setJobsData(result)
+		onSuccess: (res: ResponseModel<API.JOBSMANAGEMENT[]>) => {
+			if (res.code === 200) {
+				setJobsData(res.data)
+			}
 		}
 	})
 
-	// 获取当前组织数据
+	/**
+	 * @description: 获取组织列表
+	 * @param {*} async
+	 * @return {*}
+	 * @author: Cyan
+	 */
 	useRequest(async () => await getOrganizationList(), {
-		onSuccess: (result: any) => {
-			setOrganizationData(result)
+		onSuccess: (res: ResponseModel<API.ORGANIZATION[]>) => {
+			if (res.code === 200) {
+				setOrganizationData(res.data)
+			}
 		}
 	})
 
@@ -376,6 +424,7 @@ const TableTemplate: FC = () => {
 						{formatMessage({ id: 'menu.system.user-management.add' })}
 					</Button>
 				]}
+				scroll={{ x: columnScrollX(columns) }}
 			/>
 			{/* 分步表单 */}
 			{

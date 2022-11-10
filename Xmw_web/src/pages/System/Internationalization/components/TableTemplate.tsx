@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:00:11
+ * @LastEditTime: 2022-11-10 17:36:04
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -18,6 +18,7 @@ import moment from 'moment'
 
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
+import { columnScrollX } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps } from '../utils/interface'
 
@@ -43,7 +44,7 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (id: string) => {
+	const handlerDelete = async (id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
@@ -131,30 +132,35 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.system.internationalization.name' }),
 			dataIndex: 'name',
 			ellipsis: true,
+			width: 140,
 			render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
 		},
 		{
 			title: formatMessage({ id: 'pages.system.internationalization.zh-CN' }),
 			dataIndex: 'zh-CN',
 			ellipsis: true,
+			width: 120,
 			hideInSearch: true,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.internationalization.en-US' }),
 			dataIndex: 'en-US',
 			ellipsis: true,
+			width: 120,
 			hideInSearch: true,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.internationalization.ja-JP' }),
 			dataIndex: 'ja-JP',
 			ellipsis: true,
+			width: 120,
 			hideInSearch: true,
 		},
 		{
 			title: formatMessage({ id: 'pages.system.internationalization.zh-TW' }),
 			dataIndex: 'zh-TW',
 			ellipsis: true,
+			width: 120,
 			hideInSearch: true,
 		},
 		{
@@ -163,6 +169,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			sorter: true,
+			width: 100,
 			render: text => <Tag color="purple">{text}</Tag>
 		},
 		{
@@ -171,6 +178,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			sorter: true,
 			hideInSearch: true,
+			width: 120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -194,7 +202,7 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
@@ -234,6 +242,7 @@ const TableTemplate: FC = () => {
 			toolBarRender={() => [
 				<FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
 			]}
+			scroll={{ x: columnScrollX(columns) }}
 		/>
 	)
 }

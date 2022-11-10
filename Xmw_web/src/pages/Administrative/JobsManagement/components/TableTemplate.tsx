@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:28:09
+ * @LastEditTime: 2022-11-10 17:42:56
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -20,6 +20,7 @@ import moment from 'moment'
 // 引入业务组件
 import { getJobsList, delJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
+import { columnScrollX } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { ResponseModel, ResData } from '@/global/interface'
 import type { TableSearchProps } from '../utils/interface'
@@ -151,6 +152,7 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' }),
 			dataIndex: 'jobs_name',
 			ellipsis: true,
+			width: 120,
 			render: text => (
 				<Space>
 					<IconFont type="icon-jobs-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
@@ -172,6 +174,7 @@ const TableTemplate: FC = () => {
 				options: orgTree,
 				placeholder: formatMessage({ id: 'global.form.placeholder.seleted' })
 			},
+			width: 120,
 			render: (_, record) => <Tag color={initialState?.settings?.colorPrimary}>{record.org_name}</Tag>
 		},
 		{
@@ -189,6 +192,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			sorter: true,
 			hideInSearch: true,
+			width: 120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -213,12 +217,13 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.table.describe' }),
 			dataIndex: 'describe',
 			ellipsis: true,
+			width: 140,
 			hideInSearch: true
 		},
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
@@ -258,6 +263,7 @@ const TableTemplate: FC = () => {
 			toolBarRender={() => [
 				<FormTemplate treeData={treeData} reloadTable={reloadTable} orgTree={orgTree} key="FormTemplate" />
 			]}
+			scroll={{ x: columnScrollX(columns) }}
 		/>
 	)
 }

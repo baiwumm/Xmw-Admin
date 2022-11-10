@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:47:36
+ * @LastEditTime: 2022-11-10 17:28:00
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -24,6 +24,7 @@ import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜�
 import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { APP_FLAG_OPTS } from '@/global/enum'
+import { columnScrollX } from '@/utils'
 import { MENU_TYPE_TAGS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/enum'
 import { renderColumnsStateMap } from '../utils'
 import type { TableSearchProps } from '../utils/interface'
@@ -58,7 +59,7 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (menu_id: string) => {
+	const handlerDelete = async (menu_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
@@ -175,7 +176,15 @@ const TableTemplate: FC = () => {
 				return record.redirect ?
 					<Tag>{formatMessage({ id: 'pages.system.menu-management.redirect' })}</Tag> :
 					<Space>
-						<Tag icon={<IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{record[getLocale()]}</Tag>
+						{
+							record.icon ? <Tag
+								icon={<IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }}
+								/>} >
+								{record[getLocale()]}
+							</Tag>
+								: <Tag>{record[getLocale()]}</Tag>
+						}
+
 					</Space>
 			}
 		},
@@ -429,7 +438,7 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
 			valueType: 'option',
-			width: 120,
+			width: 80,
 			align: 'center',
 			fixed: 'right',
 			render: (_, record) => [
@@ -482,7 +491,7 @@ const TableTemplate: FC = () => {
 			toolBarRender={() => [
 				<FormTemplate treeData={treeData} reloadTable={reloadTable} internationalData={internationalData} key="FormTemplate" />
 			]}
-			scroll={{ x: 1500, y: 800 }}
+			scroll={{ x: columnScrollX(columns) }}
 		/>
 	)
 }
