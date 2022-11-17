@@ -15,8 +15,13 @@ import {
   IsIn,
   IsIP,
   IsDate,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import type { UserAttributes } from '@/attributes/system';
+import { XmwRole } from '@/models/xmw_role.model';
+import { XmwOrganization } from '@/models/xmw_organization.model';
+import { XmwJobs } from '@/models/xmw_jobs.model';
 
 @Table({ tableName: 'xmw_user' })
 export class XmwUser
@@ -167,16 +172,19 @@ export class XmwUser
 
   //岗位id
   @IsUUID(4)
+  @ForeignKey(() => XmwJobs)
   @Column({ type: DataType.UUID, allowNull: false, comment: '岗位id' })
   jobs_id: string;
 
   //组织id
   @IsUUID(4)
+  @ForeignKey(() => XmwOrganization)
   @Column({ type: DataType.UUID, allowNull: false, comment: '组织id' })
   org_id: string;
 
   //角色id
   @IsUUID(4)
+  @ForeignKey(() => XmwRole)
   @Column({ type: DataType.UUID, allowNull: false, comment: '角色id' })
   role_id: string;
 
@@ -209,4 +217,13 @@ export class XmwUser
     comment: '最后一次登录时间',
   })
   login_last_time?: Date;
+
+  @BelongsTo(() => XmwJobs, { as: 'jobs' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  jobsInfo: XmwJobs;
+
+  @BelongsTo(() => XmwOrganization, { as: 'org' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  orgInfo: XmwOrganization;
+
+  @BelongsTo(() => XmwRole, { as: 'role' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  roleInfo: XmwRole;
 }

@@ -4,13 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 14:45:24
+ * @LastEditTime: 2022-11-17 15:30:41
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import { XmwRole } from '@/models/xmw_role.model';
+import { XmwOrganization } from '@/models/xmw_organization.model';
+import { XmwJobs } from '@/models/xmw_jobs.model';
 import { ResData, PageResModel, ResponseModel } from '@/global/interface'; // interface
 import { ListUserManagementDto, SaveUserManagementDto } from './dto';
 
@@ -42,6 +45,28 @@ export class UserManagementService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 分页查询数据
     const { count, rows } = await this.userModel.findAndCountAll({
+      attributes: {
+        include: ['jobs.jobs_name', 'org.org_name', 'role.role_name'],
+      },
+      // 联表查询
+      include: [
+        {
+          model: XmwJobs,
+          as: 'jobs',
+          attributes: [],
+        },
+        {
+          model: XmwOrganization,
+          as: 'org',
+          attributes: [],
+        },
+        {
+          model: XmwRole,
+          as: 'role',
+          attributes: [],
+        },
+      ],
+      raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
