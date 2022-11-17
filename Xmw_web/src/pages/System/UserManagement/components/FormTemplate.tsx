@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 09:53:49
+ * @LastEditTime: 2022-11-17 17:25:01
  */
 
 // 引入第三方库
@@ -17,7 +17,8 @@ import { message, Modal } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import { PersonalInformation, UserInformation, SetPassword, SetAvatar } from '../Steps'
+import { PersonalInformation, UserInformation, SetPassword } from '../Steps'
+import UploadAvatar from '@/components/UploadAvatar' // 上传头像组件
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
 import { encryptionAesPsd, decryptionAesPsd } from '@/utils'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
@@ -45,6 +46,34 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		})
 	}
 
+	/**
+	 * @description: 分步组件对应的组件
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	const StepComponents = [
+		// 个人信息
+		{
+			title: 'pages.system.user-management.steps-form.personal-information',
+			component: <PersonalInformation />
+		},
+		// 用户信息
+		{
+			title: 'pages.system.user-management.steps-form.user-information',
+			component: <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />
+		},
+		// 设置头像
+		{
+			title: 'pages.system.user-management.steps-form.set-avatar',
+			component: <UploadAvatar />
+		},
+		// 设置密码
+		{
+			title: 'pages.system.user-management.steps-form.set-password',
+			component: <SetPassword />
+		}
+	]
+
 	// 当 formData 有数据的时候  回显
 	useEffect(() => {
 		if (formData) {
@@ -59,6 +88,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 	}, [formData]);
 	return (
 		<StepsForm
+			current={2}
 			formMapRef={formMapRef}
 			onFinish={async (values: API.USERMANAGEMENT) => {
 				console.log(values)
@@ -80,34 +110,16 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 				);
 			}}
 		>
-			{/* 个人信息 */}
-			<StepsForm.StepForm
-				title={formatMessage({ id: 'pages.system.user-management.steps-form.personal-information' })}
-				grid
-			>
-				<PersonalInformation />
-			</StepsForm.StepForm>
-			{/* 用户信息 */}
-			<StepsForm.StepForm
-				title={formatMessage({ id: 'pages.system.user-management.steps-form.user-information' })}
-				grid
-			>
-				<UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />
-			</StepsForm.StepForm>
-			{/* 设置头像 */}
-			<StepsForm.StepForm
-				title={formatMessage({ id: 'pages.system.user-management.steps-form.set-avatar' })}
-				grid
-			>
-				<SetAvatar />
-			</StepsForm.StepForm>
-			{/* 设置密码 */}
-			<StepsForm.StepForm
-				title={formatMessage({ id: 'pages.system.user-management.steps-form.set-password' })}
-				grid
-			>
-				<SetPassword />
-			</StepsForm.StepForm>
+			{/* 遍历渲染 Step */}
+			{
+				StepComponents.map(step => {
+					return (
+						<StepsForm.StepForm title={formatMessage({ id: step.title })} grid key={step.title}>
+							{step.component}
+						</StepsForm.StepForm>
+					)
+				})
+			}
 		</StepsForm>
 	);
 };

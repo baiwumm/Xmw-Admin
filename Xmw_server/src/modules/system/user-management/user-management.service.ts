@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 15:30:41
+ * @LastEditTime: 2022-11-17 16:31:57
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -70,10 +70,7 @@ export class UserManagementService {
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
-      order: [
-        ['sort', 'desc'],
-        ['created_time', 'desc'],
-      ], // 排序规则,
+      order: [['sort', 'desc']], // 排序规则,
     });
     return { list: rows, total: count };
   }

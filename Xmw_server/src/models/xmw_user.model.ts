@@ -136,33 +136,15 @@ export class XmwUser
 
   //人物标签
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.JSON,
     comment: '人物标签',
-    get() {
-      const tags = this.getDataValue('tags');
-      if (tags) {
-        return tags.split(',');
-      }
-    },
-    set(tag: string[]) {
-      this.setDataValue('tags', tag.join(','));
-    },
   })
   tags?: string[];
 
   //所属城市
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.JSON,
     comment: '所属城市',
-    get() {
-      const city = this.getDataValue('city');
-      if (city) {
-        return city.split(',');
-      }
-    },
-    set(area: string[]) {
-      this.setDataValue('city', area.join(','));
-    },
   })
   city?: string[];
 

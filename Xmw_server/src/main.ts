@@ -4,9 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-29 10:03:53
+ * @LastEditTime: 2022-11-17 18:03:12
  */
 import { NestFactory } from '@nestjs/core';
+import * as express from 'express';
+import { join } from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filter/any-exception.filter'; // http 异常过滤器
@@ -26,14 +28,22 @@ async function bootstrap() {
   app.use(logger); // 所有请求都打印日志
   // 全局参数校验
   app.useGlobalPipes(new ValidationPipe());
+
   // 错误异常捕获 和 过滤处理
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalFilters(new HttpExceptionFilter()); // 全局统一异常返回体
+
   // 全局响应拦截器，格式化返回体
   app.useGlobalInterceptors(new HttpReqTransformInterceptor<ResponseModel>());
   app.useGlobalInterceptors(new TransformInterceptor()); // 全局拦截器，用来收集日志
+
+  // 配置文件访问  文件夹为静态目录，以达到可直接访问下面文件的目的
+  const rootDir = join(__dirname, '..');
+  app.use('/static', express.static(join(rootDir, '/upload')));
+
   // 全局添加接口前缀
   app.setGlobalPrefix(process.env.REQUEST_URL_PREFIX);
+
   // 构建swagger文档
   const options = new DocumentBuilder()
     .setTitle(process.env.SWAGGER_UI_TITLE)
