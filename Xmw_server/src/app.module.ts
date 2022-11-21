@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:52:06
+ * @LastEditTime: 2022-11-21 15:29:51
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -17,6 +17,7 @@ import { RoleManagementModule } from '@/modules/system/role-management/role-mana
 import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
 import { JobsManagementModule } from './modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
 import { OrganizationModule } from './modules/administrative/organization/organization.module'; // 智能行政-组织管理
+import { FilesModule } from './modules/files/files.module'; // 文件上传
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { OrganizationModule } from './modules/administrative/organization/organi
     MenuManagementModule,
     RoleManagementModule,
     UserManagementModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

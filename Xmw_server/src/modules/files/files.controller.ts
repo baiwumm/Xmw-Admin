@@ -1,60 +1,57 @@
+/*
+ * @Description: Files Controller
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-11-17 17:49:53
+ * @LastEditors: Cyan
+ * @LastEditTime: 2022-11-21 16:54:31
+ */
 import { HttpService } from '@nestjs/axios';
 import {
-  Body,
   Controller,
-  Get,
   Post,
   UploadedFile,
-  UploadedFiles,
   UseInterceptors,
-  Param,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import * as OSS from 'ali-oss';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ResponseModel } from '@/global/interface'; // TS类型注解
+import * as OSS from 'ali-oss'; // oss sdk
+import { normalize } from 'path';
 import { diskStorage } from 'multer';
-import { join, normalize } from 'path';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'crypto'; // 随机 uuid
+import * as moment from 'moment'; // 时间插件 moment
+import App_configuration from '@/config/configuration'; // 全局配置
 
-@Controller('files')
+@Controller('upload')
 export class FilesController {
-  oss: OSS;
+  ossClient: OSS;
   constructor(private readonly httpService: HttpService) {
-    this.oss = new OSS({
-      region: 'oss-cn-beijing', //下面的值需要你自己去获取
-      accessKeyId: '',
-      accessKeySecret: '',
-      bucket: '',
-    });
+    // 阿里云 bucket配置
+    this.ossClient = new OSS(App_configuration().oss);
   }
 
+  /**
+   * @description: 上传单个文件
+   * @return {*}
+   * @author: Cyan
+   */
   @UseInterceptors(FileInterceptor('file'))
-  @Post('upload')
-  uploadFile(@Body() body: any, @UploadedFile() file: Express.Multer.File) {
-    return {
-      file: file.filename,
-      path: file.path,
-      size: file.size, // 路径请结合前面的main多静态目录来实现
-    };
+  @Post('single-file')
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+  ): ResponseModel<Express.Multer.File> {
+    return { data: file };
   }
 
-  @UseInterceptors(FilesInterceptor('files'))
-  @Post('uploads')
-  uploadFiles(
-    @Body() body: any,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-  ) {
-    return files.map((item) => ({
-      name: item.fieldname,
-      path: item.path,
-      size: item.size,
-    }));
-  }
-
-  @Post('upload-oss')
+  /**
+   * @description: 阿里云 oss 上传
+   * @return {*}
+   * @author: Cyan
+   */
+  @Post('single-file-oss')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(__dirname, '../../../', '/upload-oos'),
         filename: (req, file, cb) => {
           const filename = `${randomUUID()}.${file.mimetype.split('/')[1]}`;
           return cb(null, filename);
@@ -62,37 +59,17 @@ export class FilesController {
       }),
     }),
   )
-  async oos(@UploadedFile() file: Express.Multer.File) {
+  async oos(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<ResponseModel<Express.Multer.File>> {
     // 上传的时候我们运行你上传到内存中 然后发送给第三方但是这样做不好，
     // 如果存储文件太多或者并非量 你的机器会撑不住，因此我们建议的做法是先存到某
     // 临时目录，然后调用第三方去upload 最后由定时job删除这个up目录就好了
     // 主要还是文件的上传和下载 上传比较简单
-    const value = await this.oss.put(file.filename, normalize(file.path));
-    return value;
-  }
-
-  // 启用oss 下载需要做临时验证
-  @Get('upload-oss/:file')
-  async getOSSFile(@Param() params: { file: string }) {
-    // 上传的时候我们运行你上传到内存中 然后发送给第三方但是这样做不好，
-    // 如果存储文件太多或者并非量 你的机器会撑不住，因此我们建议的做法是先存到某
-    // 临时目录，然后调用第三方去upload 最后由定时job删除这个up目录就好了
-    // 主要还是文件的上传和下载 上传比较简单
-    const value = this.oss.signatureUrl(params.file, {
-      expires: 3600,
-    });
-
-    return {
-      url: value,
-    };
-  }
-
-  // 开放接口
-  @Get('httpUser')
-  async getIpAddress() {
-    const value = await this.httpService
-      .get('https://api.gmit.vip/Api/UserInfo?format=json')
-      .toPromise();
-    return { ...value.data };
+    const result = await this.ossClient.put(
+      `/upload/${moment().format('YYYYMMDD')}/${file.filename}`,
+      normalize(file.path),
+    );
+    return { data: result };
   }
 }

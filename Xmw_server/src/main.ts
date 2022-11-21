@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 18:03:12
+ * @LastEditTime: 2022-11-21 15:26:17
  */
 import { NestFactory } from '@nestjs/core';
 import * as express from 'express';
@@ -26,6 +26,10 @@ async function bootstrap() {
 
   //日志相关
   app.use(logger); // 所有请求都打印日志
+
+  // 启动cors跨域
+  app.enableCors();
+
   // 全局参数校验
   app.useGlobalPipes(new ValidationPipe());
 

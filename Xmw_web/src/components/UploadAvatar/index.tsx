@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 17:41:57
+ * @LastEditTime: 2022-11-21 16:58:36
  */
 import { Upload, Button, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -13,8 +13,9 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { FC } from 'react';
 import { useState } from 'react';
 
-type IProps = {
-	onChange?: (value: string) => void;
+interface IProps {
+  value?: UploadFile[];
+  onChange?: (fileList: UploadFile[]) => void;
 }
 
 const UploadAvatar: FC<IProps> = ({ }) => {
@@ -22,7 +23,8 @@ const UploadAvatar: FC<IProps> = ({ }) => {
 
 	const onChangeUpload: UploadProps['onChange'] = ({ fileList: newFileList }) => {
 		console.log(11111)
-		setFileList(newFileList);
+		console.log('newFileList',newFileList)
+		// setFileList(newFileList);
 	};
 
 	return (
@@ -30,7 +32,7 @@ const UploadAvatar: FC<IProps> = ({ }) => {
 			<Avatar size={128} icon={<UserOutlined />} />
 			<ImgCrop rotate shape='round' grid>
 				<Upload
-					action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+					action="http://127.0.0.1:3000/v1/upload/single-file-oss"
 					showUploadList={false}
 					onChange={onChangeUpload}
 				>
