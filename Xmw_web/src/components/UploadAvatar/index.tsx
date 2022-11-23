@@ -4,41 +4,80 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-21 16:58:36
+ * @LastEditTime: 2022-11-23 17:21:37
  */
-import { Upload, Button, Avatar } from 'antd';
+import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { useIntl } from '@umijs/max'
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react'
+import { last, get } from 'lodash'
 
 interface IProps {
-  value?: UploadFile[];
-  onChange?: (fileList: UploadFile[]) => void;
+	value?: string;
+	onChange?: (fileList: UploadFile) => void;
 }
 
-const UploadAvatar: FC<IProps> = ({ }) => {
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
+const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
+	// 多语言函数
+	const { formatMessage } = useIntl();
+	const [currentAvatar, setCurrentAvatar] = useState<string | undefined>()
 
-	const onChangeUpload: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-		console.log(11111)
-		console.log('newFileList',newFileList)
-		// setFileList(newFileList);
+	/**
+	 * @description: 限制用户上传的图片格式和大小
+	 * @param {RcFile} file
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	const beforeUpload = (file: RcFile): boolean => {
+		// 限制图片类型
+		const isFileType = ['image/jpeg', 'image/png', 'image/gif'].includes(file.type)
+		if (!isFileType) {
+			message.error(formatMessage({ id: 'components.UploadAvatar.file-type' }))
+		}
+		// 大小限制2MB
+		const isLt2M = file.size / 1024 / 1024 < 2;
+		if (!isLt2M) {
+			message.error(formatMessage({ id: 'components.UploadAvatar.file-siz-limit' }));
+		}
+
+		return isFileType && isLt2M;
+	}
+
+	/**
+	 * @description: 上传文件改变时的回调
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	const onChangeUpload: UploadProps['onChange'] = ({ fileList }): void => {
+		const url = get(last(fileList), 'response.data.url')
+		onChange?.(url);
+		setCurrentAvatar(url)
 	};
 
+	// 拿到表单数据回显
+	useEffect(() => {
+		if (value) {
+			setCurrentAvatar(value)
+		}
+}, [value])
+
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0 auto' }}>
-			<Avatar size={128} icon={<UserOutlined />} />
-			<ImgCrop rotate shape='round' grid>
-				<Upload
-					action="http://127.0.0.1:3000/v1/upload/single-file-oss"
-					showUploadList={false}
-					onChange={onChangeUpload}
-				>
-					<Button style={{ marginTop: '10px' }}>上传头像</Button>
-				</Upload>
-			</ImgCrop>
+		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'530px'}}>
+			<Avatar size={180} icon={<UserOutlined />} src={currentAvatar} />
+				<ImgCrop rotate shape='round' grid>
+					<Upload
+						maxCount={1}
+						action="http://127.0.0.1:3000/v1/upload/single-file-oss"
+						showUploadList={false}
+						onChange={onChangeUpload}
+						beforeUpload={beforeUpload}
+					>
+						<Button style={{ marginTop: '10px' }}>{formatMessage({ id: 'components.UploadAvatar.title' })}</Button>
+					</Upload>
+				</ImgCrop>
 		</div>
 	)
 }

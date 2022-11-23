@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 17:25:01
+ * @LastEditTime: 2022-11-23 17:07:16
  */
 
 // 引入第三方库
@@ -17,8 +17,7 @@ import { message, Modal } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import { PersonalInformation, UserInformation, SetPassword } from '../Steps'
-import UploadAvatar from '@/components/UploadAvatar' // 上传头像组件
+import { PersonalInformation, UserInformation, SetPassword,SetAvatar } from '../Steps'
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
 import { encryptionAesPsd, decryptionAesPsd } from '@/utils'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
@@ -65,7 +64,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		// 设置头像
 		{
 			title: 'pages.system.user-management.steps-form.set-avatar',
-			component: <UploadAvatar />
+			component: <SetAvatar />
 		},
 		// 设置密码
 		{
@@ -88,10 +87,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 	}, [formData]);
 	return (
 		<StepsForm
-			current={2}
 			formMapRef={formMapRef}
 			onFinish={async (values: API.USERMANAGEMENT) => {
-				console.log(values)
 				handlerSubmit(values)
 			}}
 			stepsFormRender={(dom, submitter) => {
