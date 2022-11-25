@@ -4,9 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 17:25:35
+ * @LastEditTime: 2022-11-25 17:51:04
  */
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Session, Get } from '@nestjs/common';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service' // Auth Service
 import { IpAddress } from '@/utils/requestIp' // 获取客户端真实IP
@@ -22,8 +22,22 @@ export class AuthController {
    * @author: Cyan
    */
   @Post('/login')
-  async login(@Body() loginParams: LoginParamsDto, @IpAddress() clinetIp: string): Promise<ResponseModel<ResData>> {
-    const response = await this.AuthService.loginSingToken(loginParams, clinetIp);
+  async login(
+    @Body() loginParams: LoginParamsDto,
+    @IpAddress() clinetIp: string,
+    @Session() session: Record<string, any>
+  ): Promise<ResponseModel<ResData>> {
+    const response = await this.AuthService.loginSingToken(loginParams, clinetIp, session);
     return response;
+  }
+
+  /**
+   * @description: 获取当前用户信息
+   * @return {*}
+   * @author: Cyan
+   */
+  @Get('/user-info')
+  async getCurrentUserInfo(@Session() session: Record<string, any>): Promise<ResponseModel<ResData>> {
+    return { data: session.currentUserInfo }
   }
 }

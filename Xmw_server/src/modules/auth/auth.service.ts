@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 17:30:32
+ * @LastEditTime: 2022-11-25 17:47:55
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -28,7 +28,8 @@ export class AuthService {
    * @return {*}
    * @author: Cyan
    */
-  async loginSingToken(loginParams: LoginParamsDto, clinetIp: string): Promise<ResponseModel<Record<string, any>>> {
+  async loginSingToken(loginParams: LoginParamsDto, clinetIp: string,session: Record<string, any>)
+  : Promise<ResponseModel<Record<string, any>>> {
     // 解构参数
     const { type, user_name, password } = loginParams;
     // 判断参数是否正确
@@ -69,6 +70,8 @@ export class AuthService {
           await this.userModel.update(params, { where });
           // 将登录次数+1
           await this.userModel.increment({ login_num: 1 }, { where })
+          // 将数据保存到session
+          session.currentUserInfo = await this.userModel.findOne({where})
           return {
             data: {},
             code: 200,
