@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 14:46:53
+ * @LastEditTime: 2022-11-25 10:16:52
  */
 import {
   Controller,
@@ -98,13 +98,13 @@ export class UserManagementController {
   }
 
   /**
-   * @description: 删除角色数据
+   * @description: 删除用户数据
    * @return {*}
    * @author: Cyan
    */
   @Delete('/:user_id')
   @ApiOkResponse({ type: DeleteResponseDto })
-  @ApiOperation({ summary: '删除角色数据' })
+  @ApiOperation({ summary: '删除用户数据' })
   async deleteUser(
     @Param('user_id') user_id: string,
   ): Promise<ResponseModel<ResData | number>> {

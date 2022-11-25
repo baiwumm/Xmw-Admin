@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 17:17:29
+ * @LastEditTime: 2022-11-25 10:51:12
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -93,7 +93,7 @@ const PersonalInformation: FC = () => {
 			<ProFormRadio.Group
 				name="sex"
 				colProps={{ span: 12 }}
-				initialValue={1}
+				initialValue={'1'}
 				fieldProps={{
 					buttonStyle: "solid"
 				}}

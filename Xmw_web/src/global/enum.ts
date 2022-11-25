@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 09:00:41
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 17:17:56
+ * @LastEditTime: 2022-11-25 10:50:54
  */
 
 /**
@@ -52,10 +52,14 @@ export const APP_SEX = {
 export const APP_SEX_OPTS = [
   {
     label: '男',
-    value: 1,
+    value: '1',
   },
   {
     label: '女',
-    value: 0,
+    value: '0',
+  },
+  {
+    label: '保密',
+    value: '2',
   },
 ];

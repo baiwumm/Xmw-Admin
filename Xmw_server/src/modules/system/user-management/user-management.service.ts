@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-17 16:31:57
+ * @LastEditTime: 2022-11-25 10:57:14
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -146,7 +146,7 @@ export class UserManagementService {
   async deleteUser(user_id: string): Promise<ResponseModel<ResData | number>> {
     // 超级管理员不能删除，即 admin 用户
     const exist = await this.userModel.findOne({
-      where: { user_name: 'admin' },
+      where: { user_name: 'admin', user_id },
     });
     // 如果有结果，则证明已存在
     if (exist) {

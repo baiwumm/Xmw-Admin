@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:17:16
+ * @LastEditTime: 2022-11-25 11:03:29
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -14,7 +14,7 @@ import { useBoolean } from 'ahooks';
 import { useIntl, useModel } from '@umijs/max'
 import { ProTable } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined, UnlockOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Dropdown, Menu, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -201,14 +201,16 @@ const TableTemplate: FC = () => {
 			valueEnum: {
 				0: { text: formatMessage({ id: 'pages.system.user-management.sex.female' }), status: 'Default' },
 				1: { text: formatMessage({ id: 'pages.system.user-management.sex.male' }), status: 'Processing' },
+				2: { text: formatMessage({ id: 'pages.system.user-management.sex.secret' }), status: 'Processing' },
 			},
 			render: (_, record) => {
 				const colors = {
 					0: '#ff45cb',
-					1: '#0091ff'
+					1: '#0091ff',
+					2: initialState?.settings?.colorPrimary
 				}
 				const styles = { color: colors[record.sex], fontSize: '20px' }
-				return record.sex === '0' ? <WomanOutlined style={styles} /> : <ManOutlined style={styles} />
+				return { 0: <WomanOutlined style={styles} />, 1: <ManOutlined style={styles} />, 2: <UnlockOutlined style={styles}/> }[record.sex]
 			}
 		},
 		{

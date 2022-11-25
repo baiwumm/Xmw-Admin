@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-17 17:49:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-21 16:54:31
+ * @LastEditTime: 2022-11-25 10:44:46
  */
 import { HttpService } from '@nestjs/axios';
 import {
@@ -21,7 +21,22 @@ import { diskStorage } from 'multer';
 import { randomUUID } from 'crypto'; // 随机 uuid
 import * as moment from 'moment'; // 时间插件 moment
 import App_configuration from '@/config/configuration'; // 全局配置
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiHeader,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger'; // swagger 接口文档
+import { UploadFileDto } from './dto';
 
+@ApiTags('文件上传')
+@ApiHeader({
+  name: 'Authorization',
+  required: true,
+  description: 'token令牌',
+})
+@ApiBearerAuth()
 @Controller('upload')
 export class FilesController {
   ossClient: OSS;
@@ -37,6 +52,11 @@ export class FilesController {
    */
   @UseInterceptors(FileInterceptor('file'))
   @Post('single-file')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: '单个文件上传',
+    type: UploadFileDto,
+  })
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): ResponseModel<Express.Multer.File> {

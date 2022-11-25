@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-11-09 18:06:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:09:28
+ * @LastEditTime: 2022-11-25 10:06:40
  */
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ListUserManagementDto {
   @ApiProperty({
     type: String,
-    description: '角色名称',
+    description: '用户名称',
     default: 'admin',
     required: false,
   })
