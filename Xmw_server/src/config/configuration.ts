@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 09:48:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-21 16:47:27
+ * @LastEditTime: 2022-11-25 15:53:51
  */
 import { registerAs } from '@nestjs/config';
 
@@ -17,4 +17,5 @@ export default registerAs('app_global', () => ({
     accessKeySecret: 'bAqE12OuQ9uHwxkdTltOWRogJUXfmG', // 密钥
     bucket: 'react-umi-xmw', // bucket 名称
   },
+  secret: 'react_umi_xmw', // jwt token 密钥
 }));

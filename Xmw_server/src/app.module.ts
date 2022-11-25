@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-21 15:29:51
+ * @LastEditTime: 2022-11-25 16:07:27
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,9 +15,10 @@ import { UserManagementModule } from '@/modules/system/user-management/user-mana
 import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
 import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
 import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
-import { JobsManagementModule } from './modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
-import { OrganizationModule } from './modules/administrative/organization/organization.module'; // 智能行政-组织管理
-import { FilesModule } from './modules/files/files.module'; // 文件上传
+import { JobsManagementModule } from '@/modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
+import { OrganizationModule } from '@/modules/administrative/organization/organization.module'; // 智能行政-组织管理
+import { FilesModule } from '@/modules/files/files.module'; // 文件上传
+import { AuthModule } from '@/modules/auth/auth.module' // 用户鉴权
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FilesModule } from './modules/files/files.module'; // 文件上传
     RoleManagementModule,
     UserManagementModule,
     FilesModule,
+    AuthModule
   ],
 })
-export class AppModule {}
+export class AppModule { }

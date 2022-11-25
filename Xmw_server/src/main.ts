@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-21 15:26:17
+ * @LastEditTime: 2022-11-25 17:21:42
  */
 import { NestFactory } from '@nestjs/core';
 import * as express from 'express';
+import * as session from 'express-session';
 import { join } from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
 import { AppModule } from './app.module';
@@ -29,6 +30,15 @@ async function bootstrap() {
 
   // 启动cors跨域
   app.enableCors();
+
+  // 配置 session
+  app.use(
+    session({
+      secret: 'Cyan', // 签名
+      resave: false, // 强制保存 sseion 即使它并没有变化，默认为true
+      saveUninitialized: false, // 强制将未初始化的 session 存储
+    }),
+  );
 
   // 全局参数校验
   app.useGlobalPipes(new ValidationPipe());
