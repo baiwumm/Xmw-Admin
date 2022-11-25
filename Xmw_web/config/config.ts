@@ -4,12 +4,6 @@ import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-import { theme } from 'antd';
-import { convertLegacyToken } from '@ant-design/compatible';
-
-const { defaultAlgorithm, defaultSeed } = theme;
-const mapToken = defaultAlgorithm(defaultSeed);
-const v4Token = convertLegacyToken(mapToken);
 
 export default defineConfig({
   // keepalive: [/./],
@@ -156,18 +150,6 @@ export default defineConfig({
   define: {
     'process.env': {
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_ffkxvdizxea.js',
-    },
-  },
-  /**
-   * @name openAPI antd@5.x版本 less 迁移
-   * @doc https://umijs.org/docs/api/config#define
-   */
-  lessLoader:{
-    loader: "less-loader",
-    options: {
-      lessOptions: {
-        modifyVars: v4Token,
-      },
     },
   }
 });
