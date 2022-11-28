@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 14:41:43
+ * @LastEditTime: 2022-11-28 10:28:46
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -13,7 +13,7 @@ import type { WhereOptions } from 'sequelize/types';
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
-import { initializeTree } from '@/utils'; // 全局工具函数
+import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListMenuManagementDto, SaveMenuManagementDto } from './dto';
 
 @Injectable()
@@ -76,7 +76,7 @@ export class MenuManagementService {
 
     // 按钮不能处于顶级
     if (menu_type === 'button' && !parent_id) {
-      return { data: {}, msg: '按钮不能处于顶级，只能是叶子结点！', code: -1 };
+      return responseMessage({}, '按钮不能处于顶级，只能是叶子结点!', -1);
     }
     // 权限标识是唯一的
     if (permission) {
@@ -89,12 +89,12 @@ export class MenuManagementService {
       // 如果有结果，则证明已存在
       const exist = await this.menuModel.findOne({ where });
       if (exist) {
-        return { data: {}, msg: '权限标识已存在！', code: -1 };
+        return responseMessage({}, '权限标识已存在!', -1);
       }
     }
     // 如果通过则执行 sql insert 语句
     const result = await this.menuModel.create(menuInfo);
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -110,12 +110,12 @@ export class MenuManagementService {
     const { menu_type, parent_id, permission } = menuInfo;
     // 判断 parent_id 是否和 id相同
     if (parent_id && parent_id === menu_id) {
-      return { data: {}, msg: '父级不能和自己相同！', code: -1 };
+      return responseMessage({}, '父级不能和自己相同!', -1);
     }
 
     // 按钮不能处于顶级
     if (menu_type === 'button' && !parent_id) {
-      return { data: {}, msg: '按钮不能处于顶级，只能是叶子结点！', code: -1 };
+      return responseMessage({}, '按钮不能处于顶级，只能是叶子结点!', -1);
     }
     // 权限标识是唯一的
     if (permission) {
@@ -132,14 +132,14 @@ export class MenuManagementService {
       // 如果有结果，则证明已存在
       const exist = await this.menuModel.findOne({ where });
       if (exist) {
-        return { data: {}, msg: '权限标识已存在！', code: -1 };
+        return responseMessage({}, '权限标识已存在!', -1);
       }
     }
     // 如果通过则执行 sql save 语句
     const result = await this.menuModel.update(menuInfo, {
       where: { menu_id },
     });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -154,10 +154,10 @@ export class MenuManagementService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
+      return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
     // 如果通过则执行 sql delete 语句
     const result = await this.menuModel.destroy({ where: { menu_id } });
-    return { data: result };
+    return responseMessage(result);
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 10:16:52
+ * @LastEditTime: 2022-11-28 10:32:04
  */
 import {
   Controller,
@@ -35,6 +35,7 @@ import {
   CreateUserManagementDto,
   UpdateUserStatusDto,
 } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 /* swagger 文档 */
 @ApiTags('系统设置-用户管理')
@@ -60,7 +61,7 @@ export class UserManagementController {
     @Query() roleInfo: ListUserManagementDto,
   ): Promise<ResponseModel<PageResModel<XmwUser[]>>> {
     const response = await this.userManagementService.getUserList(roleInfo);
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

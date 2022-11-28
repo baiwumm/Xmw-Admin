@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:44:21
+ * @LastEditTime: 2022-11-28 10:21:22
  */
 import {
   Controller,
@@ -32,6 +32,7 @@ import {
   SaveOrganizationDto,
   CreateOrganizationDto,
 } from './dto';
+import { responseMessage } from '@/utils';
 
 /* swagger 文档 */
 @ApiTags('智能行政-组织管理')
@@ -59,7 +60,7 @@ export class OrganizationController {
     const response = await this.organizationService.getOrganizationList(
       organizationInfo,
     );
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

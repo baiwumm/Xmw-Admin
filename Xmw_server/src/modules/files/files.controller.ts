@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-17 17:49:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 10:44:46
+ * @LastEditTime: 2022-11-28 10:06:17
  */
 import { HttpService } from '@nestjs/axios';
 import {
@@ -29,6 +29,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { UploadFileDto } from './dto';
+import { responseMessage } from '@/utils';
 
 @ApiTags('文件上传')
 @ApiHeader({
@@ -60,7 +61,7 @@ export class FilesController {
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): ResponseModel<Express.Multer.File> {
-    return { data: file };
+    return responseMessage(file);
   }
 
   /**
@@ -90,6 +91,6 @@ export class FilesController {
       `/upload/${moment().format('YYYYMMDD')}/${file.filename}`,
       normalize(file.path),
     );
-    return { data: result };
+    return responseMessage(result);
   }
 }

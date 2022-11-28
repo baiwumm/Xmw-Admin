@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:46:53
+ * @LastEditTime: 2022-11-28 10:26:06
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -12,7 +12,12 @@ import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
-import { LOCALES_LANG, initializeTree, initializeLang } from '@/utils'; // 全局工具函数
+import {
+  LOCALES_LANG,
+  initializeTree,
+  initializeLang,
+  responseMessage,
+} from '@/utils'; // 全局工具函数
 import { ListInternationalDto, SaveInternationalDto } from './dto';
 
 @Injectable()
@@ -92,11 +97,11 @@ export class InternationalService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist && exist.parent_id == parent_id) {
-      return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
+      return responseMessage({}, '同一层级 name 不能相同!', -1);
     }
     // 如果通过则执行 sql insert 语句
     const result = await this.internationaModel.create(internationalInfo);
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -112,7 +117,7 @@ export class InternationalService {
     const { name, parent_id } = internationalInfo;
     // 判断 parent_id 是否和 id相同
     if (parent_id && parent_id === id) {
-      return { data: {}, msg: '父级不能和自己相同！', code: -1 };
+      return responseMessage({}, '父级不能和自己相同!', -1);
     }
     // 相同层级名称不能相同
     const exist = await this.internationaModel.findOne({
@@ -120,13 +125,13 @@ export class InternationalService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '同一层级 name 不能相同！', code: -1 };
+      return responseMessage({}, '同一层级 name 不能相同!', -1);
     }
     // 如果通过则执行 sql update 语句
     const result = await this.internationaModel.update(internationalInfo, {
       where: { id },
     });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -143,10 +148,10 @@ export class InternationalService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
+      return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
     // 如果通过则执行 sql delete 语句
     const result = await this.internationaModel.destroy({ where: { id } });
-    return { data: result };
+    return responseMessage(result);
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:52:11
+ * @LastEditTime: 2022-11-28 10:24:33
  */
 import {
   Controller,
@@ -33,6 +33,7 @@ import {
   ResponseLangDto,
   CreateInternationalDto,
 } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 /* swagger 文档 */
 @ApiTags('系统设置-国际化')
@@ -55,7 +56,7 @@ export class InternationalController {
   @ApiOperation({ summary: '获取多语言层级数据' })
   async getAllLocalesLang(): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.getAllLocalesLang();
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**
@@ -72,7 +73,7 @@ export class InternationalController {
     const response = await this.internationalService.getInternationalList(
       internationalInfo,
     );
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 21:16:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 18:25:07
+ * @LastEditTime: 2022-11-28 09:21:06
  */
 import {
   ExceptionFilter,
@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Logger } from '../utils/log4js'; // 打印日志
+import { responseMessage } from '@/utils';
 
 // @Catch() 装饰器绑定所需的元数据到异常过滤器上。它告诉 Nest这个特定的过滤器正在寻找
 @Catch(HttpException)
@@ -40,11 +41,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         `;
     Logger.info(logFormat);
     // 自定义异常返回体
-    response.status(status).json({
-      code: status,
-      msg: exception.message,
-      data: null,
-      success: false,
-    });
+    response
+      .status(status)
+      .json(responseMessage(null, exception.message, status));
   }
 }

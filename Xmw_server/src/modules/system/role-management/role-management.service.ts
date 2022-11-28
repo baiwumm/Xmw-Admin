@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:57:35
+ * @LastEditTime: 2022-11-28 10:30:32
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -15,6 +15,7 @@ import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // in
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwPermission } from '@/models/xmw_permission.model';
 import { ListRoleManagementDto, SaveRoleManagementDto } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 type permissionModel = {
   role_id: string;
@@ -100,7 +101,7 @@ export class RoleManagementService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return { data: {}, msg: '角色名称或角色编码已存在！', code: -1 };
+      return responseMessage({}, '角色名称或角色编码已存在!', -1);
     }
 
     // 开始一个事务并将其保存到变量中
@@ -117,11 +118,11 @@ export class RoleManagementService {
       await this.permissionModel.bulkCreate(permissionData, { transaction: t });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      return { data: result };
+      return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
       await t.rollback();
-      return { data: {}, msg: error, code: -1 };
+      return responseMessage({}, error, -1);
     }
   }
 
@@ -145,7 +146,7 @@ export class RoleManagementService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return { data: {}, msg: '角色名称或角色编码已存在！', code: -1 };
+      return responseMessage({}, '角色名称或角色编码已存在!', -1);
     }
 
     // 开始一个事务并将其保存到变量中
@@ -170,11 +171,11 @@ export class RoleManagementService {
       await this.permissionModel.bulkCreate(permissionData, { transaction: t });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      return { data: result };
+      return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
       await t.rollback();
-      return { data: {}, msg: error, code: -1 };
+      return responseMessage({}, error, -1);
     }
   }
 
@@ -199,11 +200,11 @@ export class RoleManagementService {
       });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      return { data: result };
+      return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
       await t.rollback();
-      return { data: {}, msg: error, code: -1 };
+      return responseMessage({}, error, -1);
     }
   }
 
@@ -221,6 +222,6 @@ export class RoleManagementService {
       { status },
       { where: { role_id } },
     );
-    return { data: result };
+    return responseMessage(result);
   }
 }

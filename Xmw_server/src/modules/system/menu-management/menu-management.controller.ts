@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:42:02
+ * @LastEditTime: 2022-11-28 10:26:50
  */
 import {
   Controller,
@@ -32,6 +32,7 @@ import {
   ResponseMenuManagementDto,
   CreateMenuManagementDto,
 } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 /* swagger 文档 */
 @ApiTags('系统设置-菜单管理')
@@ -57,7 +58,7 @@ export class MenuManagementController {
     @Query() menuInfo: ListMenuManagementDto,
   ): Promise<ResponseModel> {
     const response = await this.menuManagementService.getMenuList(menuInfo);
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

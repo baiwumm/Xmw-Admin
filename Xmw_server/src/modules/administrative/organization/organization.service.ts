@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:47:11
+ * @LastEditTime: 2022-11-28 10:23:03
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -12,7 +12,7 @@ import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
-import { initializeTree } from '@/utils'; // 全局工具函数
+import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListOrganizationDto, SaveOrganizationDto } from './dto';
 
 @Injectable()
@@ -71,11 +71,11 @@ export class OrganizationService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
+      return responseMessage({}, '组织名称或组织编码已存在!', -1);
     }
     // 如果通过则执行 sql insert 语句
     const result = await this.organizationModel.create(organizationInfo);
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -91,7 +91,7 @@ export class OrganizationService {
     const { org_name, org_code, parent_id } = organizationInfo;
     // 判断 parent_id 是否和 id相同
     if (parent_id && parent_id === org_id) {
-      return { data: {}, msg: '父级不能和自己相同！', code: -1 };
+      return responseMessage({}, '父级不能和自己相同!', -1);
     }
     // 组织名称不能相同
     const exist = await this.organizationModel.findOne({
@@ -107,13 +107,13 @@ export class OrganizationService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '组织名称或组织编码已存在！', code: -1 };
+      return responseMessage({}, '组织名称或组织编码已存在!', -1);
     }
     // 如果通过则执行 sql save 语句
     const result = await this.organizationModel.update(organizationInfo, {
       where: { org_id },
     });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -130,10 +130,10 @@ export class OrganizationService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
+      return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
     // 如果通过则执行 sql delete 语句
     const result = await this.organizationModel.destroy({ where: { org_id } });
-    return { data: result };
+    return responseMessage(result);
   }
 }

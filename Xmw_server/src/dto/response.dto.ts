@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:23:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:58:54
+ * @LastEditTime: 2022-11-28 10:34:22
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResData, PageResModel } from '@/global/interface';
@@ -35,13 +35,6 @@ export class ResponseDto {
     default: 200,
   })
   code: number;
-
-  @ApiProperty({
-    type: Boolean,
-    description: '是否成功',
-    default: true,
-  })
-  success: boolean;
 }
 
 /**

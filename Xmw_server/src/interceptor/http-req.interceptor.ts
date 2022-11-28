@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-14 09:58:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-24 14:41:48
+ * @LastEditTime: 2022-11-28 10:47:38
  */
 import {
   Injectable,
@@ -14,10 +14,9 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isPlainObject } from 'lodash';
 
-import { RES_CODE_MAP } from '@/global/enum'; // 返回体结构
 import { ResponseModel } from '@/global/interface'; // 返回体结构
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 @Injectable()
 export class HttpReqTransformInterceptor<T>
@@ -28,22 +27,13 @@ export class HttpReqTransformInterceptor<T>
     next: CallHandler,
   ): Observable<ResponseModel> {
     return next.handle().pipe(
-      map((response) => {
+      map(({ data, msg, code }) => {
         /**
          * @description: response 将返回一个对象
          * @description: 报装返回体，设计返回的逻辑
          * @author: Cyan
          */
-        // 设置默认值，默认请求成功，如果是请求失败或者自定义的需要在Service里面返回
-        const initResponse = { data: {}, code: 200, msg: '', success: true };
-        // 合并对象
-        isPlainObject(response) && Object.assign(initResponse, response);
-        // 根据状态码设置 success
-        initResponse.success = initResponse.code === 200;
-        // 处理参数
-        !initResponse.msg &&
-          (initResponse.msg = RES_CODE_MAP[initResponse.code]);
-        return Object.assign(initResponse, response);
+        return responseMessage(data, msg, code);
       }),
     );
   }

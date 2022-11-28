@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:57:43
+ * @LastEditTime: 2022-11-28 10:29:26
  */
 import {
   Controller,
@@ -35,6 +35,7 @@ import {
   UpdateRoleStatusDto,
   CreateRoleManagementDto,
 } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 /* swagger 文档 */
 @ApiTags('系统设置-角色管理')
@@ -60,7 +61,7 @@ export class RoleManagementController {
     @Query() roleInfo: ListRoleManagementDto,
   ): Promise<ResponseModel<PageResModel<XmwRole[]>>> {
     const response = await this.roleManagementService.getRoleList(roleInfo);
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

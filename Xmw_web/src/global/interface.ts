@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:29:12
+ * @LastEditTime: 2022-11-28 10:37:29
  */
 
 /**
@@ -33,7 +33,6 @@ export type ResponseModel<T> = {
   code?: number;
   data: T;
   msg?: string;
-  success?: boolean;
 };
 
 /**

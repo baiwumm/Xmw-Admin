@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:49:39
+ * @LastEditTime: 2022-11-28 10:07:58
  */
 import {
   Controller,
@@ -32,6 +32,7 @@ import {
   SaveJobsManagementDto,
   CreateJobsDto,
 } from './dto';
+import { responseMessage } from '@/utils';
 
 /* swagger 文档 */
 @ApiTags('智能行政-岗位管理')
@@ -57,7 +58,7 @@ export class JobsManagementController {
     @Query() jobsInfo: ListJobsManagementDto,
   ): Promise<ResponseModel> {
     const response = await this.jobsManagementService.getJobsList(jobsInfo);
-    return { data: response };
+    return responseMessage(response);
   }
 
   /**

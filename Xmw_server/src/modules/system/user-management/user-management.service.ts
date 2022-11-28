@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 10:57:14
+ * @LastEditTime: 2022-11-28 10:33:45
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -16,6 +16,7 @@ import { XmwOrganization } from '@/models/xmw_organization.model';
 import { XmwJobs } from '@/models/xmw_jobs.model';
 import { ResData, PageResModel, ResponseModel } from '@/global/interface'; // interface
 import { ListUserManagementDto, SaveUserManagementDto } from './dto';
+import { responseMessage } from '@/utils'; // 全局工具函数
 
 @Injectable()
 export class UserManagementService {
@@ -91,16 +92,12 @@ export class UserManagementService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return {
-        data: {},
-        msg: '用户名称和用户工号、手机号码已存在！',
-        code: -1,
-      };
+      return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
     }
 
     // 如果通过则执行 sql insert 语句
     const result = await this.userModel.create(userInfo);
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -125,17 +122,13 @@ export class UserManagementService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return {
-        data: {},
-        msg: '用户名称和用户工号、手机号码已存在！',
-        code: -1,
-      };
+      return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
     }
     // 如果通过则执行 sql save 语句
     const result = await this.userModel.update(userInfo, {
       where: { user_id },
     });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -150,11 +143,11 @@ export class UserManagementService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '不能删除 admin 用户！', code: -1 };
+      return responseMessage({}, 'admin 用户为超级管理员，不能删除!', -1);
     }
     // 如果通过则执行 sql delete 语句
     const result = await this.userModel.destroy({ where: { user_id } });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -171,6 +164,6 @@ export class UserManagementService {
       { status },
       { where: { user_id } },
     );
-    return { data: result };
+    return responseMessage(result);
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:59:24
+ * @LastEditTime: 2022-11-28 10:22:06
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -13,7 +13,7 @@ import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
-import { initializeTree } from '@/utils'; // 全局工具函数
+import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListJobsManagementDto, SaveJobsManagementDto } from './dto';
 
 @Injectable()
@@ -77,11 +77,11 @@ export class JobsManagementService {
     });
     // 如果有结果，则证明已存在，这里存在两种情况，
     if (exist) {
-      return { data: {}, msg: '岗位名称已存在！', code: -1 };
+      return responseMessage({}, '岗位名称已存在!', -1);
     }
     // 如果通过则执行 sql insert 语句
     const result = await this.jobsModel.create(jobsInfo);
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -97,7 +97,7 @@ export class JobsManagementService {
     const { jobs_name, parent_id } = jobsInfo;
     // 判断 parent_id 是否和 id相同
     if (parent_id && parent_id === jobs_id) {
-      return { data: {}, msg: '父级不能和自己相同！', code: -1 };
+      return responseMessage({}, '父级不能和自己相同!', -1);
     }
     // 岗位名称不能相同
     const exist = await this.jobsModel.findOne({
@@ -110,13 +110,13 @@ export class JobsManagementService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '岗位名称已存在！', code: -1 };
+      return responseMessage({}, '岗位名称已存在!', -1);
     }
     // 如果通过则执行 sql save 语句
     const result = await this.jobsModel.update(jobsInfo, {
       where: { jobs_id },
     });
-    return { data: result };
+    return responseMessage(result);
   }
 
   /**
@@ -131,10 +131,10 @@ export class JobsManagementService {
     });
     // 如果有结果，则证明已存在
     if (exist) {
-      return { data: {}, msg: '当前数据存在子级，不能删除！', code: -1 };
+      return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
     // 如果通过则执行 sql delete 语句
     const result = await this.jobsModel.destroy({ where: { jobs_id } });
-    return { data: result };
+    return responseMessage(result);
   }
 }
