@@ -4,8 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:50:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:20:53
+ * @LastEditTime: 2022-11-29 10:55:41
  */
+import * as fs from 'fs';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 import { ResponseModel } from '@/global/interface';
 import { RES_CODE } from '@/global/enum';
@@ -98,4 +99,22 @@ export const initializeLang = (
     recursive(resourceItem);
   }
   return result;
+};
+
+/**
+ * @description: 生成文件上传文件夹
+ * @param {string} filePath
+ * @return {*}
+ * @author: Cyan
+ */
+export const checkDirAndCreate = (filePath: string): void => {
+  const pathArr = filePath.split('/');
+  let checkPath = '.';
+  let item: string;
+  for (item of pathArr) {
+    checkPath += `/${item}`;
+    if (!fs.existsSync(checkPath)) {
+      fs.mkdirSync(checkPath);
+    }
+  }
 };

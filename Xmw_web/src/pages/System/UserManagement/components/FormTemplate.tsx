@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-23 17:07:16
+ * @LastEditTime: 2022-11-29 14:41:10
  */
 
 // 引入第三方库
@@ -109,9 +109,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		>
 			{/* 遍历渲染 Step */}
 			{
-				StepComponents.map(step => {
+				StepComponents.map((step,index) => {
 					return (
-						<StepsForm.StepForm title={formatMessage({ id: step.title })} grid key={step.title}>
+						<StepsForm.StepForm title={formatMessage({ id: step.title })} grid={index !== 2} key={step.title}>
 							{step.component}
 						</StepsForm.StepForm>
 					)

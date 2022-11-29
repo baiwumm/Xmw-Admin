@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-17 17:49:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:06:17
+ * @LastEditTime: 2022-11-29 14:27:42
  */
 import { HttpService } from '@nestjs/axios';
 import {
@@ -12,6 +12,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseModel } from '@/global/interface'; // TS类型注解
@@ -61,6 +62,9 @@ export class FilesController {
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): ResponseModel<Express.Multer.File> {
+    file.path = `http://${process.env.APP_HOST}:${
+      process.env.APP_PROT
+    }/static${file.path.replace(/\\/g, '/').replace(/upload/g, '')}`;
     return responseMessage(file);
   }
 

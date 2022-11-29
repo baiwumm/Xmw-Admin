@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 10:59:20
+ * @LastEditTime: 2022-11-29 14:32:47
  */
 import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import { useIntl } from '@umijs/max'
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { FC } from 'react';
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { last, get } from 'lodash'
 
 interface IProps {
@@ -52,9 +52,9 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	 * @author: Cyan
 	 */
 	const onChangeUpload: UploadProps['onChange'] = ({ fileList }): void => {
-		const url = get(last(fileList), 'response.data.url')
-		onChange?.(url);
-		setCurrentAvatar(url)
+		const path = get(last(fileList), 'response.data.path')
+		onChange?.(path);
+		setCurrentAvatar(path)
 	};
 
 	// 拿到表单数据回显
@@ -62,22 +62,22 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 		if (value) {
 			setCurrentAvatar(value)
 		}
-}, [value])
+	}, [value])
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'530px'}}>
+		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 			<Avatar size={180} icon={<UserOutlined />} src={currentAvatar} />
-				<ImgCrop rotate shape='round' grid>
-					<Upload
-						maxCount={1}
-						action="http://127.0.0.1:3000/v1/upload/single-file-oss"
-						showUploadList={false}
-						onChange={onChangeUpload}
-						beforeUpload={beforeUpload}
-					>
-						<Button style={{ marginTop: '10px' }}>{formatMessage({ id: 'components.UploadAvatar.title' })}</Button>
-					</Upload>
-				</ImgCrop>
+			<ImgCrop rotate shape='round' grid>
+				<Upload
+					maxCount={1}
+					action="http://127.0.0.1:3000/v1/upload/single-file"
+					showUploadList={false}
+					onChange={onChangeUpload}
+					beforeUpload={beforeUpload}
+				>
+					<Button style={{ marginTop: '10px' }}>{formatMessage({ id: 'components.UploadAvatar.title' })}</Button>
+				</Upload>
+			</ImgCrop>
 		</div>
 	)
 }
