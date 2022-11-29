@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:53:43
+ * @LastEditTime: 2022-11-29 16:40:47
  */
 import { request } from '@umijs/max';
 import type { ResponseModel } from '@/global/interface';
@@ -18,7 +18,7 @@ import type {TableSearchProps} from '@/pages/System/MenuManagement/utils/interfa
  */
 
 export async function getMenuList(options?: TableSearchProps): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
-  return request<ResponseModel<API.MENUMANAGEMENT[]>>('/api/system/menu-management', {
+  return request('/api/system/menu-management', {
     method: 'GET',
     params: options || {},
   });
@@ -31,7 +31,7 @@ export async function getMenuList(options?: TableSearchProps): Promise<ResponseM
  * @author: Cyan
  */
  export async function createMenu(options: Partial<API.MENUMANAGEMENT>): Promise<ResponseModel<API.MENUMANAGEMENT>> {
-  return request<ResponseModel<API.MENUMANAGEMENT>>('/api/system/menu-management', {
+  return request('/api/system/menu-management', {
     method: 'POST',
     data: options || {},
   });
@@ -44,7 +44,7 @@ export async function getMenuList(options?: TableSearchProps): Promise<ResponseM
  * @author: Cyan
  */
  export async function updateMenu({ menu_id, ...options }: API.MENUMANAGEMENT): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/menu-management/${menu_id}`, {
+  return request(`/api/system/menu-management/${menu_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -57,7 +57,7 @@ export async function getMenuList(options?: TableSearchProps): Promise<ResponseM
  * @author: Cyan
  */
 export async function delMenu(menu_id: string): Promise<ResponseModel<number>> {
-  return request<ResponseModel<number>>(`/api/system/menu-management/${menu_id}`, {
+  return request(`/api/system/menu-management/${menu_id}`, {
     method: 'DELETE',
   });
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:21:15
+ * @LastEditTime: 2022-11-29 16:40:29
  */
 import { request } from '@umijs/max';
 import type { ResponseModel } from '@/global/interface';
@@ -17,7 +17,7 @@ import type {TableSearchProps,CreateInternationalProps} from '@/pages/System/Int
  * @author: Cyan
  */
 export async function getInternationalList(options?: TableSearchProps): Promise<ResponseModel<API.INTERNATIONALIZATION[]>> {
-  return request<ResponseModel<API.INTERNATIONALIZATION[]>>('/api/system/international', {
+  return request('/api/system/international', {
     method: 'GET',
     params: options || {},
   });
@@ -29,7 +29,7 @@ export async function getInternationalList(options?: TableSearchProps): Promise<
  * @author: Cyan
  */
 export async function getAllLocalesLang(): Promise<ResponseModel<API.LOCALESLANGAll>> {
-  return request<ResponseModel<API.LOCALESLANGAll>>('/api/system/international/allLocales', {
+  return request('/api/system/international/allLocales', {
     method: 'GET',
     params: {},
   });
@@ -43,7 +43,7 @@ export async function getAllLocalesLang(): Promise<ResponseModel<API.LOCALESLANG
  */
 
 export async function createInternational(options: CreateInternationalProps): Promise<ResponseModel<API.INTERNATIONALIZATION>> {
-  return request<ResponseModel<API.INTERNATIONALIZATION>>('/api/system/international', {
+  return request('/api/system/international', {
     method: 'POST',
     data: options || {},
   });
@@ -56,7 +56,7 @@ export async function createInternational(options: CreateInternationalProps): Pr
  * @author: Cyan
  */
 export async function updateInternational({ id, ...options }: API.INTERNATIONALIZATION): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/international/${id}`, {
+  return request(`/api/system/international/${id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -69,7 +69,7 @@ export async function updateInternational({ id, ...options }: API.INTERNATIONALI
  * @author: Cyan
  */
 export async function delInternational(id: string): Promise<ResponseModel<number>> {
-  return request<ResponseModel<number>>(`/api/system/international/${id}`, {
+  return request(`/api/system/international/${id}`, {
     method: 'DELETE',
   });
 }

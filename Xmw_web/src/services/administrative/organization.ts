@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:05:19
+ * @LastEditTime: 2022-11-29 16:42:04
  */
 import { request } from '@umijs/max';
 import type { ResponseModel } from '@/global/interface';
@@ -17,7 +17,7 @@ import type { TableSearchProps,CreateOrgProps } from '@/pages/Administrative/Org
  * @author: Cyan
  */
 export async function getOrganizationList(options?: TableSearchProps): Promise<ResponseModel<API.ORGANIZATION[]>> {
-  return request<ResponseModel<API.ORGANIZATION[]>>('/api/administrative/organization', {
+  return request('/api/administrative/organization', {
     method: 'GET',
     params: options || {},
   });
@@ -30,7 +30,7 @@ export async function getOrganizationList(options?: TableSearchProps): Promise<R
  * @author: Cyan
  */
 export async function createOrganization(options: CreateOrgProps): Promise<ResponseModel<API.ORGANIZATION>> {
-  return request<ResponseModel<API.ORGANIZATION>>('/api/administrative/organization', {
+  return request('/api/administrative/organization', {
     method: 'POST',
     data: options || {},
   });
@@ -43,7 +43,7 @@ export async function createOrganization(options: CreateOrgProps): Promise<Respo
  * @author: Cyan
  */
 export async function updateOrganization({ org_id, ...options }: API.ORGANIZATION): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/administrative/organization/${org_id}`, {
+  return request(`/api/administrative/organization/${org_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -56,7 +56,7 @@ export async function updateOrganization({ org_id, ...options }: API.ORGANIZATIO
  * @author: Cyan
  */
 export async function delOrganization(org_id: string): Promise<ResponseModel<number>> {
-  return request<ResponseModel<number>>(`/api/administrative/organization/${org_id}`, {
+  return request(`/api/administrative/organization/${org_id}`, {
     method: 'DELETE',
   });
 }

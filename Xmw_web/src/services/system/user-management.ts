@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:25:20
+ * @LastEditTime: 2022-11-29 16:41:28
  */
 import { request } from '@umijs/max';
 import type { PageResModel, ResponseModel } from '@/global/interface';
@@ -17,7 +17,7 @@ import type { TableSearchProps, UserStatusProps } from '@/pages/System/UserManag
  * @author: Cyan
  */
 export async function getUserList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.USERMANAGEMENT>>> {
-  return request<ResponseModel<PageResModel<API.USERMANAGEMENT>>>('/api/system/user-management', {
+  return request('/api/system/user-management', {
     method: 'GET',
     params: options || {},
   });
@@ -32,7 +32,7 @@ export async function getUserList(options?: TableSearchProps): Promise<ResponseM
 export async function createUser(
   options: API.USERMANAGEMENT
 ): Promise<ResponseModel<API.USERMANAGEMENT>> {
-  return request<ResponseModel<API.USERMANAGEMENT>>('/api/system/user-management', {
+  return request('/api/system/user-management', {
     method: 'POST',
     data: options || {},
   });
@@ -45,7 +45,7 @@ export async function createUser(
  * @author: Cyan
  */
 export async function updateUser({ user_id, ...options }: API.USERMANAGEMENT): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/user-management/${user_id}`, {
+  return request(`/api/system/user-management/${user_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -58,7 +58,7 @@ export async function updateUser({ user_id, ...options }: API.USERMANAGEMENT): P
  * @author: Cyan
  */
 export async function delUser(user_id: string): Promise<ResponseModel<number>> {
-  return request<ResponseModel<number>>(`/api/system/user-management/${user_id}`, {
+  return request(`/api/system/user-management/${user_id}`, {
     method: 'DELETE',
   });
 }
@@ -70,7 +70,7 @@ export async function delUser(user_id: string): Promise<ResponseModel<number>> {
  * @author: Cyan
  */
 export async function setUserStatus({ user_id, status }: UserStatusProps): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/user-management/${user_id}`, {
+  return request(`/api/system/user-management/${user_id}`, {
     method: 'PATCH',
     data: { status } || {},
   });

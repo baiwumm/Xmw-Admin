@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:07:20
+ * @LastEditTime: 2022-11-29 16:38:50
  */
 import { Controller, Post, Body, Session, Get } from '@nestjs/common';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
@@ -15,7 +15,7 @@ import { responseMessage } from '@/utils';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly AuthService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * @description: 用户登录
@@ -28,7 +28,7 @@ export class AuthController {
     @IpAddress() clinetIp: string,
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.AuthService.loginSingToken(
+    const response = await this.authService.loginSingToken(
       loginParams,
       clinetIp,
       session,

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 18:32:12
+ * @LastEditTime: 2022-11-29 16:41:07
  */
 import { request } from '@umijs/max';
 import type { PageResModel,ResponseModel } from '@/global/interface';
@@ -17,7 +17,7 @@ import type { TableSearchProps,RoleStatusProps } from '@/pages/System/RoleManage
  * @author: Cyan
  */
 export async function getRoleList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>> {
-  return request<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>>('/api/system/role-management', {
+  return request('/api/system/role-management', {
     method: 'GET',
     params: options || {},
   });
@@ -32,7 +32,7 @@ export async function getRoleList(options?: TableSearchProps): Promise<ResponseM
 export async function createRole(
   options: Omit<API.ROLEMANAGEMENT, 'role_id' | 'founder' | 'created_time' | 'updated_time'>
 ): Promise<ResponseModel<API.ROLEMANAGEMENT>> {
-  return request<ResponseModel<API.ROLEMANAGEMENT>>('/api/system/role-management', {
+  return request('/api/system/role-management', {
     method: 'POST',
     data: options || {},
   });
@@ -45,7 +45,7 @@ export async function createRole(
  * @author: Cyan
  */
 export async function updateRole({ role_id, ...options }: API.ROLEMANAGEMENT): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/role-management/${role_id}`, {
+  return request(`/api/system/role-management/${role_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -58,7 +58,7 @@ export async function updateRole({ role_id, ...options }: API.ROLEMANAGEMENT): P
  * @author: Cyan
  */
 export async function delRole(role_id: string): Promise<ResponseModel<number>> {
-  return request<ResponseModel<number>>(`/api/system/role-management/${role_id}`, {
+  return request(`/api/system/role-management/${role_id}`, {
     method: 'DELETE',
   });
 }
@@ -70,7 +70,7 @@ export async function delRole(role_id: string): Promise<ResponseModel<number>> {
  * @author: Cyan
  */
 export async function setRoleStatus({ role_id, status }: RoleStatusProps): Promise<ResponseModel<number[]>> {
-  return request<ResponseModel<number[]>>(`/api/system/role-management/${role_id}`, {
+  return request(`/api/system/role-management/${role_id}`, {
     method: 'PATCH',
     data: { status } || {},
   });
