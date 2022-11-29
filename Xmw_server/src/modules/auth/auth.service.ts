@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 10:25:26
+ * @LastEditTime: 2022-11-29 18:08:19
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -142,5 +142,26 @@ export class AuthService {
         }
     }
     return responseMessage(userInfo, '登录成功!');
+  }
+
+  /**
+   * @description: 用户退出当前登录
+   * @return {*}
+   * @author: Cyan
+   */
+  async logout(session: Record<string, any>): Promise<responseResult> {
+    const {
+      currentUserInfo: { user_id, user_name },
+    } = session;
+    // 清空当前用户token
+    this.redisCacheService.cacheDel(`${user_id}-${user_name}`);
+    // 清空数据库中 token
+    await this.userModel.update(
+      { token: '' },
+      {
+        where: { user_id },
+      },
+    );
+    return responseMessage({});
   }
 }

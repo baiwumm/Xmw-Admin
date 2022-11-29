@@ -11,8 +11,8 @@ export type LoginType = 'mobile' | 'account';
  * @author: Cyan
  */
 export type LoginParams = {
-  loginType: string;
+  type: string;
   user_name?: string;
-  paddword?: string;
+  password?: string;
   phone?: string;
 };

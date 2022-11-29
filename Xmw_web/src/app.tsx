@@ -4,17 +4,18 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-25 10:22:29
+ * @LastEditTime: 2022-11-29 17:20:17
  */
 
 // 引入第三方库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
+import { message } from 'antd'
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { getUserInfo } from '@/services/logic/login' // 登录相关接口
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { initLocalesLang } from '@/utils' // 全局工具函数
 
@@ -25,21 +26,24 @@ const loginPath = '/user/login';
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<{
+  access_token?: string; 
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.USERMANAGEMENT;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
   locales?: any
 }> {
   // 初始化多语言
   const locales = await initLocalesLang()
   const umi_layout = window.localStorage.getItem('umi_layout')
+  // 获取登录用户信息
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-      return msg.data;
+      const result = await getUserInfo();
+      if (result.code === 200) {
+        return result.data
+      }
+      message.error(result.msg)
     } catch (error) {
       history.push(loginPath);
     }

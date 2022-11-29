@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:27:22
+ * @LastEditTime: 2022-11-29 16:46:30
  */
 declare namespace API {
   /**
@@ -116,8 +116,11 @@ declare namespace API {
     city: string[]; // 所属城市
     address: string; // 详细地址
     jobs_id: string; // 岗位id
+    jobs_name: string; // 岗位名称
     org_id: string; // 组织id
+    org_name: string; // 组织名称
     role_id: string; // 角色id
+    role_name: string; // 角色名称
     founder: string; // 创建人
     login_num: number; // 登录次数
     login_last_ip: string; // 最后一次登录ip

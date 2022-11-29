@@ -4,18 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:38:50
+ * @LastEditTime: 2022-11-29 16:55:15
  */
 import { Controller, Post, Body, Session, Get } from '@nestjs/common';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
 import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
+import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import { LoginParamsDto } from './dto';
 import { responseMessage } from '@/utils';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly redisCacheService: RedisCacheService,
+  ) {}
 
   /**
    * @description: 用户登录
@@ -33,6 +37,19 @@ export class AuthController {
       clinetIp,
       session,
     );
+    return response;
+  }
+
+  /**
+   * @description: 用户退出登录
+   * @return {*}
+   * @author: Cyan
+   */
+  @Post('/logout')
+  async logout(
+    @Session() session: Record<string, any>,
+  ): Promise<ResponseModel<ResData>> {
+    const response = await this.authService.logout(session);
     return response;
   }
 

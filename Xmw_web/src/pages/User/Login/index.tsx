@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:46:33
+ * @LastEditTime: 2022-11-29 17:57:30
  */
 
 // 引入第三方库
@@ -17,12 +17,13 @@ import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
 
 // 引入业务组件
+import { encryptionAesPsd } from '@/utils'
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
 import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.less'; // css 样式恩建
-import { login } from '@/services/ant-design-pro/api';  // 登录接口
+import { Login } from '@/services/logic/login' // 登录相关接口
 
 const iconStyles: CSSProperties = {
   marginInlineStart: '16px',
@@ -30,39 +31,42 @@ const iconStyles: CSSProperties = {
   verticalAlign: 'middle',
   cursor: 'pointer',
 };
-const Login: FC = () => {
+const LoginPage: FC = () => {
   const { formatMessage } = useIntl();
   // 初始化状态
   const { initialState, setInitialState } = useModel('@@initialState');
   const [loginType, setLoginType] = useState<LoginType>('account');
-  // 获取用户信息
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    console.log(userInfo)
-    if (userInfo) {
-      await setInitialState((s) => ({
-        ...s,
-        currentUser: userInfo,
-      }));
-    }
-  };
-  // 表单提交
-  const handleSubmit = async (values: LoginParams) => {
+  
+  /**
+   * @description: 登录表单提交
+   * @param {LoginParams} values
+   * @return {*}
+   * @author: Cyan
+   */  
+  const handleSubmit = async (values: LoginParams): Promise<void> => {
     try {
-      // 调用登录接口
-      const msg = await login({ ...values, type: loginType });
-      if (msg.status) {
-        // 如果登录成功，提示信息
-        // message.success(formatMessage('pages.login.success'));
-        // 获取用户信息
-        await fetchUserInfo();
-        setTimeout(() => {
-          const urlParams = new URL(window.location.href).searchParams;
-          // 路由跳转
-          history.push(urlParams.get('redirect') || '/');
-        }, 100)
-        return;
+      // 如果是账号密码登录，密码加密提交
+      if(loginType === 'account' && values.password){
+        values.password = encryptionAesPsd(values.password)
       }
+      // 调用登录接口
+      await Login({ ...values, type: loginType }).then(async (res) => {
+        if (res.code === 200) {
+          const userInfo = await initialState?.fetchUserInfo?.();
+          if (userInfo) {
+            await setInitialState((s) => ({
+              ...s,
+              currentUser: userInfo,
+              access_token:res.data.access_token
+            }));
+          }
+          setTimeout(() => {
+            const urlParams = new URL(window.location.href).searchParams;
+            // 路由跳转
+            history.push(urlParams.get('redirect') || '/');
+          }, 100)
+        }
+      });
     } catch (error) {
       message.error(formatMessage({ id: 'pages.login.failure' }));
     }
@@ -129,4 +133,4 @@ const Login: FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
