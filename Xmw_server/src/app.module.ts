@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 16:07:27
+ * @LastEditTime: 2022-11-28 16:45:13
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -18,7 +18,8 @@ import { InternationalModule } from '@/modules/system/international/internationa
 import { JobsManagementModule } from '@/modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
 import { OrganizationModule } from '@/modules/administrative/organization/organization.module'; // 智能行政-组织管理
 import { FilesModule } from '@/modules/files/files.module'; // 文件上传
-import { AuthModule } from '@/modules/auth/auth.module' // 用户鉴权
+import { AuthModule } from '@/modules/auth/auth.module'; // 用户鉴权
+import { RedisCacheModule } from '@/modules/redis-cache/redis-cache.module'; // redis 缓存
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { AuthModule } from '@/modules/auth/auth.module' // 用户鉴权
     RoleManagementModule,
     UserManagementModule,
     FilesModule,
-    AuthModule
+    AuthModule,
+    RedisCacheModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

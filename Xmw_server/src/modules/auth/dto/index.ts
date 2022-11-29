@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 10:34:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 15:15:44
+ * @LastEditTime: 2022-11-29 10:20:53
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -25,13 +25,23 @@ export class LoginParamsDto {
     type: String,
     description: '用户名',
     default: 'admin',
+    required: false,
   })
-  user_name: string;
+  user_name?: string;
 
   @ApiProperty({
     type: String,
     description: '密码',
     default: '+eUwGEfC9+bY+NgU22Ol4g==',
+    required: false,
   })
-  password: string;
+  password?: string;
+
+  @ApiProperty({
+    type: String,
+    description: '手机号码',
+    default: '13800138000',
+    required: false,
+  })
+  phone?: string;
 }

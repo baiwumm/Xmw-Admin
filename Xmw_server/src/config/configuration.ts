@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 09:48:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 15:53:51
+ * @LastEditTime: 2022-11-29 09:15:23
  */
 import { registerAs } from '@nestjs/config';
 
@@ -13,8 +13,8 @@ export default registerAs('app_global', () => ({
   port: process.env.APP_PROT,
   oss: {
     region: 'oss-cn-shenzhen', // 所在区域
-    accessKeyId: 'LTAI4G5oHtJSRFXjq7ie45xh', // 密钥 key
-    accessKeySecret: 'bAqE12OuQ9uHwxkdTltOWRogJUXfmG', // 密钥
+    accessKeyId: 'z3o5JqYZOqzRcOBe47jAwInWcKqhEi9tuZ94PRHCZCg=', // 密钥 key
+    accessKeySecret: 'WWLrY4wZhLjVE+wux0TNhad2DXgU5w5PdOX86b1SotY=', // 密钥
     bucket: 'react-umi-xmw', // bucket 名称
   },
   secret: 'react_umi_xmw', // jwt token 密钥
