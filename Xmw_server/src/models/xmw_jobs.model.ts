@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 16:51:34
+ * @LastEditTime: 2022-11-30 11:22:21
  */
 import {
   PrimaryKey,
@@ -18,6 +18,7 @@ import {
   Length,
   IsUUID,
 } from 'sequelize-typescript';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import type { JobsAttributes } from '@/attributes/administrative';
 
@@ -64,13 +65,17 @@ export class XmwJobs
 
   //创建人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '创建人' })
-  founder?: string;
+  @ForeignKey(() => XmwUser)
+  @Column({ type: DataType.UUID, allowNull: false, comment: '创建人' })
+  founder: string;
 
   //排序
   @Column({ type: DataType.INTEGER, allowNull: false, comment: '排序' })
   sort: number;
 
-  @BelongsTo(() => XmwOrganization, { as: 'org' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  userInfo: XmwUser;
+
+  @BelongsTo(() => XmwOrganization, { as: 'o' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   orgInfo: XmwOrganization;
 }

@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:30:32
+ * @LastEditTime: 2022-11-30 13:45:47
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import type { WhereOptions } from 'sequelize/types';
 import { Sequelize } from 'sequelize-typescript';
+import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // interface
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwPermission } from '@/models/xmw_permission.model';
@@ -70,6 +70,7 @@ export class RoleManagementService {
           attributes: ['role_id', 'menu_id'],
         },
       ],
+      // raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
@@ -77,7 +78,6 @@ export class RoleManagementService {
         ['sort', 'desc'],
         ['created_time', 'desc'],
       ], // 排序规则,
-      distinct: true,
     });
     return { list: rows, total: count };
   }
@@ -87,12 +87,10 @@ export class RoleManagementService {
    * @return {*}
    * @author: Cyan
    */
-  async createRole({
-    menu_permission,
-    ...roleInfo
-  }: SaveRoleManagementDto): Promise<
-    ResponseModel<ResData | SaveRoleManagementDto>
-  > {
+  async createRole(
+    { menu_permission, ...roleInfo }: SaveRoleManagementDto,
+    session: Record<string, any>,
+  ): Promise<ResponseModel<ResData | SaveRoleManagementDto>> {
     // 解构参数
     const { role_name, role_code } = roleInfo;
     // 角色名称和角色编码不能相同
@@ -108,7 +106,10 @@ export class RoleManagementService {
     const t = await this.sequelize.transaction();
     try {
       // 执行 sql insert 语句,插入数据到 xmw_role 表中
-      const result = await this.roleModel.create(roleInfo, { transaction: t });
+      const result = await this.roleModel.create(
+        { ...roleInfo, founder: session.currentUserInfo.user_id },
+        { transaction: t },
+      );
       // 再把角色对应的权限插入到 xmw_permission 中
       const permissionData: permissionModel[] = menu_permission.map(
         (menu_id: string) => {

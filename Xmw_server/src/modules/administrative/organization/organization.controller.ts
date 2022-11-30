@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:21:22
+ * @LastEditTime: 2022-11-30 11:20:56
  */
 import {
   Controller,
@@ -15,6 +15,7 @@ import {
   Query,
   Body,
   Param,
+  Session,
 } from '@nestjs/common';
 import { OrganizationService } from './organization.service'; // Organization Service
 import {
@@ -73,9 +74,11 @@ export class OrganizationController {
   @ApiOperation({ summary: '创建组织数据' })
   async createOrganization(
     @Body() organizationInfo: SaveOrganizationDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.organizationService.createOrganization(
       organizationInfo,
+      session,
     );
     return response;
   }

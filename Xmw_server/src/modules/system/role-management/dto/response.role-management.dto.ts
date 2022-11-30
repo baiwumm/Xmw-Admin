@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:58:11
+ * @LastEditTime: 2022-11-30 11:25:54
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -31,7 +31,8 @@ export class ResponseRoleManagementDto extends ResponseDto {
             role_name: '超级管理员',
             role_code: 'Super Admin',
             describe: '拥有系统全部权限。',
-            founder: null,
+            founder: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
+            founder_name: '谢明伟',
             sort: 99,
             status: 1,
             created_time: '2022-11-08 10:54:45',
@@ -48,7 +49,8 @@ export class ResponseRoleManagementDto extends ResponseDto {
             ],
           },
           describe: '拥有系统全部权限',
-          founder: null,
+          founder: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
+          founder_name: '谢明伟',
           status: 1,
           sort: 1,
           created_time: '2022-09-15 07:35:08',

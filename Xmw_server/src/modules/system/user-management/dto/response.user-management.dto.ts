@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-10 14:30:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 14:33:48
+ * @LastEditTime: 2022-11-30 10:49:50
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -45,7 +45,8 @@ export class ResponseUserManagementDto extends ResponseDto {
           jobs_id: '046aeaa4-f707-4981-8a30-6e4a8488eb52',
           org_id: '9e0d462d-5254-41ba-b8f3-982a7cf588f0',
           role_id: 'c49aeeca-bc95-444e-a437-a2d36e79def4',
-          founder: null,
+          founder: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
+          founder_name: '谢明伟',
           login_num: 0,
           login_last_ip: null,
           login_last_time: null,

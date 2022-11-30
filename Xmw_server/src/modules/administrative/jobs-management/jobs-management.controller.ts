@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:07:58
+ * @LastEditTime: 2022-11-30 11:03:37
  */
 import {
   Controller,
@@ -15,6 +15,7 @@ import {
   Query,
   Body,
   Param,
+  Session,
 } from '@nestjs/common';
 import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 import {
@@ -71,8 +72,12 @@ export class JobsManagementController {
   @ApiOperation({ summary: '创建岗位数据' })
   async createJobs(
     @Body() jobsInfo: SaveJobsManagementDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.jobsManagementService.createJobs(jobsInfo);
+    const response = await this.jobsManagementService.createJobs(
+      jobsInfo,
+      session,
+    );
     return response;
   }
 

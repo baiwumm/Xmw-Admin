@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 16:33:09
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:19:22
+ * @LastEditTime: 2022-11-30 11:25:15
  */
 import {
   PrimaryKey,
@@ -18,8 +18,10 @@ import {
   Length,
   IsUUID,
   IsIn,
+  BelongsTo,
 } from 'sequelize-typescript';
 import type { RoleAttributes } from '@/attributes/system';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwPermission } from '@/models/xmw_permission.model';
 
 @Table({ tableName: 'xmw_role' })
@@ -54,8 +56,9 @@ export class XmwRole
 
   //创建人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '创建人' })
-  founder?: string;
+  @ForeignKey(() => XmwUser)
+  @Column({ type: DataType.UUID, allowNull: false, comment: '创建人' })
+  founder: string;
 
   //排序
   @Column({ type: DataType.INTEGER, allowNull: false, comment: '排序' })
@@ -76,4 +79,7 @@ export class XmwRole
 
   @HasMany(() => XmwPermission, { as: 'menu_permission' })
   menu_permission: XmwPermission[];
+
+  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  userInfo: XmwUser;
 }

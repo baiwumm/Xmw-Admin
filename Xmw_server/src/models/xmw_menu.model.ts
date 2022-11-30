@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:18:56
+ * @LastEditTime: 2022-11-30 09:58:03
  */
 import {
   PrimaryKey,
@@ -19,6 +19,7 @@ import {
   IsIn,
 } from 'sequelize-typescript';
 import type { MenuAttributes } from '@/attributes/system';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 
 @Table({ tableName: 'xmw_menu', underscored: false })
@@ -179,8 +180,9 @@ export class XmwMenu
 
   //创建人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '创建人' })
-  founder?: string;
+  @ForeignKey(() => XmwUser)
+  @Column({ type: DataType.UUID, allowNull: false, comment: '创建人' })
+  founder: string;
 
   //排序
   @Column({ type: DataType.INTEGER, allowNull: false, comment: '排序' })
@@ -201,4 +203,7 @@ export class XmwMenu
 
   @BelongsTo(() => XmwInternational, { as: 'i' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   interInfo: XmwInternational;
+
+  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  userInfo: XmwUser;
 }

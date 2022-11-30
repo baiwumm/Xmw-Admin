@@ -17,6 +17,7 @@ import {
   IsDate,
   ForeignKey,
   BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
 import type { UserAttributes } from '@/attributes/system';
 import { XmwRole } from '@/models/xmw_role.model';
@@ -172,8 +173,9 @@ export class XmwUser
 
   //创建人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '创建人' })
-  founder?: string;
+  @ForeignKey(() => XmwUser)
+  @Column({ type: DataType.UUID, allowNull: false, comment: '创建人' })
+  founder: string;
 
   //登录次数
   @Column({
@@ -200,12 +202,15 @@ export class XmwUser
   })
   login_last_time?: Date;
 
-  @BelongsTo(() => XmwJobs, { as: 'jobs' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  @HasOne(() => XmwJobs, { as: 'j' })
   jobsInfo: XmwJobs;
 
-  @BelongsTo(() => XmwOrganization, { as: 'org' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  @HasOne(() => XmwOrganization, { as: 'o' })
   orgInfo: XmwOrganization;
 
-  @BelongsTo(() => XmwRole, { as: 'role' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  @HasOne(() => XmwRole, { as: 'r' })
   roleInfo: XmwRole;
+
+  @BelongsTo(() => XmwUser, { as: 'u' })
+  userInfo: XmwUser;
 }

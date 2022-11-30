@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:26:50
+ * @LastEditTime: 2022-11-30 09:54:31
  */
 import {
   Controller,
@@ -15,6 +15,7 @@ import {
   Query,
   Body,
   Param,
+  Session,
 } from '@nestjs/common';
 import { MenuManagementService } from './menu-management.service'; // MenuManagement Service
 import {
@@ -71,8 +72,12 @@ export class MenuManagementController {
   @ApiOperation({ summary: '创建菜单数据' })
   async createMenu(
     @Body() menuInfo: SaveMenuManagementDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.menuManagementService.createMenu(menuInfo);
+    const response = await this.menuManagementService.createMenu(
+      menuInfo,
+      session,
+    );
     return response;
   }
 

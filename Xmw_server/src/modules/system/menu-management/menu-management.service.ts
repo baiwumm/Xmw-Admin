@@ -4,14 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:28:46
+ * @LastEditTime: 2022-11-30 10:11:12
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListMenuManagementDto, SaveMenuManagementDto } from './dto';
@@ -22,6 +24,7 @@ export class MenuManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwMenu)
     private readonly menuModel: typeof XmwMenu,
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -42,9 +45,22 @@ export class MenuManagementService {
     if (isPremission) where.redirect = { [Op.is]: null };
     // 查询数据
     const sqlData = await this.menuModel.findAll({
-      attributes: { include: ['i.zh-CN', 'i.en-US', 'i.ja-JP', 'i.zh-TW'] },
+      attributes: {
+        include: [
+          [this.sequelize.col('u.cn_name'), 'founder_name'],
+          'i.zh-CN',
+          'i.en-US',
+          'i.ja-JP',
+          'i.zh-TW',
+        ],
+      },
       // 联表查询
       include: [
+        {
+          model: XmwUser,
+          as: 'u',
+          attributes: [],
+        },
         {
           model: XmwInternational,
           as: 'i',
@@ -70,6 +86,7 @@ export class MenuManagementService {
    */
   async createMenu(
     menuInfo: SaveMenuManagementDto,
+    session: Record<string, any>,
   ): Promise<ResponseModel<ResData | SaveMenuManagementDto>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
@@ -93,7 +110,10 @@ export class MenuManagementService {
       }
     }
     // 如果通过则执行 sql insert 语句
-    const result = await this.menuModel.create(menuInfo);
+    const result = await this.menuModel.create({
+      ...menuInfo,
+      founder: session.currentUserInfo.user_id,
+    });
     return responseMessage(result);
   }
 

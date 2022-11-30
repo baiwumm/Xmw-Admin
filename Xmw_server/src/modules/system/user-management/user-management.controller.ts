@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:32:04
+ * @LastEditTime: 2022-11-30 09:35:08
  */
 import {
   Controller,
@@ -16,6 +16,7 @@ import {
   Param,
   Delete,
   Patch,
+  Session,
 } from '@nestjs/common';
 import { UserManagementService } from './user-management.service'; // UserManagement Service
 import {
@@ -74,8 +75,12 @@ export class UserManagementController {
   @ApiOperation({ summary: '创建用户数据' })
   async createUser(
     @Body() userInfo: SaveUserManagementDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.userManagementService.createUser(userInfo);
+    const response = await this.userManagementService.createUser(
+      userInfo,
+      session,
+    );
     return response;
   }
 

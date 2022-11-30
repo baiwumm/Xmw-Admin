@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:33:45
+ * @LastEditTime: 2022-11-30 11:24:00
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model';
@@ -24,6 +25,7 @@ export class UserManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -47,23 +49,33 @@ export class UserManagementService {
     // 分页查询数据
     const { count, rows } = await this.userModel.findAndCountAll({
       attributes: {
-        include: ['jobs.jobs_name', 'org.org_name', 'role.role_name'],
+        include: [
+          'j.jobs_name',
+          'o.org_name',
+          'r.role_name',
+          [this.sequelize.col('u.cn_name'), 'founder_name'],
+        ],
       },
       // 联表查询
       include: [
         {
+          model: XmwUser,
+          as: 'u',
+          attributes: [],
+        },
+        {
           model: XmwJobs,
-          as: 'jobs',
+          as: 'j',
           attributes: [],
         },
         {
           model: XmwOrganization,
-          as: 'org',
+          as: 'o',
           attributes: [],
         },
         {
           model: XmwRole,
-          as: 'role',
+          as: 'r',
           attributes: [],
         },
       ],
@@ -83,6 +95,7 @@ export class UserManagementService {
    */
   async createUser(
     userInfo: SaveUserManagementDto,
+    session: Record<string, any>,
   ): Promise<ResponseModel<ResData | SaveUserManagementDto>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
@@ -96,7 +109,10 @@ export class UserManagementService {
     }
 
     // 如果通过则执行 sql insert 语句
-    const result = await this.userModel.create(userInfo);
+    const result = await this.userModel.create({
+      ...userInfo,
+      founder: session.currentUserInfo.user_id,
+    });
     return responseMessage(result);
   }
 

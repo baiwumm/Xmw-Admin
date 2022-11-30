@@ -4,12 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:26:06
+ * @LastEditTime: 2022-11-30 10:53:27
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import {
@@ -26,6 +28,7 @@ export class InternationalService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwInternational)
     private readonly internationaModel: typeof XmwInternational,
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -66,6 +69,18 @@ export class InternationalService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 查询数据
     const sqlData = await this.internationaModel.findAll({
+      attributes: {
+        include: [[this.sequelize.col('u.cn_name'), 'founder_name']],
+      },
+      // 联表查询
+      include: [
+        {
+          model: XmwUser,
+          as: 'u',
+          attributes: [],
+        },
+      ],
+      raw: true,
       where,
       // 按时间倒序
       order: [
@@ -88,6 +103,7 @@ export class InternationalService {
    */
   async createInternational(
     internationalInfo: SaveInternationalDto,
+    session: Record<string, any>,
   ): Promise<ResponseModel<ResData | SaveInternationalDto>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
@@ -100,7 +116,10 @@ export class InternationalService {
       return responseMessage({}, '同一层级 name 不能相同!', -1);
     }
     // 如果通过则执行 sql insert 语句
-    const result = await this.internationaModel.create(internationalInfo);
+    const result = await this.internationaModel.create({
+      ...internationalInfo,
+      founder: session.currentUserInfo.user_id,
+    });
     return responseMessage(result);
   }
 

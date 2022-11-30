@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:24:33
+ * @LastEditTime: 2022-11-30 10:53:47
  */
 import {
   Controller,
@@ -15,6 +15,7 @@ import {
   Query,
   Body,
   Param,
+  Session,
 } from '@nestjs/common';
 import { InternationalService } from './international.service'; // International Service
 import {
@@ -86,9 +87,11 @@ export class InternationalController {
   @ApiOperation({ summary: '创建国际化数据' })
   async createInternational(
     @Body() internationalInfo: SaveInternationalDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.createInternational(
       internationalInfo,
+      session,
     );
     return response;
   }

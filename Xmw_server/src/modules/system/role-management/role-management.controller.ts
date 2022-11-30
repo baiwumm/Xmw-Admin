@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:29:26
+ * @LastEditTime: 2022-11-30 11:28:27
  */
 import {
   Controller,
@@ -16,6 +16,7 @@ import {
   Body,
   Param,
   Patch,
+  Session,
 } from '@nestjs/common';
 import { RoleManagementService } from './role-management.service'; // RoleManagement Service
 import {
@@ -74,8 +75,12 @@ export class RoleManagementController {
   @ApiOperation({ summary: '创建角色数据' })
   async createRole(
     @Body() roleInfo: SaveRoleManagementDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    const response = await this.roleManagementService.createRole(roleInfo);
+    const response = await this.roleManagementService.createRole(
+      roleInfo,
+      session,
+    );
     return response;
   }
 

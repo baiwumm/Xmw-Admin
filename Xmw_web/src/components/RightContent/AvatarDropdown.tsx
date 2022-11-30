@@ -114,7 +114,7 @@ const AvatarDropdown: FC<GlobalHeaderRightProps> = ({ menu }) => {
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size="small" className={styles.avatar} src={currentUser.avatar_url} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{currentUser.user_name}</span>
+        <span className={`${styles.name} anticon`}>{currentUser.cn_name}</span>
       </span>
     </HeaderDropdown>
   );

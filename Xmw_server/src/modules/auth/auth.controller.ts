@@ -4,9 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:55:15
+ * @LastEditTime: 2022-11-30 09:45:26
  */
 import { Controller, Post, Body, Session, Get } from '@nestjs/common';
+import { omit } from 'lodash';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
 import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
@@ -62,6 +63,6 @@ export class AuthController {
   async getCurrentUserInfo(
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    return responseMessage(session.currentUserInfo);
+    return responseMessage(omit(session.currentUserInfo, 'password'));
   }
 }

@@ -4,13 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:22:06
+ * @LastEditTime: 2022-11-30 11:22:30
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
@@ -22,6 +24,7 @@ export class JobsManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwJobs)
     private readonly jobsModel: typeof XmwJobs,
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -40,12 +43,22 @@ export class JobsManagementService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 查询数据
     const sqlData = await this.jobsModel.findAll({
-      attributes: { include: ['org.org_name'] },
+      attributes: {
+        include: [
+          'o.org_name',
+          [this.sequelize.col('u.cn_name'), 'founder_name'],
+        ],
+      },
       // 联表查询
       include: [
         {
+          model: XmwUser,
+          as: 'u',
+          attributes: [],
+        },
+        {
           model: XmwOrganization,
-          as: 'org',
+          as: 'o',
           attributes: [],
         },
       ],
@@ -68,6 +81,7 @@ export class JobsManagementService {
    */
   async createJobs(
     jobsInfo: SaveJobsManagementDto,
+    session: Record<string, any>,
   ): Promise<ResponseModel<ResData | SaveJobsManagementDto>> {
     // 解构参数
     const { jobs_name } = jobsInfo;
@@ -80,7 +94,10 @@ export class JobsManagementService {
       return responseMessage({}, '岗位名称已存在!', -1);
     }
     // 如果通过则执行 sql insert 语句
-    const result = await this.jobsModel.create(jobsInfo);
+    const result = await this.jobsModel.create({
+      ...jobsInfo,
+      founder: session.currentUserInfo.user_id,
+    });
     return responseMessage(result);
   }
 
