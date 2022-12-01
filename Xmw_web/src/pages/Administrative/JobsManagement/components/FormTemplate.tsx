@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 15:43:43
+ * @LastEditTime: 2022-12-01 17:12:40
  */
 
 // 引入第三方库
@@ -20,7 +20,7 @@ import FormTemplateItem from '../components/FormTemplateItem' // 表单组件
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, orgTree }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, orgTree, userList }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.JOBSMANAGEMENT>();
@@ -79,7 +79,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 				}
 			}}
 		>
-			<FormTemplateItem treeData={treeData} parent_id={parent_id} orgTree={orgTree} />
+			<FormTemplateItem treeData={treeData} parent_id={parent_id} orgTree={orgTree} userList={userList} />
 		</DrawerForm>
 	);
 };

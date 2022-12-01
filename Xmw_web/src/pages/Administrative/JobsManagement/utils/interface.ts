@@ -3,7 +3,7 @@
  * @Author: Cyan
  * @Date: 2022-09-24 08:58:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 16:02:45
+ * @LastEditTime: 2022-12-01 18:06:41
  */
 
 /**
@@ -14,6 +14,7 @@
 export type FormTemplateProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
   orgTree: API.ORGANIZATION[]; // 组织树形数据
+  userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void; // 表格刷新
   formData?: API.JOBSMANAGEMENT; // 表单数据
   triggerDom?: JSX.Element; // DrawerForm trigger
@@ -28,6 +29,7 @@ export type FormTemplateProps = {
 export type FormTemplateItemProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
   orgTree: API.ORGANIZATION[]; // 组织树形数据
+  userList: API.USERMANAGEMENT[]; // 用户列表
   parent_id?: string; // 父级id
 };
 

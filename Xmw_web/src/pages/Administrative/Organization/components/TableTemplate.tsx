@@ -4,9 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:40:24
+ * @LastEditTime: 2022-12-01 18:25:59
  */
 // 引入第三方库
+import { useRequest } from 'ahooks';
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useModel } from '@umijs/max'
@@ -17,8 +18,10 @@ import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
+import { getUserList } from '@/services/system/user-management' // 用户管理接口
 import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatResult } from '@/utils'
+import type { PageResModel, PaginationProps } from '@/global/interface'
 import FormTemplate from './FormTemplate'  // 表单组件
 import { ORG_TYPE_TAGS } from '../utils/enum'
 import type { TableSearchProps } from '../utils/interface'
@@ -43,6 +46,11 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
+	// 获取用户列表
+	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
+		async (params) => formatResult(await getUserList(params)), {
+		defaultParams: [{ current: 1, pageSize: 9999 }]
+	});
 	// 删除列表
 	const handlerDelete = async (org_id: string): Promise<void> => {
 		Modal.confirm({
@@ -79,6 +87,7 @@ const TableTemplate: FC = () => {
 						treeData={treeData}
 						reloadTable={reloadTable}
 						parent_id={parent_id}
+						userList={userList?.list || []}
 						triggerDom={
 							<Button
 								type="text"
@@ -97,6 +106,7 @@ const TableTemplate: FC = () => {
 						treeData={treeData}
 						reloadTable={reloadTable}
 						formData={currentRecord}
+						userList={userList?.list || []}
 						triggerDom={
 							<Button
 								type="text"
@@ -248,7 +258,7 @@ const TableTemplate: FC = () => {
 			pagination={false}
 			// 工具栏
 			toolBarRender={() => [
-				<FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
+				<FormTemplate treeData={treeData} reloadTable={reloadTable} userList={userList?.list || []} key="FormTemplate" />
 			]}
 			scroll={{ x: columnScrollX(columns) }}
 		/>

@@ -5,9 +5,21 @@
  */
 export type FormTemplateProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
+  userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void, // 刷新表格
   formData?: API.ORGANIZATION,
   triggerDom?: JSX.Element,
+  parent_id?: string
+}
+
+/**
+ * @description: FormTemplateItem Props
+ * @return {*}
+ * @author: Cyan
+ */
+ export type FormTemplateItemProps = {
+  treeData: API.ORGANIZATION[], // 组织树形数据
+  userList: API.USERMANAGEMENT[]; // 用户列表
   parent_id?: string
 }
 

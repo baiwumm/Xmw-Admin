@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 09:54:55
+ * @LastEditTime: 2022-12-01 16:54:11
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useIntl } from '@umijs/max'
 import { TreeSelect, Form } from 'antd' // antd 组件库
-import { ProFormTreeSelect, ProFormCascader, ProFormTextArea } from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormTreeSelect, ProFormCascader, ProFormTextArea, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
 
 import type { UserInformationProps } from '../utils/interface'
 import cascaderOptions from '@/utils/pca-code.json' // 省市区级联数据
@@ -21,20 +21,12 @@ const UserInformation: FC<UserInformationProps> = ({ roleData, jobsData, organiz
 	return (
 		<>
 			{/* 所属角色 */}
-			<ProFormTreeSelect
+			<ProFormSelect
 				name="role_id"
 				label={formatMessage({ id: 'pages.system.user-management.role_id' })}
 				colProps={{ span: 12 }}
-				fieldProps={{
-					treeData: roleData,
-					allowClear: true,
-					fieldNames: {
-						label: 'role_name',
-						value: 'role_id'
-					},
-					showCheckedStrategy: TreeSelect.SHOW_ALL,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' })
-				}}
+				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' })}
+				options={roleData.map(r => ({ label: r.role_name, value: r.role_id }))}
 				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' }) }]}
 			/>
 			{/* 所属组织 */}

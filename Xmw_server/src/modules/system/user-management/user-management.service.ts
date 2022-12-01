@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 13:53:55
+ * @LastEditTime: 2022-12-01 16:59:30
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -69,6 +69,7 @@ export class UserManagementService {
           attributes: [],
         },
       ],
+      raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,

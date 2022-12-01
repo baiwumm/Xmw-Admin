@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 15:12:21
+ * @LastEditTime: 2022-12-01 17:34:05
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -13,12 +13,13 @@ import {
 	ProFormText,
 	ProFormTextArea,
 	ProFormTreeSelect,
-	ProFormDigit
+	ProFormDigit,
+	ProFormSelect
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
 
-const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree }) => {
+const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree, userList }) => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
@@ -75,6 +76,15 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' })
 				}}
 				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' }) }]}
+			/>
+			{/* 负责人 */}
+			<ProFormSelect
+				name="leader"
+				label={formatMessage({ id: 'global.form.leader' })}
+				colProps={{ span: 24 }}
+				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' })}
+				options={userList.map(u => ({ label: u.cn_name, value: u.user_id }))}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' }) }]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit

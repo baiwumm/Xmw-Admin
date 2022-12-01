@@ -4,18 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 10:50:31
+ * @LastEditTime: 2022-12-01 17:54:45
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
-import type { ProColumns } from '@ant-design/pro-components'
+import type { ProColumns } from '@ant-design/pro-components';
 import { ANTD_LANGS } from '@/global/lang'; // 多语言配置项
 import { getAllLocalesLang } from '@/services/system/internationalization'; //获取国际化多语言层级对象
+import type { ResponseModel } from '@/global/interface';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { isNumber } from 'lodash'
+import { isNumber, get } from 'lodash';
 
 // 保存在 localstorage 的 key
-export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY'
+export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY';
 
 /**
  * @description: 获取国际化多语言层级对象
@@ -31,14 +32,14 @@ export const initLocalesLang = async (): Promise<Record<string, any>> => {
           // 初始化多语言配置
           addLocale(lang, data[lang], ANTD_LANGS[lang]);
         });
-        return data
+        return data;
       }
-      return {}
+      return {};
     })
     .catch((error) => {
       message.error(JSON.stringify(error));
     });
-  return {}
+  return {};
 };
 
 const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六进制数作为密钥
@@ -78,6 +79,16 @@ export const decryptionAesPsd = (password: string): string => {
  * @return {*}
  * @author: Cyan
  */
-export const columnScrollX = (columns: ProColumns[]): number => columns.reduce((acc, item) => {
-  return acc + (item.width && isNumber(item.width) ? item.width : 0)
-}, 0);
+export const columnScrollX = (columns: ProColumns[]): number =>
+  columns.reduce((acc, item) => {
+    return acc + (item.width && isNumber(item.width) ? item.width : 0);
+  }, 0);
+
+/**
+ * @description: 统一获取接口中的data
+ * @return {*}
+ * @author: Cyan
+ */
+export function formatResult<T>(response: ResponseModel<T>): T {
+  return get(response, 'data');
+}

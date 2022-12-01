@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 14:04:16
+ * @LastEditTime: 2022-12-01 18:26:04
  */
 
 // 引入第三方库
@@ -18,15 +18,13 @@ import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
 
 // 引入业务组件
-import { CACHE_KEY, encryptionAesPsd } from '@/utils'
+import { CACHE_KEY, encryptionAesPsd, formatResult } from '@/utils'
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
 import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.less'; // css 样式恩建
 import { Login } from '@/services/logic/login' // 登录相关接口
-import type { ResponseModel } from '@/global/interface'
-
 
 type LoginProps = {
   access_token: string
@@ -47,10 +45,7 @@ const LoginPage: FC = () => {
    * @author: Cyan
    */
   const { run: runLogin } = useRequest<LoginProps, LoginParams[]>(
-    async (params): Promise<LoginProps> => {
-      const formatResult = (res: ResponseModel<LoginProps>) => res.data;
-      return formatResult(await Login(params));
-    },
+    async (params) => formatResult<LoginProps>(await Login(params)),
     {
       manual: true,
       onSuccess: async (res: LoginProps) => {

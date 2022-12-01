@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:11:02
+ * @LastEditTime: 2022-12-01 18:19:47
  */
 import {
   PrimaryKey,
@@ -64,8 +64,8 @@ export class XmwOrganization
 
   //组织负责人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '组织负责人' })
-  leader?: string;
+  @Column({ type: DataType.UUID, allowNull: false, comment: '组织负责人' })
+  leader: string;
 
   //组织描述
   @Column({ type: DataType.STRING(200), allowNull: false, comment: '组织描述' })

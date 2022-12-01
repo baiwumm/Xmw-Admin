@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-21 10:59:21
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:01:14
+ * @LastEditTime: 2022-12-01 17:20:14
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { ResponseDto } from '@/dto/response.dto';
@@ -25,7 +25,7 @@ export class ResponseJobsDto extends ResponseDto {
         jobs_name: '研发工程师',
         org_id: '79581210-60b7-4c66-b6ae-14b013c3661e',
         parent_id: null,
-        leader: null,
+        leader: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
         describe: '研发工程师',
         founder: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
         founder_name: '谢明伟',

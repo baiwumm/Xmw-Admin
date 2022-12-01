@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:42:56
+ * @LastEditTime: 2022-12-01 18:14:54
  */
 // 引入第三方库
-import type { FC } from 'react';
 import { useRequest } from 'ahooks';
+import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useModel } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
@@ -18,11 +18,12 @@ import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
+import { getUserList } from '@/services/system/user-management' // 用户管理接口
 import { getJobsList, delJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatResult } from '@/utils'
 import FormTemplate from './FormTemplate'  // 表单组件
-import type { ResponseModel, ResData } from '@/global/interface'
+import type { ResData, PageResModel, PaginationProps } from '@/global/interface'
 import type { TableSearchProps } from '../utils/interface'
 
 const TableTemplate: FC = () => {
@@ -33,14 +34,14 @@ const TableTemplate: FC = () => {
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
 	});
-	const [orgTree, setOrgTree] = useState<API.ORGANIZATION[]>([])
 	// 获取组织树形数据
-	useRequest<ResponseModel<API.ORGANIZATION[]>, ResData[]>(getOrganizationList, {
-		onSuccess: res => {
-			if (res.code === 200) {
-				setOrgTree(res.data)
-			}
-		}
+	const { data: orgTree } = useRequest<API.ORGANIZATION[], ResData[]>(
+		async () => formatResult(await getOrganizationList())
+	);
+	// 获取用户列表
+	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
+		async (params) => formatResult(await getUserList(params)), {
+		defaultParams: [{ current: 1, pageSize: 9999 }]
 	});
 	// 获取表格实例
 	const tableRef = useRef<ActionType>();
@@ -54,13 +55,13 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
-	
- /**
-  * @description: 删除岗位数据
-  * @param {string} jobs_id
-  * @return {*}
-  * @author: Cyan
-  */	
+
+	/**
+	 * @description: 删除岗位数据
+	 * @param {string} jobs_id
+	 * @return {*}
+	 * @author: Cyan
+	 */
 	const handlerDelete = async (jobs_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
@@ -95,7 +96,8 @@ const TableTemplate: FC = () => {
 						treeData={treeData}
 						reloadTable={reloadTable}
 						parent_id={parent_id}
-						orgTree={orgTree}
+						orgTree={orgTree || []}
+						userList={userList?.list || []}
 						triggerDom={
 							<Button
 								type="text"
@@ -114,7 +116,8 @@ const TableTemplate: FC = () => {
 						treeData={treeData}
 						reloadTable={reloadTable}
 						formData={currentRecord}
-						orgTree={orgTree}
+						orgTree={orgTree || []}
+						userList={userList?.list || []}
 						triggerDom={
 							<Button
 								type="text"
@@ -261,7 +264,12 @@ const TableTemplate: FC = () => {
 			pagination={false}
 			// 工具栏
 			toolBarRender={() => [
-				<FormTemplate treeData={treeData} reloadTable={reloadTable} orgTree={orgTree} key="FormTemplate" />
+				<FormTemplate
+					treeData={treeData}
+					reloadTable={reloadTable}
+					orgTree={orgTree || []}
+					userList={userList?.list || []}
+					key="FormTemplate" />
 			]}
 			scroll={{ x: columnScrollX(columns) }}
 		/>

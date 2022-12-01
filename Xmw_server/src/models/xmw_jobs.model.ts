@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:11:12
+ * @LastEditTime: 2022-12-01 17:19:53
  */
 import {
   PrimaryKey,
@@ -55,8 +55,8 @@ export class XmwJobs
 
   //岗位负责人
   @IsUUID(4)
-  @Column({ type: DataType.UUID, comment: '岗位负责人' })
-  leader?: string;
+  @Column({ type: DataType.UUID, allowNull: false, comment: '岗位负责人' })
+  leader: string;
 
   //岗位描述
   @Column({ type: DataType.STRING(200), allowNull: false, comment: '岗位描述' })
