@@ -4,13 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-03 10:37:24
+ * @LastEditTime: 2022-12-01 15:22:25
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
+import { CACHE_KEY } from '@/utils' // 全局工具函数
+import type { AppLocalCacheModel } from '@/global/interface'
 /**
  * @description: 防抖函数统一处理异常错误
  * @param {*} debounce
@@ -60,8 +62,12 @@ export const errorConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
-      // const url = config?.url?.concat('?token = 123');
+      // 获取 localstorage key
+      const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
+      // 判断是否登录存在token，有就请求头携带token
+      if (appCache?.ACCESS_TOKEN && config?.headers) {
+        config.headers['Access-Token'] = appCache.ACCESS_TOKEN
+      }
       return { ...config };
     },
   ],

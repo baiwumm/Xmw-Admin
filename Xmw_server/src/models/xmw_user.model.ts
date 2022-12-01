@@ -16,8 +16,8 @@ import {
   IsIP,
   IsDate,
   ForeignKey,
-  BelongsTo,
   HasOne,
+  BelongsTo,
 } from 'sequelize-typescript';
 import type { UserAttributes } from '@/attributes/system';
 import { XmwRole } from '@/models/xmw_role.model';
@@ -173,7 +173,6 @@ export class XmwUser
 
   //创建人
   @IsUUID(4)
-  @ForeignKey(() => XmwUser)
   @Column({ type: DataType.UUID, allowNull: false, comment: '创建人' })
   founder: string;
 
@@ -202,15 +201,12 @@ export class XmwUser
   })
   login_last_time?: Date;
 
-  @HasOne(() => XmwJobs, { as: 'j' })
+  @BelongsTo(() => XmwJobs, { as: 'j' })
   jobsInfo: XmwJobs;
 
-  @HasOne(() => XmwOrganization, { as: 'o' })
+  @BelongsTo(() => XmwOrganization, { as: 'o' })
   orgInfo: XmwOrganization;
 
-  @HasOne(() => XmwRole, { as: 'r' })
+  @BelongsTo(() => XmwRole, { as: 'r' })
   roleInfo: XmwRole;
-
-  @BelongsTo(() => XmwUser, { as: 'u' })
-  userInfo: XmwUser;
 }

@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:20:54
+ * @LastEditTime: 2022-12-01 15:12:41
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
@@ -47,18 +46,6 @@ export class OrganizationService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 查询数据
     const sqlData = await this.organizationModel.findAll({
-      attributes: {
-        include: [[this.sequelize.col('u.cn_name'), 'founder_name']],
-      },
-      // 联表查询
-      include: [
-        {
-          model: XmwUser,
-          as: 'u',
-          attributes: [],
-        },
-      ],
-      raw: true,
       where,
       order: [
         ['sort', 'desc'],

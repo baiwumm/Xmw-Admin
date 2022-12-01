@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:24:11
+ * @LastEditTime: 2022-12-01 10:50:31
  */
 import { addLocale } from '@umijs/max';
 import { message } from 'antd';
@@ -14,27 +14,31 @@ import { getAllLocalesLang } from '@/services/system/internationalization'; //�
 import CryptoJS from 'crypto-js'; // AES/DES加密
 import { isNumber } from 'lodash'
 
+// 保存在 localstorage 的 key
+export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY'
+
 /**
  * @description: 获取国际化多语言层级对象
  * @return {*}
  * @author: Cyan
  */
-export const initLocalesLang = async (): Promise<void> => {
+export const initLocalesLang = async (): Promise<Record<string, any>> => {
   await getAllLocalesLang()
     .then((res) => {
       if (res.code === 200) {
         const data = res.data;
-        if (data) {
-          Object.keys(data).forEach((lang) => {
-            // 初始化多语言配置
-            addLocale(lang, data[lang], ANTD_LANGS[lang]);
-          });
-        }
+        Object.keys(data).forEach((lang) => {
+          // 初始化多语言配置
+          addLocale(lang, data[lang], ANTD_LANGS[lang]);
+        });
+        return data
       }
+      return {}
     })
     .catch((error) => {
-      message.error(error.message || error.msg);
+      message.error(JSON.stringify(error));
     });
+  return {}
 };
 
 const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六进制数作为密钥

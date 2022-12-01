@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:24:00
+ * @LastEditTime: 2022-12-01 13:53:55
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -49,20 +49,10 @@ export class UserManagementService {
     // 分页查询数据
     const { count, rows } = await this.userModel.findAndCountAll({
       attributes: {
-        include: [
-          'j.jobs_name',
-          'o.org_name',
-          'r.role_name',
-          [this.sequelize.col('u.cn_name'), 'founder_name'],
-        ],
+        include: ['j.jobs_name', 'o.org_name', 'r.role_name'],
       },
       // 联表查询
       include: [
-        {
-          model: XmwUser,
-          as: 'u',
-          attributes: [],
-        },
         {
           model: XmwJobs,
           as: 'j',
@@ -79,11 +69,11 @@ export class UserManagementService {
           attributes: [],
         },
       ],
-      raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
       order: [['sort', 'desc']], // 排序规则,
+      distinct: true,
     });
     return { list: rows, total: count };
   }

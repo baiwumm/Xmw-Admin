@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 17:57:30
+ * @LastEditTime: 2022-12-01 14:04:16
  */
 
 // 引入第三方库
-import type { FC, CSSProperties } from 'react';
+import { useLocalStorageState, useRequest } from 'ahooks';
+import type { FC } from 'react';
 import { useState } from 'react'; // react
 import { useIntl } from '@umijs/max'
 import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
@@ -17,56 +18,74 @@ import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
 
 // 引入业务组件
-import { encryptionAesPsd } from '@/utils'
+import { CACHE_KEY, encryptionAesPsd } from '@/utils'
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
 import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.less'; // css 样式恩建
 import { Login } from '@/services/logic/login' // 登录相关接口
+import type { ResponseModel } from '@/global/interface'
 
-const iconStyles: CSSProperties = {
-  marginInlineStart: '16px',
-  fontSize: '24px',
-  verticalAlign: 'middle',
-  cursor: 'pointer',
-};
+
+type LoginProps = {
+  access_token: string
+}
+
 const LoginPage: FC = () => {
   const { formatMessage } = useIntl();
   // 初始化状态
   const { initialState, setInitialState } = useModel('@@initialState');
+  // 获取 localstorage key
+  const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
+  // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>('account');
-  
+
+  /**
+   * @description: 用户登录接口
+   * @return {*}
+   * @author: Cyan
+   */
+  const { run: runLogin } = useRequest<LoginProps, LoginParams[]>(
+    async (params): Promise<LoginProps> => {
+      const formatResult = (res: ResponseModel<LoginProps>) => res.data;
+      return formatResult(await Login(params));
+    },
+    {
+      manual: true,
+      onSuccess: async (res: LoginProps) => {
+        const userInfo = await initialState?.fetchUserInfo?.();
+        if (userInfo) {
+          await setInitialState((s) => ({
+            ...s,
+            currentUser: userInfo,
+            access_token: res.access_token
+          }));
+          setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
+        }
+        setTimeout(() => {
+          const urlParams = new URL(window.location.href).searchParams;
+          // 路由跳转
+          history.push(urlParams.get('redirect') || '/');
+        }, 100)
+      }
+    }
+  )
+
   /**
    * @description: 登录表单提交
    * @param {LoginParams} values
    * @return {*}
    * @author: Cyan
-   */  
+   */
   const handleSubmit = async (values: LoginParams): Promise<void> => {
     try {
       // 如果是账号密码登录，密码加密提交
-      if(loginType === 'account' && values.password){
+      if (loginType === 'account' && values.password) {
         values.password = encryptionAesPsd(values.password)
       }
       // 调用登录接口
-      await Login({ ...values, type: loginType }).then(async (res) => {
-        if (res.code === 200) {
-          const userInfo = await initialState?.fetchUserInfo?.();
-          if (userInfo) {
-            await setInitialState((s) => ({
-              ...s,
-              currentUser: userInfo,
-              access_token:res.data.access_token
-            }));
-          }
-          setTimeout(() => {
-            const urlParams = new URL(window.location.href).searchParams;
-            // 路由跳转
-            history.push(urlParams.get('redirect') || '/');
-          }, 100)
-        }
-      });
+      runLogin({ ...values, type: loginType })
     } catch (error) {
       message.error(formatMessage({ id: 'pages.login.failure' }));
     }
@@ -113,7 +132,12 @@ const LoginPage: FC = () => {
             actions={
               <Space>
                 其他登录方式
-                <WechatOutlined style={{ color: '#02d10d', ...iconStyles }} />
+                <WechatOutlined style={{
+                  color: '#02d10d', marginInlineStart: '16px',
+                  fontSize: '24px',
+                  verticalAlign: 'middle',
+                  cursor: 'pointer',
+                }} />
               </Space>
             }
           >

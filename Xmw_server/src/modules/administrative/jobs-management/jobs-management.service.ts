@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:22:30
+ * @LastEditTime: 2022-12-01 15:13:14
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -12,7 +12,6 @@ import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { ResData, ResponseModel } from '@/global/interface'; // interface
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
@@ -44,18 +43,10 @@ export class JobsManagementService {
     // 查询数据
     const sqlData = await this.jobsModel.findAll({
       attributes: {
-        include: [
-          'o.org_name',
-          [this.sequelize.col('u.cn_name'), 'founder_name'],
-        ],
+        include: ['o.org_name'],
       },
       // 联表查询
       include: [
-        {
-          model: XmwUser,
-          as: 'u',
-          attributes: [],
-        },
         {
           model: XmwOrganization,
           as: 'o',

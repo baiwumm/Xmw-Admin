@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 18:08:19
+ * @LastEditTime: 2022-12-01 10:18:58
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -68,23 +68,23 @@ export class AuthService {
         // 将数据保存到session
         session.currentUserInfo = await this.userModel.findOne({
           attributes: {
-            include: ['jobs.jobs_name', 'org.org_name', 'role.role_name'],
+            include: ['j.jobs_name', 'o.org_name', 'r.role_name'],
           },
           // 联表查询
           include: [
             {
               model: XmwJobs,
-              as: 'jobs',
+              as: 'j',
               attributes: [],
             },
             {
               model: XmwOrganization,
-              as: 'org',
+              as: 'o',
               attributes: [],
             },
             {
               model: XmwRole,
-              as: 'role',
+              as: 'r',
               attributes: [],
             },
           ],

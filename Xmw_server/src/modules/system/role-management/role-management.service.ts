@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 13:45:47
+ * @LastEditTime: 2022-12-01 14:20:17
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -61,7 +61,8 @@ export class RoleManagementService {
     if (start_time && end_time)
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 分页查询数据
-    const { count, rows } = await this.roleModel.findAndCountAll({
+    const count = await this.roleModel.count();
+    const list = await this.roleModel.findAll({
       // 联表查询
       include: [
         {
@@ -70,7 +71,6 @@ export class RoleManagementService {
           attributes: ['role_id', 'menu_id'],
         },
       ],
-      // raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
@@ -79,7 +79,7 @@ export class RoleManagementService {
         ['created_time', 'desc'],
       ], // 排序规则,
     });
-    return { list: rows, total: count };
+    return { list, total: count };
   }
 
   /**

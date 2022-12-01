@@ -4,9 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:37:29
+ * @LastEditTime: 2022-12-01 14:02:50
  */
-
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 /**
  * @description: 动态对象属性
  * @return {*}
@@ -43,4 +43,28 @@ export type ResponseModel<T> = {
 export type PaginationProps = {
   current: number; // 当前页码
   pageSize: number; // 每页条数
+}
+
+/**
+ * @description: App.tsx 全局初始数据
+ * @return {*}
+ * @author: Cyan
+ */
+export type InitialStateModel = {
+  access_token?: string;
+  settings?: Partial<LayoutSettings>;
+  currentUser?: API.USERMANAGEMENT;
+  loading?: boolean;
+  fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
+  locales?: Record<string, any>
+}
+
+/**
+ * @description: 存储在 localstorage 的值
+ * @return {*}
+ * @author: Cyan
+ */
+export type AppLocalCacheModel = {
+  UMI_LAYOUT?: Partial<LayoutSettings>;
+  ACCESS_TOKEN?: string
 }
