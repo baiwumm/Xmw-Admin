@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-28 14:16:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 18:26:00
+ * @LastEditTime: 2022-12-02 10:10:37
  */
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule, Module } from '@nestjs/common';

@@ -4,23 +4,34 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 09:45:26
+ * @LastEditTime: 2022-12-02 10:38:38
  */
 import { Controller, Post, Body, Session, Get } from '@nestjs/common';
 import { omit } from 'lodash';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
 import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
-import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-import { LoginParamsDto } from './dto';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiHeader,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger'; // swagger 接口文档
+import { ResponseDto } from '@/dto/response.dto';
+import { LoginParamsDto, LoginResponseDto, UserInfoResponseDto } from './dto';
 import { responseMessage } from '@/utils';
 
+@ApiTags('用户登录模块')
+@ApiHeader({
+  name: 'Authorization',
+  required: true,
+  description: 'token令牌',
+})
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly redisCacheService: RedisCacheService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   /**
    * @description: 用户登录
@@ -28,6 +39,8 @@ export class AuthController {
    * @author: Cyan
    */
   @Post('/login')
+  @ApiOkResponse({ type: LoginResponseDto })
+  @ApiOperation({ summary: '用户登录' })
   async login(
     @Body() loginParams: LoginParamsDto,
     @IpAddress() clinetIp: string,
@@ -47,6 +60,8 @@ export class AuthController {
    * @author: Cyan
    */
   @Post('/logout')
+  @ApiOkResponse({ type: ResponseDto })
+  @ApiOperation({ summary: '退出登录' })
   async logout(
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
@@ -60,6 +75,8 @@ export class AuthController {
    * @author: Cyan
    */
   @Get('/user-info')
+  @ApiOkResponse({ type: UserInfoResponseDto })
+  @ApiOperation({ summary: '获取当前用户信息' })
   async getCurrentUserInfo(
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {

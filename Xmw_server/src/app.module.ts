@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 16:45:13
+ * @LastEditTime: 2022-12-02 10:15:01
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import App_globalConfig from './config/configuration'; // 全局配置
 import DatabaseConfig from './config/database'; // 数据库配置
+import RedisConfig from './config/redis'; // redis配置
 import { UserManagementModule } from '@/modules/system/user-management/user-management.module'; // 系统设置-用户管理
 import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
 import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
@@ -27,7 +28,7 @@ import { RedisCacheModule } from '@/modules/redis-cache/redis-cache.module'; // 
     ConfigModule.forRoot({
       envFilePath: '.development.env', // 设置 .env 文件路径
       isGlobal: true,
-      load: [App_globalConfig, DatabaseConfig],
+      load: [App_globalConfig, DatabaseConfig, RedisConfig],
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
