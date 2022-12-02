@@ -4,28 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-11-28 14:16:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 10:10:37
+ * @LastEditTime: 2022-12-02 15:17:41
  */
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CacheModule, Module } from '@nestjs/common';
-import * as redisStore from 'cache-manager-redis-store';
+import { Module } from '@nestjs/common';
 import { RedisCacheService } from './redis-cache.service'; // RedisCache Service
 import { RedisCacheController } from './redis-cache.controller'; // RedisCache Controller
 
 @Module({
-  imports: [
-    CacheModule.registerAsync({
-      isGlobal: true,
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
-        return {
-          store: redisStore,
-          ...configService.get('redis'),
-        };
-      },
-    }),
-  ],
+  imports: [],
   // 由 Nest 注入器实例化的提供者，并且可以至少在整个模块中共享
   controllers: [RedisCacheController],
   providers: [RedisCacheService],

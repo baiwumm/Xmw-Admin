@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 14:04:20
+ * @LastEditTime: 2022-12-02 16:40:31
  */
 
 // 引入第三方库
@@ -15,11 +15,10 @@ import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
 import { getUserInfo } from '@/services/logic/login' // 登录相关接口
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
-import { CACHE_KEY, initLocalesLang } from '@/utils' // 全局工具函数
+import { CACHE_KEY, initLocalesLang,routerConfig } from '@/utils' // 全局工具函数
 import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
 
-const loginPath = '/user/login';
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -36,7 +35,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
         return result.data
       }
     } catch (error) {
-      history.push(loginPath);
+      history.push(routerConfig.LOGIN);
     }
     return undefined;
   };
@@ -47,7 +46,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
     locales
   }
   // 如果不是登录页面，执行
-  if (window.location.pathname !== loginPath) {
+  if (window.location.pathname !== routerConfig.LOGIN) {
     const currentUser = await fetchUserInfo();
     return { ...initialState, currentUser };
   }

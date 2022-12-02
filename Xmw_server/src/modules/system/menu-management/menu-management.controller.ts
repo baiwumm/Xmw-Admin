@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 09:54:31
+ * @LastEditTime: 2022-12-02 16:32:25
  */
 import {
   Controller,
@@ -16,7 +16,9 @@ import {
   Body,
   Param,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { MenuManagementService } from './menu-management.service'; // MenuManagement Service
 import {
   ApiBearerAuth,
@@ -52,6 +54,7 @@ export class MenuManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseMenuManagementDto })
   @ApiOperation({ summary: '获取菜单管理列表' })
@@ -67,6 +70,7 @@ export class MenuManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateMenuManagementDto })
   @ApiOperation({ summary: '创建菜单数据' })
@@ -86,6 +90,7 @@ export class MenuManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:menu_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新菜单数据' })
@@ -105,6 +110,7 @@ export class MenuManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:menu_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除菜单数据' })

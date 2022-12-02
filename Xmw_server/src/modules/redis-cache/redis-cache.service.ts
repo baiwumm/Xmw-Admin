@@ -4,28 +4,36 @@
  * @Author: Cyan
  * @Date: 2022-11-28 14:15:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 14:31:52
+ * @LastEditTime: 2022-12-02 15:27:44
  */
-import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
-import { Cache } from 'cache-manager';
+import { Injectable } from '@nestjs/common';
+import RedisC, { Redis } from 'ioredis';
+import RedisConfig from '@/config/redis'; // redis配置
 
 @Injectable()
 export class RedisCacheService {
-  constructor(
-    @Inject(CACHE_MANAGER)
-    private cacheManager: Cache,
-  ) {}
+  redisClient: Redis;
+
+  // 初始化 redis 实例
+  constructor() {
+    this.redisClient = new RedisC(RedisConfig());
+  }
 
   /**
    * @description: 设置 redis 缓存
    * @param {string} key
    * @param {string} value
-   * @param {number} ttl: 过期时间
+   * @param {number} seconds: 过期时间
    * @return {*}
    * @author: Cyan
    */
-  async cacheSet(key: string, value: string, ttl?: number): Promise<void> {
-    await this.cacheManager.set(key, value, ttl);
+  async cacheSet(key: string, value: string, seconds?: number): Promise<void> {
+    value = JSON.stringify(value);
+    if (!seconds) {
+      await this.redisClient.set(key, value);
+    } else {
+      await this.redisClient.set(key, value, 'EX', seconds);
+    }
   }
 
   /**
@@ -35,7 +43,7 @@ export class RedisCacheService {
    * @author: Cyan
    */
   async cacheGet(key: string): Promise<any> {
-    return this.cacheManager.get(key);
+    return this.redisClient.get(key);
   }
 
   /**
@@ -45,7 +53,7 @@ export class RedisCacheService {
    * @author: Cyan
    */
   async cacheDel(key: string): Promise<void> {
-    await this.cacheManager.del(key);
+    await this.redisClient.del(key);
   }
 
   /**
@@ -53,7 +61,7 @@ export class RedisCacheService {
    * @return {*}
    * @author: Cyan
    */
-  async cacheReset(): Promise<void> {
-    await this.cacheManager.reset();
+  async cacheFlushall(): Promise<void> {
+    await this.redisClient.flushall();
   }
 }

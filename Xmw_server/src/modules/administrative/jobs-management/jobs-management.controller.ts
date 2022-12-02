@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:03:37
+ * @LastEditTime: 2022-12-02 16:28:20
  */
 import {
   Controller,
@@ -16,7 +16,9 @@ import {
   Body,
   Param,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 import {
   ApiBearerAuth,
@@ -52,6 +54,7 @@ export class JobsManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseJobsDto })
   @ApiOperation({ summary: '获取岗位管理列表' })
@@ -67,6 +70,7 @@ export class JobsManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateJobsDto })
   @ApiOperation({ summary: '创建岗位数据' })
@@ -86,6 +90,7 @@ export class JobsManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:jobs_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新岗位数据' })
@@ -105,6 +110,7 @@ export class JobsManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:jobs_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除岗位数据' })

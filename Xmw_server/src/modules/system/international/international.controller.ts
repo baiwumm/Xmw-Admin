@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 10:53:47
+ * @LastEditTime: 2022-12-02 16:32:57
  */
 import {
   Controller,
@@ -16,7 +16,9 @@ import {
   Body,
   Param,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { InternationalService } from './international.service'; // International Service
 import {
   ApiBearerAuth,
@@ -65,6 +67,7 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseInternationalDto })
   @ApiOperation({ summary: '获取国际化列表' })
@@ -82,6 +85,7 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateInternationalDto })
   @ApiOperation({ summary: '创建国际化数据' })
@@ -101,6 +105,7 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新国际化数据' })
@@ -120,6 +125,7 @@ export class InternationalController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除国际化数据' })

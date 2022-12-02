@@ -3,14 +3,13 @@ import { LogoutOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
 import { Avatar, Menu, Spin } from 'antd';
 import type { ItemType } from 'antd/lib/menu/hooks/useItems';
-import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import type { FC } from 'react';
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
 import type { ResponseModel, AppLocalCacheModel } from '@/global/interface'
-import { CACHE_KEY } from '@/utils'
+import { CACHE_KEY,logoutToLogin } from '@/utils'
 
 type LogoutProps = ResponseModel<Record<string, any>>
 
@@ -27,22 +26,10 @@ const AvatarDropdown: FC = () => {
     manual: true,
     onSuccess: async (res: LogoutProps) => {
       if (res.code === 200) {
-        const { search, pathname } = window.location;
-        const urlParams = new URL(window.location.href).searchParams;
-        /** 此方法会跳转到 redirect 参数所在的位置 */
-        const redirect = urlParams.get('redirect');
-        // 清空用户信息和token
         setInitialState((s) => ({ ...s, currentUser: undefined, access_token: undefined }));
         setappCache({ ...appCache, ACCESS_TOKEN: undefined })
-        // 重定向地址
-        if (window.location.pathname !== '/user/login' && !redirect) {
-          history.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: pathname + search,
-            }),
-          });
-        }
+        // 退出登录返回登录页
+        logoutToLogin()
       }
     }
   }

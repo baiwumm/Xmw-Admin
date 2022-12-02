@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 09:35:08
+ * @LastEditTime: 2022-12-02 16:31:08
  */
 import {
   Controller,
@@ -17,7 +17,9 @@ import {
   Delete,
   Patch,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserManagementService } from './user-management.service'; // UserManagement Service
 import {
   ApiBearerAuth,
@@ -55,6 +57,7 @@ export class UserManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseUserManagementDto })
   @ApiOperation({ summary: '获取用户管理列表' })
@@ -70,6 +73,7 @@ export class UserManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateUserManagementDto })
   @ApiOperation({ summary: '创建用户数据' })
@@ -89,6 +93,7 @@ export class UserManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:user_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新用户数据' })
@@ -108,6 +113,7 @@ export class UserManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:user_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除用户数据' })
@@ -123,6 +129,7 @@ export class UserManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:user_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新用户状态' })

@@ -4,9 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 10:38:38
+ * @LastEditTime: 2022-12-02 16:29:26
  */
-import { Controller, Post, Body, Session, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Session,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { omit } from 'lodash';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
@@ -59,6 +67,7 @@ export class AuthController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post('/logout')
   @ApiOkResponse({ type: ResponseDto })
   @ApiOperation({ summary: '退出登录' })
@@ -74,6 +83,7 @@ export class AuthController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get('/user-info')
   @ApiOkResponse({ type: UserInfoResponseDto })
   @ApiOperation({ summary: '获取当前用户信息' })

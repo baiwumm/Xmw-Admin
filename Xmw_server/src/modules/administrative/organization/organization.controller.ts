@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:20:56
+ * @LastEditTime: 2022-12-02 16:27:17
  */
 import {
   Controller,
@@ -16,7 +16,9 @@ import {
   Body,
   Param,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { OrganizationService } from './organization.service'; // Organization Service
 import {
   ApiBearerAuth,
@@ -52,6 +54,7 @@ export class OrganizationController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseOrganizationDto })
   @ApiOperation({ summary: '获取组织管理列表' })
@@ -69,6 +72,7 @@ export class OrganizationController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateOrganizationDto })
   @ApiOperation({ summary: '创建组织数据' })
@@ -88,6 +92,7 @@ export class OrganizationController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:org_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新组织数据' })
@@ -107,6 +112,7 @@ export class OrganizationController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:org_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除组织数据' })

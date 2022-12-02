@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-11-17 17:49:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 14:27:42
+ * @LastEditTime: 2022-12-02 16:30:41
  */
-import { HttpService } from '@nestjs/axios';
 import {
   Controller,
   Post,
   UploadedFile,
   UseInterceptors,
-  Res,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ResponseModel } from '@/global/interface'; // TS类型注解
 import * as OSS from 'ali-oss'; // oss sdk
@@ -42,7 +42,7 @@ import { responseMessage } from '@/utils';
 @Controller('upload')
 export class FilesController {
   ossClient: OSS;
-  constructor(private readonly httpService: HttpService) {
+  constructor() {
     // 阿里云 bucket配置
     this.ossClient = new OSS(App_configuration().oss);
   }
@@ -52,6 +52,7 @@ export class FilesController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file'))
   @Post('single-file')
   @ApiConsumes('multipart/form-data')
@@ -73,6 +74,7 @@ export class FilesController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post('single-file-oss')
   @UseInterceptors(
     FileInterceptor('file', {

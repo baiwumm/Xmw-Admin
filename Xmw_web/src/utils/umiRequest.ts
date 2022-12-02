@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:22:25
+ * @LastEditTime: 2022-12-02 16:26:22
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 import type { RequestConfig } from '@umijs/max';
-import { message } from 'antd'; // antd 组件库
+import { message, Modal } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
-import { CACHE_KEY } from '@/utils' // 全局工具函数
+import { CACHE_KEY, logoutToLogin } from '@/utils' // 全局工具函数
 import type { AppLocalCacheModel } from '@/global/interface'
 /**
  * @description: 防抖函数统一处理异常错误
@@ -38,15 +38,32 @@ export const errorConfig: RequestConfig = {
      * @return {*}
      * @author: Cyan
      */
-    errorHandler: (error: any, opts: any) => {
+    errorHandler: (error: any, opts: any): void => {
       // 获取报错的响应和请求信息
       const { response, resquest } = error;
       // 配置 skipErrorHandler 会跳过默认的错误处理，用于项目中部分特殊的接口
       if (opts?.skipErrorHandler) throw error;
+      // Axios 的错误
+      // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
       if (response) {
-        // Axios 的错误
-        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        authError(response.data.msg || '服务器内部发生错误！');
+        const { data } = response
+        switch (data.code) {
+          // token令牌校验，如果出现这个返回码则退出登录到登录页面
+          case 401:
+            // 这里加一个防抖
+            Modal.success({
+              title: '登录已失效',
+              content: data.msg,
+              onOk: () => {
+                // 退出登录返回到登录页
+                logoutToLogin()
+                Modal.destroyAll();
+              }
+            });
+            break;
+          default:
+            authError(response.data.msg || '服务器内部发生错误！');
+        }
       } else if (resquest) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
@@ -66,7 +83,7 @@ export const errorConfig: RequestConfig = {
       const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
       // 判断是否登录存在token，有就请求头携带token
       if (appCache?.ACCESS_TOKEN && config?.headers) {
-        config.headers['Access-Token'] = appCache.ACCESS_TOKEN
+        config.headers.Authorization = `Bearer ${appCache.ACCESS_TOKEN}`
       }
       return { ...config };
     },

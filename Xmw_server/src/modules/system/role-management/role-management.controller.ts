@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:28:27
+ * @LastEditTime: 2022-12-02 16:31:52
  */
 import {
   Controller,
@@ -17,7 +17,9 @@ import {
   Param,
   Patch,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { RoleManagementService } from './role-management.service'; // RoleManagement Service
 import {
   ApiBearerAuth,
@@ -55,6 +57,7 @@ export class RoleManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseRoleManagementDto })
   @ApiOperation({ summary: '获取角色管理列表' })
@@ -70,6 +73,7 @@ export class RoleManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateRoleManagementDto })
   @ApiOperation({ summary: '创建角色数据' })
@@ -89,6 +93,7 @@ export class RoleManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Put('/:role_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色数据' })
@@ -108,6 +113,7 @@ export class RoleManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:role_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除角色数据' })
@@ -123,6 +129,7 @@ export class RoleManagementController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:role_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色状态' })

@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 18:26:04
+ * @LastEditTime: 2022-12-02 16:34:51
  */
 
 // 引入第三方库
-import { useLocalStorageState, useRequest } from 'ahooks';
+import { useLocalStorageState, useRequest, useMount } from 'ahooks';
 import type { FC } from 'react';
 import { useState } from 'react'; // react
 import { useIntl } from '@umijs/max'
@@ -49,6 +49,9 @@ const LoginPage: FC = () => {
     {
       manual: true,
       onSuccess: async (res: LoginProps) => {
+        // 将 token 保存到localstorage
+        setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
+        // 获取用户信息
         const userInfo = await initialState?.fetchUserInfo?.();
         if (userInfo) {
           await setInitialState((s) => ({
@@ -56,7 +59,6 @@ const LoginPage: FC = () => {
             currentUser: userInfo,
             access_token: res.access_token
           }));
-          setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
         }
         setTimeout(() => {
           const urlParams = new URL(window.location.href).searchParams;
@@ -103,6 +105,12 @@ const LoginPage: FC = () => {
       children: <Mobile />,
     }
   ]
+
+  // 初次渲染时清空token和用户信息，这里是为了避免token失效跳转到登录页
+  useMount(() => {
+    setInitialState((s) => ({ ...s, currentUser: undefined, access_token: undefined }));
+    setappCache({ ...appCache, ACCESS_TOKEN: undefined })
+  })
 
   return (
     <div className={styles.container}>

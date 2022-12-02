@@ -39,18 +39,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     );
     // token 已过期
     if (!cacheToken) {
-      throw new UnauthorizedException('token令牌已过期');
+      throw new UnauthorizedException('token令牌已过期，请重新登录！');
     }
     // token 校验
-    if (cacheToken !== JSON.stringify(originToken)) {
-      throw new UnauthorizedException('token令牌非法');
+    if (JSON.parse(cacheToken) !== originToken) {
+      throw new UnauthorizedException('token令牌非法，请重新登录！');
     }
-    // token认证通过后，重新设置过期时间
-    await this.redisCacheService.cacheSet(
-      `${payload.user_id}-${payload.user_name}`,
-      originToken,
-      toNumber(process.env.REDIS_EXPIRESIN),
-    );
     return payload;
   }
 }

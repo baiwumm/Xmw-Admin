@@ -4,11 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 17:54:45
+ * @LastEditTime: 2022-12-02 16:41:33
  */
-import { addLocale } from '@umijs/max';
+import { addLocale, history } from '@umijs/max';
 import { message } from 'antd';
 import type { ProColumns } from '@ant-design/pro-components';
+import { stringify } from 'querystring';
 import { ANTD_LANGS } from '@/global/lang'; // 多语言配置项
 import { getAllLocalesLang } from '@/services/system/internationalization'; //获取国际化多语言层级对象
 import type { ResponseModel } from '@/global/interface';
@@ -17,6 +18,11 @@ import { isNumber, get } from 'lodash';
 
 // 保存在 localstorage 的 key
 export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY';
+
+// 路由统一配置
+export const routerConfig = {
+  LOGIN: '/user/login', // 登录页
+}
 
 /**
  * @description: 获取国际化多语言层级对象
@@ -91,4 +97,25 @@ export const columnScrollX = (columns: ProColumns[]): number =>
  */
 export function formatResult<T>(response: ResponseModel<T>): T {
   return get(response, 'data');
+}
+
+/**
+ * @description: 退出登录返回到登录页
+ * @return {*}
+ * @author: Cyan
+ */
+export const logoutToLogin = (): void => {
+  const { search, pathname } = window.location;
+  const urlParams = new URL(window.location.href).searchParams;
+  /** 此方法会跳转到 redirect 参数所在的位置 */
+  const redirect = urlParams.get('redirect');
+  // 重定向地址
+  if (window.location.pathname !== routerConfig.LOGIN && !redirect) {
+    history.replace({
+      pathname: routerConfig.LOGIN,
+      search: stringify({
+        redirect: pathname + search,
+      }),
+    });
+  }
 }

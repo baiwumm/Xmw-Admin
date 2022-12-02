@@ -4,12 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 10:18:58
+ * @LastEditTime: 2022-12-02 15:59:26
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import type { WhereOptions } from 'sequelize/types';
+import RedisConfig from '@/config/redis'; // redis配置
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
@@ -18,7 +19,6 @@ import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; /
 import { LoginParamsDto } from './dto';
 import { ResponseModel } from '@/global/interface'; // interface
 import { responseMessage } from '@/utils';
-import { toNumber } from 'lodash';
 
 type responseResult = ResponseModel<Record<string, any>>;
 
@@ -52,7 +52,7 @@ export class AuthService {
         // 生成 token
         const token = this.jwtService.sign({
           user_name: userInfo.user_name,
-          user_id: userInfo.user_name,
+          user_id: userInfo.user_id,
         });
         // 登录成功后执行当前用户的更新操作
         const where: WhereOptions = { user_id: userInfo.user_id };
@@ -95,9 +95,13 @@ export class AuthService {
         await this.redisCacheService.cacheSet(
           `${userInfo.user_id}-${userInfo.user_name}`,
           token,
-          toNumber(process.env.REDIS_EXPIRESIN),
+          RedisConfig().expiresin,
         );
-        return { data: { access_token: token } };
+        return {
+          data: {
+            access_token: token,
+          },
+        };
       // 其它气矿直接返回结果
       default:
         return authResult;
