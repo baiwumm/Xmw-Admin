@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:47:14
+ * @LastEditTime: 2022-12-05 11:05:35
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -69,18 +69,6 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
                 label={formatMessage({ id: 'pages.system.menu-management.icon' })}
                 placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.icon' })}
                 tooltip={formatMessage({ id: 'pages.system.menu-management.icon.tooltip' })}
-                fieldProps={{
-                    showCount: true,
-                    maxLength: 50
-                }}
-            />
-            <ProFormText
-                name="access"
-                colProps={{ span: 12 }}
-                label={formatMessage({ id: 'pages.system.menu-management.access' })}
-                initialValue={'normalRouteFilter'}
-                placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.menu-management.access' })}
-                tooltip={formatMessage({ id: 'pages.system.menu-management.access.tooltip' })}
                 fieldProps={{
                     showCount: true,
                     maxLength: 50

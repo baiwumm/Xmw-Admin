@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:34:51
+ * @LastEditTime: 2022-12-05 13:44:25
  */
 
 // 引入第三方库
@@ -53,13 +53,18 @@ const LoginPage: FC = () => {
         setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
         // 获取用户信息
         const userInfo = await initialState?.fetchUserInfo?.();
+        // 获取用户权限菜单
+        const permissionInfo = await initialState?.fetchPermissionMenu?.();
+        // 根据返回信息合并对象到 initialState
+        const mergeObj = { access_token: res.access_token }
         if (userInfo) {
-          await setInitialState((s) => ({
-            ...s,
-            currentUser: userInfo,
-            access_token: res.access_token
-          }));
+          Object.assign(mergeObj, { currentUser: userInfo })
         }
+        if (permissionInfo) {
+          const { permissions, routes } = permissionInfo
+          Object.assign(mergeObj, { permissions, routes })
+        }
+        await setInitialState((s) => ({ ...s, ...mergeObj }));
         setTimeout(() => {
           const urlParams = new URL(window.location.href).searchParams;
           // 路由跳转

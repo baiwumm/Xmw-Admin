@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 09:58:03
+ * @LastEditTime: 2022-12-05 11:02:15
  */
 import {
   PrimaryKey,
@@ -98,10 +98,6 @@ export class XmwMenu
   @Column({ type: DataType.STRING(100), comment: '菜单标识(页面按钮权限控制)' })
   permission?: string;
 
-  //路由和菜单的权限控制
-  @Column({ type: DataType.STRING(50), comment: '路由和菜单的权限控制' })
-  access?: string;
-
   //是否显示layout布局
   @IsIn({
     args: [['side', 'top', 'mix']],
@@ -139,43 +135,103 @@ export class XmwMenu
   headerTheme?: string;
 
   //是否隐藏子路由
-  @Column({ type: DataType.INTEGER, comment: '是否隐藏子路由' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '是否隐藏子路由',
+    get() {
+      return !!this.getDataValue('hideChildrenInMenu');
+    },
+  })
   hideChildrenInMenu: number;
 
   //是否隐藏菜单，包括子路由
-  @Column({ type: DataType.INTEGER, comment: '是否隐藏菜单，包括子路由' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '是否隐藏菜单，包括子路由',
+    get() {
+      return !!this.getDataValue('hideInMenu');
+    },
+  })
   hideInMenu: number;
 
   //是否在面包屑中隐藏
-  @Column({ type: DataType.INTEGER, comment: '是否在面包屑中隐藏' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '是否在面包屑中隐藏',
+    get() {
+      return !!this.getDataValue('hideInBreadcrumb');
+    },
+  })
   hideInBreadcrumb: number;
 
   //是否显示顶栏
-  @Column({ type: DataType.INTEGER, comment: '是否显示顶栏' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '是否显示顶栏',
+    get() {
+      return !!this.getDataValue('headerRender');
+    },
+  })
   headerRender: number;
 
   //是否显示页脚
-  @Column({ type: DataType.INTEGER, comment: '是否显示页脚' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '是否显示页脚',
+    get() {
+      return !!this.getDataValue('footerRender');
+    },
+  })
   footerRender: number;
 
   //当前路由是否展示菜单
-  @Column({ type: DataType.INTEGER, comment: '当前路由是否展示菜单' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '当前路由是否展示菜单',
+    get() {
+      return !!this.getDataValue('menuHeaderRender');
+    },
+  })
   menuRender: number;
 
   //当前路由是否展示菜单顶栏
-  @Column({ type: DataType.INTEGER, comment: '当前路由是否展示菜单顶栏' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '当前路由是否展示菜单顶栏',
+    get() {
+      return !!this.getDataValue('menuHeaderRender');
+    },
+  })
   menuHeaderRender: number;
 
   //子项往上提，只是不展示父菜单
-  @Column({ type: DataType.INTEGER, comment: '子项往上提，只是不展示父菜单' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '子项往上提，只是不展示父菜单',
+    get() {
+      return !!this.getDataValue('flatMenu');
+    },
+  })
   flatMenu: number;
 
   //固定顶栏
-  @Column({ type: DataType.INTEGER, comment: '固定顶栏' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '固定顶栏',
+    get() {
+      return !!this.getDataValue('fixedHeader');
+    },
+  })
   fixedHeader: number;
 
   //固定菜单
-  @Column({ type: DataType.INTEGER, comment: '固定菜单' })
+  @Column({
+    type: DataType.INTEGER,
+    comment: '固定菜单',
+    get() {
+      return !!this.getDataValue('fixSiderbar');
+    },
+  })
   fixSiderbar: number;
 
   //创建人

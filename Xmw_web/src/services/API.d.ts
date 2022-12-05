@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:46:30
+ * @LastEditTime: 2022-12-05 11:03:23
  */
 declare namespace API {
   /**
@@ -64,7 +64,6 @@ declare namespace API {
     parent_id?: string; // 父级id
     target?: string; // 当path是一个url，点击新窗口打开
     permission?: string; // 菜单标识(页面按钮权限控制)
-    access?: string; // 路由和菜单的权限控制
     layout?: string; // 是否显示layout布局
     navTheme?: string; // 导航菜单的主题
     headerTheme?: string; // 顶部导航的主题，mix 模式生效

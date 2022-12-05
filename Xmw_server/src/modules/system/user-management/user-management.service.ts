@@ -4,12 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 16:59:30
+ * @LastEditTime: 2022-12-05 10:12:04
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model';
@@ -25,7 +24,6 @@ export class UserManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
-    private sequelize: Sequelize,
   ) {}
 
   /**

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:28:00
+ * @LastEditTime: 2022-12-05 11:04:12
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -238,22 +238,6 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 250,
 			render: text => <Tag color="volcano">{text}</Tag>
-		},
-		/* 权限控制 */
-		{
-			title: (
-				<>
-					{formatMessage({ id: 'pages.system.menu-management.access' })}
-					<Tooltip placement="top" title={formatMessage({ id: 'pages.system.menu-management.access.tooltip' })}>
-						<InfoCircleOutlined style={{ marginInlineStart: 10 }} />
-					</Tooltip>
-				</>
-			),
-			dataIndex: 'access',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 160,
-			render: text => <Tag color="geekblue">{text}</Tag>
 		},
 		/* 状态 */
 		{

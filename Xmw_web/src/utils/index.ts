@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:41:33
+ * @LastEditTime: 2022-12-05 15:24:21
  */
 import { addLocale, history } from '@umijs/max';
 import { message } from 'antd';
@@ -15,14 +15,10 @@ import { getAllLocalesLang } from '@/services/system/internationalization'; //�
 import type { ResponseModel } from '@/global/interface';
 import CryptoJS from 'crypto-js'; // AES/DES加密
 import { isNumber, get } from 'lodash';
+import routerConfig from '@/utils/routerConfig' // 路由配置
 
 // 保存在 localstorage 的 key
 export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY';
-
-// 路由统一配置
-export const routerConfig = {
-  LOGIN: '/user/login', // 登录页
-}
 
 /**
  * @description: 获取国际化多语言层级对象

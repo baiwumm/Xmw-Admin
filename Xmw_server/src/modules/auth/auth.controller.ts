@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:29:26
+ * @LastEditTime: 2022-12-05 10:27:43
  */
 import {
   Controller,
@@ -91,5 +91,19 @@ export class AuthController {
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
     return responseMessage(omit(session.currentUserInfo, 'password'));
+  }
+
+  /**
+   * @description: 获取用户权限菜单
+   * @return {*}
+   * @author: Cyan
+   */
+  @Get('/permission-menu')
+  @ApiOperation({ summary: '获取用户权限菜单' })
+  async getPermissionMenu(
+    @Session() session: Record<string, any>,
+  ): Promise<ResponseModel<ResData>> {
+    const response = await this.authService.getPermissionMenu(session);
+    return response;
   }
 }

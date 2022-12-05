@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:40:59
+ * @LastEditTime: 2022-12-05 15:24:12
  */
 // 引入第三方库
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
@@ -16,7 +16,8 @@ import { last, keys } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 // 引入业务组件间
-import { CACHE_KEY,routerConfig } from '@/utils' // 全局工具函数
+import { CACHE_KEY } from '@/utils' // 全局工具函数
+import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
 import type { AppLocalCacheModel } from '@/global/interface'

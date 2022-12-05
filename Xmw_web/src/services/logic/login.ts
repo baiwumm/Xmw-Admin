@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-11-29 16:38:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:56:07
+ * @LastEditTime: 2022-12-05 11:16:18
  */
 import { request } from '@umijs/max';
-import type { ResponseModel } from '@/global/interface';
+import type { ResponseModel, PermissionModel } from '@/global/interface';
 import type { LoginParams } from '@/pages/User/Login/utils/indexface'
 
 /**
@@ -29,7 +29,7 @@ export async function Login(options?: LoginParams): Promise<ResponseModel<{ acce
  * @return {*}
  * @author: Cyan
  */
- export async function Logout(): Promise<ResponseModel<Record<string,any>>> {
+export async function Logout(): Promise<ResponseModel<Record<string, any>>> {
   return request('/api/auth/logout', {
     method: 'POST',
   });
@@ -42,6 +42,17 @@ export async function Login(options?: LoginParams): Promise<ResponseModel<{ acce
  */
 export async function getUserInfo(): Promise<ResponseModel<API.USERMANAGEMENT>> {
   return request('/api/auth/user-info', {
+    method: 'GET',
+  });
+}
+
+/**
+ * @description: 获取当前用户权限菜单
+ * @return {*}
+ * @author: Cyan
+ */
+export async function getPermissionMenu(): Promise<ResponseModel<PermissionModel>> {
+  return request('/api/auth/permission-menu', {
     method: 'GET',
   });
 }

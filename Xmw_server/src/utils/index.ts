@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-16 10:50:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 10:55:41
+ * @LastEditTime: 2022-12-05 10:08:27
  */
 import * as fs from 'fs';
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 import { ResponseModel } from '@/global/interface';
-import { RES_CODE } from '@/global/enum';
+import { RES_MSG, RES_CODE } from '@/global/enum';
 
 /**
  * @description: 统一返回体
@@ -18,8 +18,8 @@ import { RES_CODE } from '@/global/enum';
  */
 export const responseMessage = (
   data = {},
-  msg: string = RES_CODE.SUCCESS,
-  code = 200,
+  msg: string = RES_MSG.SUCCESS,
+  code: number = RES_CODE.SUCCESS,
 ): ResponseModel<any> => {
   return { data, msg, code };
 };

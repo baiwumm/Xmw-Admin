@@ -1,9 +1,12 @@
 /**
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
-export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
-  const { currentUser } = initialState ?? {};
+ import type { InitialStateModel } from '@/global/interface'
+export default function access(initialState: InitialStateModel | undefined) {
+  // 获取按钮权限集合
+  const { permissions } = initialState ?? {};
   return {
-    canAdmin: currentUser && currentUser.access === 'admin',
+    // 判断是否有操作权限
+    operationPermission: (data: string) => permissions?.includes(data),
   };
 }

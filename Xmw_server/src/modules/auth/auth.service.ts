@@ -4,13 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 15:59:26
+ * @LastEditTime: 2022-12-05 13:56:56
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import RedisConfig from '@/config/redis'; // redis配置
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
@@ -18,7 +21,8 @@ import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import { LoginParamsDto } from './dto';
 import { ResponseModel } from '@/global/interface'; // interface
-import { responseMessage } from '@/utils';
+import { initializeTree, responseMessage } from '@/utils';
+import { filter } from 'lodash';
 
 type responseResult = ResponseModel<Record<string, any>>;
 
@@ -28,8 +32,11 @@ export class AuthService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
+    @InjectModel(XmwMenu)
+    private readonly menuModel: typeof XmwMenu,
     private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
+    private sequelize: Sequelize,
   ) {}
 
   /**
@@ -167,5 +174,38 @@ export class AuthService {
       },
     );
     return responseMessage({});
+  }
+
+  /**
+   * @description: 获取用户权限菜单
+   * @return {*}
+   * @author: Cyan
+   */
+  async getPermissionMenu(
+    session: Record<string, any>,
+  ): Promise<responseResult> {
+    // 获取当前用户 id
+    const {
+      currentUserInfo: { user_id },
+    } = session;
+    // 查询权限菜单
+    const sqlData = await this.menuModel.findAll({
+      where: {
+        menu_id: {
+          [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
+            where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
+        },
+      },
+    });
+    // 获取按钮权限集合
+    const permissions = sqlData.map((s) => s.permission);
+    // 将数据转成树形结构
+    const routes = initializeTree(
+      filter(sqlData, (s: XmwMenu) => s.menu_type !== 'button'),
+      'menu_id',
+      'parent_id',
+      'routes',
+    );
+    return responseMessage({ routes, permissions });
   }
 }

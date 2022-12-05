@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:40:31
+ * @LastEditTime: 2022-12-05 15:24:01
  */
 
 // 引入第三方库
@@ -13,9 +13,10 @@ import { history } from '@umijs/max';
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
-import { getUserInfo } from '@/services/logic/login' // 登录相关接口
+import { getUserInfo, getPermissionMenu } from '@/services/logic/login' // 登录相关接口
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
-import { CACHE_KEY, initLocalesLang,routerConfig } from '@/utils' // 全局工具函数
+import { CACHE_KEY, initLocalesLang } from '@/utils' // 全局工具函数
+import routerConfig from '@/utils/routerConfig' // 路由配置
 import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
 
@@ -39,15 +40,35 @@ export async function getInitialState(): Promise<InitialStateModel> {
     }
     return undefined;
   };
+  // 获取用户菜单权限
+  const fetchPermissionMenu = async () => {
+    try {
+      const result = await getPermissionMenu();
+      if (result.code === 200) {
+        return result.data
+      }
+    } catch (error) {
+      history.push(routerConfig.LOGIN);
+    }
+    return undefined;
+  };
   // 初始化数据
   const initialState: InitialStateModel = {
     fetchUserInfo,
+    fetchPermissionMenu,
     settings: appCache?.UMI_LAYOUT || defaultSettings,
     locales
   }
   // 如果不是登录页面，执行
   if (window.location.pathname !== routerConfig.LOGIN) {
+    // 获取用户信息
     const currentUser = await fetchUserInfo();
+    // 获取用户权限菜单
+    const permissionInfo = await fetchPermissionMenu();
+    if (permissionInfo) {
+      const { permissions, routes } = permissionInfo
+      return { ...initialState, currentUser, permissions, routes };
+    }
     return { ...initialState, currentUser };
   }
   return initialState

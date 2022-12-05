@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:31:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 09:56:41
+ * @LastEditTime: 2022-12-05 10:25:43
  */
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -13,13 +13,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import App_configuration from '@/config/configuration'; // 全局配置
 import { AuthService } from './auth.service'; // Auth Service
 import { AuthController } from './auth.controller'; // Auth Controller
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import { JwtStrategy } from './jwt.strategy';
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用
   imports: [
-    SequelizeModule.forFeature([XmwUser]),
+    SequelizeModule.forFeature([XmwUser, XmwMenu]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       // 这里不设置 token 过期时间，过期时间在 redis 里面设置

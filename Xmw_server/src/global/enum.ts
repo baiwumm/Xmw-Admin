@@ -4,25 +4,20 @@
  * @Author: Cyan
  * @Date: 2022-09-09 15:19:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-17 10:22:34
+ * @LastEditTime: 2022-12-05 10:08:37
  */
 
 /**
- * @description: 请求状态提示语
+ * @description: 统一请求体枚举
  * @return {*}
  * @author: Cyan
  */
-export enum RES_CODE {
+export enum RES_MSG {
   SUCCESS = '操作成功！',
   FAILURE = '操作失败！',
 }
 
-/**
- * @description: 请求状态码
- * @return {*}
- * @author: Cyan
- */
-export const RES_CODE_MAP = {
-  200: RES_CODE.SUCCESS,
-  400: RES_CODE.FAILURE,
-};
+export enum RES_CODE {
+  SUCCESS = 200,
+  FAILURE = 400,
+}
