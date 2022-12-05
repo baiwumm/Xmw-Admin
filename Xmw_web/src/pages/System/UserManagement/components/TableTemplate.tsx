@@ -4,18 +4,18 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 11:03:29
+ * @LastEditTime: 2022-12-05 17:31:45
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useRequest } from 'ahooks'
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
-import { useIntl, useModel } from '@umijs/max'
-import { ProTable } from '@ant-design/pro-components' // antd 高级组件
+import { useIntl, useModel, useAccess, Access } from '@umijs/max'
+import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined, UnlockOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Dropdown, Menu, Switch, Popconfirm } from 'antd' // antd 组件库
+import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
@@ -25,6 +25,7 @@ import { getJobsList } from '@/services/administrative/jobs-management' // 岗�
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import type { PageResModel, ResponseModel } from '@/global/interface'
 import { columnScrollX } from '@/utils'
+import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import { renderColumnsStateMap } from '../utils'
 import type { TableSearchProps } from '../utils/interface'
@@ -33,6 +34,8 @@ const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
 	// 初始化状态
 	const { initialState } = useModel('@@initialState');
+	// 权限定义集合
+	const access = useAccess();
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -87,34 +90,44 @@ const TableTemplate: FC = () => {
 		})
 
 	}
-	//    下拉框菜单渲染
-	const DropdownMenu = (
-		<Menu
-			items={[
+
+	/**
+	 * @description: 渲染操作下拉菜单子项
+	 * @param {API} record
+	 * @return {*}
+	 * @author: Cyan
+	 */
+	const DropdownMenu = () => {
+		return (
+			[
 				{
-					label: <Button
-						type="text"
-						size="small"
-						icon={<EditOutlined />} block
-						onClick={() => setModalVisibleTrue()}
-					>
-						{formatMessage({ id: 'menu.system.user-management.edit' })}
-					</Button>,
+					name: <Access accessible={access.operationPermission(permissions.userManagement.edit)} fallback={null}>
+						<Button
+							type="text"
+							size="small"
+							icon={<EditOutlined />} block
+							onClick={() => setModalVisibleTrue()}
+						>
+							{formatMessage({ id: 'menu.system.user-management.edit' })}
+						</Button>
+					</Access>,
 					key: 'edit',
 				},
 				{
-					label: <Button
-						block
-						type="text"
-						size="small"
-						icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.user_id)} >
-						{formatMessage({ id: 'menu.system.user-management.delete' })}
-					</Button>,
+					name: <Access accessible={access.operationPermission(permissions.userManagement.delete)} fallback={null}>
+						<Button
+							block
+							type="text"
+							size="small"
+							icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.user_id)} >
+							{formatMessage({ id: 'menu.system.user-management.delete' })}
+						</Button>
+					</Access>,
 					key: 'delete',
 				},
-			]}
-		/>
-	);
+			]
+		);
+	}
 
 	// 设置用户状态
 	const changeUserStatus = async ({ user_id, status }: API.USERMANAGEMENT) => {
@@ -210,7 +223,7 @@ const TableTemplate: FC = () => {
 					2: initialState?.settings?.colorPrimary
 				}
 				const styles = { color: colors[record.sex], fontSize: '20px' }
-				return { 0: <WomanOutlined style={styles} />, 1: <ManOutlined style={styles} />, 2: <UnlockOutlined style={styles}/> }[record.sex]
+				return { 0: <WomanOutlined style={styles} />, 1: <ManOutlined style={styles} />, 2: <UnlockOutlined style={styles} /> }[record.sex]
 			}
 		},
 		{
@@ -336,13 +349,13 @@ const TableTemplate: FC = () => {
 			align: 'center',
 			key: 'option',
 			fixed: 'right',
-			render: (_, record) => [
-				<Dropdown overlay={DropdownMenu} onOpenChange={() => setCurrentRecord(record)} key="operation">
+			render: () => [
+				<TableDropdown key="actionGroup" menus={DropdownMenu()}>
 					<Button size="small">
 						{formatMessage({ id: 'global.table.operation' })}
 						<DownOutlined />
 					</Button>
-				</Dropdown>
+				</TableDropdown>
 			]
 		},
 	]
@@ -421,10 +434,12 @@ const TableTemplate: FC = () => {
 				}}
 				// 工具栏
 				toolBarRender={() => [
-					<Button type="primary" key="add" onClick={() => { setModalVisibleTrue(); setCurrentRecord(undefined) }}>
-						<PlusOutlined />
-						{formatMessage({ id: 'menu.system.user-management.add' })}
-					</Button>
+					<Access accessible={access.operationPermission(permissions.userManagement.add)} fallback={null} key="add" >
+						<Button type="primary" onClick={() => { setModalVisibleTrue(); setCurrentRecord(undefined) }}>
+							<PlusOutlined />
+							{formatMessage({ id: 'menu.system.user-management.add' })}
+						</Button>
+					</Access>
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>

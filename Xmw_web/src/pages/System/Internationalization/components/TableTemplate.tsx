@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:36:04
+ * @LastEditTime: 2022-12-05 16:29:16
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
-import { useIntl, useModel } from '@umijs/max'
+import { useIntl, useModel, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined } from '@ant-design/icons' // antd 图标库
@@ -19,6 +19,7 @@ import moment from 'moment'
 // 引入业务组件
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import { columnScrollX } from '@/utils'
+import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps } from '../utils/interface'
 
@@ -26,6 +27,8 @@ const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
 	// 初始化状态
 	const { initialState } = useModel('@@initialState');
+	// 权限定义集合
+	const access = useAccess();
 	// 获取表格实例
 	const tableRef = useRef<ActionType>();
 	// 获取树形数据传递给modalForm
@@ -74,49 +77,55 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <FormTemplate
-						treeData={treeData}
-						reloadTable={reloadTable}
-						parent_id={parent_id}
-						triggerDom={
-							<Button
-								type="text"
-								size="small"
-								icon={<ClusterOutlined />}
-								block
-								onClick={() => set_parent_id(record.id)}
-							>
-								{formatMessage({ id: 'menu.system.internationalization.add-child' })}
-							</Button>}
-					/>,
+					name: <Access accessible={access.operationPermission(permissions.internationalization.addChild)} fallback={null}>
+						<FormTemplate
+							treeData={treeData}
+							reloadTable={reloadTable}
+							parent_id={parent_id}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<ClusterOutlined />}
+									block
+									onClick={() => set_parent_id(record.id)}
+								>
+									{formatMessage({ id: 'menu.system.internationalization.add-child' })}
+								</Button>}
+						/>
+					</Access>,
 					key: 'addChild',
 				},
 				{
-					name: <FormTemplate
-						treeData={treeData}
-						reloadTable={reloadTable}
-						formData={currentRecord}
-						triggerDom={
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />}
-								block
-								onClick={() => setCurrentRecord(record)}
-							>
-								{formatMessage({ id: 'menu.system.internationalization.edit' })}
-							</Button>}
-					/>,
+					name: <Access accessible={access.operationPermission(permissions.internationalization.edit)} fallback={null}>
+						<FormTemplate
+							treeData={treeData}
+							reloadTable={reloadTable}
+							formData={currentRecord}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<EditOutlined />}
+									block
+									onClick={() => setCurrentRecord(record)}
+								>
+									{formatMessage({ id: 'menu.system.internationalization.edit' })}
+								</Button>}
+						/>
+					</Access>,
 					key: 'edit',
 				},
 				{
-					name: <Button
-						block
-						type="text"
-						size="small"
-						icon={<DeleteOutlined />} onClick={() => handlerDelete(record.id)} >
-						{formatMessage({ id: 'menu.system.internationalization.delete' })}
-					</Button>,
+					name: <Access accessible={access.operationPermission(permissions.internationalization.delete)} fallback={null}>
+						<Button
+							block
+							type="text"
+							size="small"
+							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.id)} >
+							{formatMessage({ id: 'menu.system.internationalization.delete' })}
+						</Button>
+					</Access>,
 					key: 'delete',
 				},
 			]

@@ -4,18 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 17:31:38
+ * @LastEditTime: 2022-12-05 16:31:34
  */
 
 // 引入第三方库
 import type { FC } from 'react';
 import { useIntl } from '@umijs/max'
-import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
-import { Button, Form, message } from 'antd'; // antd 组件库
+import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
+import AddPlusPermission from '@/components/AddPlusPermission'; // 全局新建按钮权限
+import permissions from '@/utils/permission'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
@@ -54,11 +55,15 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 			width={500}
 			grid
 			form={form}
-			trigger={triggerDom ||
-				<Button type="primary">
-					<PlusOutlined />
-					{formatMessage({ id: 'menu.system.internationalization.add' })}
-				</Button>
+			trigger={
+				// 这里必须要用div包裹，不然不会触发trigger，具体原因不明
+				<div>
+					<AddPlusPermission
+						triggerDom={triggerDom}
+						permission={permissions.internationalization.add}
+						id="menu.system.internationalization.add"
+					/>
+				</div>
 			}
 			autoFocusFirstInput
 			modalProps={{

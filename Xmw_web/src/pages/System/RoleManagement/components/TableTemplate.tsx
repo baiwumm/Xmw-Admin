@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 17:33:40
+ * @LastEditTime: 2022-12-05 17:40:28
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
-import { useIntl, useModel, useRequest } from '@umijs/max'
+import { useIntl, useModel, useRequest, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
@@ -21,6 +21,7 @@ import moment from 'moment'
 import { getRoleList, delRole, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { columnScrollX } from '@/utils'
+import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps, RoleStatusProps } from '../utils/interface'
 
@@ -28,6 +29,8 @@ const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
 	// 初始化状态
 	const { initialState } = useModel('@@initialState');
+	// 权限定义集合
+	const access = useAccess();
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -44,13 +47,13 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
-	
- /**
-  * @description: 删除角色数据
-  * @param {string} role_id
-  * @return {*}
-  * @author: Cyan
-  */	
+
+	/**
+	 * @description: 删除角色数据
+	 * @param {string} role_id
+	 * @return {*}
+	 * @author: Cyan
+	 */
 	const handlerDelete = async (role_id: string): Promise<void> => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
@@ -83,31 +86,35 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <FormTemplate
-						reloadTable={reloadTable}
-						formData={currentRecord}
-						menuData={menuData}
-						triggerDom={
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />}
-								block
-								onClick={() => setCurrentRecord(record)}
-							>
-								{formatMessage({ id: 'menu.system.role-management.edit' })}
-							</Button>}
-					/>,
+					name: <Access accessible={access.operationPermission(permissions.roleManagement.edit)} fallback={null}>
+						<FormTemplate
+							reloadTable={reloadTable}
+							formData={currentRecord}
+							menuData={menuData}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<EditOutlined />}
+									block
+									onClick={() => setCurrentRecord(record)}
+								>
+									{formatMessage({ id: 'menu.system.role-management.edit' })}
+								</Button>}
+						/>
+					</Access>,
 					key: 'edit',
 				},
 				{
-					name: <Button
-						block
-						type="text"
-						size="small"
-						icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.role_id)} >
-						{formatMessage({ id: 'menu.system.role-management.delete' })}
-					</Button>,
+					name: <Access accessible={access.operationPermission(permissions.roleManagement.delete)} fallback={null}>
+						<Button
+							block
+							type="text"
+							size="small"
+							icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.role_id)} >
+							{formatMessage({ id: 'menu.system.role-management.delete' })}
+						</Button>
+					</Access>,
 					key: 'delete',
 				},
 			]
@@ -151,7 +158,7 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'pages.system.role-management.role_name' }),
 			dataIndex: 'role_name',
 			ellipsis: true,
-			width:140,
+			width: 140,
 			render: text => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
@@ -162,7 +169,7 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'pages.system.role-management.role_code' }),
 			dataIndex: 'role_code',
-			width:140,
+			width: 140,
 			ellipsis: true,
 		},
 		/* 状态 */
@@ -171,7 +178,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'status',
 			filters: true,
 			onFilter: true,
-			width:100,
+			width: 100,
 			valueEnum: {
 				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
 				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
@@ -184,7 +191,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			sorter: true,
-			width:80,
+			width: 80,
 			render: text => <Tag color="purple">{text}</Tag>
 		},
 		{
@@ -193,7 +200,7 @@ const TableTemplate: FC = () => {
 			valueType: 'date',
 			hideInSearch: true,
 			sorter: true,
-			width:120,
+			width: 120,
 			render: text => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -218,7 +225,7 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.table.describe' }),
 			dataIndex: 'describe',
 			ellipsis: true,
-			width:100,
+			width: 100,
 			hideInSearch: true
 		},
 		{

@@ -4,20 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 17:12:40
+ * @LastEditTime: 2022-12-05 16:10:02
  */
 
 // 引入第三方库
 import type { FC } from 'react';
 import { useIntl } from '@umijs/max'
-import { PlusOutlined } from '@ant-design/icons';// antd 图标
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
-import { Button, Form, message } from 'antd'; // antd 组件库
+import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
+import AddPlusPermission from '@/components/AddPlusPermission'; // 全局新建按钮权限
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
+import permissions from '@/utils/permission'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, orgTree, userList }) => {
@@ -53,11 +54,15 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 			width={500}
 			grid
 			form={form}
-			trigger={triggerDom ||
-				<Button type="primary">
-					<PlusOutlined />
-					{formatMessage({ id: 'menu.administrative.jobs-management.add' })}
-				</Button>
+			trigger={
+				// 这里必须要用div包裹，不然不会触发trigger，具体原因不明
+				<div>
+					<AddPlusPermission
+						triggerDom={triggerDom}
+						permission={permissions.jobsManagement.add}
+						id="menu.administrative.jobs-management.add"
+					/>
+				</div>
 			}
 			autoFocusFirstInput
 			drawerProps={{

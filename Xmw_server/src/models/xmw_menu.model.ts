@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 11:02:15
+ * @LastEditTime: 2022-12-05 17:09:57
  */
 import {
   PrimaryKey,
@@ -15,7 +15,6 @@ import {
   ForeignKey,
   BelongsTo,
   IsUUID,
-  IsUrl,
   IsIn,
 } from 'sequelize-typescript';
 import type { MenuAttributes } from '@/attributes/system';
@@ -61,7 +60,6 @@ export class XmwMenu
   menu_type: string;
 
   //路由url
-  @IsUrl
   @Column({ type: DataType.STRING(100), comment: '路由url' })
   path?: string;
 

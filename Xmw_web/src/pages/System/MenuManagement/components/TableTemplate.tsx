@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 11:04:12
+ * @LastEditTime: 2022-12-05 17:21:07
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useRequest } from 'ahooks'
 import React, { useState, useRef } from 'react';
-import { useIntl, getLocale, useModel } from '@umijs/max'
+import { useIntl, getLocale, useModel, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined } from '@ant-design/icons' // antd 图标库
@@ -25,6 +25,7 @@ import { getInternationalList } from '@/services/system/internationalization' //
 import FormTemplate from './FormTemplate'  // 表单组件
 import { APP_FLAG_OPTS } from '@/global/enum'
 import { columnScrollX } from '@/utils'
+import permissions from '@/utils/permission'
 import { MENU_TYPE_TAGS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/enum'
 import { renderColumnsStateMap } from '../utils'
 import type { TableSearchProps } from '../utils/interface'
@@ -33,6 +34,8 @@ const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
 	// 初始化状态
 	const { initialState } = useModel('@@initialState');
+	// 权限定义集合
+	const access = useAccess();
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -91,51 +94,57 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <FormTemplate
-						treeData={treeData}
-						reloadTable={reloadTable}
-						parent_id={parent_id}
-						triggerDom={
-							<Button
-								type="text"
-								size="small"
-								icon={<ClusterOutlined />}
-								block
-								onClick={() => set_parent_id(record?.menu_id)}
-							>
-								{formatMessage({ id: 'menu.system.menu-management.add-child' })}
-							</Button>}
-						internationalData={internationalData}
-					/>,
+					name: <Access accessible={access.operationPermission(permissions.menuManagement.addChild)} fallback={null}>
+						<FormTemplate
+							treeData={treeData}
+							reloadTable={reloadTable}
+							parent_id={parent_id}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<ClusterOutlined />}
+									block
+									onClick={() => set_parent_id(record?.menu_id)}
+								>
+									{formatMessage({ id: 'menu.system.menu-management.add-child' })}
+								</Button>}
+							internationalData={internationalData}
+						/>
+					</Access>,
 					key: 'addChild',
 				},
 				{
-					name: <FormTemplate
-						treeData={treeData}
-						reloadTable={reloadTable}
-						formData={currentRecord}
-						triggerDom={
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />}
-								block
-								onClick={() => setCurrentRecord(record)}
-							>
-								{formatMessage({ id: 'menu.system.menu-management.edit' })}
-							</Button>}
-						internationalData={internationalData}
-					/>,
+					name: <Access accessible={access.operationPermission(permissions.menuManagement.edit)} fallback={null}>
+						<FormTemplate
+							treeData={treeData}
+							reloadTable={reloadTable}
+							formData={currentRecord}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<EditOutlined />}
+									block
+									onClick={() => setCurrentRecord(record)}
+								>
+									{formatMessage({ id: 'menu.system.menu-management.edit' })}
+								</Button>}
+							internationalData={internationalData}
+						/>
+					</Access>,
 					key: 'edit',
 				},
 				{
-					name: <Button
-						block
-						type="text"
-						size="small"
-						icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.menu_id)} >
-						{formatMessage({ id: 'menu.system.menu-management.delete' })}
-					</Button>,
+					name: <Access accessible={access.operationPermission(permissions.menuManagement.delete)} fallback={null}>
+						<Button
+							block
+							type="text"
+							size="small"
+							icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.menu_id)} >
+							{formatMessage({ id: 'menu.system.menu-management.delete' })}
+						</Button>
+					</Access>,
 					key: 'delete',
 				},
 			]

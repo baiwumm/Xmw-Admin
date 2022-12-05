@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 15:22:13
+ * @LastEditTime: 2022-12-05 17:05:26
  */
 // 引入第三方库
 import { useRequest } from 'ahooks';
@@ -86,27 +86,25 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name:
-						<div>
-							<Access accessible={access.operationPermission(permissions.organization.addChild)} fallback={null}>
-								<FormTemplate
-									treeData={treeData}
-									reloadTable={reloadTable}
-									parent_id={parent_id}
-									userList={userList?.list || []}
-									triggerDom={
-										<Button
-											type="text"
-											size="small"
-											icon={<ClusterOutlined />}
-											block
-											onClick={() => set_parent_id(record.org_id)}
-										>
-											{formatMessage({ id: 'menu.administrative.organization.add-child' })}
-										</Button>}
-								/>
-							</Access>
-						</div>,
+					name: <Access accessible={access.operationPermission(permissions.organization.addChild)} fallback={null}>
+						<FormTemplate
+							treeData={treeData}
+							reloadTable={reloadTable}
+							parent_id={parent_id}
+							userList={userList?.list || []}
+							triggerDom={
+								<Button
+									type="text"
+									size="small"
+									icon={<ClusterOutlined />}
+									block
+									onClick={() => set_parent_id(record.org_id)}
+								>
+									{formatMessage({ id: 'menu.administrative.organization.add-child' })}
+								</Button>}
+						/>
+					</Access>
+					,
 					key: 'addChild',
 				},
 				{
