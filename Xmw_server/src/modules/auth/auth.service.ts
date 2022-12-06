@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 13:56:56
+ * @LastEditTime: 2022-12-06 13:52:38
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -18,6 +18,7 @@ import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
+import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import { LoginParamsDto } from './dto';
 import { ResponseModel } from '@/global/interface'; // interface
@@ -190,6 +191,24 @@ export class AuthService {
     } = session;
     // 查询权限菜单
     const sqlData = await this.menuModel.findAll({
+      attributes: {
+        exclude: [
+          'name',
+          'headerRender',
+          'footerRender',
+          'menuRender',
+          'menuHeaderRender',
+        ],
+        include: [[this.sequelize.literal('`i`.`name`'), 'name']],
+      },
+      // 联表查询
+      include: [
+        {
+          model: XmwInternational,
+          as: 'i',
+          attributes: [],
+        },
+      ],
       where: {
         menu_id: {
           [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission

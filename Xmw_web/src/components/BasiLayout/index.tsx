@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 15:24:12
+ * @LastEditTime: 2022-12-06 11:29:32
  */
 // 引入第三方库
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
@@ -50,11 +50,17 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				history.push(routerConfig.LOGIN);
 			}
 		},
+		// menu: {
+		// 	request: async () => {
+		// 		return routes
+		// 		// return initialState.routes ? [...routes, ...initialState.routes] : initialState.routes
+		// 	}
+		// },
 		/* 自定义面包屑 */
 		breadcrumbProps: {
 			itemRender: (route: any) => {
 				return (
-					<Link to={route.path}>
+					<Link to={route.path} >
 						<Space>
 							<Button
 								type="text"
@@ -64,7 +70,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 								{route.breadcrumbName}
 							</Button>
 						</Space>
-					</Link>
+					</Link >
 				)
 			}
 		},

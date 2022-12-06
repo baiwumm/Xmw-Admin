@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:02
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-13 10:29:23
+ * @LastEditTime: 2022-12-06 13:53:37
  */
 /**
  * @name umi 的路由配置
