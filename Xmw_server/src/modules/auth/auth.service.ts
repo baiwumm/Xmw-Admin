@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-06 13:52:38
+ * @LastEditTime: 2022-12-07 13:52:27
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -23,7 +23,6 @@ import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; /
 import { LoginParamsDto } from './dto';
 import { ResponseModel } from '@/global/interface'; // interface
 import { initializeTree, responseMessage } from '@/utils';
-import { filter } from 'lodash';
 
 type responseResult = ResponseModel<Record<string, any>>;
 
@@ -178,13 +177,40 @@ export class AuthService {
   }
 
   /**
+   * @description: 获取用户按钮权限
+   * @return {*}
+   * @author: Cyan
+   */
+  async getPermissions(
+    session: Record<string, any>,
+  ): Promise<ResponseModel<string[]>> {
+    // 获取当前用户 id
+    const {
+      currentUserInfo: { user_id },
+    } = session;
+    // 查询权限菜单
+    const sqlData = await this.menuModel.findAll({
+      attributes: ['permission'],
+      where: {
+        menu_id: {
+          [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
+            where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
+        },
+      },
+    });
+    // 获取按钮权限集合
+    const permissions = sqlData.map((s) => s.permission);
+    return responseMessage(permissions);
+  }
+
+  /**
    * @description: 获取用户权限菜单
    * @return {*}
    * @author: Cyan
    */
-  async getPermissionMenu(
+  async getRoutesMenus(
     session: Record<string, any>,
-  ): Promise<responseResult> {
+  ): Promise<ResponseModel<XmwMenu[]>> {
     // 获取当前用户 id
     const {
       currentUserInfo: { user_id },
@@ -210,6 +236,9 @@ export class AuthService {
         },
       ],
       where: {
+        menu_type: {
+          [Op.ne]: 'button',
+        },
         menu_id: {
           [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
             where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
@@ -217,14 +246,8 @@ export class AuthService {
       },
     });
     // 获取按钮权限集合
-    const permissions = sqlData.map((s) => s.permission);
     // 将数据转成树形结构
-    const routes = initializeTree(
-      filter(sqlData, (s: XmwMenu) => s.menu_type !== 'button'),
-      'menu_id',
-      'parent_id',
-      'routes',
-    );
-    return responseMessage({ routes, permissions });
+    const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
+    return responseMessage(routes);
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-06 14:49:11
+ * @LastEditTime: 2022-12-07 14:43:51
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 /**
@@ -46,25 +46,21 @@ export type PaginationProps = {
 }
 
 /**
- * @description: 获取用户菜单权限
- * @return {*}
- * @author: Cyan
- */
- export type PermissionModel = { permissions: string[], routes: API.MENUMANAGEMENT[] }
-
-/**
  * @description: App.tsx 全局初始数据
  * @return {*}
  * @author: Cyan
  */
 export type InitialStateModel = {
-  access_token?: string;
-  settings?: Partial<LayoutSettings>;
-  currentUser?: API.USERMANAGEMENT;
-  loading?: boolean;
+  Locales?: Record<string, any>;
+  Access_token?: string;
+  Settings?: Partial<LayoutSettings>;
+  CurrentUser?: API.USERMANAGEMENT;
+  Permissions?: string[];
+  Routes?: API.MENUMANAGEMENT[];
   fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
-  fetchPermissionMenu?: () => Promise<PermissionModel | undefined>;
-} & Partial<PermissionModel>
+  fetchPermissions?: () => Promise<string[] | undefined>;
+  fetchRouteMenu?: () => Promise<API.MENUMANAGEMENT[] | undefined>;
+}
 
 /**
  * @description: 存储在 localstorage 的值

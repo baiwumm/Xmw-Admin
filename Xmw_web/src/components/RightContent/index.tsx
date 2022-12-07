@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-10 12:27:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:34:55
+ * @LastEditTime: 2022-12-07 14:09:31
  */
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { SelectLang, useModel } from '@umijs/max';
@@ -20,14 +20,14 @@ export type SiderTheme = 'light' | 'dark';
 const GlobalHeaderRight: React.FC = () => {
   const { initialState } = useModel('@@initialState');
 
-  if (!initialState || !initialState.settings) {
+  if (!initialState || !initialState.Settings) {
     return null;
   }
 
-  const { navTheme, layout } = initialState.settings;
+  const { layout } = initialState.Settings;
   let className = styles.right;
 
-  if ((navTheme === 'dark' && layout === 'top') || layout === 'mix') {
+  if ( layout === 'top' || layout === 'mix') {
     className = `${styles.right}  ${styles.dark}`;
   }
   return (

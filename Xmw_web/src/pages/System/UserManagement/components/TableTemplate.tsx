@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:31:45
+ * @LastEditTime: 2022-12-07 14:10:40
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -175,7 +175,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<UserOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<UserOutlined style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -220,7 +220,7 @@ const TableTemplate: FC = () => {
 				const colors = {
 					0: '#ff45cb',
 					1: '#0091ff',
-					2: initialState?.settings?.colorPrimary
+					2: initialState?.Settings?.colorPrimary
 				}
 				const styles = { color: colors[record.sex], fontSize: '20px' }
 				return { 0: <WomanOutlined style={styles} />, 1: <ManOutlined style={styles} />, 2: <UnlockOutlined style={styles} /> }[record.sex]
@@ -241,7 +241,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-role-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -254,7 +254,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-organization" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -267,7 +267,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-jobs-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-jobs-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
 					{text}
 				</Tag>
 			</Space>

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:05:26
+ * @LastEditTime: 2022-12-07 14:09:58
  */
 // 引入第三方库
 import { useRequest } from 'ahooks';
@@ -155,7 +155,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'org_name',
 			ellipsis: true,
 			width: 140,
-			render: text => <Space><IconFont type="icon-organization" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} /><span>{text}</span></Space>
+			render: text => <Space><IconFont type="icon-organization" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} /><span>{text}</span></Space>
 		},
 		{
 			title: formatMessage({ id: 'pages.administrative.organization.org_code' }),

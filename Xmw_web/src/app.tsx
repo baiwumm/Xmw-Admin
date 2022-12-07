@@ -1,20 +1,20 @@
 /*
- * @Description: 
+ * @Description: 全局入口文件
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-06 15:36:07
+ * @LastEditTime: 2022-12-07 15:31:15
  */
 
 // 引入第三方库
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { getDvaApp } from '@umijs/max';
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { CACHE_KEY } from '@/utils' // 全局工具函数
+import { initLocalesLang,fetchUserInfo,fetchPermissions } from '@/utils/initRequest' // 初始化共用接口请求
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
@@ -23,36 +23,27 @@ import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialStateModel> {
-  const app = getDvaApp();
+  // 初始化多语言
+  const Locales = await initLocalesLang()
   // 获取 localstorage key
   const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
-  // 获取登录用户信息
-  const fetchUserInfo = await app?._store.dispatch({
-    type: "global/fetchUserInfo",
-    payload: {},
-  });
-  // 获取用户菜单权限
-  const fetchPermissionMenu = await app?._store.dispatch({
-    type: "global/fetchRoutes",
-    payload: {},
-  });
   // 初始化数据
   const initialState: InitialStateModel = {
+    Locales,
     fetchUserInfo,
-    fetchPermissionMenu,
-    settings: appCache?.UMI_LAYOUT || defaultSettings,
+    fetchPermissions,
+    Settings: appCache?.UMI_LAYOUT || defaultSettings,
   }
   // 如果不是登录页面，执行
   if (window.location.pathname !== routerConfig.LOGIN) {
     // 获取用户信息
-    const currentUser = await fetchUserInfo();
-    // 获取用户权限菜单
-    const permissionInfo = await fetchPermissionMenu();
-    if (permissionInfo) {
-      const { permissions, routes } = permissionInfo
-      return { ...initialState, currentUser, permissions, routes };
+    const CurrentUser = await fetchUserInfo();
+    // 获取用户菜单权限
+    const Permissions = await fetchPermissions();
+    if (Permissions) {
+      return { ...initialState, CurrentUser, Permissions };
     }
-    return { ...initialState, currentUser };
+    return { ...initialState, CurrentUser };
   }
   return initialState
 }

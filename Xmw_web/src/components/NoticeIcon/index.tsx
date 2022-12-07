@@ -1,5 +1,5 @@
 import { getNotices } from '@/services/ant-design-pro/api';
-import { useModel, useRequest } from '@umijs/max';
+import { useRequest } from '@umijs/max';
 import { message, Tag } from 'antd';
 import { groupBy } from 'lodash';
 import moment from 'moment';
@@ -70,8 +70,6 @@ const getUnreadData = (noticeData: Record<string, API.NoticeIconItem[]>) => {
 };
 
 const NoticeIconView: React.FC = () => {
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
   const [notices, setNotices] = useState<API.NoticeIconItem[]>([]);
   const { data } = useRequest(getNotices);
 
@@ -110,7 +108,6 @@ const NoticeIconView: React.FC = () => {
   return (
     <NoticeIcon
       className={styles.action}
-      count={currentUser && currentUser.unreadCount}
       onItemClick={(item) => {
         changeReadState(item.id!);
       }}

@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-11-29 16:38:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 11:16:18
+ * @LastEditTime: 2022-12-07 13:56:32
  */
 import { request } from '@umijs/max';
-import type { ResponseModel, PermissionModel } from '@/global/interface';
+import type { ResponseModel } from '@/global/interface';
 import type { LoginParams } from '@/pages/User/Login/utils/indexface'
 
 /**
@@ -47,12 +47,23 @@ export async function getUserInfo(): Promise<ResponseModel<API.USERMANAGEMENT>> 
 }
 
 /**
- * @description: 获取当前用户权限菜单
+ * @description: 获取当前用户按钮权限
  * @return {*}
  * @author: Cyan
  */
-export async function getPermissionMenu(): Promise<ResponseModel<PermissionModel>> {
-  return request('/api/auth/permission-menu', {
+export async function getPermissions(): Promise<ResponseModel<string[]>> {
+  return request('/api/auth/permissions', {
+    method: 'GET',
+  });
+}
+
+/**
+ * @description: 获取用户权限菜单
+ * @return {*}
+ * @author: Cyan
+ */
+ export async function getRoutesMenus(): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
+  return request('/api/auth/routes-menu', {
     method: 'GET',
   });
 }

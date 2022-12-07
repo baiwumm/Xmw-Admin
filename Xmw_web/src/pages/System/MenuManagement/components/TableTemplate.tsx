@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:21:07
+ * @LastEditTime: 2022-12-07 14:10:17
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -187,7 +187,7 @@ const TableTemplate: FC = () => {
 					<Space>
 						{
 							record.icon ? <Tag
-								icon={<IconFont type={record.icon} style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }}
+								icon={<IconFont type={record.icon} style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }}
 								/>} >
 								{record[getLocale()]}
 							</Tag>

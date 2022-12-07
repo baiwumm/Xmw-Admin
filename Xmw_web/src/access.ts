@@ -4,9 +4,9 @@
  import type { InitialStateModel } from '@/global/interface'
 export default function access(initialState: InitialStateModel | undefined) {
   // 获取按钮权限集合
-  const { permissions } = initialState ?? {};
+  const { Permissions } = initialState ?? {};
   return {
     // 判断是否有操作权限
-    operationPermission: (data: string) => permissions?.includes(data),
+    operationPermission: (data: string) => Permissions?.includes(data),
   };
 }

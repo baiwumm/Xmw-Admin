@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-06 11:29:32
+ * @LastEditTime: 2022-12-07 14:37:24
  */
 // 引入第三方库
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
@@ -12,7 +12,7 @@ import { history, Link } from '@umijs/max';
 import { Space, Button } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
-import { last, keys } from 'lodash' //lodash 工具库
+import { last, isEmpty } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 // 引入业务组件间
@@ -38,7 +38,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		rightContentRender: () => <RightContent />,
 		/* 水印 */
 		waterMarkProps: {
-			content: initialState?.currentUser?.user_name,
+			content: initialState?.CurrentUser?.user_name,
 		},
 		/* 底部版权 */
 		footerRender: () => <Footer />,
@@ -46,7 +46,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		onPageChange: () => {
 			const { location } = history;
 			// 如果没有登录，重定向到 login
-			if (!keys(initialState?.currentUser).length && location.pathname !== routerConfig.LOGIN) {
+			if (isEmpty(initialState?.CurrentUser) && location.pathname !== routerConfig.LOGIN) {
 				history.push(routerConfig.LOGIN);
 			}
 		},
@@ -65,8 +65,8 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 							<Button
 								type="text"
 								size="small"
-								icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: initialState?.settings?.colorPrimary }} />}
-								style={{ color: initialState?.settings?.colorPrimary }}>
+								icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: initialState?.Settings?.colorPrimary }} />}
+								style={{ color: initialState?.Settings?.colorPrimary }}>
 								{route.breadcrumbName}
 							</Button>
 						</Space>

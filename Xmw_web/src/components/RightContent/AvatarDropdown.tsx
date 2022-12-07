@@ -26,7 +26,7 @@ const AvatarDropdown: FC = () => {
     manual: true,
     onSuccess: async (res: LogoutProps) => {
       if (res.code === 200) {
-        setInitialState((s) => ({ ...s, currentUser: undefined, access_token: undefined }));
+        setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
         setappCache({ ...appCache, ACCESS_TOKEN: undefined })
         // 退出登录返回登录页
         logoutToLogin()
@@ -58,7 +58,7 @@ const AvatarDropdown: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  if (!initialState?.currentUser?.user_name) {
+  if (!initialState?.CurrentUser?.user_name) {
     return (
       <span className={`${styles.action} ${styles.account}`}>
         <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
@@ -83,8 +83,8 @@ const AvatarDropdown: FC = () => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={initialState?.currentUser?.avatar_url} alt="avatar" />
-        <span className={`${styles.name} anticon`}>{initialState?.currentUser?.cn_name}</span>
+        <Avatar size="small" className={styles.avatar} src={initialState?.CurrentUser?.avatar_url} alt="avatar" />
+        <span className={`${styles.name} anticon`}>{initialState?.CurrentUser?.cn_name}</span>
       </span>
     </HeaderDropdown>
   );

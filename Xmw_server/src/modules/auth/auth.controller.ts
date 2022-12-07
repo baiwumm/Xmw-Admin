@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 10:27:43
+ * @LastEditTime: 2022-12-07 15:33:36
  */
 import {
   Controller,
@@ -26,6 +26,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { ResponseDto } from '@/dto/response.dto';
 import { LoginParamsDto, LoginResponseDto, UserInfoResponseDto } from './dto';
 import { responseMessage } from '@/utils';
@@ -94,16 +95,31 @@ export class AuthController {
   }
 
   /**
+   * @description: 获取用户按钮权限
+   * @return {*}
+   * @author: Cyan
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/permissions')
+  @ApiOperation({ summary: '获取用户按钮权限' })
+  async getPermissions(
+    @Session() session: Record<string, any>,
+  ): Promise<ResponseModel<string[]>> {
+    const response = await this.authService.getPermissions(session);
+    return response;
+  }
+
+  /**
    * @description: 获取用户权限菜单
    * @return {*}
    * @author: Cyan
    */
-  @Get('/permission-menu')
+  @Get('/routes-menu')
   @ApiOperation({ summary: '获取用户权限菜单' })
-  async getPermissionMenu(
+  async getRoutesMenus(
     @Session() session: Record<string, any>,
-  ): Promise<ResponseModel<ResData>> {
-    const response = await this.authService.getPermissionMenu(session);
+  ): Promise<ResponseModel<XmwMenu[]>> {
+    const response = await this.authService.getRoutesMenus(session);
     return response;
   }
 }

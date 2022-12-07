@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:40:28
+ * @LastEditTime: 2022-12-07 14:10:22
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -161,7 +161,7 @@ const TableTemplate: FC = () => {
 			width: 140,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-role-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-role-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
 					{text}
 				</Tag>
 			</Space>

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 16:08:36
+ * @LastEditTime: 2022-12-07 14:09:49
  */
 // 引入第三方库
 import { useRequest } from 'ahooks';
@@ -167,7 +167,7 @@ const TableTemplate: FC = () => {
 			width: 120,
 			render: text => (
 				<Space>
-					<IconFont type="icon-jobs-management" style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />
+					<IconFont type="icon-jobs-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />
 					<span>{text}</span>
 				</Space>
 			)
@@ -187,7 +187,7 @@ const TableTemplate: FC = () => {
 				placeholder: formatMessage({ id: 'global.form.placeholder.seleted' })
 			},
 			width: 120,
-			render: (_, record) => <Tag color={initialState?.settings?.colorPrimary}>{record.org_name}</Tag>
+			render: (_, record) => <Tag color={initialState?.Settings?.colorPrimary}>{record.org_name}</Tag>
 		},
 		{
 			title: formatMessage({ id: 'global.table.sort' }),

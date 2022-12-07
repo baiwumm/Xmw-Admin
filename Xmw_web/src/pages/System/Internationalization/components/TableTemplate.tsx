@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 16:29:16
+ * @LastEditTime: 2022-12-07 14:10:11
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -142,7 +142,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'name',
 			ellipsis: true,
 			width: 140,
-			render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
+			render: text => <Space><Tag icon={<FontSizeOutlined style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >{text}</Tag></Space>
 		},
 		{
 			title: formatMessage({ id: 'pages.system.internationalization.zh-CN' }),

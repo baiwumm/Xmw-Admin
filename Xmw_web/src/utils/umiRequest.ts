@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:26:22
+ * @LastEditTime: 2022-12-07 15:21:39
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -21,7 +21,7 @@ import type { AppLocalCacheModel } from '@/global/interface'
  */
 const authError = debounce((content, duration = 3, status = 'error') => {
   message[status](content, duration);
-}, 1000);
+}, 100);
 
 /**
  * @name 错误处理

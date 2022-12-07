@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 13:44:25
+ * @LastEditTime: 2022-12-07 15:13:49
  */
 
 // 引入第三方库
-import { useLocalStorageState, useRequest, useMount } from 'ahooks';
+import { useLocalStorageState, useRequest, useMount, useDebounceFn } from 'ahooks';
 import type { FC } from 'react';
 import { useState } from 'react'; // react
 import { useIntl } from '@umijs/max'
@@ -16,6 +16,7 @@ import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
 import { WechatOutlined } from '@ant-design/icons'; // antd 图标
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
+import { isEmpty } from 'lodash'
 
 // 引入业务组件
 import { CACHE_KEY, encryptionAesPsd, formatResult } from '@/utils'
@@ -49,27 +50,28 @@ const LoginPage: FC = () => {
     {
       manual: true,
       onSuccess: async (res: LoginProps) => {
-        // 将 token 保存到localstorage
-        setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
-        // 获取用户信息
-        const userInfo = await initialState?.fetchUserInfo?.();
-        // 获取用户权限菜单
-        const permissionInfo = await initialState?.fetchPermissionMenu?.();
-        // 根据返回信息合并对象到 initialState
-        const mergeObj = { access_token: res.access_token }
-        if (userInfo) {
-          Object.assign(mergeObj, { currentUser: userInfo })
+        if (!isEmpty(res)) {
+          // 将 token 保存到localstorage
+          setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
+          // 获取用户信息
+          const userInfo = await initialState?.fetchUserInfo?.();
+          // 获取用户权限菜单
+          const Permissions = await initialState?.fetchPermissions?.();
+          // 根据返回信息合并对象到 initialState
+          const mergeObj = { Access_token: res.access_token }
+          if (userInfo) {
+            Object.assign(mergeObj, { CurrentUser: userInfo })
+          }
+          if (Permissions) {
+            Object.assign(mergeObj, { Permissions })
+          }
+          await setInitialState((s) => ({ ...s, ...mergeObj }));
+          setTimeout(() => {
+            const urlParams = new URL(window.location.href).searchParams;
+            // 路由跳转
+            history.push(urlParams.get('redirect') || '/');
+          }, 100)
         }
-        if (permissionInfo) {
-          const { permissions, routes } = permissionInfo
-          Object.assign(mergeObj, { permissions, routes })
-        }
-        await setInitialState((s) => ({ ...s, ...mergeObj }));
-        setTimeout(() => {
-          const urlParams = new URL(window.location.href).searchParams;
-          // 路由跳转
-          history.push(urlParams.get('redirect') || '/');
-        }, 100)
       }
     }
   )
@@ -80,18 +82,23 @@ const LoginPage: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  const handleSubmit = async (values: LoginParams): Promise<void> => {
-    try {
-      // 如果是账号密码登录，密码加密提交
-      if (loginType === 'account' && values.password) {
-        values.password = encryptionAesPsd(values.password)
+  const { run: handleSubmit } = useDebounceFn(
+    async (values: LoginParams): Promise<void> => {
+      try {
+        // 如果是账号密码登录，密码加密提交
+        if (loginType === 'account' && values.password) {
+          values.password = encryptionAesPsd(values.password)
+        }
+        // 调用登录接口
+        runLogin({ ...values, type: loginType })
+      } catch (error) {
+        message.error(formatMessage({ id: 'pages.login.failure' }));
       }
-      // 调用登录接口
-      runLogin({ ...values, type: loginType })
-    } catch (error) {
-      message.error(formatMessage({ id: 'pages.login.failure' }));
-    }
-  };
+    },
+    {
+      wait: 300,
+    },
+  );
 
   /**
    * @description: Tabs 标签页配置
@@ -113,7 +120,7 @@ const LoginPage: FC = () => {
 
   // 初次渲染时清空token和用户信息，这里是为了避免token失效跳转到登录页
   useMount(() => {
-    setInitialState((s) => ({ ...s, currentUser: undefined, access_token: undefined }));
+    setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
     setappCache({ ...appCache, ACCESS_TOKEN: undefined })
   })
 
