@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 15:33:36
+ * @LastEditTime: 2022-12-08 09:58:44
  */
 import {
   Controller,
@@ -114,6 +114,7 @@ export class AuthController {
    * @return {*}
    * @author: Cyan
    */
+  @UseGuards(AuthGuard('jwt'))
   @Get('/routes-menu')
   @ApiOperation({ summary: '获取用户权限菜单' })
   async getRoutesMenus(

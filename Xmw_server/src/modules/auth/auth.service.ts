@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:50:18
+ * @LastEditTime: 2022-12-08 09:58:37
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -212,10 +212,9 @@ export class AuthService {
     session: Record<string, any>,
   ): Promise<ResponseModel<XmwMenu[]>> {
     // 获取当前用户 id
-    // const {
-    //   currentUserInfo: { user_id },
-    // } = session;
-    const user_id = 'bf75a509-f90e-4a29-8bf7-470b581550f6';
+    const {
+      currentUserInfo: { user_id },
+    } = session;
     // 查询权限菜单
     const sqlData = await this.menuModel.findAll({
       attributes: {
