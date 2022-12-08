@@ -4,16 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:54:44
+ * @LastEditTime: 2022-12-08 15:05:57
  */
 // 引入第三方库
+import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
 import { history, Link } from '@umijs/max';
 import { Space, Button } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { last, isEmpty } from 'lodash' //lodash 工具库
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import type { Settings as LayoutSettings, ProLayoutProps } from '@ant-design/pro-components';
 
 // 引入业务组件间
 import { CACHE_KEY } from '@/utils' // 全局工具函数
@@ -23,6 +24,7 @@ import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
 import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
 import styles from './index.less'
+import React from 'react';
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	// 使用 iconfont.cn 资源
@@ -53,7 +55,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		menu: {
 			request: async () => {
 				// 获取角色菜单
-				const RouteMenu = await initialState?.fetchRouteMenu();
+				const RouteMenu = initialState?.RouteMenu || await initialState?.fetchRouteMenu();
 				// 将数据保存到 initialState
 				setInitialState((preInitialState: InitialStateModel) => ({
 					...preInitialState,
@@ -64,7 +66,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {
-			itemRender: (route: any) => {
+			itemRender: (route: RouterTypes) => {
 				return (
 					<Link to={route.path} >
 						<Space>
@@ -81,7 +83,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 			}
 		},
 		/* 自定义菜单项的 render 方法 */
-		menuItemRender: (menuItemProps: any, defaultDom: any) => {
+		menuItemRender: (menuItemProps: any, defaultDom: React.ReactNode) => {
 			return (
 				/* 渲染二级菜单图标 */
 				<Link to={menuItemProps.path} className={styles.renderLink}>
@@ -95,12 +97,12 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		// 跨站点导航列表
 		appList,
 		// 增加一个 loading 的状态
-		childrenRender: (children: any, props: any) => {
+		childrenRender: (children: JSX.Element, props: ProLayoutProps) => {
 			if (initialState?.loading) return <PageLoading />;
 			return (
 				<>
 					{children}
-					{!props.location?.pathname?.includes('/login') && (
+					{!props.location?.pathname?.includes(routerConfig.LOGIN) && (
 						<SettingDrawer
 							disableUrlParams
 							enableDarkTheme
