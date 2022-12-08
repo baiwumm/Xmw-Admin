@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 13:52:27
+ * @LastEditTime: 2022-12-08 09:50:18
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -212,19 +212,14 @@ export class AuthService {
     session: Record<string, any>,
   ): Promise<ResponseModel<XmwMenu[]>> {
     // 获取当前用户 id
-    const {
-      currentUserInfo: { user_id },
-    } = session;
+    // const {
+    //   currentUserInfo: { user_id },
+    // } = session;
+    const user_id = 'bf75a509-f90e-4a29-8bf7-470b581550f6';
     // 查询权限菜单
     const sqlData = await this.menuModel.findAll({
       attributes: {
-        exclude: [
-          'name',
-          'headerRender',
-          'footerRender',
-          'menuRender',
-          'menuHeaderRender',
-        ],
+        exclude: ['name'],
         include: [[this.sequelize.literal('`i`.`name`'), 'name']],
       },
       // 联表查询
@@ -239,13 +234,16 @@ export class AuthService {
         menu_type: {
           [Op.ne]: 'button',
         },
+        status: {
+          [Op.ne]: '0',
+        },
         menu_id: {
           [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
             where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
         },
       },
+      order: [['sort', 'desc']], // 排序规则,
     });
-    // 获取按钮权限集合
     // 将数据转成树形结构
     const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
     return responseMessage(routes);

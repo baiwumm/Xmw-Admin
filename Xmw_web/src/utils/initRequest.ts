@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-12-07 15:05:34
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 15:20:11
+ * @LastEditTime: 2022-12-07 17:49:44
  */
 import { addLocale, history } from '@umijs/max';
 import { message } from 'antd'
 import { ANTD_LANGS } from '@/global/lang'
 import routerConfig from '@/utils/routerConfig' // 路由配置
-import { getUserInfo, getPermissions } from '@/services/logic/login' // 登录相关接口
+import { getUserInfo, getPermissions,getRoutesMenus } from '@/services/logic/login' // 登录相关接口
 import { getAllLocalesLang } from '@/services/system/internationalization'
 
 /**
@@ -68,6 +68,23 @@ export const fetchUserInfo = async (): Promise<API.USERMANAGEMENT | undefined> =
 export const fetchPermissions = async (): Promise<string[] | undefined> => {
   try {
     const result = await getPermissions();
+    if (result.code === 200) {
+      return result.data
+    }
+  } catch (error) {
+    history.push(routerConfig.LOGIN);
+  }
+  return undefined;
+};
+
+/**
+ * @description: 获取用户菜单权限
+ * @return {*}
+ * @author: Cyan
+ */
+ export const fetchRouteMenu = async (): Promise<API.MENUMANAGEMENT[] | undefined> => {
+  try {
+    const result = await getRoutesMenus();
     if (result.code === 200) {
       return result.data
     }

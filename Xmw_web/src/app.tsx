@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 15:31:15
+ * @LastEditTime: 2022-12-07 17:50:22
  */
 
 // 引入第三方库
@@ -14,7 +14,7 @@ import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { CACHE_KEY } from '@/utils' // 全局工具函数
-import { initLocalesLang,fetchUserInfo,fetchPermissions } from '@/utils/initRequest' // 初始化共用接口请求
+import { initLocalesLang,fetchUserInfo,fetchPermissions,fetchRouteMenu} from '@/utils/initRequest' // 初始化共用接口请求
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
@@ -32,6 +32,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
     Locales,
     fetchUserInfo,
     fetchPermissions,
+    fetchRouteMenu,
     Settings: appCache?.UMI_LAYOUT || defaultSettings,
   }
   // 如果不是登录页面，执行
@@ -47,15 +48,6 @@ export async function getInitialState(): Promise<InitialStateModel> {
   }
   return initialState
 }
-
-// export async function patchClientRoutes({ routes }) {
-//   const result = await getPermissionMenu();
-//       if (result.code === 200) {
-//         console.log('1111',result.data.routes)
-//         Object.assign(routes,result.data.routes)
-//       }
-//   console.log('routes111',routes)
-// }
 
 /**
  * @description: 全局 lyout 布局

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 15:13:49
+ * @LastEditTime: 2022-12-08 09:16:23
  */
 
 // 引入第三方库
@@ -139,7 +139,7 @@ const LoginPage: FC = () => {
           {/* 登录表单 */}
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
-            title="React-umi-xmw"
+            title="Xmw-Admin"
             subTitle={formatMessage({ id: 'pages.login.subtitle' })}
             onFinish={async (values) => {
               await handleSubmit(values as LoginParams);

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:37:24
+ * @LastEditTime: 2022-12-08 09:54:44
  */
 // 引入第三方库
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
@@ -20,7 +20,7 @@ import { CACHE_KEY } from '@/utils' // 全局工具函数
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
-import type { AppLocalCacheModel } from '@/global/interface'
+import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
 import styles from './index.less'
 
@@ -38,7 +38,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		rightContentRender: () => <RightContent />,
 		/* 水印 */
 		waterMarkProps: {
-			content: initialState?.CurrentUser?.user_name,
+			content: initialState?.CurrentUser?.cn_name,
 		},
 		/* 底部版权 */
 		footerRender: () => <Footer />,
@@ -50,12 +50,18 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				history.push(routerConfig.LOGIN);
 			}
 		},
-		// menu: {
-		// 	request: async () => {
-		// 		return routes
-		// 		// return initialState.routes ? [...routes, ...initialState.routes] : initialState.routes
-		// 	}
-		// },
+		menu: {
+			request: async () => {
+				// 获取角色菜单
+				const RouteMenu = await initialState?.fetchRouteMenu();
+				// 将数据保存到 initialState
+				setInitialState((preInitialState: InitialStateModel) => ({
+					...preInitialState,
+					RouteMenu,
+				}));
+				return RouteMenu
+			}
+		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {
 			itemRender: (route: any) => {
@@ -101,7 +107,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 							settings={appCache?.UMI_LAYOUT}
 							onSettingChange={(settings: LayoutSettings) => {
 								setappCache({ ...appCache, UMI_LAYOUT: settings })
-								setInitialState((preInitialState: any) => ({
+								setInitialState((preInitialState: InitialStateModel) => ({
 									...preInitialState,
 									settings,
 								}));

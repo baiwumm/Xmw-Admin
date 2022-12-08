@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:13:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:09:57
+ * @LastEditTime: 2022-12-08 09:50:04
  */
 import {
   PrimaryKey,
@@ -165,6 +165,7 @@ export class XmwMenu
   //是否显示顶栏
   @Column({
     type: DataType.INTEGER,
+    defaultValue: 1,
     comment: '是否显示顶栏',
     get() {
       return !!this.getDataValue('headerRender');
@@ -175,9 +176,11 @@ export class XmwMenu
   //是否显示页脚
   @Column({
     type: DataType.INTEGER,
+    defaultValue: 1,
     comment: '是否显示页脚',
     get() {
-      return !!this.getDataValue('footerRender');
+      const footerRender = this.getDataValue('footerRender');
+      return footerRender ? undefined : false;
     },
   })
   footerRender: number;
@@ -185,9 +188,11 @@ export class XmwMenu
   //当前路由是否展示菜单
   @Column({
     type: DataType.INTEGER,
+    defaultValue: 1,
     comment: '当前路由是否展示菜单',
     get() {
-      return !!this.getDataValue('menuHeaderRender');
+      const menuRender = this.getDataValue('menuRender');
+      return menuRender ? undefined : false;
     },
   })
   menuRender: number;
@@ -195,9 +200,11 @@ export class XmwMenu
   //当前路由是否展示菜单顶栏
   @Column({
     type: DataType.INTEGER,
+    defaultValue: 1,
     comment: '当前路由是否展示菜单顶栏',
     get() {
-      return !!this.getDataValue('menuHeaderRender');
+      const menuHeaderRender = this.getDataValue('menuHeaderRender');
+      return menuHeaderRender ? undefined : false;
     },
   })
   menuHeaderRender: number;

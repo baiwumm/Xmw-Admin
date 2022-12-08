@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:43:51
+ * @LastEditTime: 2022-12-07 17:53:59
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 /**
@@ -56,7 +56,7 @@ export type InitialStateModel = {
   Settings?: Partial<LayoutSettings>;
   CurrentUser?: API.USERMANAGEMENT;
   Permissions?: string[];
-  Routes?: API.MENUMANAGEMENT[];
+  RouteMenu?: API.MENUMANAGEMENT[];
   fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
   fetchPermissions?: () => Promise<string[] | undefined>;
   fetchRouteMenu?: () => Promise<API.MENUMANAGEMENT[] | undefined>;
