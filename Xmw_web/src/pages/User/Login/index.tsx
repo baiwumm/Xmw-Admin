@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 10:18:04
+ * @LastEditTime: 2022-12-08 17:23:13
  */
 
 // 引入第三方库
@@ -19,6 +19,7 @@ import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
 import { isEmpty } from 'lodash'
 
 // 引入业务组件
+import { initAllRequest } from '@/utils/initRequest'
 import { CACHE_KEY, encryptionAesPsd, formatResult } from '@/utils'
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
@@ -34,7 +35,7 @@ type LoginProps = {
 const LoginPage: FC = () => {
   const { formatMessage } = useIntl();
   // 初始化状态
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { setInitialState } = useModel('@@initialState');
   // 获取 localstorage key
   const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
   // 用户登录类型
@@ -53,24 +54,9 @@ const LoginPage: FC = () => {
         if (!isEmpty(res)) {
           // 将 token 保存到localstorage
           setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
-          // 获取用户信息
-          const userInfo = await initialState?.fetchUserInfo?.();
-          // 获取用户按钮权限
-          const Permissions = await initialState?.fetchPermissions?.();
-          // 获取用户权限菜单
-          const RouteMenu = await initialState?.fetchRouteMenu?.();
-          // 根据返回信息合并对象到 initialState
-          const mergeObj = { Access_token: res.access_token }
-          if (userInfo) {
-            Object.assign(mergeObj, { CurrentUser: userInfo })
-          }
-          if (Permissions) {
-            Object.assign(mergeObj, { Permissions })
-          }
-          if(RouteMenu){
-            Object.assign(mergeObj, { RouteMenu })
-          }
-          await setInitialState((s) => ({ ...s, ...mergeObj }));
+          // 获取用户信息和权限
+          const userInfoAndAccess = await initAllRequest()
+          await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
           setTimeout(() => {
             const urlParams = new URL(window.location.href).searchParams;
             // 路由跳转

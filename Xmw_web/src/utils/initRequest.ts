@@ -4,14 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-12-07 15:05:34
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 17:49:44
+ * @LastEditTime: 2022-12-08 17:21:28
  */
 import { addLocale, history } from '@umijs/max';
 import { message } from 'antd'
 import { ANTD_LANGS } from '@/global/lang'
 import routerConfig from '@/utils/routerConfig' // 路由配置
-import { getUserInfo, getPermissions,getRoutesMenus } from '@/services/logic/login' // 登录相关接口
+import { getUserInfo, getPermissions, getRoutesMenus } from '@/services/logic/login' // 登录相关接口
 import { getAllLocalesLang } from '@/services/system/internationalization'
+import type { InitialStateModel } from '@/global/interface'
 
 /**
  * @description: 获取多语言层级对象
@@ -82,7 +83,7 @@ export const fetchPermissions = async (): Promise<string[] | undefined> => {
  * @return {*}
  * @author: Cyan
  */
- export const fetchRouteMenu = async (): Promise<API.MENUMANAGEMENT[] | undefined> => {
+export const fetchRouteMenu = async (): Promise<API.MENUMANAGEMENT[] | undefined> => {
   try {
     const result = await getRoutesMenus();
     if (result.code === 200) {
@@ -93,3 +94,29 @@ export const fetchPermissions = async (): Promise<string[] | undefined> => {
   }
   return undefined;
 };
+
+/**
+ * @description: 每次登录成功或者刷新都要请求的接口
+ * @return {*}
+ * @author: Cyan
+ */
+type initAllRequestModel = Pick<InitialStateModel, 'CurrentUser' | 'Permissions' | 'RouteMenu'>
+export const initAllRequest = async () => {
+  const result: initAllRequestModel = {}
+  // 获取用户信息
+  const userInfo = await fetchUserInfo();
+  if (userInfo) {
+    result.CurrentUser = userInfo
+    // 获取用户按钮权限
+    const Permissions = await fetchPermissions();
+    if (Permissions) {
+      Object.assign(result, { Permissions })
+    }
+    // 获取用户权限菜单
+    const RouteMenu = await fetchRouteMenu();
+    if (RouteMenu) {
+      Object.assign(result, { RouteMenu })
+    }
+  }
+  return result
+} 

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 11:03:23
+ * @LastEditTime: 2022-12-08 15:50:35
  */
 declare namespace API {
   /**
@@ -86,7 +86,7 @@ declare namespace API {
     'en-US': string;
     'ja-JP': string;
     'zh-TW': string;
-    children?: MENUMANAGEMENT[];
+    routes?: MENUMANAGEMENT[];
   };
 
   /**

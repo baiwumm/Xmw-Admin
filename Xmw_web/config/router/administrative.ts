@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:18:27
+ * @LastEditTime: 2022-12-08 15:43:40
  */
 export default {
     path: '/administrative',
     name: 'administrative',
-    icon: 'icon-administrative',
+    access: 'adminRouteFilter',
     routes: [
         {
             path: '/administrative',
@@ -18,21 +18,15 @@ export default {
         {
             path: '/administrative/organization',
             name: 'organization',
-            icon: 'icon-organization',
             component: './Administrative/Organization',
-            footerRender:false
+            access: 'adminRouteFilter'
         },
         {
             path: '/administrative/jobs-management',
             name: 'jobs-management',
             icon: 'icon-jobs-management',
             component: './Administrative/JobsManagement',
+            access: 'adminRouteFilter'
         },
-        // {
-        //     path: '/administrative/structure',
-        //     name: 'structure',
-        //     icon: 'icon-structure',
-        //     component: './Administrative/Structure',
-        // }
     ],
 }

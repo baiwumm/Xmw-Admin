@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-25 14:06:24
+ * @LastEditTime: 2022-12-08 15:43:47
  */
 export default {
     path: '/dashboard',
     name: 'dashboard',
-    icon: 'icon-dashboard',
+    access: 'adminRouteFilter',
     routes: [
         {
             path: '/dashboard',
@@ -18,8 +18,8 @@ export default {
         {
             path: '/dashboard/work-bench',
             name: 'work-bench',
-            icon: 'icon-work-bench',
             component: './Dashboard/Workbench',
+            access: 'adminRouteFilter'
         },
     ],
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 17:50:22
+ * @LastEditTime: 2022-12-08 17:24:28
  */
 
 // 引入第三方库
@@ -14,7 +14,7 @@ import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 // import TabsLayout from '@/components/TabsLayout' // 多标签页
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { CACHE_KEY } from '@/utils' // 全局工具函数
-import { initLocalesLang,fetchUserInfo,fetchPermissions,fetchRouteMenu} from '@/utils/initRequest' // 初始化共用接口请求
+import { initLocalesLang, fetchUserInfo, fetchPermissions, fetchRouteMenu, initAllRequest } from '@/utils/initRequest' // 初始化共用接口请求
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
@@ -37,14 +37,9 @@ export async function getInitialState(): Promise<InitialStateModel> {
   }
   // 如果不是登录页面，执行
   if (window.location.pathname !== routerConfig.LOGIN) {
-    // 获取用户信息
-    const CurrentUser = await fetchUserInfo();
-    // 获取用户菜单权限
-    const Permissions = await fetchPermissions();
-    if (Permissions) {
-      return { ...initialState, CurrentUser, Permissions };
-    }
-    return { ...initialState, CurrentUser };
+    // 获取用户信息和权限
+    const userInfoAndAccess = await initAllRequest()
+    return { ...initialState, ...userInfoAndAccess };
   }
   return initialState
 }

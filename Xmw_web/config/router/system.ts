@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 18:04:44
+ * @LastEditTime: 2022-12-08 15:44:00
  */
 export default {
   path: '/system',
   name: 'system',
-  icon: 'icon-system',
+  access: 'adminRouteFilter',
   routes: [
     {
       path: '/system',
@@ -18,26 +18,26 @@ export default {
     {
       path: '/system/user-management',
       name: 'user-management',
-      icon: 'icon-user-management',
       component: './System/UserManagement',
+      access: 'adminRouteFilter',
     },
     {
       path: '/system/menu-management',
       name: 'menu-management',
-      icon: 'icon-menu-management',
       component: './System/MenuManagement',
+      access: 'adminRouteFilter',
     },
     {
       path: '/system/role-management',
       name: 'role-management',
-      icon: 'icon-role-management',
       component: './System/RoleManagement',
+      access: 'adminRouteFilter',
     },
     {
       path: '/system/internationalization',
       name: 'internationalization',
-      icon: 'icon-internationalization',
       component: './System/Internationalization',
+      access: 'adminRouteFilter',
     },
     // {
     //   path: '/system/operation-log',

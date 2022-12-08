@@ -4,9 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 15:05:57
+ * @LastEditTime: 2022-12-08 16:55:50
  */
 // 引入第三方库
+// @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
 import { history, Link } from '@umijs/max';
@@ -55,13 +56,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		menu: {
 			request: async () => {
 				// 获取角色菜单
-				const RouteMenu = initialState?.RouteMenu || await initialState?.fetchRouteMenu();
-				// 将数据保存到 initialState
-				setInitialState((preInitialState: InitialStateModel) => ({
-					...preInitialState,
-					RouteMenu,
-				}));
-				return RouteMenu
+				return initialState?.RouteMenu
 			}
 		},
 		/* 自定义面包屑 */

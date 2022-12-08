@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-06 14:50:05
+ * @LastEditTime: 2022-12-08 15:56:35
  */
 import { history } from '@umijs/max';
 import type { ProColumns } from '@ant-design/pro-components';
@@ -87,4 +87,27 @@ export const logoutToLogin = (): void => {
       }),
     });
   }
+}
+
+/**
+ * @description: 获取菜单权限集合，用于做菜单鉴权
+ * @param {API} routeTree
+ * @return {*}
+ * @author: Cyan
+ */
+export const collectionRouteName = (routeTree: API.MENUMANAGEMENT[] | undefined): string[] => {
+  if(!routeTree) return []
+  const result: string[] = []
+  function loopMenu(treeNode: API.MENUMANAGEMENT[]) {
+    treeNode.forEach(route => {
+      if (route.name) {
+        result.push(route.name)
+      }
+      if (route.routes) {
+        loopMenu(route.routes)
+      }
+    })
+  }
+  loopMenu(routeTree)
+  return result
 }
