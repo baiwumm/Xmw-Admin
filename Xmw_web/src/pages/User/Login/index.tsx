@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 18:02:04
+ * @LastEditTime: 2022-12-09 13:51:30
  */
 
 // 引入第三方库
@@ -13,9 +13,8 @@ import type { FC } from 'react';
 import { useState } from 'react'; // react
 import { useIntl } from '@umijs/max'
 import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
-import { WechatOutlined } from '@ant-design/icons'; // antd 图标
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
-import { message, Row, Col, Tabs, Space } from 'antd'  // antd 组件
+import { message, Row, Col, Tabs } from 'antd'  // antd 组件
 import { isEmpty } from 'lodash'
 
 // 引入业务组件
@@ -140,17 +139,6 @@ const LoginPage: FC = () => {
             onFinish={async (values) => {
               await handleSubmit(values as LoginParams);
             }}
-            actions={
-              <Space>
-                其他登录方式
-                <WechatOutlined style={{
-                  color: '#02d10d', marginInlineStart: '16px',
-                  fontSize: '24px',
-                  verticalAlign: 'middle',
-                  cursor: 'pointer',
-                }} />
-              </Space>
-            }
           >
             <Tabs
               centered
