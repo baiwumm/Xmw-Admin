@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:58:44
+ * @LastEditTime: 2022-12-09 11:26:45
  */
 import {
   Controller,
@@ -13,6 +13,7 @@ import {
   Session,
   Get,
   UseGuards,
+  Res,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { omit } from 'lodash';
@@ -28,8 +29,16 @@ import {
 } from '@nestjs/swagger'; // swagger 接口文档
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { ResponseDto } from '@/dto/response.dto';
-import { LoginParamsDto, LoginResponseDto, UserInfoResponseDto } from './dto';
+import {
+  LoginParamsDto,
+  LoginResponseDto,
+  UserInfoResponseDto,
+  PermissionResponseDto,
+  RoutesMenuResponseDto,
+  VerifyCodeResponseDto,
+} from './dto';
 import { responseMessage } from '@/utils';
+import * as svgCaptcha from 'svg-captcha';
 
 @ApiTags('用户登录模块')
 @ApiHeader({
@@ -101,6 +110,7 @@ export class AuthController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('/permissions')
+  @ApiOkResponse({ type: PermissionResponseDto })
   @ApiOperation({ summary: '获取用户按钮权限' })
   async getPermissions(
     @Session() session: Record<string, any>,
@@ -116,11 +126,40 @@ export class AuthController {
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('/routes-menu')
+  @ApiOkResponse({ type: RoutesMenuResponseDto })
   @ApiOperation({ summary: '获取用户权限菜单' })
   async getRoutesMenus(
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<XmwMenu[]>> {
     const response = await this.authService.getRoutesMenus(session);
     return response;
+  }
+
+  /**
+   * @description: 获取图形验证码
+   * @return {*}
+   * @author: Cyan
+   */
+  @Get('verify-code') //当请求该接口时，返回一张随机图片验证码
+  @ApiOkResponse({ type: VerifyCodeResponseDto })
+  @ApiOperation({ summary: '获取图形验证码' })
+  async getCaptcha(
+    @Session() session: Record<string, any>,
+    @Res() res,
+  ): Promise<void> {
+    const captcha = svgCaptcha.createMathExpr({
+      //可配置返回的图片信息
+      size: 4, // 验证码长度
+      ignoreChars: '0oO1ilI', // 验证码字符中排除 0oO1ilI
+      noise: 2, // 干扰线条的数量
+      width: 132,
+      height: 40,
+      fontSize: 50,
+      color: true, // 验证码的字符是否有颜色，默认没有，如果设定了背景，则默认有
+      background: '#fff',
+    });
+    session.verifyCode = captcha.text; //使用session保存验证，用于登陆时验证
+    res.type('image/svg+xml'); //指定返回的类型
+    return res.send(responseMessage(captcha.data)); //给页面返回一张图片
   }
 }

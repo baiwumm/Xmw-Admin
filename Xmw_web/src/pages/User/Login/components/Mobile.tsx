@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-11 17:53:22
+ * @LastEditTime: 2022-12-08 17:58:06
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
 import { ProFormText, ProFormCaptcha } from '@ant-design/pro-components'; // antd 高级组件
-import { LockOutlined, MobileOutlined } from '@ant-design/icons'; // antd 图标
+import { MobileOutlined } from '@ant-design/icons'; // antd 图标
 import { message } from 'antd'  // antd 组件
 
 const Account: FC = () => {
@@ -37,7 +37,6 @@ const Account: FC = () => {
             <ProFormCaptcha
                 fieldProps={{
                     size: 'large',
-                    prefix: <LockOutlined className={'prefixIcon'} />,
                 }}
                 captchaProps={{
                     size: 'large',

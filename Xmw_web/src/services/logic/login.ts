@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-29 16:38:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 13:56:32
+ * @LastEditTime: 2022-12-08 18:28:14
  */
 import { request } from '@umijs/max';
 import type { ResponseModel } from '@/global/interface';
@@ -64,6 +64,17 @@ export async function getPermissions(): Promise<ResponseModel<string[]>> {
  */
  export async function getRoutesMenus(): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
   return request('/api/auth/routes-menu', {
+    method: 'GET',
+  });
+}
+
+/**
+ * @description: 获取图形验证码
+ * @return {*}
+ * @author: Cyan
+ */
+ export async function getCaptcha(): Promise<ResponseModel<string>> {
+  return request('/api/auth/verify-code', {
     method: 'GET',
   });
 }

@@ -54,6 +54,7 @@
     "sequelize": "^6.25.3",
     "sequelize-typescript": "^2.1.5",
     "stacktrace-js": "^2.0.2",
+    "svg-captcha": "^1.4.0",
     "swagger-ui-express": "^4.5.0"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:58:37
+ * @LastEditTime: 2022-12-09 10:46:33
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -50,7 +50,10 @@ export class AuthService {
     session: Record<string, any>,
   ): Promise<responseResult> {
     // 登录参数校验结果
-    const authResult: responseResult = await this.validateUser(loginParams);
+    const authResult: responseResult = await this.validateUser(
+      loginParams,
+      session,
+    );
     // 解构参数
     const { data: userInfo, code } = authResult;
     // 状态码 code === 200,则登录成功
@@ -121,9 +124,12 @@ export class AuthService {
    * @return {*}
    * @author: Cyan
    */
-  async validateUser(loginParams: LoginParamsDto): Promise<responseResult> {
+  async validateUser(
+    loginParams: LoginParamsDto,
+    session: Record<string, any>,
+  ): Promise<responseResult> {
     // 解构参数
-    const { type, user_name, password, phone } = loginParams;
+    const { type, user_name, password, phone, verifyCode } = loginParams;
     // 判断参数是否正确
     if (!type) {
       return responseMessage({}, '参数不正确!', -1);
@@ -139,7 +145,9 @@ export class AuthService {
       // 用户名登录
       case 'account':
         // 根据用户信息不同，返回相应的信息
-        if (!userInfo) {
+        if (session.verifyCode.toUpperCase() !== verifyCode.toUpperCase()) {
+          return responseMessage({}, '验证码不正确!', -1);
+        } else if (!userInfo) {
           return responseMessage({}, '用户不存在!', -1);
         } else if (userInfo.password !== password) {
           return responseMessage({}, '密码不正确!', -1);

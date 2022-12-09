@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 17:23:13
+ * @LastEditTime: 2022-12-08 18:02:04
  */
 
 // 引入第三方库
@@ -79,6 +79,11 @@ const LoginPage: FC = () => {
         // 如果是账号密码登录，密码加密提交
         if (loginType === 'account' && values.password) {
           values.password = encryptionAesPsd(values.password)
+        }
+        // 如果是手机登录
+        if(loginType === 'mobile' && values.captcha != '1234'){
+          message.error('验证码错误！')
+          return
         }
         // 调用登录接口
         runLogin({ ...values, type: loginType })

@@ -15,4 +15,5 @@ export type LoginParams = {
   user_name?: string;
   password?: string;
   phone?: string;
+  captcha?: string;
 };

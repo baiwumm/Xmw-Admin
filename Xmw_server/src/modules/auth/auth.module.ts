@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:31:27
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 10:25:43
+ * @LastEditTime: 2022-12-09 10:00:56
  */
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
