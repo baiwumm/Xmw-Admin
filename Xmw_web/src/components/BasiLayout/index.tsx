@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 16:55:50
+ * @LastEditTime: 2022-12-09 18:02:27
  */
 // 引入第三方库
 // @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
-import { history, Link } from '@umijs/max';
+import { history, Link, SelectLang } from '@umijs/max';
 import { Space, Button } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
@@ -18,16 +18,16 @@ import { last, isEmpty } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings, ProLayoutProps } from '@ant-design/pro-components';
 
 // 引入业务组件间
+import GlobalLogout from '@/components/GlobalLogout' // 退出登录
 import { CACHE_KEY } from '@/utils' // 全局工具函数
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
-import RightContent from '@/components/RightContent'; // 顶部菜单栏工具
 import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
 import styles from './index.less'
-import React from 'react';
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
+	const { CurrentUser, RouteMenu, Settings } = initialState
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -38,10 +38,21 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		/* 菜单图标使用iconfont */
 		iconfontUrl: process.env.ICONFONT_URL,
 		/* 右侧工具栏 */
-		rightContentRender: () => <RightContent />,
+		rightContentRender: false,
 		/* 水印 */
 		waterMarkProps: {
-			content: initialState?.CurrentUser?.cn_name,
+			content: CurrentUser?.cn_name,
+		},
+		avatarProps: {
+			src: CurrentUser?.avatar_url,
+			title: CurrentUser?.cn_name,
+			size: 'small',
+		},
+		actionsRender: () => {
+			return [
+				<SelectLang reload={false} style={{ padding: '0', fontSize: 16 }} key="SelectLang" />,
+				<GlobalLogout key="Logout" />
+			]
 		},
 		/* 底部版权 */
 		footerRender: () => <Footer />,
@@ -49,15 +60,12 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		onPageChange: () => {
 			const { location } = history;
 			// 如果没有登录，重定向到 login
-			if (isEmpty(initialState?.CurrentUser) && location.pathname !== routerConfig.LOGIN) {
+			if (isEmpty(CurrentUser) && location.pathname !== routerConfig.LOGIN) {
 				history.push(routerConfig.LOGIN);
 			}
 		},
 		menu: {
-			request: async () => {
-				// 获取角色菜单
-				return initialState?.RouteMenu
-			}
+			request: async () => RouteMenu
 		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {
@@ -68,8 +76,8 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 							<Button
 								type="text"
 								size="small"
-								icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: initialState?.Settings?.colorPrimary }} />}
-								style={{ color: initialState?.Settings?.colorPrimary }}>
+								icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: Settings?.colorPrimary }} />}
+								style={{ color: Settings?.colorPrimary }}>
 								{route.breadcrumbName}
 							</Button>
 						</Space>

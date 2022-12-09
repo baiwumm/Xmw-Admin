@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 13:51:30
+ * @LastEditTime: 2022-12-09 17:28:30
  */
 
 // 引入第三方库
@@ -123,7 +123,7 @@ const LoginPage: FC = () => {
     <div className={styles.container}>
       {/* 国际化下拉框 */}
       <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang />}
+        {SelectLang && <SelectLang reload={false}/>}
       </div>
       <Row justify="center" className={styles.content}>
         {/* 左侧背景 */}
