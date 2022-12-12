@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 10:46:33
+ * @LastEditTime: 2022-12-12 09:23:48
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -169,19 +169,21 @@ export class AuthService {
    * @author: Cyan
    */
   async logout(session: Record<string, any>): Promise<responseResult> {
-    const {
-      currentUserInfo: { user_id, user_name },
-    } = session;
-    // 清空当前用户token
-    this.redisCacheService.cacheDel(`${user_id}-${user_name}`);
-    // 清空数据库中 token
-    await this.userModel.update(
-      { token: '' },
-      {
-        where: { user_id },
-      },
-    );
-    return responseMessage({});
+    const { currentUserInfo } = session;
+    if (currentUserInfo) {
+      const { user_id, user_name } = currentUserInfo;
+      // 清空当前用户token
+      this.redisCacheService.cacheDel(`${user_id}-${user_name}`);
+      // 清空数据库中 token
+      await this.userModel.update(
+        { token: '' },
+        {
+          where: { user_id },
+        },
+      );
+      return responseMessage({});
+    }
+    return responseMessage({}, '获取不到当前用户信息!', -1);
   }
 
   /**
@@ -193,22 +195,24 @@ export class AuthService {
     session: Record<string, any>,
   ): Promise<ResponseModel<string[]>> {
     // 获取当前用户 id
-    const {
-      currentUserInfo: { user_id },
-    } = session;
-    // 查询权限菜单
-    const sqlData = await this.menuModel.findAll({
-      attributes: ['permission'],
-      where: {
-        menu_id: {
-          [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
+    const { currentUserInfo } = session;
+    if (currentUserInfo?.user_id) {
+      const { user_id } = currentUserInfo;
+      // 查询权限菜单
+      const sqlData = await this.menuModel.findAll({
+        attributes: ['permission'],
+        where: {
+          menu_id: {
+            [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
             where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
+          },
         },
-      },
-    });
-    // 获取按钮权限集合
-    const permissions = sqlData.map((s) => s.permission);
-    return responseMessage(permissions);
+      });
+      // 获取按钮权限集合
+      const permissions = sqlData.map((s) => s.permission);
+      return responseMessage(permissions);
+    }
+    return responseMessage({}, '获取不到当前用户信息!', -1);
   }
 
   /**
@@ -220,39 +224,41 @@ export class AuthService {
     session: Record<string, any>,
   ): Promise<ResponseModel<XmwMenu[]>> {
     // 获取当前用户 id
-    const {
-      currentUserInfo: { user_id },
-    } = session;
-    // 查询权限菜单
-    const sqlData = await this.menuModel.findAll({
-      attributes: {
-        exclude: ['name'],
-        include: [[this.sequelize.literal('`i`.`name`'), 'name']],
-      },
-      // 联表查询
-      include: [
-        {
-          model: XmwInternational,
-          as: 'i',
-          attributes: [],
+    const { currentUserInfo } = session;
+    if (currentUserInfo?.user_id) {
+      const { user_id } = currentUserInfo;
+      // 查询权限菜单
+      const sqlData = await this.menuModel.findAll({
+        attributes: {
+          exclude: ['name'],
+          include: [[this.sequelize.literal('`i`.`name`'), 'name']],
         },
-      ],
-      where: {
-        menu_type: {
-          [Op.ne]: 'button',
-        },
-        status: {
-          [Op.ne]: '0',
-        },
-        menu_id: {
-          [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
+        // 联表查询
+        include: [
+          {
+            model: XmwInternational,
+            as: 'i',
+            attributes: [],
+          },
+        ],
+        where: {
+          menu_type: {
+            [Op.ne]: 'button',
+          },
+          status: {
+            [Op.ne]: '0',
+          },
+          menu_id: {
+            [Op.in]: this.sequelize.literal(`(select menu_id from xmw_permission
             where  FIND_IN_SET(role_id,(select role_id from xmw_user where user_id='${user_id}')))`),
+          },
         },
-      },
-      order: [['sort', 'desc']], // 排序规则,
-    });
-    // 将数据转成树形结构
-    const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
-    return responseMessage(routes);
+        order: [['sort', 'desc']], // 排序规则,
+      });
+      // 将数据转成树形结构
+      const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
+      return responseMessage(routes);
+    }
+    return responseMessage({}, '获取不到当前用户信息!', -1);
   }
 }
