@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 15:21:39
+ * @LastEditTime: 2022-12-13 10:57:35
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -52,7 +52,7 @@ export const errorConfig: RequestConfig = {
           case 401:
             // 这里加一个防抖
             Modal.success({
-              title: '登录已失效',
+              title: '登录已失效,请重新登录!',
               content: data.msg,
               onOk: () => {
                 // 退出登录返回到登录页

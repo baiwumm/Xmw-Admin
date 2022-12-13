@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 10:15:01
+ * @LastEditTime: 2022-12-12 10:50:05
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -16,6 +16,7 @@ import { UserManagementModule } from '@/modules/system/user-management/user-mana
 import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
 import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
 import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
+import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
 import { JobsManagementModule } from '@/modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
 import { OrganizationModule } from '@/modules/administrative/organization/organization.module'; // 智能行政-组织管理
 import { FilesModule } from '@/modules/files/files.module'; // 文件上传
@@ -44,6 +45,7 @@ import { RedisCacheModule } from '@/modules/redis-cache/redis-cache.module'; // 
     MenuManagementModule,
     RoleManagementModule,
     UserManagementModule,
+    OperationLogsModule,
     FilesModule,
     AuthModule,
     RedisCacheModule,

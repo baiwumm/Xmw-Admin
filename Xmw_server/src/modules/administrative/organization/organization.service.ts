@@ -4,13 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:12:41
+ * @LastEditTime: 2022-12-12 11:01:10
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { ResData, ResponseModel } from '@/global/interface'; // interface
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
@@ -22,7 +22,7 @@ export class OrganizationService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwOrganization)
     private readonly organizationModel: typeof XmwOrganization,
-    private sequelize: Sequelize,
+    private readonly operationLogsService: OperationLogsService,
   ) {}
 
   /**
@@ -79,8 +79,12 @@ export class OrganizationService {
     // 如果通过则执行 sql insert 语句
     const result = await this.organizationModel.create({
       ...organizationInfo,
-      founder: session.currentUserInfo.user_id,
+      founder: session?.currentUserInfo?.user_id,
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(
+      `创建组织：${organizationInfo.org_name}`,
+    );
     return responseMessage(result);
   }
 

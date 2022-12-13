@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-12 09:23:48
+ * @LastEditTime: 2022-12-13 15:09:46
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -23,6 +23,7 @@ import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; /
 import { LoginParamsDto } from './dto';
 import { ResponseModel } from '@/global/interface'; // interface
 import { initializeTree, responseMessage } from '@/utils';
+import * as moment from 'moment'; // 时间插件 moment
 
 type responseResult = ResponseModel<Record<string, any>>;
 
@@ -56,6 +57,10 @@ export class AuthService {
     );
     // 解构参数
     const { data: userInfo, code } = authResult;
+    // 获取上次登录时间
+    const lastLoginTime = await this.redisCacheService.cacheGet(
+      `${userInfo.user_id}-last-login`,
+    );
     // 状态码 code === 200,则登录成功
     switch (code) {
       case 200:
@@ -107,9 +112,15 @@ export class AuthService {
           token,
           RedisConfig().expiresin,
         );
+        // 保存当前登录的时间
+        await this.redisCacheService.cacheSet(
+          `${userInfo.user_id}-last-login`,
+          moment().format('YYYY-MM-DD HH:mm:ss'),
+        );
         return {
           data: {
             access_token: token,
+            login_last_time: JSON.parse(lastLoginTime),
           },
         };
       // 其它气矿直接返回结果
@@ -183,7 +194,7 @@ export class AuthService {
       );
       return responseMessage({});
     }
-    return responseMessage({}, '获取不到当前用户信息!', -1);
+    return responseMessage({}, '登录信息已失效!', -1);
   }
 
   /**
@@ -212,7 +223,7 @@ export class AuthService {
       const permissions = sqlData.map((s) => s.permission);
       return responseMessage(permissions);
     }
-    return responseMessage({}, '获取不到当前用户信息!', -1);
+    return responseMessage({}, '登录信息已失效!', -1);
   }
 
   /**
@@ -259,6 +270,6 @@ export class AuthService {
       const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
       return responseMessage(routes);
     }
-    return responseMessage({}, '获取不到当前用户信息!', -1);
+    return responseMessage({}, '登录信息已失效!', -1);
   }
 }

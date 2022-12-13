@@ -128,3 +128,20 @@ export type InternationalAttributes = {
   updated_time?: Date; // 最后一次更新时间
   children?: InternationalAttributes[];
 };
+
+/**
+ * @description: Logs Attributes
+ * @return {*}
+ * @author: Cyan
+ */
+export type LogsAttributes = {
+  log_id: string; // id
+  user_id: string; // 用户id
+  content: string; // 日志内容
+  ip: string; // ip
+  path: string; // 前端路由
+  user_agent: string; // 代理
+  api_url: string; // 请求地址
+  created_time?: Date; // 创建时间
+  updated_time?: Date; // 最后一次更新时间
+};

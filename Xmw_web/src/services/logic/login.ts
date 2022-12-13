@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-11-29 16:38:17
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 18:28:14
+ * @LastEditTime: 2022-12-13 11:13:10
  */
 import { request } from '@umijs/max';
-import type { ResponseModel } from '@/global/interface';
+import type { ResponseModel, LoginModel } from '@/global/interface';
 import type { LoginParams } from '@/pages/User/Login/utils/indexface'
 
 /**
@@ -16,7 +16,7 @@ import type { LoginParams } from '@/pages/User/Login/utils/indexface'
  * @return {*}
  * @author: Cyan
  */
-export async function Login(options?: LoginParams): Promise<ResponseModel<{ access_token: string }>> {
+export async function Login(options?: LoginParams): Promise<ResponseModel<LoginModel>> {
   return request('/api/auth/login', {
     method: 'POST',
     data: options || {},
@@ -62,7 +62,7 @@ export async function getPermissions(): Promise<ResponseModel<string[]>> {
  * @return {*}
  * @author: Cyan
  */
- export async function getRoutesMenus(): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
+export async function getRoutesMenus(): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
   return request('/api/auth/routes-menu', {
     method: 'GET',
   });
@@ -73,7 +73,7 @@ export async function getPermissions(): Promise<ResponseModel<string[]>> {
  * @return {*}
  * @author: Cyan
  */
- export async function getCaptcha(): Promise<ResponseModel<string>> {
+export async function getCaptcha(): Promise<ResponseModel<string>> {
   return request('/api/auth/verify-code', {
     method: 'GET',
   });

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 15:56:35
+ * @LastEditTime: 2022-12-13 14:29:20
  */
 import { history } from '@umijs/max';
 import type { ProColumns } from '@ant-design/pro-components';
@@ -96,7 +96,7 @@ export const logoutToLogin = (): void => {
  * @author: Cyan
  */
 export const collectionRouteName = (routeTree: API.MENUMANAGEMENT[] | undefined): string[] => {
-  if(!routeTree) return []
+  if (!routeTree) return []
   const result: string[] = []
   function loopMenu(treeNode: API.MENUMANAGEMENT[]) {
     treeNode.forEach(route => {
@@ -110,4 +110,40 @@ export const collectionRouteName = (routeTree: API.MENUMANAGEMENT[] | undefined)
   }
   loopMenu(routeTree)
   return result
+}
+
+/**
+ * @description: 延迟提交，优化用户体验
+ * @param {number} time
+ * @return {*}
+ * @author: Cyan
+ */
+export const waitTime = (time: number = 100): Promise<boolean> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};
+
+/**
+ * @description: 获取当前时间
+ * @return {*}
+ * @author: Cyan
+ */
+export const timeFix = (): string => {
+  const time = new Date()
+  const hour = time.getHours()
+  return hour < 9 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 20 ? '下午好' : '夜深了'
+}
+
+/**
+ * @description: 随机欢迎语
+ * @return {*}
+ * @author: Cyan
+ */
+export const welcomeWords = (): string => {
+  const arr = ['休息一会儿吧', '准备吃什么呢?', '要不要打一把 LOL', '我猜你可能累了', '认真工作吧']
+  const index = Math.floor(Math.random() * arr.length)
+  return arr[index]
 }

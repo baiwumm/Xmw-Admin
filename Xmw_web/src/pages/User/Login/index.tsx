@@ -4,22 +4,25 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 17:28:30
+ * @LastEditTime: 2022-12-13 15:14:19
  */
 
 // 引入第三方库
 import { useLocalStorageState, useRequest, useMount, useDebounceFn } from 'ahooks';
+import { createFromIconfontCN } from '@ant-design/icons';
 import type { FC } from 'react';
 import { useState } from 'react'; // react
 import { useIntl } from '@umijs/max'
 import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
-import { message, Row, Col, Tabs } from 'antd'  // antd 组件
+import { message, Row, Col, Tabs, notification, Typography } from 'antd'  // antd 组件
 import { isEmpty } from 'lodash'
+import moment from 'moment'
 
 // 引入业务组件
+import type { LoginModel } from '@/global/interface';
 import { initAllRequest } from '@/utils/initRequest'
-import { CACHE_KEY, encryptionAesPsd, formatResult } from '@/utils'
+import { CACHE_KEY, encryptionAesPsd, formatResult, waitTime, timeFix } from '@/utils'
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
@@ -27,14 +30,14 @@ import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.less'; // css 样式恩建
 import { Login } from '@/services/logic/login' // 登录相关接口
 
-type LoginProps = {
-  access_token: string
-}
-
 const LoginPage: FC = () => {
+  // 使用 iconfont.cn 资源
+  const IconFont = createFromIconfontCN({
+    scriptUrl: process.env.ICONFONT_URL,
+  });
   const { formatMessage } = useIntl();
   // 初始化状态
-  const { setInitialState } = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   // 获取 localstorage key
   const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
   // 用户登录类型
@@ -45,22 +48,34 @@ const LoginPage: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  const { run: runLogin } = useRequest<LoginProps, LoginParams[]>(
-    async (params) => formatResult<LoginProps>(await Login(params)),
+  const { run: runLogin } = useRequest<LoginModel, LoginParams[]>(
+    async (params) => formatResult<LoginModel>(await Login(params)),
     {
       manual: true,
-      onSuccess: async (res: LoginProps) => {
+      onSuccess: async (res: LoginModel) => {
         if (!isEmpty(res)) {
+          const { access_token, login_last_time } = res
           // 将 token 保存到localstorage
-          setappCache({ ...appCache, ACCESS_TOKEN: res.access_token })
+          setappCache({ ...appCache, ACCESS_TOKEN: access_token })
           // 获取用户信息和权限
           const userInfoAndAccess = await initAllRequest()
-          await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
-          setTimeout(() => {
-            const urlParams = new URL(window.location.href).searchParams;
-            // 路由跳转
-            history.push(urlParams.get('redirect') || '/');
-          }, 100)
+          if (!isEmpty(userInfoAndAccess)) {
+            await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
+            setTimeout(() => {
+              const urlParams = new URL(window.location.href).searchParams;
+              // 路由跳转
+              history.push(urlParams.get('redirect') || '/');
+              // 欢迎语
+              notification.success({
+                message: `${timeFix()}，${userInfoAndAccess?.CurrentUser?.cn_name} 💕`,
+                description: login_last_time ? <span>
+                  {formatMessage({ id: 'pages.login.success.last-time' })}
+                  <Typography.Text strong>{moment(login_last_time).fromNow()}</Typography.Text>
+                </span> : <Typography.Text strong>{formatMessage({ id: 'pages.login.success.first-login' })}</Typography.Text>,
+                icon: <IconFont type="icon-huanyingye" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />
+              })
+            }, 0)
+          }
         }
       }
     }
@@ -80,8 +95,8 @@ const LoginPage: FC = () => {
           values.password = encryptionAesPsd(values.password)
         }
         // 如果是手机登录
-        if(loginType === 'mobile' && values.captcha != '1234'){
-          message.error('验证码错误！')
+        if (loginType === 'mobile' && values.captcha != '1234') {
+          message.error(formatMessage({ id: 'pages.login.type.mobile.captcha.failure' }))
           return
         }
         // 调用登录接口
@@ -123,7 +138,7 @@ const LoginPage: FC = () => {
     <div className={styles.container}>
       {/* 国际化下拉框 */}
       <div className={styles.lang} data-lang>
-        {SelectLang && <SelectLang reload={false}/>}
+        {SelectLang && <SelectLang reload={false} />}
       </div>
       <Row justify="center" className={styles.content}>
         {/* 左侧背景 */}
@@ -137,6 +152,7 @@ const LoginPage: FC = () => {
             title="Xmw-Admin"
             subTitle={formatMessage({ id: 'pages.login.subtitle' })}
             onFinish={async (values) => {
+              await waitTime(500)
               await handleSubmit(values as LoginParams);
             }}
           >

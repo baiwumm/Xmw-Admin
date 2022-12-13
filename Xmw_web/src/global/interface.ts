@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 17:53:59
+ * @LastEditTime: 2022-12-13 14:41:53
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 /**
@@ -70,4 +70,14 @@ export type InitialStateModel = {
 export type AppLocalCacheModel = {
   UMI_LAYOUT?: Partial<LayoutSettings>;
   ACCESS_TOKEN?: string
+}
+
+/**
+ * @description: 用户登录
+ * @return {*}
+ * @author: Cyan
+ */
+export type LoginModel = {
+  access_token: string;
+  login_last_time: Date;
 }

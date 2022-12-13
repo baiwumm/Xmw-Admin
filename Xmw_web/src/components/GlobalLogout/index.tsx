@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-12-09 17:57:41
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 18:17:35
+ * @LastEditTime: 2022-12-13 13:53:44
  */
 import type { FC } from 'react'
 import { useLocalStorageState, useRequest } from 'ahooks';
@@ -13,7 +13,7 @@ import { useModel, useIntl } from '@umijs/max';
 import { PoweroffOutlined } from '@ant-design/icons'; // antd 图标
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
-import { CACHE_KEY, logoutToLogin } from '@/utils'
+import { CACHE_KEY, logoutToLogin,waitTime } from '@/utils'
 
 type LogoutProps = ResponseModel<Record<string, any>>
 
@@ -27,7 +27,7 @@ const GlobalLogout: FC = () => {
  * @return {*}
  * @author: Cyan
  */
-  const { run: loginOut, loading } = useRequest<LogoutProps, unknown[]>(Logout, {
+  const { run: loginOut } = useRequest<LogoutProps, unknown[]>(Logout, {
     manual: true,
     onSuccess: async (res: LogoutProps) => {
       if (res.code === 200) {
@@ -49,9 +49,12 @@ const GlobalLogout: FC = () => {
     Modal.confirm({
       title: formatMessage({ id: 'global.warm-tips' }),
       content: formatMessage({ id: 'pages.logout.tip' }),
-      okButtonProps: { loading },
       onOk: () => {
-        loginOut()
+        return new Promise(async (resolve) => {
+          await waitTime(500)
+          loginOut()
+          resolve(true)
+        })
       }
     })
   }
