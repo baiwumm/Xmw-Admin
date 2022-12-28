@@ -8,7 +8,8 @@ export type FormTemplateProps = {
   menuData: API.MENUMANAGEMENT[];
   reloadTable: () => void; // 刷新表格
   formData?: API.ROLEMANAGEMENT;
-  triggerDom?: JSX.Element; // ModalForm trigger
+  open: boolean;
+  setOpenDrawerFalse: () => void
 };
 
 /**

@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:10:17
+ * @LastEditTime: 2022-12-28 15:43:36
  */
 // 引入第三方库
 import type { FC } from 'react';
-import { useRequest } from 'ahooks'
+import { useRequest, useBoolean } from 'ahooks'
 import React, { useState, useRef } from 'react';
 import { useIntl, getLocale, useModel, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { Space, Button, Modal, message, Tag, Tooltip } from 'antd' // antd 组件库
 import type { LabeledValue } from 'antd/es/select/index';
 import moment from 'moment'
@@ -24,6 +24,7 @@ import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜�
 import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import FormTemplate from './FormTemplate'  // 表单组件
 import { APP_FLAG_OPTS } from '@/global/enum'
+import type { DropdownMenuProps } from '@/global/interface'
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 import { MENU_TYPE_TAGS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/enum'
@@ -52,6 +53,8 @@ const TableTemplate: FC = () => {
 	const [parent_id, set_parent_id] = useState<string>('')
 	// 受控的表格设置栏
 	const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>(renderColumnsStateMap());
+	// 是否显示抽屉表单
+	const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -62,23 +65,18 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (menu_id: string): Promise<void> => {
+	const handlerDelete = (menu_id: string): void => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				return new Promise<void>(async (resolve, reject): Promise<void> => {
-					await delMenu(menu_id).then(res => {
-						if (res.code === 200) {
-							message.success(res.msg)
-							// 刷新表格
-							reloadTable()
-							resolve()
-						}
-					})
-					reject()
+				await delMenu(menu_id).then(res => {
+					if (res.code === 200) {
+						message.success(res.msg)
+						// 刷新表格
+						reloadTable()
+					}
 				})
-
 			}
 		})
 
@@ -90,48 +88,34 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const DropdownMenu = (record: API.MENUMANAGEMENT) => {
+	const DropdownMenu = (record: API.MENUMANAGEMENT): DropdownMenuProps[] => {
 		return (
 			[
 				{
 					name: <Access accessible={access.operationPermission(permissions.menuManagement.addChild)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							parent_id={parent_id}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<ClusterOutlined />}
-									block
-									onClick={() => set_parent_id(record?.menu_id)}
-								>
-									{formatMessage({ id: 'menu.system.menu-management.add-child' })}
-								</Button>}
-							internationalData={internationalData}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<ClusterOutlined />}
+							block
+							onClick={() => { setCurrentRecord(undefined); set_parent_id(record?.menu_id); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.system.menu-management.add-child' })}
+						</Button>
 					</Access>,
 					key: 'addChild',
 				},
 				{
 					name: <Access accessible={access.operationPermission(permissions.menuManagement.edit)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							formData={currentRecord}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<EditOutlined />}
-									block
-									onClick={() => setCurrentRecord(record)}
-								>
-									{formatMessage({ id: 'menu.system.menu-management.edit' })}
-								</Button>}
-							internationalData={internationalData}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<EditOutlined />}
+							block
+							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.system.menu-management.edit' })}
+						</Button>
 					</Access>,
 					key: 'edit',
 				},
@@ -455,37 +439,54 @@ const TableTemplate: FC = () => {
 	})
 
 	return (
-		<ProTable<API.MENUMANAGEMENT, TableSearchProps>
-			actionRef={tableRef}
-			columns={columns}
-			request={async (params: TableSearchProps): Promise<RequestData<API.MENUMANAGEMENT>> => {
-				{
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getMenuList(params).then(res => {
-						setTreeData(res.data)
-						return {
-							data: res.data,
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-						}
-					})
-					return Promise.resolve(response)
+		<>
+			<ProTable<API.MENUMANAGEMENT, TableSearchProps>
+				actionRef={tableRef}
+				columns={columns}
+				request={async (params: TableSearchProps): Promise<RequestData<API.MENUMANAGEMENT>> => {
+					{
+						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+						// 如果需要转化参数可以在这里进行修改
+						const response = await getMenuList(params).then(res => {
+							setTreeData(res.data)
+							return {
+								data: res.data,
+								// success 请返回 true，不然 table 会停止解析数据，即使有数据
+								success: res.code === 200,
+							}
+						})
+						return Promise.resolve(response)
+					}
 				}
-			}
-			}
-			rowKey="menu_id"
-			pagination={false}
-			columnsState={{
-				value: columnsStateMap,
-				onChange: setColumnsStateMap,
-			}}
-			// 工具栏
-			toolBarRender={() => [
-				<FormTemplate treeData={treeData} reloadTable={reloadTable} internationalData={internationalData} key="FormTemplate" />
-			]}
-			scroll={{ x: columnScrollX(columns) }}
-		/>
+				}
+				rowKey="menu_id"
+				pagination={false}
+				columnsState={{
+					value: columnsStateMap,
+					onChange: setColumnsStateMap,
+				}}
+				// 工具栏
+				toolBarRender={() => [
+					<Access accessible={access.operationPermission(permissions.menuManagement.add)} fallback={null} key="plus">
+						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+							<PlusOutlined />
+							{formatMessage({ id: 'menu.system.menu-management.add' })}
+						</Button>
+					</Access>
+				]}
+				scroll={{ x: columnScrollX(columns) }}
+			/>
+			{/* 抽屉表单 */}
+			<FormTemplate
+				treeData={treeData}
+				reloadTable={reloadTable}
+				internationalData={internationalData}
+				parent_id={parent_id}
+				formData={currentRecord}
+				open={openDrawer}
+				setOpenDrawerFalse={setOpenDrawerFalse}
+			/>
+		</>
 	)
 }
 export default TableTemplate

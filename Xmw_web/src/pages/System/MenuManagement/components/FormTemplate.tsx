@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:21:57
+ * @LastEditTime: 2022-12-28 15:50:35
  */
 
 // 引入第三方库
@@ -15,38 +15,51 @@ import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import AddPlusPermission from '@/components/AddPlusPermission'; // 全局新建按钮权限
-import permissions from '@/utils/permission'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createMenu, updateMenu } from '@/services/system/menu-management' // 菜单管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id, internationalData }) => {
+const FormTemplate: FC<FormTemplateProps> = ({
+	treeData,
+	reloadTable,
+	formData,
+	parent_id,
+	internationalData,
+	open,
+	setOpenDrawerFalse
+}) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.MENUMANAGEMENT>();
 	// DrawerForm 不同状态下 标题显示
 	const formTitle = formData?.menu_id ? `${formatMessage({ id: 'menu.system.menu-management.edit' }) + formatMessage({ id: 'pages.system.menu-management.title' })}：${formData[getLocale()]}` : (formatMessage({ id: 'menu.system.menu-management.add' }) + formatMessage({ id: 'pages.system.menu-management.title' }))
+
+	// 关闭抽屉浮层
+	const handlerClose = () => {
+		// 关闭表单
+		setOpenDrawerFalse()
+		// 重置表单
+		form.resetFields();
+	}
+
 	// 提交表单
-	const handlerSubmit = async (values: API.MENUMANAGEMENT) => {
+	const handlerSubmit = async (values: API.MENUMANAGEMENT): Promise<void> => {
 		// 提交数据
-		let result = false
 		let params = { ...formData, ...values }
 		if (parent_id) {
 			params.parent_id = parent_id
 		}
-		// 删除 children 属性
-		params = omit(params, ['children'])
+		// 删除 routes 属性
+		params = omit(params, ['routes'])
 		await (params.menu_id ? updateMenu : createMenu)(params).then(res => {
 			if (res.code === 200) {
 				message.success(res.msg);
+				// 刷新表格
 				reloadTable()
-				// 重置表单
-				form.resetFields()
-				result = true
+				// 关闭浮层
+				handlerClose()
 			}
 		})
-		return result
 	}
 	return (
 		<DrawerForm<API.MENUMANAGEMENT>
@@ -54,21 +67,12 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 			width={550}
 			grid
 			form={form}
-			trigger={
-				// 这里必须要用div包裹，不然不会触发trigger，具体原因不明
-				<div>
-					<AddPlusPermission
-						triggerDom={triggerDom}
-						permission={permissions.menuManagement.add}
-						id="menu.system.menu-management.add"
-					/>
-				</div>
-			}
+			open={open}
 			autoFocusFirstInput
 			drawerProps={{
-				destroyOnClose: false,
+				destroyOnClose: true,
 				maskClosable: false,
-				onClose: () => form.resetFields()
+				onClose: () => handlerClose()
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}

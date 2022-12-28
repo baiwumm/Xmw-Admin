@@ -4,19 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:10:11
+ * @LastEditTime: 2022-12-28 15:23:51
  */
 // 引入第三方库
+import { useBoolean } from 'ahooks';
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useIntl, useModel, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
+import type { DropdownMenuProps } from '@/global/interface'
 import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
@@ -37,6 +39,8 @@ const TableTemplate: FC = () => {
 	const [currentRecord, setCurrentRecord] = useState<API.INTERNATIONALIZATION>()
 	// 判断是否是添加子级
 	const [parent_id, set_parent_id] = useState<string>('')
+	// 是否显示抽屉表单
+	const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -47,23 +51,18 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (id: string): Promise<void> => {
+	const handlerDelete = (id: string): void => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
-			onOk: () => {
-				return new Promise<void>(async (resolve, reject): Promise<void> => {
-					await delInternational(id).then(res => {
-						if (res.code === 200) {
-							message.success(res.msg)
-							// 刷新表格
-							reloadTable()
-							resolve()
-						}
-					})
-					reject()
+			onOk: async () => {
+				await delInternational(id).then(res => {
+					if (res.code === 200) {
+						message.success(res.msg)
+						// 刷新表格
+						reloadTable()
+					}
 				})
-
 			}
 		})
 	}
@@ -73,46 +72,34 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const DropdownMenu = (record: API.INTERNATIONALIZATION) => {
+	const DropdownMenu = (record: API.INTERNATIONALIZATION): DropdownMenuProps[] => {
 		return (
 			[
 				{
 					name: <Access accessible={access.operationPermission(permissions.internationalization.addChild)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							parent_id={parent_id}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<ClusterOutlined />}
-									block
-									onClick={() => set_parent_id(record.id)}
-								>
-									{formatMessage({ id: 'menu.system.internationalization.add-child' })}
-								</Button>}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<ClusterOutlined />}
+							block
+							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.id); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.system.internationalization.add-child' })}
+						</Button>
 					</Access>,
 					key: 'addChild',
 				},
 				{
 					name: <Access accessible={access.operationPermission(permissions.internationalization.edit)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							formData={currentRecord}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<EditOutlined />}
-									block
-									onClick={() => setCurrentRecord(record)}
-								>
-									{formatMessage({ id: 'menu.system.internationalization.edit' })}
-								</Button>}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<EditOutlined />}
+							block
+							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.system.internationalization.edit' })}
+						</Button>
 					</Access>,
 					key: 'edit',
 				},
@@ -226,33 +213,49 @@ const TableTemplate: FC = () => {
 	]
 
 	return (
-		<ProTable<API.INTERNATIONALIZATION, TableSearchProps>
-			actionRef={tableRef}
-			columns={columns}
-			request={async (params: TableSearchProps): Promise<RequestData<API.INTERNATIONALIZATION>> => {
-				{
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getInternationalList(params).then(res => {
-						setTreeData(res.data)
-						return {
-							data: res.data,
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-						}
-					})
-					return Promise.resolve(response)
+		<>
+			<ProTable<API.INTERNATIONALIZATION, TableSearchProps>
+				actionRef={tableRef}
+				columns={columns}
+				request={async (params: TableSearchProps): Promise<RequestData<API.INTERNATIONALIZATION>> => {
+					{
+						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+						// 如果需要转化参数可以在这里进行修改
+						const response = await getInternationalList(params).then(res => {
+							setTreeData(res.data)
+							return {
+								data: res.data,
+								// success 请返回 true，不然 table 会停止解析数据，即使有数据
+								success: res.code === 200,
+							}
+						})
+						return Promise.resolve(response)
+					}
 				}
-			}
-			}
-			rowKey="id"
-			pagination={false}
-			// 工具栏
-			toolBarRender={() => [
-				<FormTemplate treeData={treeData} reloadTable={reloadTable} key="FormTemplate" />
-			]}
-			scroll={{ x: columnScrollX(columns) }}
-		/>
+				}
+				rowKey="id"
+				pagination={false}
+				// 工具栏
+				toolBarRender={() => [
+					<Access accessible={access.operationPermission(permissions.internationalization.add)} fallback={null} key="plus">
+						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+							<PlusOutlined />
+							{formatMessage({ id: 'menu.system.internationalization.add' })}
+						</Button>
+					</Access>
+				]}
+				scroll={{ x: columnScrollX(columns) }}
+			/>
+			{/* 抽屉表单 */}
+			<FormTemplate
+				treeData={treeData}
+				reloadTable={reloadTable}
+				parent_id={parent_id}
+				formData={currentRecord}
+				open={openDrawer}
+				setOpenDrawerFalse={setOpenDrawerFalse}
+			/>
+		</>
 	)
 }
 export default TableTemplate

@@ -4,16 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:09:49
+ * @LastEditTime: 2022-12-28 15:04:35
  */
 // 引入第三方库
-import { useRequest } from 'ahooks';
+import { useRequest, useBoolean } from 'ahooks';
 import type { FC } from 'react';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useIntl, useModel, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
 import moment from 'moment'
 
@@ -24,7 +24,7 @@ import { getOrganizationList } from '@/services/administrative/organization' // 
 import { columnScrollX, formatResult } from '@/utils'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
-import type { ResData, PageResModel, PaginationProps } from '@/global/interface'
+import type { ResData, PageResModel, PaginationProps, DropdownMenuProps } from '@/global/interface'
 import type { TableSearchProps } from '../utils/interface'
 
 const TableTemplate: FC = () => {
@@ -54,6 +54,8 @@ const TableTemplate: FC = () => {
 	const [currentRecord, setCurrentRecord] = useState<API.JOBSMANAGEMENT>()
 	// 判断是否是添加子级
 	const [parent_id, set_parent_id] = useState<string>('')
+	// 是否显示抽屉表单
+	const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -65,21 +67,17 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (jobs_id: string): Promise<void> => {
+	const handlerDelete = (jobs_id: string): void => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				return new Promise<void>(async (resolve, reject): Promise<void> => {
-					await delJobs(jobs_id).then(res => {
-						if (res.code === 200) {
-							message.success(res.msg)
-							// 刷新表格
-							reloadTable()
-							resolve()
-						}
-					})
-					reject()
+				await delJobs(jobs_id).then(res => {
+					if (res.code === 200) {
+						message.success(res.msg)
+						// 刷新表格
+						reloadTable()
+					}
 				})
 			}
 		})
@@ -91,50 +89,34 @@ const TableTemplate: FC = () => {
 	* @return {*}
 	* @author: Cyan
 	*/
-	const DropdownMenu = (record: API.JOBSMANAGEMENT) => {
+	const DropdownMenu = (record: API.JOBSMANAGEMENT): DropdownMenuProps[] => {
 		return (
 			[
 				{
 					name: <Access accessible={access.operationPermission(permissions.jobsManagement.addChild)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							parent_id={parent_id}
-							orgTree={orgTree || []}
-							userList={userList?.list || []}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<ClusterOutlined />}
-									block
-									onClick={() => set_parent_id(record.jobs_id)}
-								>
-									{formatMessage({ id: 'menu.administrative.jobs-management.add-child' })}
-								</Button>}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<ClusterOutlined />}
+							block
+							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.jobs_id); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.administrative.jobs-management.add-child' })}
+						</Button>
 					</Access>,
 					key: 'addChild',
 				},
 				{
 					name: <Access accessible={access.operationPermission(permissions.jobsManagement.edit)} fallback={null}>
-						<FormTemplate
-							treeData={treeData}
-							reloadTable={reloadTable}
-							formData={currentRecord}
-							orgTree={orgTree || []}
-							userList={userList?.list || []}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<EditOutlined />}
-									block
-									onClick={() => setCurrentRecord(record)}
-								>
-									{formatMessage({ id: 'menu.administrative.jobs-management.edit' })}
-								</Button>}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<EditOutlined />}
+							block
+							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.administrative.jobs-management.edit' })}
+						</Button>
 					</Access>,
 					key: 'edit',
 				},
@@ -250,38 +232,51 @@ const TableTemplate: FC = () => {
 	]
 
 	return (
-		<ProTable<API.JOBSMANAGEMENT, TableSearchProps>
-			actionRef={tableRef}
-			columns={columns}
-			request={async (params: TableSearchProps): Promise<RequestData<API.JOBSMANAGEMENT>> => {
-				{
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getJobsList(params).then(res => {
-						setTreeData(res.data)
-						return {
-							data: res.data,
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-						}
-					})
-					return Promise.resolve(response)
+		<>
+			<ProTable<API.JOBSMANAGEMENT, TableSearchProps>
+				actionRef={tableRef}
+				columns={columns}
+				request={async (params: TableSearchProps): Promise<RequestData<API.JOBSMANAGEMENT>> => {
+					{
+						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+						// 如果需要转化参数可以在这里进行修改
+						const response = await getJobsList(params).then(res => {
+							setTreeData(res.data)
+							return {
+								data: res.data,
+								// success 请返回 true，不然 table 会停止解析数据，即使有数据
+								success: res.code === 200,
+							}
+						})
+						return Promise.resolve(response)
+					}
 				}
-			}
-			}
-			rowKey="jobs_id"
-			pagination={false}
-			// 工具栏
-			toolBarRender={() => [
-				<FormTemplate
-					treeData={treeData}
-					reloadTable={reloadTable}
-					orgTree={orgTree || []}
-					userList={userList?.list || []}
-					key="FormTemplate" />
-			]}
-			scroll={{ x: columnScrollX(columns) }}
-		/>
+				}
+				rowKey="jobs_id"
+				pagination={false}
+				// 工具栏
+				toolBarRender={() => [
+					<Access accessible={access.operationPermission(permissions.jobsManagement.add)} fallback={null} key="plus">
+						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+							<PlusOutlined />
+							{formatMessage({ id: 'menu.administrative.jobs-management.add' })}
+						</Button>
+					</Access>
+				]}
+				scroll={{ x: columnScrollX(columns) }}
+			/>
+			{/* 抽屉表单 */}
+			<FormTemplate
+				treeData={treeData}
+				reloadTable={reloadTable}
+				orgTree={orgTree || []}
+				parent_id={parent_id}
+				formData={currentRecord}
+				userList={userList?.list || []}
+				open={openDrawer}
+				setOpenDrawerFalse={setOpenDrawerFalse}
+			/>
+		</>
 	)
 }
 export default TableTemplate

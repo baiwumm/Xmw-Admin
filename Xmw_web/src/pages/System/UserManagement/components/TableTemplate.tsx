@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:10:40
+ * @LastEditTime: 2022-12-28 15:56:26
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -23,7 +23,7 @@ import { getUserList, delUser, setUserStatus } from '@/services/system/user-mana
 import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
-import type { PageResModel, ResponseModel } from '@/global/interface'
+import type { PageResModel, ResponseModel, DropdownMenuProps } from '@/global/interface'
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
@@ -68,23 +68,17 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (user_id: string | undefined): Promise<void> => {
+	const handlerDelete = (user_id: string): void => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				return new Promise<void>(async (resolve, reject): Promise<void> => {
-					if (user_id) {
-						await delUser(user_id).then(res => {
-							if (res.code === 200) {
-								message.success(res.msg)
-								// 刷新表格
-								reloadTable()
-								resolve()
-							}
-						})
+				await delUser(user_id).then(res => {
+					if (res.code === 200) {
+						message.success(res.msg)
+						// 刷新表格
+						reloadTable()
 					}
-					reject()
 				})
 			}
 		})
@@ -97,7 +91,7 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const DropdownMenu = () => {
+	const DropdownMenu = (record: API.USERMANAGEMENT): DropdownMenuProps[] => {
 		return (
 			[
 				{
@@ -106,7 +100,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<EditOutlined />} block
-							onClick={() => setModalVisibleTrue()}
+							onClick={() => { setCurrentRecord(record); setModalVisibleTrue() }}
 						>
 							{formatMessage({ id: 'menu.system.user-management.edit' })}
 						</Button>
@@ -119,7 +113,7 @@ const TableTemplate: FC = () => {
 							block
 							type="text"
 							size="small"
-							icon={<DeleteOutlined />} onClick={() => handlerDelete(currentRecord?.user_id)} >
+							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.user_id)} >
 							{formatMessage({ id: 'menu.system.user-management.delete' })}
 						</Button>
 					</Access>,
@@ -349,8 +343,8 @@ const TableTemplate: FC = () => {
 			align: 'center',
 			key: 'option',
 			fixed: 'right',
-			render: () => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu()}>
+			render: (_, record) => [
+				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
 					<Button size="small">
 						{formatMessage({ id: 'global.table.operation' })}
 						<DownOutlined />

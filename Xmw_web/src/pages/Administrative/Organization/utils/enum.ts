@@ -4,9 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:27:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-20 18:26:34
+ * @LastEditTime: 2022-12-28 11:40:02
  */
-export const ORG_TYPE_OPTS = [
+export const ORG_TYPE_OPTS: { value: string; label: string }[] = [
   {
     label: '公司',
     value: 'company',
@@ -25,7 +25,7 @@ export const ORG_TYPE_OPTS = [
   },
 ];
 
-export const ORG_TYPE_TAGS = {
+export const ORG_TYPE_TAGS: Record<string, { text: string; color: string }> = {
   company: {
     text: '公司',
     color: 'cyan',

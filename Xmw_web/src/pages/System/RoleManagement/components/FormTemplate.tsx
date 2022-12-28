@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:16:46
+ * @LastEditTime: 2022-12-28 15:35:24
  */
 
 // 引入第三方库
@@ -15,33 +15,38 @@ import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import AddPlusPermission from '@/components/AddPlusPermission'; // 全局新建按钮权限
-import permissions from '@/utils/permission'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createRole, updateRole } from '@/services/system/role-management' // 角色管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom, menuData }) => {
+const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, open, setOpenDrawerFalse }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.ROLEMANAGEMENT>();
 	// ModalForm 不同状态下 标题显示
 	const formTitle = formData?.role_id ? `${formatMessage({ id: 'menu.system.role-management.edit' }) + formatMessage({ id: 'pages.system.role-management.title' })}：${formData.role_name}` : (formatMessage({ id: 'menu.system.role-management.add' }) + formatMessage({ id: 'pages.system.role-management.title' }))
+
+	// 关闭抽屉浮层
+	const handlerClose = () => {
+		// 关闭表单
+		setOpenDrawerFalse()
+		// 重置表单
+		form.resetFields();
+	}
+
 	// 提交表单
-	const handlerSubmit = async (values: API.ROLEMANAGEMENT) => {
+	const handlerSubmit = async (values: API.ROLEMANAGEMENT): Promise<void> => {
 		// 提交数据
-		let result = false
 		const params = { ...formData, ...values }
 		await (params.role_id ? updateRole : createRole)(params).then(res => {
 			if (res.code === 200) {
 				message.success(res.msg);
+				// 刷新表格
 				reloadTable()
-				// 重置表单
-				form.resetFields()
-				result = true
+				// 关闭浮层
+				handlerClose()
 			}
 		})
-		return result
 	}
 	return (
 		<ModalForm<API.ROLEMANAGEMENT>
@@ -49,29 +54,18 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, triggerDom
 			width={500}
 			grid
 			form={form}
-			trigger={
-				// 这里必须要用div包裹，不然不会触发trigger，具体原因不明
-				<div>
-					<AddPlusPermission
-						triggerDom={triggerDom}
-						permission={permissions.roleManagement.add}
-						id="menu.system.role-management.add"
-					/>
-				</div>
-			}
+			open={open}
 			autoFocusFirstInput
 			modalProps={{
-				destroyOnClose: false,
+				destroyOnClose: true,
 				maskClosable: false,
-				onCancel: () => form.resetFields()
+				onCancel: () => handlerClose()
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}
 			onFinish={async (values) => {
 				// 提交数据
-				const isSuccess = await handlerSubmit(values)
-				// 返回true关闭弹框，否则不关闭
-				return isSuccess
+				await handlerSubmit(values)
 			}}
 			onVisibleChange={visiable => {
 				if (visiable && formData) {

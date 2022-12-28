@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:14:06
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 14:41:53
+ * @LastEditTime: 2022-12-28 15:04:15
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 /**
@@ -80,4 +80,14 @@ export type AppLocalCacheModel = {
 export type LoginModel = {
   access_token: string;
   login_last_time: Date;
+}
+
+/**
+ * @description: 下拉菜单 Props
+ * @return {*}
+ * @author: Cyan
+ */
+export type DropdownMenuProps = {
+  name: React.ReactNode;
+  key: string;
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-12-05 14:11:26
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 14:48:05
+ * @LastEditTime: 2022-12-28 14:22:24
  */
 import type { FC } from 'react';
 import { useIntl, useAccess, Access } from '@umijs/max'
@@ -13,7 +13,7 @@ import { Button } from 'antd'; // antd 组件库
 
 // prop 参数类型定义
 type IProps = {
-  triggerDom: JSX.Element | undefined,
+  triggerDom?: JSX.Element | undefined,
   permission: string;
   id: string;
 }

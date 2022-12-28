@@ -15,22 +15,35 @@ import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import AddPlusPermission from '@/components/AddPlusPermission'; // 全局新建按钮权限
-import permissions from '@/utils/permission'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
-const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, triggerDom, parent_id }) => {
+const FormTemplate: FC<FormTemplateProps> = ({
+	treeData,
+	reloadTable,
+	formData,
+	parent_id,
+	open,
+	setOpenDrawerFalse
+}) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.INTERNATIONALIZATION>();
 	// ModalForm 不同状态下 标题显示
 	const formTitle = formData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
+
+	// 关闭抽屉浮层
+	const handlerClose = () => {
+		// 关闭表单
+		setOpenDrawerFalse()
+		// 重置表单
+		form.resetFields();
+	}
+
 	// 提交表单
-	const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
+	const handlerSubmit = async (values: API.INTERNATIONALIZATION): Promise<void> => {
 		// 提交数据
-		let result = false
 		let params = { ...formData, ...values }
 		if (parent_id) {
 			params.parent_id = parent_id
@@ -41,13 +54,12 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 		await (params.id ? updateInternational : createInternational)(params).then(res => {
 			if (res.code === 200) {
 				message.success(res.msg);
+				// 刷新表格
 				reloadTable()
-				// 重置表单
-				form.resetFields()
-				result = true
+				// 关闭浮层
+				handlerClose()
 			}
 		})
-		return result
 	}
 	return (
 		<ModalForm<API.INTERNATIONALIZATION>
@@ -55,21 +67,12 @@ const FormTemplate: FC<FormTemplateProps> = ({ treeData, reloadTable, formData, 
 			width={500}
 			grid
 			form={form}
-			trigger={
-				// 这里必须要用div包裹，不然不会触发trigger，具体原因不明
-				<div>
-					<AddPlusPermission
-						triggerDom={triggerDom}
-						permission={permissions.internationalization.add}
-						id="menu.system.internationalization.add"
-					/>
-				</div>
-			}
+			open={open}
 			autoFocusFirstInput
 			modalProps={{
-				destroyOnClose: false,
+				destroyOnClose: true,
 				maskClosable: false,
-				onCancel: () => form.resetFields()
+				onCancel: () => handlerClose()
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}

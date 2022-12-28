@@ -8,8 +8,9 @@ export type FormTemplateProps = {
   userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void, // 刷新表格
   formData?: API.ORGANIZATION,
-  triggerDom?: JSX.Element,
-  parent_id?: string
+  parent_id?: string;
+  open: boolean;
+  setOpenDrawerFalse: () => void
 }
 
 /**
@@ -17,7 +18,7 @@ export type FormTemplateProps = {
  * @return {*}
  * @author: Cyan
  */
- export type FormTemplateItemProps = {
+export type FormTemplateItemProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
   userList: API.USERMANAGEMENT[]; // 用户列表
   parent_id?: string

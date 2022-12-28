@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-07 14:10:22
+ * @LastEditTime: 2022-12-28 15:33:06
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -13,11 +13,12 @@ import { useBoolean } from 'ahooks';
 import { useIntl, useModel, useRequest, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN } from '@ant-design/icons' // antd 图标库
+import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
 
 // 引入业务组件
+import type { DropdownMenuProps } from '@/global/interface'
 import { getRoleList, delRole, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { columnScrollX } from '@/utils'
@@ -43,6 +44,8 @@ const TableTemplate: FC = () => {
 	const [menuData, setMenuData] = useState<API.MENUMANAGEMENT[]>([])
 	const [roleLoading, { setTrue: setRoleLoadingTrue, setFalse: setRoleLoadingFalse }] = useBoolean(false);
 	const [roleId, setRoleId] = useState<string>('')
+	// 是否显示抽屉表单
+	const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -54,23 +57,18 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const handlerDelete = async (role_id: string): Promise<void> => {
+	const handlerDelete = (role_id: string): void => {
 		Modal.confirm({
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				return new Promise<void>(async (resolve, reject): Promise<void> => {
-					await delRole(role_id).then(res => {
-						if (res.code === 200) {
-							message.success(res.msg)
-							// 刷新表格
-							reloadTable()
-							resolve()
-						}
-					})
-					reject()
+				await delRole(role_id).then(res => {
+					if (res.code === 200) {
+						message.success(res.msg)
+						// 刷新表格
+						reloadTable()
+					}
 				})
-
 			}
 		})
 
@@ -82,26 +80,20 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	const DropdownMenu = (record: API.ROLEMANAGEMENT) => {
+	const DropdownMenu = (record: API.ROLEMANAGEMENT): DropdownMenuProps[] => {
 		return (
 			[
 				{
 					name: <Access accessible={access.operationPermission(permissions.roleManagement.edit)} fallback={null}>
-						<FormTemplate
-							reloadTable={reloadTable}
-							formData={currentRecord}
-							menuData={menuData}
-							triggerDom={
-								<Button
-									type="text"
-									size="small"
-									icon={<EditOutlined />}
-									block
-									onClick={() => setCurrentRecord(record)}
-								>
-									{formatMessage({ id: 'menu.system.role-management.edit' })}
-								</Button>}
-						/>
+						<Button
+							type="text"
+							size="small"
+							icon={<EditOutlined />}
+							block
+							onClick={() => { setCurrentRecord(record); setOpenDrawerTrue() }}
+						>
+							{formatMessage({ id: 'menu.system.role-management.edit' })}
+						</Button>
 					</Access>,
 					key: 'edit',
 				},
@@ -253,35 +245,50 @@ const TableTemplate: FC = () => {
 	})
 
 	return (
-		<ProTable<API.ROLEMANAGEMENT, TableSearchProps>
-			actionRef={tableRef}
-			columns={columns}
-			request={async (params: TableSearchProps): Promise<RequestData<API.ROLEMANAGEMENT>> => {
-				{
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getRoleList(params).then(res => {
-						return {
-							data: res.data.list,
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-							total: res.data.total
-						}
-					})
-					return Promise.resolve(response)
+		<>
+			<ProTable<API.ROLEMANAGEMENT, TableSearchProps>
+				actionRef={tableRef}
+				columns={columns}
+				request={async (params: TableSearchProps): Promise<RequestData<API.ROLEMANAGEMENT>> => {
+					{
+						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+						// 如果需要转化参数可以在这里进行修改
+						const response = await getRoleList(params).then(res => {
+							return {
+								data: res.data.list,
+								// success 请返回 true，不然 table 会停止解析数据，即使有数据
+								success: res.code === 200,
+								total: res.data.total
+							}
+						})
+						return Promise.resolve(response)
+					}
 				}
-			}
-			}
-			rowKey="role_id"
-			pagination={{
-				pageSize: 5,
-			}}
-			// 工具栏
-			toolBarRender={() => [
-				<FormTemplate reloadTable={reloadTable} menuData={menuData} key="FormTemplate" />
-			]}
-			scroll={{ x: columnScrollX(columns) }}
-		/>
+				}
+				rowKey="role_id"
+				pagination={{
+					pageSize: 5,
+				}}
+				// 工具栏
+				toolBarRender={() => [
+					<Access accessible={access.operationPermission(permissions.roleManagement.add)} fallback={null} key="plus">
+						<Button type="primary" onClick={() => { setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+							<PlusOutlined />
+							{formatMessage({ id: 'menu.system.role-management.add' })}
+						</Button>
+					</Access>
+				]}
+				scroll={{ x: columnScrollX(columns) }}
+			/>
+			{/* 抽屉表单 */}
+			<FormTemplate
+				reloadTable={reloadTable}
+				menuData={menuData}
+				formData={currentRecord}
+				open={openDrawer}
+				setOpenDrawerFalse={setOpenDrawerFalse}
+			/>
+		</>
 	)
 }
 export default TableTemplate

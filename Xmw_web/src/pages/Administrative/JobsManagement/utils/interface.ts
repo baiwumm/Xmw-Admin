@@ -3,7 +3,7 @@
  * @Author: Cyan
  * @Date: 2022-09-24 08:58:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 18:06:41
+ * @LastEditTime: 2022-12-28 15:04:40
  */
 
 /**
@@ -17,8 +17,9 @@ export type FormTemplateProps = {
   userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void; // 表格刷新
   formData?: API.JOBSMANAGEMENT; // 表单数据
-  triggerDom?: JSX.Element; // DrawerForm trigger
   parent_id?: string; // 父级id
+  open: boolean;
+  setOpenDrawerFalse: () => void
 };
 
 /**
