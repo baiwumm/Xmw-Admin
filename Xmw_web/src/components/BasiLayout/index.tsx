@@ -4,21 +4,21 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 10:42:48
+ * @LastEditTime: 2022-12-28 17:18:45
  */
 // 引入第三方库
 // @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
-import { history, Link, SelectLang } from '@umijs/max';
+import { history, Link } from '@umijs/max';
 import { Space } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { last, isEmpty } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings, ProLayoutProps } from '@ant-design/pro-components';
 
-// 引入业务组件间
-import GlobalLogout from '@/components/GlobalLogout' // 退出登录
+// 引入业务组件
+import RightContent from '@/components/RightContent'
 import { CACHE_KEY } from '@/utils' // 全局工具函数
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
@@ -37,21 +37,10 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		/* 菜单图标使用iconfont */
 		iconfontUrl: process.env.ICONFONT_URL,
 		/* 右侧工具栏 */
-		rightContentRender: false,
+		rightContentRender: () => <RightContent />,
 		/* 水印 */
 		waterMarkProps: {
 			content: CurrentUser?.cn_name,
-		},
-		avatarProps: {
-			src: CurrentUser?.avatar_url,
-			title: CurrentUser?.cn_name,
-			size: 'small',
-		},
-		actionsRender: () => {
-			return [
-				<SelectLang reload={false} style={{ padding: '0', fontSize: 16 }} key="SelectLang" />,
-				<GlobalLogout key="Logout" />
-			]
 		},
 		/* 底部版权 */
 		footerRender: () => <Footer />,
@@ -72,7 +61,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				return (
 					<Link to={route.path} >
 						<Space>
-							<IconFont type={`icon-${last(route.path.split('/'))}`}/>
+							<IconFont type={`icon-${last(route.path.split('/'))}`} />
 							<span>{route.breadcrumbName}</span>
 						</Space>
 					</Link>
