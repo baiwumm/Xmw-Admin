@@ -1,6 +1,5 @@
 // https://umijs.org/config/
 import { defineConfig } from '@umijs/max';
-import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
@@ -128,5 +127,7 @@ export default defineConfig({
     'process.env': {
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_a30493ke3ob.js',
     },
-  }
+  },
+  // 关闭mock
+  mock: false
 });

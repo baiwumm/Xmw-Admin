@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 09:35:08
+ * @LastEditTime: 2022-12-28 10:42:48
  */
 // 引入第三方库
 // @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 import { SettingDrawer, PageLoading } from '@ant-design/pro-components'; // 高级组件
 import { history, Link, SelectLang } from '@umijs/max';
-import { Space, Button } from 'antd' // antd 组件库
+import { Space } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { last, isEmpty } from 'lodash' //lodash 工具库
@@ -26,7 +26,7 @@ import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
-	const { CurrentUser, RouteMenu, Settings } = initialState
+	const { CurrentUser, RouteMenu } = initialState
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -72,15 +72,10 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				return (
 					<Link to={route.path} >
 						<Space>
-							<Button
-								type="text"
-								size="small"
-								icon={<IconFont type={`icon-${last(route.path.split('/'))}`} style={{ color: Settings?.colorPrimary }} />}
-								style={{ color: Settings?.colorPrimary }}>
-								{route.breadcrumbName}
-							</Button>
+							<IconFont type={`icon-${last(route.path.split('/'))}`}/>
+							<span>{route.breadcrumbName}</span>
 						</Space>
-					</Link >
+					</Link>
 				)
 			}
 		},
