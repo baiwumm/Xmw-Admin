@@ -1,9 +1,12 @@
-@import '~antd/es/style/variable.less';
-
 html,
 body,
 #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
 }
 
 .colorWeak {
@@ -17,21 +20,22 @@ body,
   left: unset;
 }
 
-// 设置 settingDrawer 为主题色
-.ant-pro-setting-drawer-handle{
-  background-color: @primary-color;
+canvas {
+  display: block;
 }
 
-// 设置菜单图标颜色跟随主题色
-.ant-menu-item .ant-menu-item-icon, 
-.ant-menu-submenu-title .ant-menu-item-icon, 
-.ant-menu-item .anticon, 
-.ant-menu-submenu-title .anticon,
-.ant-pro-base-menu .ant-pro-base-menu-item-icon{
-  color: @primary-color;
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (max-width: @screen-xs) {
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: 768px) {
   .ant-table {
     width: 100%;
     overflow-x: auto;

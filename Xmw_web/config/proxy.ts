@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:54:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-08 16:35:00
+ * @LastEditTime: 2022-12-27 18:06:24
  */
 /**
  * @name 代理的配置
@@ -17,7 +17,7 @@
  *
  * @doc https://umijs.org/docs/guides/proxy
  */
-export default {
+ export default {
   /**
    * @description: 后端代理配置
    * @name 详细的代理配置

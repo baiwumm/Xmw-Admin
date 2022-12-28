@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 18:02:27
+ * @LastEditTime: 2022-12-28 09:35:08
  */
 // 引入第三方库
 // @ts-ignore
@@ -24,7 +24,6 @@ import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
-import styles from './index.less'
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	const { CurrentUser, RouteMenu, Settings } = initialState
@@ -89,10 +88,10 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		menuItemRender: (menuItemProps: any, defaultDom: React.ReactNode) => {
 			return (
 				/* 渲染二级菜单图标 */
-				<Link to={menuItemProps.path} className={styles.renderLink}>
+				<Link to={menuItemProps.path} style={{ display: 'flex', alignItems: 'center' }}>
 					{/* 分组布局不用渲染图标，避免重复 */}
 					{!(appCache?.UMI_LAYOUT?.siderMenuType === 'group') && menuItemProps.pro_layout_parentKeys?.length &&
-						<IconFont type={menuItemProps.icon} className={styles.renderIcon} />}
+						<IconFont type={menuItemProps.icon} style={{ marginRight: 10 }} />}
 					{defaultDom}
 				</Link>
 			);

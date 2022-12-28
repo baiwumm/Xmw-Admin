@@ -5,11 +5,9 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
+const { REACT_APP_ENV = 'dev' } = process.env;
+
 export default defineConfig({
-  // keepalive: [/./],
-  // tabsLayout: {
-  //   hasDropdown: true,
-  // },
   /**
    * @name 开启 hash 模式
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
@@ -56,7 +54,7 @@ export default defineConfig({
    * @doc 代理介绍 https://umijs.org/docs/guides/proxy
    * @doc 代理配置 https://umijs.org/docs/api/config#proxy
    */
-  proxy: proxy['dev'],
+  proxy: proxy[REACT_APP_ENV as keyof typeof proxy],
   /**
    * @name 快速热更新配置
    * @description 一个不错的热更新组件，更新时可以保留 state
@@ -68,14 +66,6 @@ export default defineConfig({
    * @@doc https://umijs.org/docs/max/data-flow
    */
   model: {},
-  /**
-   * @name dva 数据流
-   * @@doc https://umijs.org/docs/api/runtime-config#dva
-   */
-  dva: {
-    immer: {},
-    extraModels: [],
-  },
   /**
    * 一个全局的初始数据流，可以用它在插件之间共享数据
    * @description 可以用来存放一些全局的数据，比如用户信息，或者一些全局的状态，全局初始状态在整个 Umi 项目的最开始创建。
@@ -89,6 +79,15 @@ export default defineConfig({
   layout: {
     locale: true,
     ...defaultSettings,
+  },
+  /**
+   * @name moment2dayjs 插件
+   * @description 将项目中的 moment 替换为 dayjs
+   * @doc https://umijs.org/docs/max/moment2dayjs
+   */
+  moment2dayjs: {
+    preset: 'antd',
+    plugins: ['duration'],
   },
   /**
    * @name 国际化插件
@@ -121,30 +120,10 @@ export default defineConfig({
   access: {},
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
-  /**
-   * @name openAPI 插件的配置
-   * @description 基于 openapi 的规范生成serve 和mock，能减少很多样板代码
-   * @doc https://pro.ant.design/zh-cn/docs/openapi/
-   */
-  openAPI: [
-    {
-      requestLibPath: "import { request } from '@umijs/max'",
-      // 或者使用在线的版本
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
-    },
-    {
-      requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
-  ],
-  /**
-   * @name openAPI 设置代码中的可用变量。
-   * @description 属性值会经过一次 JSON.stringify 转换。
-   * @doc https://umijs.org/docs/api/config#define
-   */
+  mfsu: {
+    strategy: 'normal',
+  },
+  requestRecord: {},
   define: {
     'process.env': {
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_a30493ke3ob.js',
