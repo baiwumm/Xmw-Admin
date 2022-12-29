@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-27 18:04:39
+ * @LastEditTime: 2022-12-29 14:00:12
  */
 
 // 引入第三方库
 import type { RunTimeLayoutConfig } from '@umijs/max';
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
-// import TabsLayout from '@/components/TabsLayout' // 多标签页
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { CACHE_KEY } from '@/utils' // 全局工具函数
 import { initLocalesLang, fetchUserInfo, fetchPermissions, fetchRouteMenu, initAllRequest } from '@/utils/initRequest' // 初始化共用接口请求
@@ -51,18 +50,6 @@ export async function getInitialState(): Promise<InitialStateModel> {
  * @author: Cyan
  */
 export const layout: RunTimeLayoutConfig = BasiLayout
-
-/**
- * @description: Tabs 多标签页
- * @doc 多tabs布局 https://juejin.cn/post/7109492504424087566
- * @return {*}
- * @author: Cyan
- */
-// export const getCustomTabs = () => {
-//   return (tabsProps: any) => {
-//     return <TabsLayout tabsProps={{ ...tabsProps }} />
-//   };
-// };
 
 /**
  * @description: request 配置，可以配置错误处理，它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
