@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 17:21:42
+ * @LastEditTime: 2022-12-28 18:19:34
  */
 import { NestFactory } from '@nestjs/core';
 import * as express from 'express';
@@ -24,7 +24,8 @@ import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   //日志相关
   app.use(logger); // 所有请求都打印日志
 
@@ -69,8 +70,7 @@ async function bootstrap() {
   SwaggerModule.setup(process.env.SWAGGER_SETUP_PATH, app, document);
   await app.listen(App_configuration().port, () => {
     Logger.info(
-      `服务已经启动,接口请访问:http://www.localhost:${
-        App_configuration().port
+      `服务已经启动,接口请访问:http://www.localhost:${App_configuration().port
       }`,
     );
   });
