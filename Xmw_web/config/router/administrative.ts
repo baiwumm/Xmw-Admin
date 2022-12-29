@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-29 10:50:52
+ * @LastEditTime: 2022-12-29 16:12:13
  */
 export default {
     path: '/administrative',
@@ -29,6 +29,14 @@ export default {
             name: 'jobs-management',
             icon: 'icon-jobs-management',
             component: './Administrative/JobsManagement',
+            access: 'adminRouteFilter',
+            exact: true,
+        },
+        {
+            path: '/administrative/structure',
+            name: 'structure',
+            icon: 'icon-structure',
+            component: './Administrative/Structure',
             access: 'adminRouteFilter',
             exact: true,
         },

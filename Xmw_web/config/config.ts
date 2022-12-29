@@ -7,6 +7,10 @@ import routes from './routes';
 const { REACT_APP_ENV = 'dev' } = process.env;
 
 export default defineConfig({
+  /**
+   * @name 开启 多tab标签页支持
+   * @doc https://juejin.cn/post/7153525746751766559
+   */
   keepalive: [/./],
   tabsLayout: {
     hasDropdown: true,

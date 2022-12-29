@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 17:18:45
+ * @LastEditTime: 2022-12-29 14:48:54
  */
 // 引入第三方库
 // @ts-ignore
@@ -34,6 +34,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	// 获取 localstorage key
 	const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
 	return {
+		// logo: '/logo.svg',
 		/* 菜单图标使用iconfont */
 		iconfontUrl: process.env.ICONFONT_URL,
 		/* 右侧工具栏 */
@@ -94,7 +95,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 							enableDarkTheme
 							settings={appCache?.UMI_LAYOUT}
 							onSettingChange={(settings: LayoutSettings) => {
-								setappCache({ ...appCache, UMI_LAYOUT: settings })
+								setappCache({ ...appCache, UMI_LAYOUT: { ...initialState.Settings, ...settings } })
 								setInitialState((preInitialState: InitialStateModel) => ({
 									...preInitialState,
 									settings,
