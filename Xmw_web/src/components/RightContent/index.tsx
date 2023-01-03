@@ -1,30 +1,18 @@
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { SelectLang, useModel } from '@umijs/max';
 import React from 'react';
-import AvatarDropdown from './AvatarDropdown';
+import AvatarDropdown from './components/AvatarDropdown';
+import FullScreen from './components/FullScreen'
 
 export type SiderTheme = 'light' | 'dark';
 
 const GlobalHeaderRight: React.FC = () => {
-  const className = useEmotionCss(() => {
-    return {
-      display: 'flex',
-      height: '48px',
-      marginLeft: 'auto',
-      overflow: 'hidden',
-      gap: 8,
-    };
-  });
-
   const actionClassName = useEmotionCss(({ token }) => {
     return {
-      display: 'flex',
-      float: 'right',
-      height: '48px',
-      marginLeft: 'auto',
-      overflow: 'hidden',
       cursor: 'pointer',
       padding: '0 12px',
+      fontSize: 18,
+      overflow: 'hidden',
       borderRadius: token.borderRadius,
       '&:hover': {
         backgroundColor: token.colorBgTextHover,
@@ -39,7 +27,8 @@ const GlobalHeaderRight: React.FC = () => {
   }
 
   return (
-    <div className={className}>
+    <div style={{ display: 'flex' }}>
+      <FullScreen actionClassName={actionClassName} />
       <AvatarDropdown />
       <SelectLang reload={false} className={actionClassName} />
     </div>

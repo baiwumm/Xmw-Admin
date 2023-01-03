@@ -6,7 +6,7 @@ import { Avatar, Modal } from 'antd';
 import { setAlpha } from '@ant-design/pro-components';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
-import HeaderDropdown from '../HeaderDropdown';
+import HeaderDropdown from '../../HeaderDropdown';
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
