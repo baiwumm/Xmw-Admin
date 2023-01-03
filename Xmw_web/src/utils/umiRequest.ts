@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 10:57:35
+ * @LastEditTime: 2023-01-03 17:27:53
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -13,14 +13,16 @@ import { message, Modal } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
 import { CACHE_KEY, logoutToLogin } from '@/utils' // 全局工具函数
 import type { AppLocalCacheModel } from '@/global/interface'
+import Nprogress from "nprogress";
+import "nprogress/nprogress.css";
 /**
  * @description: 防抖函数统一处理异常错误
  * @param {*} debounce
  * @return {*}
  * @author: Cyan
  */
-const authError = debounce((content, duration = 3, status = 'error') => {
-  message[status](content, duration);
+const authError = debounce((content, duration = 3) => {
+  message.error(content, duration);
 }, 100);
 
 /**
@@ -85,6 +87,8 @@ export const errorConfig: RequestConfig = {
       if (appCache?.ACCESS_TOKEN && config?.headers) {
         config.headers.Authorization = `Bearer ${appCache.ACCESS_TOKEN}`
       }
+      // 进度条开始
+      Nprogress.start();
       return { ...config };
     },
   ],
@@ -105,6 +109,8 @@ export const errorConfig: RequestConfig = {
           authError(JSON.stringify(data.msg));
           break;
       }
+      // 进度条结束
+      Nprogress.done();
       return response;
     },
   ],

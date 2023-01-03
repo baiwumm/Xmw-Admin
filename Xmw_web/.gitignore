@@ -20,6 +20,8 @@ yarn.lock
 package-lock.json
 *bak
 .vscode
+pnpm-lock.yaml
+*.bat
 
 
 # visual studio code
