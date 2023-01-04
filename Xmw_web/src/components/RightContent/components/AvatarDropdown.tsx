@@ -1,9 +1,8 @@
 import { useLocalStorageState, useRequest } from 'ahooks';
-import { PoweroffOutlined } from '@ant-design/icons';
-import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { PoweroffOutlined, LockOutlined } from '@ant-design/icons';
 import { useModel, useIntl } from '@umijs/max';
-import { Avatar, Modal } from 'antd';
-import { setAlpha } from '@ant-design/pro-components';
+import { Modal } from 'antd';
+import type { MenuProps } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import HeaderDropdown from '../../HeaderDropdown';
@@ -11,12 +10,13 @@ import { Logout } from '@/services/logic/login' // 登录相关接口
 import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 
+import UserAvatar from './UserAvatar'
+
 type LogoutProps = ResponseModel<Record<string, any>>
 
 const AvatarDropdown: React.FC = () => {
   const { formatMessage } = useIntl();
-  const { initialState, setInitialState } = useModel('@@initialState');
-  const { CurrentUser } = initialState || {};
+  const { setInitialState } = useModel('@@initialState');
   // 获取 localstorage key
   const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
   /**
@@ -53,53 +53,6 @@ const AvatarDropdown: React.FC = () => {
     })
   }
 
-  const Name = () => {
-    const nameClassName = useEmotionCss(({ token }) => {
-      return {
-        height: '48px',
-        overflow: 'hidden',
-        lineHeight: '48px',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        [`@media only screen and (max-width: ${token.screenMD}px)`]: {
-          display: 'none',
-        },
-      };
-    });
-    return <span className={`${nameClassName} anticon`}>{CurrentUser?.cn_name}</span>;
-  };
-
-  const AvatarLogo = () => {
-    const avatarClassName = useEmotionCss(({ token }) => {
-      return {
-        marginRight: '8px',
-        color: token.colorPrimary,
-        verticalAlign: 'top',
-        background: setAlpha(token.colorBgContainer, 0.85),
-        [`@media only screen and (max-width: ${token.screenMD}px)`]: {
-          margin: 0,
-        },
-      };
-    });
-    return <Avatar size="small" className={avatarClassName} src={CurrentUser?.avatar_url} alt="avatar" />;
-  };
-
-  const actionClassName = useEmotionCss(({ token }) => {
-    return {
-      display: 'flex',
-      height: '48px',
-      marginLeft: 'auto',
-      overflow: 'hidden',
-      alignItems: 'center',
-      padding: '0 8px',
-      cursor: 'pointer',
-      borderRadius: token.borderRadius,
-      '&:hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
-    };
-  });
-
   // 点击下拉菜单回调
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
@@ -112,19 +65,26 @@ const AvatarDropdown: React.FC = () => {
     [setInitialState],
   );
 
-  const menuItems = [
+  const menuItems: MenuProps['items'] = [
+    {
+      key: 'lockSrceen',
+      icon: <LockOutlined style={{ fontSize: 16 }} />,
+      label: '锁定屏幕',
+    },
+    {
+      type: 'divider',
+    },
     {
       key: 'logout',
-      icon: <PoweroffOutlined />,
+      icon: <PoweroffOutlined style={{ fontSize: 14 }} />,
       label: '退出登录',
     }
   ];
 
   return (
     <HeaderDropdown menu={{ onClick: onMenuClick, items: menuItems }}>
-      <span className={actionClassName}>
-        <AvatarLogo />
-        <Name />
+      <span>
+        <UserAvatar />
       </span>
     </HeaderDropdown>
   );
