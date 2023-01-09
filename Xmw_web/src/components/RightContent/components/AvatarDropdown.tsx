@@ -67,9 +67,9 @@ const AvatarDropdown: React.FC = () => {
 
   const menuItems: MenuProps['items'] = [
     {
-      key: 'lockSrceen',
+      key: 'lockScreen',
       icon: <LockOutlined style={{ fontSize: 16 }} />,
-      label: '锁定屏幕',
+      label: formatMessage({ id: 'components.RightContent.LockScreen' }),
     },
     {
       type: 'divider',
@@ -77,7 +77,7 @@ const AvatarDropdown: React.FC = () => {
     {
       key: 'logout',
       icon: <PoweroffOutlined style={{ fontSize: 14 }} />,
-      label: '退出登录',
+      label: formatMessage({ id: 'components.RightContent.Logout' }),
     }
   ];
 

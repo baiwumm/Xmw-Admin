@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 15:09:46
+ * @LastEditTime: 2023-01-09 10:58:02
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -38,7 +38,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
     private sequelize: Sequelize,
-  ) {}
+  ) { }
 
   /**
    * @description: 用户登录
@@ -123,7 +123,7 @@ export class AuthService {
             login_last_time: JSON.parse(lastLoginTime),
           },
         };
-      // 其它气矿直接返回结果
+      // 其它情况直接返回结果
       default:
         return authResult;
     }

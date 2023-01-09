@@ -4,10 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-18 12:07:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-18 12:09:35
+ * @LastEditTime: 2023-01-09 10:00:57
  */
 
 // 引入antd多语言配置
+import type { Locale } from 'antd/es/locale'
 import zhcn from 'antd/es/locale/zh_CN';
 import enus from 'antd/es/locale/en_US';
 import jajp from 'antd/es/locale/ja_JP';
@@ -25,10 +26,10 @@ export const LOCALES_LANG = ['zh-CN', 'en-US', 'ja-JP', 'zh-TW']
  * @return {*}
  * @author: Cyan
  */
-export const ANTD_LANGS = {
+export const ANTD_LANGS: Record<string, { momentLocale: string, antd: Locale }> = {
     'zh-CN': {
         momentLocale: 'zh-cn',
-        antd: zhcn
+        antd: zhcn,
     },
     'ja-JP': {
         momentLocale: 'ja-jp',
@@ -41,5 +42,5 @@ export const ANTD_LANGS = {
     'zh-TW': {
         momentLocale: 'zh-tw',
         antd: zhtw
-    }
+    },
 }

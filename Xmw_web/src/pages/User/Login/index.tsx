@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 15:14:19
+ * @LastEditTime: 2023-01-06 15:24:19
  */
 
 // 引入第三方库
@@ -12,7 +12,7 @@ import { useLocalStorageState, useRequest, useMount, useDebounceFn } from 'ahook
 import { createFromIconfontCN } from '@ant-design/icons';
 import type { FC } from 'react';
 import { useState } from 'react'; // react
-import { useIntl } from '@umijs/max'
+import { useIntl, getLocale } from '@umijs/max'
 import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, notification, Typography } from 'antd'  // antd 组件
@@ -42,7 +42,8 @@ const LoginPage: FC = () => {
   const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>('account');
-
+  // moment语言转换
+  moment.locale(getLocale())
   /**
    * @description: 用户登录接口
    * @return {*}
@@ -95,7 +96,7 @@ const LoginPage: FC = () => {
           values.password = encryptionAesPsd(values.password)
         }
         // 如果是手机登录
-        if (loginType === 'mobile' && values.captcha != '1234') {
+        if (loginType === 'mobile' && values.captcha !== '1234') {
           message.error(formatMessage({ id: 'pages.login.type.mobile.captcha.failure' }))
           return
         }

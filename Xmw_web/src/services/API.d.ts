@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 15:50:35
+ * @LastEditTime: 2023-01-09 10:00:26
  */
 declare namespace API {
   /**
@@ -171,5 +171,7 @@ declare namespace API {
  * @return {*}
  * @author: Cyan
  */
-  type LOCALESLANGAll = Pick<INTERNATIONALIZATION<ResData>, LOCALESLANG>
+  type LOCALESLANGAll = Pick<INTERNATIONALIZATION<ResData>, LOCALESLANG> & {
+    [key: string]: string
+  }
 }

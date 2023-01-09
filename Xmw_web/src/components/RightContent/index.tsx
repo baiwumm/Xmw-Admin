@@ -3,6 +3,7 @@ import { SelectLang, useModel } from '@umijs/max';
 import React from 'react';
 import AvatarDropdown from './components/AvatarDropdown';
 import FullScreen from './components/FullScreen'
+import LockSleep from './components/LockSleep'
 
 export type SiderTheme = 'light' | 'dark';
 
@@ -31,6 +32,7 @@ const GlobalHeaderRight: React.FC = () => {
       <FullScreen actionClassName={actionClassName} />
       <AvatarDropdown />
       <SelectLang reload={false} className={actionClassName} />
+      <LockSleep />
     </div>
   );
 };

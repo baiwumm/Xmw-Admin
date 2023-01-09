@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 11:26:45
+ * @LastEditTime: 2023-01-09 14:26:46
  */
 import {
   Controller,
@@ -16,7 +16,6 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { omit } from 'lodash';
 import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
 import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
@@ -49,7 +48,7 @@ import * as svgCaptcha from 'svg-captcha';
 @ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   /**
    * @description: 用户登录
@@ -100,7 +99,7 @@ export class AuthController {
   async getCurrentUserInfo(
     @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
-    return responseMessage(omit(session.currentUserInfo, 'password'));
+    return responseMessage(session.currentUserInfo);
   }
 
   /**

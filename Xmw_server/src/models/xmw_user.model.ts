@@ -16,7 +16,6 @@ import {
   IsIP,
   IsDate,
   ForeignKey,
-  HasOne,
   BelongsTo,
 } from 'sequelize-typescript';
 import type { UserAttributes } from '@/attributes/system';
@@ -27,8 +26,7 @@ import { XmwJobs } from '@/models/xmw_jobs.model';
 @Table({ tableName: 'xmw_user' })
 export class XmwUser
   extends Model<UserAttributes, UserAttributes>
-  implements UserAttributes
-{
+  implements UserAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({
