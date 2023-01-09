@@ -29,9 +29,13 @@ const GlobalHeaderRight: React.FC = () => {
 
   return (
     <div style={{ display: 'flex' }}>
+      {/* 全屏 */}
       <FullScreen actionClassName={actionClassName} />
+      {/* 用户下拉菜单 */}
       <AvatarDropdown />
+      {/* 多语言 */}
       <SelectLang reload={false} className={actionClassName} />
+      {/* 睡眠弹窗 */}
       <LockSleep />
     </div>
   );

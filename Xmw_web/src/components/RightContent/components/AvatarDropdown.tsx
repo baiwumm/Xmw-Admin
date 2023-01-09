@@ -1,4 +1,4 @@
-import { useLocalStorageState, useRequest } from 'ahooks';
+import { useLocalStorageState, useRequest, useBoolean } from 'ahooks';
 import { PoweroffOutlined, LockOutlined } from '@ant-design/icons';
 import { useModel, useIntl } from '@umijs/max';
 import { Modal } from 'antd';
@@ -19,6 +19,7 @@ const AvatarDropdown: React.FC = () => {
   const { setInitialState } = useModel('@@initialState');
   // 获取 localstorage key
   const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
+
   /**
  * @description: 退出登录，并且将当前的 url 保存
  * @return {*}
@@ -82,11 +83,13 @@ const AvatarDropdown: React.FC = () => {
   ];
 
   return (
-    <HeaderDropdown menu={{ onClick: onMenuClick, items: menuItems }}>
-      <span>
-        <UserAvatar />
-      </span>
-    </HeaderDropdown>
+    <>
+      <HeaderDropdown menu={{ onClick: onMenuClick, items: menuItems }}>
+        <span>
+          <UserAvatar />
+        </span>
+      </HeaderDropdown>
+    </>
   );
 };
 
