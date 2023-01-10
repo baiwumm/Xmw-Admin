@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 14:41:10
+ * @LastEditTime: 2023-01-09 17:21:41
  */
 
 // 引入第三方库
@@ -17,10 +17,11 @@ import { message, Modal } from 'antd'; // antd 组件库
 import { omit } from 'lodash'
 
 // 引入业务组件
-import { PersonalInformation, UserInformation, SetPassword,SetAvatar } from '../Steps'
+import { PersonalInformation, UserInformation, SetAvatar } from '../Steps'
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
 import { encryptionAesPsd, decryptionAesPsd } from '@/utils'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, jobsData, organizationData, modalVisible, setModalVisibleFalse }) => {
 	const { formatMessage } = useIntl();
@@ -69,7 +70,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		// 设置密码
 		{
 			title: 'pages.system.user-management.steps-form.set-password',
-			component: <SetPassword />
+			component: <StrengthMeter />
 		}
 	]
 
@@ -109,7 +110,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		>
 			{/* 遍历渲染 Step */}
 			{
-				StepComponents.map((step,index) => {
+				StepComponents.map((step, index) => {
 					return (
 						<StepsForm.StepForm title={formatMessage({ id: step.title })} grid={index !== 2} key={step.title}>
 							{step.component}
