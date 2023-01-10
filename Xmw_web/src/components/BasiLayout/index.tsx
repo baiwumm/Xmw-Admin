@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 16:57:50
+ * @LastEditTime: 2023-01-10 17:17:18
  */
 // 引入第三方库
 import React from 'react'
 import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
-import { history, Link, KeepAliveContext, getLocale } from '@umijs/max';
+import { history, Link, KeepAliveContext, useIntl } from '@umijs/max';
 import { Space } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
@@ -34,6 +34,7 @@ type RouteProps = {
 }
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
+	const { formatMessage } = useIntl();
 	const { CurrentUser, RouteMenu, Locales } = initialState
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
@@ -58,7 +59,6 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		onPageChange: () => {
 			const { location } = history;
 			// 如果没有登录，重定向到 login
-			console.log('1111', CurrentUser)
 			if (isEmpty(CurrentUser) && location.pathname !== routerConfig.LOGIN) {
 				history.push(routerConfig.LOGIN);
 			} else if (RouteMenu && Locales) {
@@ -67,7 +67,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				if (currentRouteInfo?.icon) {
 					updateTab(location.pathname, {
 						icon: <IconFont type={currentRouteInfo.icon} />,
-						name: Locales[getLocale()][`menu.${currentRouteInfo?.permission?.replace(/:/g, '.')}`],
+						name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),
 						closable: true,
 					});
 				}
