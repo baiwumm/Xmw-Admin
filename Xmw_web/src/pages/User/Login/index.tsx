@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-06 15:24:19
+ * @LastEditTime: 2023-01-10 10:15:25
  */
 
 // 引入第三方库
@@ -27,7 +27,7 @@ import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
 import Footer from '@/components/Footer'; // 全局页脚
-import styles from './index.less'; // css 样式恩建
+import styles from './index.module.less'; // css 样式恩建
 import { Login } from '@/services/logic/login' // 登录相关接口
 
 const LoginPage: FC = () => {
