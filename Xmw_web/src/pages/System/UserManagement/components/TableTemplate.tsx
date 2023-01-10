@@ -4,16 +4,17 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 15:56:26
+ * @LastEditTime: 2023-01-10 17:53:39
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useRequest } from 'ahooks'
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
-import { useIntl, useModel, useAccess, Access } from '@umijs/max'
+import { useIntl, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined, UnlockOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
@@ -32,8 +33,6 @@ import type { TableSearchProps } from '../utils/interface'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
-	// 初始化状态
-	const { initialState } = useModel('@@initialState');
 	// 权限定义集合
 	const access = useAccess();
 	// 使用 iconfont.cn 资源
@@ -57,6 +56,10 @@ const TableTemplate: FC = () => {
 	const [modalVisible, { setTrue: setModalVisibleTrue, setFalse: setModalVisibleFalse }] = useBoolean(false);
 	// 受控的表格设置栏
 	const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>(renderColumnsStateMap());
+	// 跟随主题色变化
+	const PrimaryColor = useEmotionCss(({ token }) => {
+		return { color: token.colorPrimary, fontSize: 16 };
+	});
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -169,7 +172,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<UserOutlined style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<UserOutlined className={PrimaryColor} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -211,13 +214,13 @@ const TableTemplate: FC = () => {
 				2: { text: formatMessage({ id: 'pages.system.user-management.sex.secret' }), status: 'Processing' },
 			},
 			render: (_, record) => {
-				const colors = {
-					0: '#ff45cb',
-					1: '#0091ff',
-					2: initialState?.Settings?.colorPrimary
-				}
-				const styles = { color: colors[record.sex], fontSize: '20px' }
-				return { 0: <WomanOutlined style={styles} />, 1: <ManOutlined style={styles} />, 2: <UnlockOutlined style={styles} /> }[record.sex]
+				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff', }
+				const styles = { fontSize: 20 }
+				return {
+					0: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
+					1: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
+					2: <UnlockOutlined style={styles} className={PrimaryColor} />
+				}[record.sex]
 			}
 		},
 		{
@@ -235,7 +238,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-role-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -248,7 +251,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-organization" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-organization" className={PrimaryColor} />} >
 					{text}
 				</Tag>
 			</Space>
@@ -261,7 +264,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-jobs-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-jobs-management" className={PrimaryColor} />} >
 					{text}
 				</Tag>
 			</Space>

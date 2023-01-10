@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-29 15:12:55
  * @LastEditors: Cyan
- * @LastEditTime: 2022-10-10 15:12:45
+ * @LastEditTime: 2023-01-10 17:48:58
  */
 /**
  * @description: 默认不显示的 column 项
@@ -12,7 +12,7 @@
  * @author: Cyan
  */
 export const renderColumnsStateMap = () => {
-    const result = {}
+    const result: Record<string, { show: boolean }> = {}
     const MENU_CFG = [
         'en_name',
         'sort',

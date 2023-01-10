@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:27:33
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-29 15:13:34
+ * @LastEditTime: 2023-01-10 17:44:26
  */
 
 export const MENU_TYPE_OPTS = [
@@ -22,7 +22,7 @@ export const MENU_TYPE_OPTS = [
   },
 ];
 
-export const MENU_TYPE_TAGS = {
+export const MENU_TYPE_TAGS: Record<string, { text: string; color: string }> = {
   dir: {
     text: '目录',
     color: 'cyan',

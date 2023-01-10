@@ -4,15 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 15:33:06
+ * @LastEditTime: 2023-01-10 17:53:17
  */
 // 引入第三方库
 import type { FC } from 'react';
 import { useState, useRef } from 'react';
 import { useBoolean } from 'ahooks';
-import { useIntl, useModel, useRequest, useAccess, Access } from '@umijs/max'
+import { useIntl, useRequest, useAccess, Access } from '@umijs/max'
 import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
 import moment from 'moment'
@@ -28,8 +29,6 @@ import type { TableSearchProps, RoleStatusProps } from '../utils/interface'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
-	// 初始化状态
-	const { initialState } = useModel('@@initialState');
 	// 权限定义集合
 	const access = useAccess();
 	// 使用 iconfont.cn 资源
@@ -46,6 +45,10 @@ const TableTemplate: FC = () => {
 	const [roleId, setRoleId] = useState<string>('')
 	// 是否显示抽屉表单
 	const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
+	// 跟随主题色变化
+	const PrimaryColor = useEmotionCss(({ token }) => {
+		return { color: token.colorPrimary, fontSize: 16 };
+	});
 	// 手动触发刷新表格
 	function reloadTable() {
 		tableRef?.current?.reload()
@@ -153,7 +156,7 @@ const TableTemplate: FC = () => {
 			width: 140,
 			render: text => <Space>
 				<Tag
-					icon={<IconFont type="icon-role-management" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '16px' }} />} >
+					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
 					{text}
 				</Tag>
 			</Space>

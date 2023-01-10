@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 15:50:35
+ * @LastEditTime: 2023-01-10 17:46:41
  */
 
 // 引入第三方库
@@ -12,7 +12,6 @@ import type { FC } from 'react';
 import { getLocale, useIntl } from '@umijs/max'
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
 import { Form, message } from 'antd'; // antd 组件库
-import { omit } from 'lodash'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
@@ -50,7 +49,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 			params.parent_id = parent_id
 		}
 		// 删除 routes 属性
-		params = omit(params, ['routes'])
+		delete params.routes
 		await (params.menu_id ? updateMenu : createMenu)(params).then(res => {
 			if (res.code === 200) {
 				message.success(res.msg);
