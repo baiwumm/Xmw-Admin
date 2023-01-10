@@ -136,6 +136,12 @@ export default defineConfig({
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_a30493ke3ob.js',
     },
   },
-  // 关闭mock
-  mock: false
+  /**
+  * @name <head> 中额外的 script
+  * @description 配置 <head> 中额外的 script
+  */
+  headScripts: [
+    // 解决首次加载时白屏的问题
+    { src: '/scripts/loading.js', async: true },
+  ],
 });

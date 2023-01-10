@@ -4,16 +4,15 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 10:15:25
+ * @LastEditTime: 2023-01-10 16:58:27
  */
 
 // 引入第三方库
 import { useLocalStorageState, useRequest, useMount, useDebounceFn } from 'ahooks';
 import { createFromIconfontCN } from '@ant-design/icons';
 import type { FC } from 'react';
-import { useState } from 'react'; // react
-import { useIntl, getLocale } from '@umijs/max'
-import { SelectLang, useModel, history } from '@umijs/max'; // umi/max
+import React, { useState } from 'react'; // react
+import { SelectLang, useModel, history, useIntl, getLocale } from '@umijs/max'
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { message, Row, Col, Tabs, notification, Typography } from 'antd'  // antd 组件
 import { isEmpty } from 'lodash'
@@ -150,7 +149,7 @@ const LoginPage: FC = () => {
           {/* 登录表单 */}
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
-            title="Xmw-Admin"
+            title="Xmw Admin"
             subTitle={formatMessage({ id: 'pages.login.subtitle' })}
             onFinish={async (values) => {
               await waitTime(500)

@@ -4,10 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-12-07 15:05:34
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 17:21:28
+ * @LastEditTime: 2023-01-10 15:28:46
  */
 import { addLocale, history } from '@umijs/max';
-import { message } from 'antd'
 import { ANTD_LANGS } from '@/global/lang'
 import routerConfig from '@/utils/routerConfig' // 路由配置
 import { getUserInfo, getPermissions, getRoutesMenus } from '@/services/logic/login' // 登录相关接口
@@ -20,27 +19,14 @@ import type { InitialStateModel } from '@/global/interface'
  * @author: Cyan
  */
 export const initLocalesLang = async (): Promise<Record<string, any>> => {
-  await getAllLocalesLang()
-    .then((res) => {
-      if (res.code === 200) {
-        const data = res.data;
-        if (data) {
-          Object.keys(data).forEach((lang) => {
-            // 初始化多语言配置
-            addLocale(lang, data[lang], ANTD_LANGS[lang]);
-          });
-        }
-        Object.keys(data).forEach((lang) => {
-          // 初始化多语言配置
-          addLocale(lang, data[lang], ANTD_LANGS[lang]);
-        });
-        return data
-      }
-      return {}
-    })
-    .catch((error) => {
-      message.error(JSON.stringify(error));
+  const res = await getAllLocalesLang()
+  if (res.code === 200) {
+    Object.keys(res.data).forEach((lang) => {
+      // 初始化多语言配置
+      addLocale(lang, res.data[lang], ANTD_LANGS[lang]);
     });
+    return res.data
+  }
   return {}
 };
 

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 14:29:20
+ * @LastEditTime: 2023-01-10 15:44:53
  */
 import { history } from '@umijs/max';
 import type { ProColumns } from '@ant-design/pro-components';
@@ -146,4 +146,27 @@ export const welcomeWords = (): string => {
   const arr = ['休息一会儿吧', '准备吃什么呢?', '要不要打一把 LOL', '我猜你可能累了', '认真工作吧']
   const index = Math.floor(Math.random() * arr.length)
   return arr[index]
+}
+
+/** 通过某个节点的值，获取对应节点的完整信息
+ * @description: 
+ * @param {*} tree: 树结构数组
+ * @param {*} value: 对应的值
+ * @param {*} field: 对应的字段
+ * @param {*} children: 子级字段
+ * @return {*}
+ * @author: Cyan
+ */
+export function getItemByIdInTree<T>(tree: T[], value: string, field: string, children: string = 'children'): T | undefined {
+  for (let i = 0; i < tree.length; i++) {
+    let treeNode = tree[i]
+    if (treeNode[field] === value) {
+      return treeNode
+    } else if (treeNode[children]) {
+      let reuslt: T | undefined = getItemByIdInTree(treeNode[children], value, field)
+      if (reuslt) {
+        return reuslt
+      }
+    }
+  }
 }
