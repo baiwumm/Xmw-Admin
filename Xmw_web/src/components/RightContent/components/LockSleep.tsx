@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-09 14:21:40
+ * @LastEditTime: 2023-01-11 09:44:38
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
-import { useBoolean, useInterval, useEventListener, useSessionStorageState } from 'ahooks'
+import { useBoolean, useInterval, useEventListener, useLocalStorageState, useMount } from 'ahooks'
 import { Modal, Button, Row, Col, Avatar, Typography, Form, Input, message } from 'antd'
 import { useModel } from '@umijs/max';
 import { encryptionAesPsd } from '@/utils'
@@ -26,18 +26,22 @@ const LockSleep: FC = () => {
   // 表单实例
   const [form] = Form.useForm()
   // 记录用户最后一次移动鼠标的时间
-  const [moveLastTime, setmMveLastTime] = useSessionStorageState<number>(
-    'lock_last_time',
+  const [sleepInfo, setSleepInfo] = useLocalStorageState<{ last_time: number; isSleep: boolean }>(
+    'lock_sleep',
     {
-      defaultValue: new Date().getTime(),
+      defaultValue: {
+        last_time: new Date().getTime(),
+        isSleep: false
+      },
     },
   );
   // 判断用户未操作时间是否拆过设定值
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
     // 判断是否超时
-    if (currentTime - moveLastTime > timeOut) {
+    if (currentTime - sleepInfo.last_time > timeOut) {
       setTrue()
+      setSleepInfo({ ...sleepInfo, isSleep: true })
     }
   }
   // 提交表单
@@ -46,6 +50,7 @@ const LockSleep: FC = () => {
     form.validateFields().then((values: { password: string }) => {
       if (initialState?.CurrentUser?.password === encryptionAesPsd(values.password)) {
         setFalse()
+        setSleepInfo({ ...sleepInfo, isSleep: false })
       } else {
         message.error(formatMessage({ id: 'components.RightContent.LockSleep.password.error' }))
       }
@@ -59,7 +64,14 @@ const LockSleep: FC = () => {
 
   // 监听用户是否有操作行为
   useEventListener('mousemove', () => {
-    setmMveLastTime(new Date().getTime())
+    setSleepInfo({ ...sleepInfo, last_time: new Date().getTime() })
+  })
+
+  // 一开始就检测
+  useMount(() => {
+    if (sleepInfo.isSleep) {
+      setTrue()
+    }
   })
   return (
     <Modal
