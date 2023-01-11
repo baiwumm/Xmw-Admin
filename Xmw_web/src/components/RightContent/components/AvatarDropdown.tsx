@@ -1,16 +1,17 @@
-import { useLocalStorageState, useRequest, useBoolean } from 'ahooks';
+import { useLocalStorageState, useRequest } from 'ahooks';
 import { PoweroffOutlined, LockOutlined } from '@ant-design/icons';
 import { useModel, useIntl } from '@umijs/max';
 import { Modal } from 'antd';
 import type { MenuProps } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import HeaderDropdown from '../../HeaderDropdown';
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 
-import UserAvatar from './UserAvatar'
+import UserAvatar from './UserAvatar' // 用户头像
+import LockScreenModal from './LockScreenModal' // 锁定屏幕弹窗
 
 type LogoutProps = ResponseModel<Record<string, any>>
 
@@ -19,6 +20,8 @@ const AvatarDropdown: React.FC = () => {
   const { setInitialState } = useModel('@@initialState');
   // 获取 localstorage key
   const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
+  // 绑定元素
+  const cRef = useRef() as React.MutableRefObject<any>;
 
   /**
  * @description: 退出登录，并且将当前的 url 保存
@@ -58,9 +61,14 @@ const AvatarDropdown: React.FC = () => {
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       switch (event.key) {
+        // 锁定屏幕
+        case 'lockScreen':
+          cRef.current.setTrue()
+          break;
         // 退出登录
         case 'logout':
           logOutClick()
+          break;
       }
     },
     [setInitialState],
@@ -89,6 +97,8 @@ const AvatarDropdown: React.FC = () => {
           <UserAvatar />
         </span>
       </HeaderDropdown>
+      {/* 锁定屏幕弹窗 */}
+      <LockScreenModal cRef={cRef} />
     </>
   );
 };

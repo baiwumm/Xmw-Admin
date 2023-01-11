@@ -4,13 +4,12 @@
  * @Author: Cyan
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 09:44:38
+ * @LastEditTime: 2023-01-11 11:20:16
  */
 import type { FC } from 'react'
-import { useIntl } from '@umijs/max'
+import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useInterval, useEventListener, useLocalStorageState, useMount } from 'ahooks'
 import { Modal, Button, Row, Col, Avatar, Typography, Form, Input, message } from 'antd'
-import { useModel } from '@umijs/max';
 import { encryptionAesPsd } from '@/utils'
 
 const { Title } = Typography;
