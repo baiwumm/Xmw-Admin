@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-11 11:18:51
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 17:17:43
+ * @LastEditTime: 2023-01-11 18:04:10
  */
 import type { FC } from 'react'
 import React, { useImperativeHandle } from 'react'
@@ -23,7 +23,7 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
   // 弹窗显示
   const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 是否显示锁屏页面
-  const [openLockPage, { setTrue: setLockPageTrue }] = useBoolean(false);
+  const [openLockPage, { setTrue: setLockPageTrue, setFalse: setLockPageFalse }] = useBoolean(false);
   // 表单实例
   const [form] = Form.useForm()
   // 记录锁屏密码
@@ -83,7 +83,7 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
         </Row>
       </Modal>
       {/* 锁屏弹窗 */}
-      {openLockPage ? <LockScreen /> : null}
+      {openLockPage ? <LockScreen setLockPageFalse={setLockPageFalse} /> : null}
     </>
   )
 }
