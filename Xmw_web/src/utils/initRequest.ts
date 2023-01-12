@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-12-07 15:05:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 15:28:46
+ * @LastEditTime: 2023-01-12 14:23:46
  */
 import { addLocale, history } from '@umijs/max';
 import { ANTD_LANGS } from '@/global/lang'
@@ -23,6 +23,7 @@ export const initLocalesLang = async (): Promise<Record<string, any>> => {
   if (res.code === 200) {
     Object.keys(res.data).forEach((lang) => {
       // 初始化多语言配置
+      // @ts-ignore
       addLocale(lang, res.data[lang], ANTD_LANGS[lang]);
     });
     return res.data
