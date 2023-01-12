@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-09 17:15:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 09:51:39
+ * @LastEditTime: 2023-01-12 18:06:04
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
@@ -27,7 +27,7 @@ const StrengthMeter: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  const watchStrength = (password: string) => {
+  const watchStrength = (password: string): number => {
     const analysisValue = zxcvbn(password)
     // score得分只有0~4，且只有整数范围并没有小数
     return (analysisValue.score + 1) * 20
@@ -40,8 +40,8 @@ const StrengthMeter: FC = () => {
         name="password"
         rules={[
           {
-            required: true,
-            message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.password' })
+            required: true, min: 6, max: 12,
+            message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.password.rules' })
           }
         ]}
       />
@@ -49,6 +49,7 @@ const StrengthMeter: FC = () => {
       <ProFormText.Password
         label={formatMessage({ id: 'pages.system.user-management.confirm-password' })}
         name="confirmPassword"
+        fieldProps={{ visibilityToggle: false }}
         rules={[
           {
             required: true,

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 18:05:28
+ * @LastEditTime: 2023-01-12 17:19:57
  */
 import { request } from '@umijs/max';
 import type { PageResModel, ResponseModel } from '@/global/interface';
@@ -44,7 +44,7 @@ export async function createUser(
  * @return {*}
  * @author: Cyan
  */
-export async function updateUser({ user_id, ...options }: API.USERMANAGEMENT): Promise<ResponseModel<number[]>> {
+export async function updateUser({ user_id, ...options }: Partial<API.USERMANAGEMENT>): Promise<ResponseModel<number[]>> {
   return request(`/api/system/user-management/${user_id}`, {
     method: 'PUT',
     data: options || {},

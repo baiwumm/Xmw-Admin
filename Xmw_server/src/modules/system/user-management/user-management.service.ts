@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 10:12:04
+ * @LastEditTime: 2023-01-12 17:41:11
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -24,7 +24,7 @@ export class UserManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取用户管理列表
@@ -116,18 +116,20 @@ export class UserManagementService {
   ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
-    // 用户名称和用户工号、手机号码不能相同
-    const exist = await this.userModel.findOne({
-      where: {
-        [Op.or]: { user_name, work_no, phone },
-        user_id: {
-          [Op.ne]: user_id,
+    if (user_name && work_no && phone) {
+      // 用户名称和用户工号、手机号码不能相同
+      const exist = await this.userModel.findOne({
+        where: {
+          [Op.or]: { user_name, work_no, phone },
+          user_id: {
+            [Op.ne]: user_id,
+          },
         },
-      },
-    });
-    // 如果有结果，则证明已存在，这里存在两种情况，
-    if (exist) {
-      return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
+      });
+      // 如果有结果，则证明已存在，这里存在两种情况，
+      if (exist) {
+        return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
+      }
     }
     // 如果通过则执行 sql save 语句
     const result = await this.userModel.update(userInfo, {

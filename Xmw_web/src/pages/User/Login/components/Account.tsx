@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 13:43:34
+ * @LastEditTime: 2023-01-12 18:08:35
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
@@ -41,6 +41,7 @@ const Account: FC = () => {
 				fieldProps={{
 					size: 'large',
 					prefix: <LockOutlined className={'prefixIcon'} />,
+					visibilityToggle: false
 				}}
 				placeholder={formatMessage({ id: 'pages.login.type.account.password.placeholder' })}
 				rules={[
