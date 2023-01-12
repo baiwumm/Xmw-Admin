@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-09 17:15:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 18:06:04
+ * @LastEditTime: 2023-01-12 18:14:23
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
@@ -73,11 +73,11 @@ const StrengthMeter: FC = () => {
           strokeColor={['#e74242', '#EFBD47', '#ffa500', '#1bbf1b', '#008000']}
           format={(percent) => {
             return isUndefined(percent) ? null : {
-              20: '非常弱',
-              40: '弱',
-              60: '一般',
-              80: '强',
-              100: '非常强'
+              20: formatMessage({ id: 'components.StrengthMeter.very-weak' }),
+              40: formatMessage({ id: 'components.StrengthMeter.weak' }),
+              60: formatMessage({ id: 'components.StrengthMeter.general' }),
+              80: formatMessage({ id: 'components.StrengthMeter.strong' }),
+              100: formatMessage({ id: 'components.StrengthMeter.very-strong' })
             }[percent]
           }}
         />
