@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 14:32:47
+ * @LastEditTime: 2023-01-13 09:20:40
  */
 import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -14,6 +14,8 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { FC } from 'react';
 import { useState, useEffect } from 'react'
 import { last, get } from 'lodash'
+import type { AppLocalCacheModel } from '@/global/interface'
+import { CACHE_KEY } from '@/utils'
 
 interface IProps {
 	value?: string;
@@ -24,6 +26,8 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	// 多语言函数
 	const { formatMessage } = useIntl();
 	const [currentAvatar, setCurrentAvatar] = useState<string | undefined>()
+	// 获取 localstorage key
+	const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
 
 	/**
 	 * @description: 限制用户上传的图片格式和大小
@@ -70,10 +74,11 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 			<ImgCrop rotate shape='round' grid>
 				<Upload
 					maxCount={1}
-					action="http://127.0.0.1:3000/v1/upload/single-file"
+					action={`${process.env.DOMAIN_URL}v1/upload/single-file`}
 					showUploadList={false}
 					onChange={onChangeUpload}
 					beforeUpload={beforeUpload}
+					headers={{ Authorization: `Bearer ${appCache.ACCESS_TOKEN}` }}
 				>
 					<Button style={{ marginTop: '10px' }}>{formatMessage({ id: 'components.UploadAvatar.title' })}</Button>
 				</Upload>
