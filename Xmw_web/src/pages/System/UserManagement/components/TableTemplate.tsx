@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:53:39
+ * @LastEditTime: 2023-01-13 10:20:27
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -374,7 +374,6 @@ const TableTemplate: FC = () => {
 
 	/**
 	 * @description: 获取岗位列表
-	 * @param {*} async
 	 * @return {*}
 	 * @author: Cyan
 	 */
@@ -388,7 +387,6 @@ const TableTemplate: FC = () => {
 
 	/**
 	 * @description: 获取组织列表
-	 * @param {*} async
 	 * @return {*}
 	 * @author: Cyan
 	 */

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 16:54:11
+ * @LastEditTime: 2023-01-13 15:34:20
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -16,7 +16,13 @@ import type { UserInformationProps } from '../utils/interface'
 import cascaderOptions from '@/utils/pca-code.json' // 省市区级联数据
 import FigureLabels from '@/components/FigureLabels'
 
-const UserInformation: FC<UserInformationProps> = ({ roleData, jobsData, organizationData }) => {
+const UserInformation: FC<UserInformationProps> = ({
+	roleData,
+	jobsData,
+	organizationData,
+	showLabel = true,
+	disabledField = false
+}) => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
@@ -27,6 +33,7 @@ const UserInformation: FC<UserInformationProps> = ({ roleData, jobsData, organiz
 				colProps={{ span: 12 }}
 				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' })}
 				options={roleData.map(r => ({ label: r.role_name, value: r.role_id }))}
+				disabled={disabledField}
 				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' }) }]}
 			/>
 			{/* 所属组织 */}
@@ -90,12 +97,14 @@ const UserInformation: FC<UserInformationProps> = ({ roleData, jobsData, organiz
 				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.address' }) }]}
 			/>
 			{/* 人物标签 */}
-			<Form.Item
-				label={formatMessage({ id: 'pages.system.user-management.tags' })}
-				name="tags"
-			>
-				<FigureLabels />
-			</Form.Item>
+			{
+				showLabel ? <Form.Item
+					label={formatMessage({ id: 'pages.system.user-management.tags' })}
+					name="tags"
+				>
+					<FigureLabels />
+				</Form.Item> : null
+			}
 		</>
 	)
 }

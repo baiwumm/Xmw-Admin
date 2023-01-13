@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:31:08
+ * @LastEditTime: 2023-01-13 15:12:00
  */
 import {
   Controller,
@@ -50,7 +50,7 @@ import { responseMessage } from '@/utils'; // 全局工具函数
 @ApiBearerAuth()
 @Controller('system/user-management')
 export class UserManagementController {
-  constructor(private readonly userManagementService: UserManagementService) {}
+  constructor(private readonly userManagementService: UserManagementService) { }
 
   /**
    * @description: 获取用户管理列表
@@ -100,10 +100,12 @@ export class UserManagementController {
   async updateUser(
     @Param('user_id') user_id: string,
     @Body() userInfo: SaveUserManagementDto,
+    @Session() session: Record<string, any>,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.userManagementService.updateUser(
       user_id,
       userInfo,
+      session,
     );
     return response;
   }

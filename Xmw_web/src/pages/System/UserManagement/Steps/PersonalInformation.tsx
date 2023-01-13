@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-25 10:51:12
+ * @LastEditTime: 2023-01-13 15:32:11
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -12,7 +12,7 @@ import { useIntl } from '@umijs/max'
 import { ProFormText, ProFormDigit, ProFormRadio } from '@ant-design/pro-components'; // antd 高级组件
 import { APP_STATUS_OPTS, APP_SEX_OPTS } from '@/global/enum' // 状态枚举
 
-const PersonalInformation: FC = () => {
+const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = false }) => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
@@ -22,6 +22,7 @@ const PersonalInformation: FC = () => {
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: 'pages.system.user-management.user_name' })}
 				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.user_name' })}
+				disabled={disabledField}
 				fieldProps={{
 					showCount: true,
 					maxLength: 20
@@ -44,6 +45,7 @@ const PersonalInformation: FC = () => {
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: 'pages.system.user-management.work_no' })}
 				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.work_no' })}
+				disabled={disabledField}
 				fieldProps={{
 					showCount: true,
 					maxLength: 20

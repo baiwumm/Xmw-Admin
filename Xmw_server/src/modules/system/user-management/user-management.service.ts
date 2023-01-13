@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 17:41:11
+ * @LastEditTime: 2023-01-13 15:13:05
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -113,6 +113,7 @@ export class UserManagementService {
   async updateUser(
     user_id: string,
     userInfo: SaveUserManagementDto,
+    session: Record<string, any>,
   ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
@@ -135,6 +136,8 @@ export class UserManagementService {
     const result = await this.userModel.update(userInfo, {
       where: { user_id },
     });
+    // 更新 session 用户信息
+    session.currentUserInfo = { ...session.currentUserInfo, ...userInfo };
     return responseMessage(result);
   }
 
