@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2023-01-09 17:15:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 18:14:23
+ * @LastEditTime: 2023-01-16 16:31:53
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
-import { Progress, Form } from 'antd';
+import { Progress, Form, Row, Col } from 'antd';
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
 import zxcvbn from 'zxcvbn'; // 密码强度校验
-import { isUndefined } from 'lodash'
 import styles from './index.module.less'
 
 const StrengthMeter: FC = () => {
@@ -71,17 +70,14 @@ const StrengthMeter: FC = () => {
           percent={password ? watchStrength(password) : 0}
           steps={5}
           strokeColor={['#e74242', '#EFBD47', '#ffa500', '#1bbf1b', '#008000']}
-          format={(percent) => {
-            return isUndefined(percent) ? null : {
-              20: formatMessage({ id: 'components.StrengthMeter.very-weak' }),
-              40: formatMessage({ id: 'components.StrengthMeter.weak' }),
-              60: formatMessage({ id: 'components.StrengthMeter.general' }),
-              80: formatMessage({ id: 'components.StrengthMeter.strong' }),
-              100: formatMessage({ id: 'components.StrengthMeter.very-strong' })
-            }[percent]
-          }}
+          showInfo={false}
         />
       </div>
+      <Row justify="space-around" className={styles['process-steps']}>
+        {
+          ['very-weak', 'weak', 'general', 'strong', 'very-strong'].map(value => <Col span={4} key={value}>{formatMessage({ id: `components.StrengthMeter.${value}` })}</Col>)
+        }
+      </Row>
     </>
   )
 }
