@@ -1,6 +1,6 @@
 import { useLocalStorageState, useRequest } from 'ahooks';
-import { PoweroffOutlined, LockOutlined } from '@ant-design/icons';
-import { useModel, useIntl } from '@umijs/max';
+import { PoweroffOutlined, LockOutlined, createFromIconfontCN } from '@ant-design/icons';
+import { useModel, useIntl, history } from '@umijs/max';
 import { Modal } from 'antd';
 import type { MenuProps } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
@@ -9,6 +9,7 @@ import HeaderDropdown from '../../HeaderDropdown';
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
+import routerConfig from '@/utils/routerConfig'
 
 import UserAvatar from './UserAvatar' // 用户头像
 import LockScreenModal from './LockScreenModal' // 锁定屏幕弹窗
@@ -22,6 +23,10 @@ const AvatarDropdown: React.FC = () => {
   const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
   // 绑定元素
   const cRef = useRef() as React.MutableRefObject<any>;
+  // 使用 iconfont.cn 资源
+  const IconFont = createFromIconfontCN({
+    scriptUrl: process.env.ICONFONT_URL,
+  });
 
   /**
  * @description: 退出登录，并且将当前的 url 保存
@@ -61,6 +66,10 @@ const AvatarDropdown: React.FC = () => {
   const onMenuClick = useCallback(
     (event: MenuInfo) => {
       switch (event.key) {
+        // 跳转至个人中心
+        case 'personalCenter':
+          history.push(routerConfig['PERSONAL_CENTER'])
+          break
         // 锁定屏幕
         case 'lockScreen':
           cRef.current.setTrue()
@@ -75,6 +84,11 @@ const AvatarDropdown: React.FC = () => {
   );
 
   const menuItems: MenuProps['items'] = [
+    {
+      key: 'personalCenter',
+      icon: <IconFont style={{ fontSize: 16 }} type="icon-personal-center" />,
+      label: formatMessage({ id: 'pages.personal-center' }),
+    },
     {
       key: 'lockScreen',
       icon: <LockOutlined style={{ fontSize: 16 }} />,

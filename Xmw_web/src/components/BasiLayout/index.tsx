@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:17:18
+ * @LastEditTime: 2023-01-16 13:43:59
  */
 // 引入第三方库
 import React from 'react'
@@ -13,7 +13,7 @@ import { history, Link, KeepAliveContext, useIntl } from '@umijs/max';
 import { Space } from 'antd' // antd 组件库
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
-import { last, isEmpty } from 'lodash' //lodash 工具库
+import { last, isEmpty, cloneDeep } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 // 引入业务组件
@@ -56,15 +56,15 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		/* 底部版权 */
 		footerRender: () => <Footer />,
 		/* 页面切换时触发 */
-		onPageChange: () => {
-			const { location } = history;
+		onPageChange: (location: Location) => {
 			// 如果没有登录，重定向到 login
 			if (isEmpty(CurrentUser) && location.pathname !== routerConfig.LOGIN) {
 				history.push(routerConfig.LOGIN);
 			} else if (RouteMenu && Locales) {
 				// 获取当前路由信息
-				const currentRouteInfo = getItemByIdInTree<API.MENUMANAGEMENT>(RouteMenu, location.pathname, 'path', 'routes')
-				if (currentRouteInfo?.icon) {
+				const currentRouteInfo = cloneDeep(getItemByIdInTree<API.MENUMANAGEMENT>(RouteMenu, location.pathname, 'path', 'routes'))
+				// 有父级才做跳转
+				if (currentRouteInfo?.icon && currentRouteInfo.parent_id) {
 					updateTab(location.pathname, {
 						icon: <IconFont type={currentRouteInfo.icon} />,
 						name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),

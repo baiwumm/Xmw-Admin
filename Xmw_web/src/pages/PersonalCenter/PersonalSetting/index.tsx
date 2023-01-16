@@ -4,9 +4,10 @@
  * @Author: Cyan
  * @Date: 2023-01-12 15:19:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 17:35:20
+ * @LastEditTime: 2023-01-16 10:00:30
  */
 import type { FC } from 'react'
+import { useState } from 'react'
 import { Tabs, Card } from 'antd';
 import { useIntl } from '@umijs/max'
 import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
@@ -16,6 +17,8 @@ import ChangePassword from './components/ChangePassword' // 修改密码
 
 const PersonalSetting: FC = () => {
   const { formatMessage } = useIntl();
+  // 当前激活 tab 面板的 key
+  const [activeKey, setActiveKey] = useState<string>('basicSetting')
   //  Tabs 配置项
   const tabsItems = [
     {
@@ -26,7 +29,7 @@ const PersonalSetting: FC = () => {
     {
       label: formatMessage({ id: 'pages.personal-center.personal-setting.security-setting' }),
       key: 'securitySetting',
-      children: <SecuritySetting />
+      children: <SecuritySetting setActiveKey={setActiveKey} />
     },
     {
       label: formatMessage({ id: 'pages.personal-center.personal-setting.change-password' }),
@@ -37,7 +40,7 @@ const PersonalSetting: FC = () => {
   return (
     <PageContainer header={{ title: null }}>
       <Card>
-        <Tabs tabPosition='left' items={tabsItems} />
+        <Tabs activeKey={activeKey} tabPosition='left' items={tabsItems} onTabClick={(key) => setActiveKey(key)} />
       </Card>
     </PageContainer>
   )

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-13 17:33:55
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 18:26:39
+ * @LastEditTime: 2023-01-16 10:01:01
  */
 import type { FC } from 'react'
 import { useIntl, useModel } from '@umijs/max'
@@ -14,7 +14,7 @@ import { decryptionAesPsd } from '@/utils'
 
 const { Text } = Typography;
 
-const SecuritySetting: FC = () => {
+const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<string>> }> = ({ setActiveKey }) => {
   const { formatMessage } = useIntl();
   // 获取全局状态
   const { initialState } = useModel('@@initialState');
@@ -46,7 +46,7 @@ const SecuritySetting: FC = () => {
             <Text type="secondary">{formatMessage({ id: 'pages.personal-center.personal-setting.security-setting.account-password.tip' })}: {passwordStrength()}</Text>
           </Col>
         </Col>
-        <Button type="link">{formatMessage({ id: 'global.button.modify' })}</Button>
+        <Button type="link" onClick={() => setActiveKey('changePassword')}>{formatMessage({ id: 'global.button.modify' })}</Button>
       </Row>
       <Divider style={{ margin: '16px 0' }} />
       {/* 密保手机 */}
@@ -57,7 +57,7 @@ const SecuritySetting: FC = () => {
             <Text type="secondary">{formatMessage({ id: 'pages.personal-center.personal-setting.security-setting.security-phone.tip' })}：{initialState?.CurrentUser?.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2")}</Text>
           </Col>
         </Col>
-        <Button type="link">{formatMessage({ id: 'global.button.modify' })}</Button>
+        <Button type="link" onClick={() => setActiveKey('basicSetting')}>{formatMessage({ id: 'global.button.modify' })}</Button>
       </Row>
       <Divider style={{ margin: '16px 0' }} />
       {/* 安全邮箱 */}
@@ -68,7 +68,7 @@ const SecuritySetting: FC = () => {
             <Text type="secondary">{formatMessage({ id: 'pages.personal-center.personal-setting.security-setting.secure-mailbox.tip' })}：{regEmail()}</Text>
           </Col>
         </Col>
-        <Button type="link">{formatMessage({ id: 'global.button.modify' })}</Button>
+        <Button type="link" onClick={() => setActiveKey('basicSetting')}>{formatMessage({ id: 'global.button.modify' })}</Button>
       </Row>
       <Divider style={{ margin: '16px 0' }} />
     </>
