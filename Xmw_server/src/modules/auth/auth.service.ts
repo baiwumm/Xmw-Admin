@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:15:01
+ * @LastEditTime: 2023-01-17 16:18:26
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import RedisConfig from '@/config/redis'; // redis配置
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
@@ -38,6 +39,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
     private sequelize: Sequelize,
+    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -117,6 +119,10 @@ export class AuthService {
           `${userInfo.user_id}-last-login`,
           moment().format('YYYY-MM-DD HH:mm:ss'),
         );
+        // 保存操作日志
+        await this.operationLogsService.saveLogs(
+          `${{ account: '账户', mobile: '手机' }[loginParams.type]}登录`,
+        );
         return {
           data: {
             access_token: token,
@@ -192,6 +198,8 @@ export class AuthService {
           where: { user_id },
         },
       );
+      // 保存操作日志
+      await this.operationLogsService.saveLogs(`退出登录`);
       return responseMessage({});
     }
     return responseMessage({}, '登录信息已失效!', 401);

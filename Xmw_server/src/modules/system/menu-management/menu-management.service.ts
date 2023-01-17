@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:16:41
+ * @LastEditTime: 2023-01-17 16:26:32
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
@@ -25,6 +26,7 @@ export class MenuManagementService {
     @InjectModel(XmwMenu)
     private readonly menuModel: typeof XmwMenu,
     private sequelize: Sequelize,
+    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -114,6 +116,8 @@ export class MenuManagementService {
       ...menuInfo,
       founder: session.currentUserInfo.user_id,
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(`创建菜单：${menuInfo.name}`);
     return responseMessage(result);
   }
 
@@ -159,6 +163,8 @@ export class MenuManagementService {
     const result = await this.menuModel.update(menuInfo, {
       where: { menu_id },
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs('更新菜单数据');
     return responseMessage(result);
   }
 
@@ -176,8 +182,12 @@ export class MenuManagementService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
+    // 根据主键查找出当前数据
+    const currentInfo = await this.menuModel.findByPk(menu_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.menuModel.destroy({ where: { menu_id } });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(`删除菜单：${currentInfo.name}`);
     return responseMessage(result);
   }
 }

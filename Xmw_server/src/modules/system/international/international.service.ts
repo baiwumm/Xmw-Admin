@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:16:05
+ * @LastEditTime: 2023-01-17 16:22:20
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
@@ -29,6 +30,7 @@ export class InternationalService {
     @InjectModel(XmwInternational)
     private readonly internationaModel: typeof XmwInternational,
     private sequelize: Sequelize,
+    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -120,6 +122,8 @@ export class InternationalService {
       ...internationalInfo,
       founder: session.currentUserInfo.user_id,
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(`创建国际化：${name}`);
     return responseMessage(result);
   }
 
@@ -150,6 +154,8 @@ export class InternationalService {
     const result = await this.internationaModel.update(internationalInfo, {
       where: { id },
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs('更新国际化数据');
     return responseMessage(result);
   }
 
@@ -169,8 +175,12 @@ export class InternationalService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
+    // 根据主键查找出当前数据
+    const currentInfo = await this.internationaModel.findByPk(id);
     // 如果通过则执行 sql delete 语句
     const result = await this.internationaModel.destroy({ where: { id } });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(`删除国际化：${currentInfo.name}`);
     return responseMessage(result);
   }
 }

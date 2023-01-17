@@ -5,7 +5,6 @@ import { Request } from 'express';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import App_configuration from '@/config/configuration'; // 全局配置
-import { toNumber } from 'lodash';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

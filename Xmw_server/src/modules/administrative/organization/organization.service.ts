@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:10:28
+ * @LastEditTime: 2023-01-17 16:08:10
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -82,9 +82,7 @@ export class OrganizationService {
       founder: session?.currentUserInfo?.user_id,
     });
     // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `创建组织：${organizationInfo.org_name}`,
-    );
+    await this.operationLogsService.saveLogs(`创建组织：${org_name}`);
     return responseMessage(result);
   }
 
@@ -123,6 +121,8 @@ export class OrganizationService {
     const result = await this.organizationModel.update(organizationInfo, {
       where: { org_id },
     });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs('更新组织数据');
     return responseMessage(result);
   }
 
@@ -142,8 +142,14 @@ export class OrganizationService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
+    // 根据主键查找出当前数据
+    const currentInfo = await this.organizationModel.findByPk(org_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.organizationModel.destroy({ where: { org_id } });
+    // 保存操作日志
+    await this.operationLogsService.saveLogs(
+      `删除组织：${currentInfo.org_name}`,
+    );
     return responseMessage(result);
   }
 }
