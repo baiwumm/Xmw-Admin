@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-13 09:26:44
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-16 14:28:34
+ * @LastEditTime: 2023-01-17 11:21:48
  */
 import type { FC } from 'react'
 import { useState } from 'react'
@@ -79,9 +79,9 @@ const BasicSetting: FC = () => {
  * @return {*}
  * @author: Cyan
  */
-  const { run: runUpdateUser } = useRequest<ResponseModel<Record<string, any>>, API.USERMANAGEMENT[]>(updateUser, {
+  const { run: runUpdateUser } = useRequest<ResponseModel<number[]>, API.USERMANAGEMENT[]>(updateUser, {
     manual: true,
-    onSuccess: async (res: ResponseModel<Record<string, any>>, params: API.USERMANAGEMENT[]) => {
+    onSuccess: async (res: ResponseModel<number[]>, params: API.USERMANAGEMENT[]) => {
       if (res.code === 200) {
         message.success(res.msg)
         // 更新全局状态

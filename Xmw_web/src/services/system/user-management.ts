@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 18:10:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 17:19:57
+ * @LastEditTime: 2023-01-17 11:14:00
  */
 import { request } from '@umijs/max';
 import type { PageResModel, ResponseModel } from '@/global/interface';
