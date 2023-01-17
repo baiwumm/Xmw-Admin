@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-03 17:27:53
+ * @LastEditTime: 2023-01-17 11:30:58
  */
 // 引入第三方库
 import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
@@ -107,6 +107,12 @@ export const errorConfig: RequestConfig = {
         // 成功发起请求，但是内部处理出现错误
         case 400:
           authError(JSON.stringify(data.msg));
+          break;
+        // 登录信息失效
+        case 401:
+          // 退出登录返回到登录页
+          logoutToLogin()
+          Modal.destroyAll();
           break;
       }
       // 进度条结束

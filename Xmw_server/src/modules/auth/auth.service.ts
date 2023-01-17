@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-09 10:58:02
+ * @LastEditTime: 2023-01-17 11:32:32
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -194,7 +194,7 @@ export class AuthService {
       );
       return responseMessage({});
     }
-    return responseMessage({}, '登录信息已失效!', -1);
+    return responseMessage({}, '登录信息已失效!', 401);
   }
 
   /**
@@ -223,7 +223,7 @@ export class AuthService {
       const permissions = sqlData.map((s) => s.permission);
       return responseMessage(permissions);
     }
-    return responseMessage({}, '登录信息已失效!', -1);
+    return responseMessage({}, '登录信息已失效!', 401);
   }
 
   /**
@@ -270,6 +270,6 @@ export class AuthService {
       const routes = initializeTree(sqlData, 'menu_id', 'parent_id', 'routes');
       return responseMessage(routes);
     }
-    return responseMessage({}, '登录信息已失效!', -1);
+    return responseMessage({}, '登录信息已失效!', 401);
   }
 }
