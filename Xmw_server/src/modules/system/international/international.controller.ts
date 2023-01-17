@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:32:57
+ * @LastEditTime: 2023-01-17 14:15:49
  */
 import {
   Controller,
@@ -27,7 +27,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListInternationalDto,
@@ -48,7 +48,7 @@ import { responseMessage } from '@/utils'; // 全局工具函数
 @ApiBearerAuth()
 @Controller('system/international')
 export class InternationalController {
-  constructor(private readonly internationalService: InternationalService) {}
+  constructor(private readonly internationalService: InternationalService) { }
   /**
    * @description: 获取当前语言的国际化数据
    * @return {*}
@@ -91,7 +91,7 @@ export class InternationalController {
   @ApiOperation({ summary: '创建国际化数据' })
   async createInternational(
     @Body() internationalInfo: SaveInternationalDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.internationalService.createInternational(
       internationalInfo,

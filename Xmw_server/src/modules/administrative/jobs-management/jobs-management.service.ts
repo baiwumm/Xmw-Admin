@@ -4,14 +4,13 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:13:14
+ * @LastEditTime: 2023-01-17 14:13:05
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
-import { ResData, ResponseModel } from '@/global/interface'; // interface
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
@@ -23,8 +22,7 @@ export class JobsManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwJobs)
     private readonly jobsModel: typeof XmwJobs,
-    private sequelize: Sequelize,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取国际化列表
@@ -72,7 +70,7 @@ export class JobsManagementService {
    */
   async createJobs(
     jobsInfo: SaveJobsManagementDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveJobsManagementDto>> {
     // 解构参数
     const { jobs_name } = jobsInfo;

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 14:20:17
+ * @LastEditTime: 2023-01-17 14:17:16
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -33,7 +33,7 @@ export class RoleManagementService {
     private readonly permissionModel: typeof XmwPermission,
 
     private sequelize: Sequelize,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取角色管理列表
@@ -89,7 +89,7 @@ export class RoleManagementService {
    */
   async createRole(
     { menu_permission, ...roleInfo }: SaveRoleManagementDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveRoleManagementDto>> {
     // 解构参数
     const { role_name, role_code } = roleInfo;

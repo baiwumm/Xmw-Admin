@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:43:51
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 15:12:00
+ * @LastEditTime: 2023-01-17 14:17:53
  */
 import {
   Controller,
@@ -29,7 +29,12 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // TS类型注解
+import {
+  ResData,
+  ResponseModel,
+  PageResModel,
+  SessionModel,
+} from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListUserManagementDto,
@@ -79,7 +84,7 @@ export class UserManagementController {
   @ApiOperation({ summary: '创建用户数据' })
   async createUser(
     @Body() userInfo: SaveUserManagementDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.userManagementService.createUser(
       userInfo,
@@ -100,7 +105,7 @@ export class UserManagementController {
   async updateUser(
     @Param('user_id') user_id: string,
     @Body() userInfo: SaveUserManagementDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.userManagementService.updateUser(
       user_id,

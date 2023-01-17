@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 10:53:27
+ * @LastEditTime: 2023-01-17 14:16:05
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -13,7 +13,7 @@ import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
-import { ResData, ResponseModel } from '@/global/interface'; // interface
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
 import {
   LOCALES_LANG,
   initializeTree,
@@ -29,7 +29,7 @@ export class InternationalService {
     @InjectModel(XmwInternational)
     private readonly internationaModel: typeof XmwInternational,
     private sequelize: Sequelize,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取当前语言的国际化数据
@@ -92,7 +92,7 @@ export class InternationalService {
     const result = initializeTree(sqlData, 'id', 'parent_id', 'children');
     return isMenu
       ? result.filter((element: XmwInternational) => element.name == 'menu')[0]
-          .children
+        .children
       : result;
   }
 
@@ -103,7 +103,7 @@ export class InternationalService {
    */
   async createInternational(
     internationalInfo: SaveInternationalDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveInternationalDto>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;

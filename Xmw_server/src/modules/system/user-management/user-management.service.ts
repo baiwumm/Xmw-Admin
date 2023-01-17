@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 15:13:05
+ * @LastEditTime: 2023-01-17 14:18:18
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -14,7 +14,12 @@ import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwRole } from '@/models/xmw_role.model';
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { XmwJobs } from '@/models/xmw_jobs.model';
-import { ResData, PageResModel, ResponseModel } from '@/global/interface'; // interface
+import {
+  ResData,
+  PageResModel,
+  ResponseModel,
+  SessionModel,
+} from '@/global/interface'; // interface
 import { ListUserManagementDto, SaveUserManagementDto } from './dto';
 import { responseMessage } from '@/utils'; // 全局工具函数
 
@@ -84,7 +89,7 @@ export class UserManagementService {
    */
   async createUser(
     userInfo: SaveUserManagementDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveUserManagementDto>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
@@ -113,7 +118,7 @@ export class UserManagementService {
   async updateUser(
     user_id: string,
     userInfo: SaveUserManagementDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | number[]>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;

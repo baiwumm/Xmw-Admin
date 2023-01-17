@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:08
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:31:52
+ * @LastEditTime: 2023-01-17 14:17:05
  */
 import {
   Controller,
@@ -29,7 +29,12 @@ import {
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
-import { ResData, ResponseModel, PageResModel } from '@/global/interface'; // TS类型注解
+import {
+  ResData,
+  ResponseModel,
+  PageResModel,
+  SessionModel,
+} from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ResponseRoleManagementDto,
@@ -50,7 +55,7 @@ import { responseMessage } from '@/utils'; // 全局工具函数
 @ApiBearerAuth()
 @Controller('system/role-management')
 export class RoleManagementController {
-  constructor(private readonly roleManagementService: RoleManagementService) {}
+  constructor(private readonly roleManagementService: RoleManagementService) { }
 
   /**
    * @description: 获取角色管理列表
@@ -79,7 +84,7 @@ export class RoleManagementController {
   @ApiOperation({ summary: '创建角色数据' })
   async createRole(
     @Body() roleInfo: SaveRoleManagementDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.roleManagementService.createRole(
       roleInfo,

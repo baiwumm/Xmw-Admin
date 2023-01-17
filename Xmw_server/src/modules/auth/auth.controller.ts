@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:30:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-09 14:26:46
+ * @LastEditTime: 2023-01-17 14:14:22
  */
 import {
   Controller,
@@ -16,7 +16,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
 import { AuthService } from './auth.service'; // Auth Service
 import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
 import {
@@ -61,7 +61,7 @@ export class AuthController {
   async login(
     @Body() loginParams: LoginParamsDto,
     @IpAddress() clinetIp: string,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.authService.loginSingToken(
       loginParams,
@@ -81,7 +81,7 @@ export class AuthController {
   @ApiOkResponse({ type: ResponseDto })
   @ApiOperation({ summary: '退出登录' })
   async logout(
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.authService.logout(session);
     return response;
@@ -97,7 +97,7 @@ export class AuthController {
   @ApiOkResponse({ type: UserInfoResponseDto })
   @ApiOperation({ summary: '获取当前用户信息' })
   async getCurrentUserInfo(
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     return responseMessage(session.currentUserInfo);
   }
@@ -112,7 +112,7 @@ export class AuthController {
   @ApiOkResponse({ type: PermissionResponseDto })
   @ApiOperation({ summary: '获取用户按钮权限' })
   async getPermissions(
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<string[]>> {
     const response = await this.authService.getPermissions(session);
     return response;
@@ -128,7 +128,7 @@ export class AuthController {
   @ApiOkResponse({ type: RoutesMenuResponseDto })
   @ApiOperation({ summary: '获取用户权限菜单' })
   async getRoutesMenus(
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<XmwMenu[]>> {
     const response = await this.authService.getRoutesMenus(session);
     return response;
@@ -143,7 +143,7 @@ export class AuthController {
   @ApiOkResponse({ type: VerifyCodeResponseDto })
   @ApiOperation({ summary: '获取图形验证码' })
   async getCaptcha(
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
     @Res() res,
   ): Promise<void> {
     const captcha = svgCaptcha.createMathExpr({

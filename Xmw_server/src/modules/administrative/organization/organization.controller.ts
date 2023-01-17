@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:27:17
+ * @LastEditTime: 2023-01-17 14:10:05
  */
 import {
   Controller,
@@ -27,7 +27,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListOrganizationDto,
@@ -47,7 +47,7 @@ import { responseMessage } from '@/utils';
 @ApiBearerAuth()
 @Controller('administrative/organization')
 export class OrganizationController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(private readonly organizationService: OrganizationService) { }
 
   /**
    * @description: 获取组织管理列表
@@ -78,7 +78,7 @@ export class OrganizationController {
   @ApiOperation({ summary: '创建组织数据' })
   async createOrganization(
     @Body() organizationInfo: SaveOrganizationDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.organizationService.createOrganization(
       organizationInfo,

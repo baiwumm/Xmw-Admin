@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-25 14:29:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 11:32:32
+ * @LastEditTime: 2023-01-17 14:15:01
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -21,7 +21,7 @@ import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
 import { LoginParamsDto } from './dto';
-import { ResponseModel } from '@/global/interface'; // interface
+import { ResponseModel, SessionModel } from '@/global/interface'; // interface
 import { initializeTree, responseMessage } from '@/utils';
 import * as moment from 'moment'; // 时间插件 moment
 
@@ -48,7 +48,7 @@ export class AuthService {
   async loginSingToken(
     loginParams: LoginParamsDto,
     clinetIp: string,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<responseResult> {
     // 登录参数校验结果
     const authResult: responseResult = await this.validateUser(
@@ -137,7 +137,7 @@ export class AuthService {
    */
   async validateUser(
     loginParams: LoginParamsDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<responseResult> {
     // 解构参数
     const { type, user_name, password, phone, verifyCode } = loginParams;
@@ -179,7 +179,7 @@ export class AuthService {
    * @return {*}
    * @author: Cyan
    */
-  async logout(session: Record<string, any>): Promise<responseResult> {
+  async logout(session: SessionModel): Promise<responseResult> {
     const { currentUserInfo } = session;
     if (currentUserInfo) {
       const { user_id, user_name } = currentUserInfo;
@@ -203,7 +203,7 @@ export class AuthService {
    * @author: Cyan
    */
   async getPermissions(
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<string[]>> {
     // 获取当前用户 id
     const { currentUserInfo } = session;
@@ -232,7 +232,7 @@ export class AuthService {
    * @author: Cyan
    */
   async getRoutesMenus(
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<XmwMenu[]>> {
     // 获取当前用户 id
     const { currentUserInfo } = session;

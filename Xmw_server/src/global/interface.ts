@@ -4,8 +4,9 @@
  * @Author: Cyan
  * @Date: 2022-10-14 10:38:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 08:59:57
+ * @LastEditTime: 2023-01-17 14:14:19
  */
+import { UserAttributes } from '@/attributes/system';
 
 /**
  * @description: 动态对象属性
@@ -33,4 +34,14 @@ export type ResponseModel<T = ResData[]> = {
   code?: number;
   data: T;
   msg?: string;
+};
+
+/**
+ * @description: Session 存储对象
+ * @return {*}
+ * @author: Cyan
+ */
+export type SessionModel = {
+  currentUserInfo: UserAttributes; // 用户信息
+  verifyCode: string; // 验证码
 };

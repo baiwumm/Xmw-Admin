@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-02 16:28:20
+ * @LastEditTime: 2023-01-17 14:12:19
  */
 import {
   Controller,
@@ -27,7 +27,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel } from '@/global/interface'; // TS类型注解
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import {
   ListJobsManagementDto,
@@ -47,7 +47,7 @@ import { responseMessage } from '@/utils';
 @ApiBearerAuth()
 @Controller('administrative/jobs-management')
 export class JobsManagementController {
-  constructor(private readonly jobsManagementService: JobsManagementService) {}
+  constructor(private readonly jobsManagementService: JobsManagementService) { }
 
   /**
    * @description: 获取岗位管理列表
@@ -76,7 +76,7 @@ export class JobsManagementController {
   @ApiOperation({ summary: '创建岗位数据' })
   async createJobs(
     @Body() jobsInfo: SaveJobsManagementDto,
-    @Session() session: Record<string, any>,
+    @Session() session: SessionModel,
   ): Promise<ResponseModel<ResData>> {
     const response = await this.jobsManagementService.createJobs(
       jobsInfo,

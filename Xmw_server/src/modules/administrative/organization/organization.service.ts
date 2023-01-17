@@ -4,14 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-12 11:01:10
+ * @LastEditTime: 2023-01-17 14:10:28
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import { ResData, ResponseModel } from '@/global/interface'; // interface
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListOrganizationDto, SaveOrganizationDto } from './dto';
@@ -23,7 +23,7 @@ export class OrganizationService {
     @InjectModel(XmwOrganization)
     private readonly organizationModel: typeof XmwOrganization,
     private readonly operationLogsService: OperationLogsService,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取组织管理列表
@@ -64,7 +64,7 @@ export class OrganizationService {
    */
   async createOrganization(
     organizationInfo: SaveOrganizationDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveOrganizationDto>> {
     // 解构参数
     const { org_name, org_code } = organizationInfo;

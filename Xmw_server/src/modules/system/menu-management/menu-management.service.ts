@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 10:11:12
+ * @LastEditTime: 2023-01-17 14:16:41
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -14,7 +14,7 @@ import type { WhereOptions } from 'sequelize/types';
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { ResData, ResponseModel } from '@/global/interface'; // interface
+import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { ListMenuManagementDto, SaveMenuManagementDto } from './dto';
 
@@ -25,7 +25,7 @@ export class MenuManagementService {
     @InjectModel(XmwMenu)
     private readonly menuModel: typeof XmwMenu,
     private sequelize: Sequelize,
-  ) {}
+  ) { }
 
   /**
    * @description: 获取菜单列表
@@ -86,7 +86,7 @@ export class MenuManagementService {
    */
   async createMenu(
     menuInfo: SaveMenuManagementDto,
-    session: Record<string, any>,
+    session: SessionModel,
   ): Promise<ResponseModel<ResData | SaveMenuManagementDto>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
