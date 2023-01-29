@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-16 13:43:59
+ * @LastEditTime: 2023-01-29 15:38:59
  */
 // 引入第三方库
 import React from 'react'
@@ -35,7 +35,6 @@ type RouteProps = {
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	const { formatMessage } = useIntl();
-	const { CurrentUser, RouteMenu, Locales } = initialState
 	// 使用 iconfont.cn 资源
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
@@ -51,18 +50,18 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		rightContentRender: () => <RightContent />,
 		/* 水印 */
 		waterMarkProps: {
-			content: CurrentUser?.cn_name,
+			content: initialState?.CurrentUser?.cn_name,
 		},
 		/* 底部版权 */
 		footerRender: () => <Footer />,
 		/* 页面切换时触发 */
 		onPageChange: (location: Location) => {
 			// 如果没有登录，重定向到 login
-			if (isEmpty(CurrentUser) && location.pathname !== routerConfig.LOGIN) {
+			if (isEmpty(initialState?.CurrentUser) && location.pathname !== routerConfig.LOGIN) {
 				history.push(routerConfig.LOGIN);
-			} else if (RouteMenu && Locales) {
+			} else if (initialState?.RouteMenu && initialState?.Locales) {
 				// 获取当前路由信息
-				const currentRouteInfo = cloneDeep(getItemByIdInTree<API.MENUMANAGEMENT>(RouteMenu, location.pathname, 'path', 'routes'))
+				const currentRouteInfo = cloneDeep(getItemByIdInTree<API.MENUMANAGEMENT>(initialState?.RouteMenu, location.pathname, 'path', 'routes'))
 				// 有父级才做跳转
 				if (currentRouteInfo?.icon && currentRouteInfo.parent_id) {
 					updateTab(location.pathname, {
@@ -74,7 +73,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 			}
 		},
 		menu: {
-			request: async () => RouteMenu
+			request: async () => initialState?.RouteMenu
 		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {

@@ -4,10 +4,10 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 11:30:58
+ * @LastEditTime: 2023-01-29 16:03:03
  */
 // 引入第三方库
-import type { RequestOptions } from '@@/plugin-request/request'; // 请求配置项
+import type { RequestOptions, RequestError } from '@@/plugin-request/request'; // 请求配置项
 import type { RequestConfig } from '@umijs/max';
 import { message, Modal } from 'antd'; // antd 组件库
 import { debounce } from 'lodash'; // lodash 工具函数
@@ -23,7 +23,7 @@ import "nprogress/nprogress.css";
  */
 const authError = debounce((content, duration = 3) => {
   message.error(content, duration);
-}, 100);
+}, 300);
 
 /**
  * @name 错误处理
@@ -40,7 +40,7 @@ export const errorConfig: RequestConfig = {
      * @return {*}
      * @author: Cyan
      */
-    errorHandler: (error: any, opts: any): void => {
+    errorHandler: (error: RequestError, opts: RequestOptions): void => {
       // 获取报错的响应和请求信息
       const { response, resquest } = error;
       // 配置 skipErrorHandler 会跳过默认的错误处理，用于项目中部分特殊的接口
@@ -95,29 +95,38 @@ export const errorConfig: RequestConfig = {
 
   // 响应拦截器
   responseInterceptors: [
-    (response) => {
-      // 拦截响应数据，进行个性化处理
-      const { data } = response as any;
-      // 根据返回状态码，统一处理，需要前端和后端沟通确认
-      switch (data.code) {
-        // 成功发起请求并成功处理，一般用于数据库字段校验
-        case -1:
-          authError(JSON.stringify(data.msg));
-          break;
-        // 成功发起请求，但是内部处理出现错误
-        case 400:
-          authError(JSON.stringify(data.msg));
-          break;
-        // 登录信息失效
-        case 401:
-          // 退出登录返回到登录页
-          logoutToLogin()
-          Modal.destroyAll();
-          break;
+    [
+      // 响应处理
+      (response) => {
+        // 拦截响应数据，进行个性化处理
+        const { data } = response as any;
+        // 根据返回状态码，统一处理，需要前端和后端沟通确认
+        switch (data.code) {
+          // 成功发起请求并成功处理，一般用于数据库字段校验
+          case -1:
+            authError(JSON.stringify(data.msg));
+            break;
+          // 成功发起请求，但是内部处理出现错误
+          case 400:
+            authError(JSON.stringify(data.msg));
+            break;
+          // 登录信息失效
+          case 401:
+            // 退出登录返回到登录页
+            logoutToLogin()
+            Modal.destroyAll();
+            break;
+        }
+        // 进度条结束
+        Nprogress.done();
+        return response;
+      },
+      // 错误处理
+      (error: RequestError) => {
+        // 进度条结束
+        Nprogress.done();
+        return Promise.reject(error)
       }
-      // 进度条结束
-      Nprogress.done();
-      return response;
-    },
+    ]
   ],
 };
