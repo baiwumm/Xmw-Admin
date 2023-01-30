@@ -13,6 +13,9 @@ export default defineConfig({
    */
   keepalive: [/./],
   tabsLayout: {
+    // 是否使用自定义的 tabs 组件，需要搭配运行时配置 getCustomTabs 使用
+    hasCustomTabs: true,
+    // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
     hasDropdown: true,
   },
   /**
@@ -133,7 +136,7 @@ export default defineConfig({
   requestRecord: {},
   define: {
     'process.env': {
-      DOMAIN_URL: 'http://127.0.0.1:3000/',
+      DOMAIN_URL: 'http://127.0.0.1:6688/',
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_7zg0dyc3tfw.js',
     },
   },

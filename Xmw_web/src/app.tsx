@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 15:36:43
+ * @LastEditTime: 2023-01-30 14:09:00
  */
 
 // 引入第三方库
 import type { RunTimeLayoutConfig } from '@umijs/max';
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
+import { TabsLayout } from '@/components/TabsLayout' // 多标签页配置
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 import { CACHE_KEY } from '@/utils' // 全局工具函数
 import { initLocalesLang, fetchUserInfo, fetchPermissions, fetchRouteMenu, initAllRequest } from '@/utils/initRequest' // 初始化共用接口请求
@@ -46,15 +47,31 @@ export async function getInitialState(): Promise<InitialStateModel> {
 /**
  * @description: 全局 lyout 布局
  * @doc ProLayout 支持的api https://procomponents.ant.design/components/layout
- * @return {*}
  * @author: Cyan
  */
 export const layout: RunTimeLayoutConfig = BasiLayout
 
 /**
+ * @description: tabsLayout 返回一个对象
+ * @doc https://alitajs.com/zh-CN/docs/guides/tabs#tabslayout
+ * @author: Cyan
+ */
+export function tabsLayout() {
+  return {
+    size: 'small',
+  };
+}
+
+/**
+ * @description: 完全覆盖内置的多 Tabs 组件，需要搭配配置 hasCustomTabs:true 使用。
+ * @doc https://alitajs.com/zh-CN/docs/guides/tabs#getcustomtabs
+ * @author: Cyan
+ */
+export const getCustomTabs = TabsLayout
+
+/**
  * @description: request 配置，可以配置错误处理，它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
  * @doc https://umijs.org/docs/max/request#配置
- * @return {*}
  * @author: Cyan
  */
 export const request = {
