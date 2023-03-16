@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 09:20:40
+ * @LastEditTime: 2023-03-16 16:29:56
  */
 import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -71,7 +71,7 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 			<Avatar size={180} icon={<UserOutlined />} src={currentAvatar} />
-			<ImgCrop rotate shape='round' grid>
+			<ImgCrop rotationSlider cropShape='round' showGrid>
 				<Upload
 					maxCount={1}
 					action={`${process.env.DOMAIN_URL}v1/upload/single-file`}
