@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-12 15:19:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 10:06:58
+ * @LastEditTime: 2023-03-17 09:42:01
  */
 import type { FC } from 'react'
 import { PageContainer, ProCard } from '@ant-design/pro-components' // antd 高级组件
@@ -15,11 +15,14 @@ const PersonalInformation: FC = () => {
     <PageContainer header={{ title: null }}>
       <ProCard gutter={16} ghost>
         {/* 左侧信息 */}
-        <ProCard colSpan={8} >
+        <ProCard colSpan={{
+          lg: '300px',
+          xl: '400px',
+        }} >
           <LeftContent />
         </ProCard>
         {/* 右侧信息 */}
-        <ProCard colSpan={16} />
+        <ProCard />
       </ProCard>
     </PageContainer>
   )

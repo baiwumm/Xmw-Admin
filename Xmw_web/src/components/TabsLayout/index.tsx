@@ -8,7 +8,6 @@
  */
 import { Tabs, message } from 'antd';
 import type { TabsProps } from 'antd';
-import { } from 'antd/es/menu/'
 import { useIntl } from '@umijs/max';
 import { findIndex, isString } from 'lodash'
 
