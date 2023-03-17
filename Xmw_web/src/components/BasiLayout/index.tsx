@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 13:57:13
+ * @LastEditTime: 2023-03-17 17:06:15
  */
 // 引入第三方库
 import React from 'react'
@@ -15,6 +15,7 @@ import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { last, isEmpty, cloneDeep } from 'lodash' //lodash 工具库
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { ItemType } from 'antd/es/breadcrumb/Breadcrumb'
 
 // 引入业务组件
 import RightContent from '@/components/RightContent'
@@ -23,15 +24,6 @@ import routerConfig from '@/utils/routerConfig' // 路由配置
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { appList } from './config'
-
-type RouteProps = {
-	path: string;
-	breadcrumbName: string;
-	children: Array<{
-		path: string;
-		breadcrumbName: string;
-	}>;
-}
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	const { formatMessage } = useIntl();
@@ -77,7 +69,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {
-			itemRender: (route: RouteProps) => {
+			itemRender: (route: ItemType) => {
 				return (
 					<Link to={route.path} >
 						<Space>
