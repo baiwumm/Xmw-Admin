@@ -6,7 +6,10 @@ import {
   DataType,
   IsUUID,
   IsIP,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import type { LogsAttributes } from '@/attributes/system';
 
 @Table({ tableName: 'xmw_logs' })
@@ -25,6 +28,7 @@ export class XmwLogs
 
   // 用户id
   @IsUUID(4)
+  @ForeignKey(() => XmwUser)
   @Column({ type: DataType.UUID, allowNull: false, comment: '用户id' })
   user_id: string;
 
@@ -56,4 +60,7 @@ export class XmwLogs
   // 请求地址
   @Column({ type: DataType.STRING(100), allowNull: false, comment: '请求地址' })
   api_url: string;
+
+  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  userInfo: XmwUser;
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-29 10:51:20
+ * @LastEditTime: 2023-03-17 16:50:12
  */
 export default {
   path: '/system',
@@ -45,11 +45,12 @@ export default {
       access: 'adminRouteFilter',
       exact: true,
     },
-    // {
-    //   path: '/system/operation-log',
-    //   name: 'operation-log',
-    //   icon: 'icon-operation-log',
-    //   component: './System/OperationLog',
-    // },
+    {
+      path: '/system/operation-log',
+      name: 'operation-log',
+      component: './System/OperationLog',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
   ],
 };

@@ -4,15 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 15:51:23
+ * @LastEditTime: 2023-03-17 16:30:51
  */
 import { Injectable, Scope, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { Op } from 'sequelize';
+import type { WhereOptions } from 'sequelize/types';
+import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
 import { Request } from 'express';
-import { SessionModel } from '@/global/interface'; // interface
-
+import { SessionModel, PageResModel } from '@/global/interface'; // interface
+import { ListOperationLogsDto } from './dto';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 @Injectable({ scope: Scope.REQUEST })
 export class OperationLogsService {
   constructor(
@@ -21,6 +25,7 @@ export class OperationLogsService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwLogs)
     private readonly logsModel: typeof XmwLogs,
+    private sequelize: Sequelize,
   ) { }
 
   /**
@@ -42,5 +47,41 @@ export class OperationLogsService {
     };
     // 将数据插入到表中
     await this.logsModel.create(logData);
+  }
+
+  /**
+   * @description: 获取操作日志列表
+   * @return {*}
+   * @author: Cyan
+   */
+  async getLogsList(
+    logsInfo: ListOperationLogsDto,
+  ): Promise<PageResModel<XmwLogs[]>> {
+    // 解构参数
+    const { start_time, end_time, pageSize, current } = logsInfo;
+    // 拼接查询参数
+    const where: WhereOptions = {};
+    if (start_time && end_time)
+      where.created_time = { [Op.between]: [start_time, end_time] };
+    // 分页查询数据
+    const { count, rows } = await this.logsModel.findAndCountAll({
+      attributes: {
+        include: ['u.cn_name'],
+      },
+      // 联表查询
+      include: [
+        {
+          model: XmwUser,
+          as: 'u',
+          attributes: [],
+        },
+      ],
+      raw: true,
+      offset: (Number(current) - 1) * pageSize,
+      limit: Number(pageSize),
+      where,
+      order: [['created_time', 'desc']], // 排序规则,
+    });
+    return { list: rows, total: count };
   }
 }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-30 14:09:00
+ * @LastEditTime: 2023-03-17 13:55:55
  */
 
 // 引入第三方库
@@ -56,18 +56,18 @@ export const layout: RunTimeLayoutConfig = BasiLayout
  * @doc https://alitajs.com/zh-CN/docs/guides/tabs#tabslayout
  * @author: Cyan
  */
-export function tabsLayout() {
-  return {
-    size: 'small',
-  };
-}
+// export function tabsLayout() {
+//   return {
+//     size: 'small',
+//   };
+// }
 
 /**
  * @description: 完全覆盖内置的多 Tabs 组件，需要搭配配置 hasCustomTabs:true 使用。
  * @doc https://alitajs.com/zh-CN/docs/guides/tabs#getcustomtabs
  * @author: Cyan
  */
-export const getCustomTabs = TabsLayout
+// export const getCustomTabs = TabsLayout
 
 /**
  * @description: request 配置，可以配置错误处理，它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。

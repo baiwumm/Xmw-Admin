@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-29 15:38:59
+ * @LastEditTime: 2023-03-17 13:57:13
  */
 // 引入第三方库
 import React from 'react'
@@ -42,7 +42,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	// 获取 localstorage key
 	const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
 	// 多标签切换
-	const { updateTab } = React.useContext(KeepAliveContext);
+	// const { updateTab } = React.useContext(KeepAliveContext);
 	return {
 		/* 菜单图标使用iconfont */
 		iconfontUrl: process.env.ICONFONT_URL,
@@ -64,11 +64,11 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				const currentRouteInfo = cloneDeep(getItemByIdInTree<API.MENUMANAGEMENT>(initialState?.RouteMenu, location.pathname, 'path', 'routes'))
 				// 有父级才做跳转
 				if (currentRouteInfo?.icon && currentRouteInfo.parent_id) {
-					updateTab(location.pathname, {
-						icon: <IconFont type={currentRouteInfo.icon} />,
-						name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),
-						closable: true,
-					});
+					// updateTab(location.pathname, {
+					// 	icon: <IconFont type={currentRouteInfo.icon} />,
+					// 	name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),
+					// 	closable: true,
+					// });
 				}
 			}
 		},

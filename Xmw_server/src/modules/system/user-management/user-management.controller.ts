@@ -67,9 +67,9 @@ export class UserManagementController {
   @ApiOkResponse({ type: ResponseUserManagementDto })
   @ApiOperation({ summary: '获取用户管理列表' })
   async getUserList(
-    @Query() roleInfo: ListUserManagementDto,
+    @Query() userInfo: ListUserManagementDto,
   ): Promise<ResponseModel<PageResModel<XmwUser[]>>> {
-    const response = await this.userManagementService.getUserList(roleInfo);
+    const response = await this.userManagementService.getUserList(userInfo);
     return responseMessage(response);
   }
 
