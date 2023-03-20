@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:53:03
+ * @LastEditTime: 2023-03-20 14:43:51
  */
 // 引入第三方库
 import { useBoolean } from 'ahooks';
@@ -192,8 +192,8 @@ const TableTemplate: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]).format('YYYY-MM-DD 23:59:59'),
+						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},

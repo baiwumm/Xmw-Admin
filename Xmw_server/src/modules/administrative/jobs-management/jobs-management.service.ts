@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:08:24
+ * @LastEditTime: 2023-03-20 15:37:21
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -127,7 +127,11 @@ export class JobsManagementService {
       where: { jobs_id },
     });
     // 保存操作日志
-    await this.operationLogsService.saveLogs('更新岗位数据');
+    // 根据主键查找出当前数据
+    const currentInfo = await this.jobsModel.findByPk(jobs_id);
+    await this.operationLogsService.saveLogs(
+      `编辑岗位：${currentInfo.jobs_name}`,
+    );
     return responseMessage(result);
   }
 

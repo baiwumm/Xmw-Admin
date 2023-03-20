@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:08:10
+ * @LastEditTime: 2023-03-20 15:36:08
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -122,7 +122,11 @@ export class OrganizationService {
       where: { org_id },
     });
     // 保存操作日志
-    await this.operationLogsService.saveLogs('更新组织数据');
+    // 根据主键查找出当前数据
+    const currentInfo = await this.organizationModel.findByPk(org_id);
+    await this.operationLogsService.saveLogs(
+      `编辑组织：${currentInfo.org_name}`,
+    );
     return responseMessage(result);
   }
 

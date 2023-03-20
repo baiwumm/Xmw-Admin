@@ -4,19 +4,19 @@
  * @Author: Cyan
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 16:30:51
+ * @LastEditTime: 2023-03-20 14:16:21
  */
 import { Injectable, Scope, Inject } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
 import { Request } from 'express';
 import { SessionModel, PageResModel } from '@/global/interface'; // interface
 import { ListOperationLogsDto } from './dto';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import type { LogsAttributes } from '@/attributes/system';
 @Injectable({ scope: Scope.REQUEST })
 export class OperationLogsService {
   constructor(
@@ -25,7 +25,6 @@ export class OperationLogsService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwLogs)
     private readonly logsModel: typeof XmwLogs,
-    private sequelize: Sequelize,
   ) { }
 
   /**
@@ -35,7 +34,7 @@ export class OperationLogsService {
    */
   async saveLogs(content: string): Promise<void> {
     const { url, method, headers, ip, body } = this.request;
-    const logData = {
+    const logData: LogsAttributes = {
       user_id: this.request.session.currentUserInfo.user_id,
       content,
       ip,
@@ -66,7 +65,7 @@ export class OperationLogsService {
     // 分页查询数据
     const { count, rows } = await this.logsModel.findAndCountAll({
       attributes: {
-        include: ['u.cn_name'],
+        include: ['u.cn_name', 'u.user_name'],
       },
       // 联表查询
       include: [

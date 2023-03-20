@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-16 16:29:56
+ * @LastEditTime: 2023-03-20 15:56:04
  */
 import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -74,7 +74,7 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 			<ImgCrop rotationSlider cropShape='round' showGrid>
 				<Upload
 					maxCount={1}
-					action={`${process.env.DOMAIN_URL}v1/upload/single-file`}
+					action='/api/upload/single-file'
 					showUploadList={false}
 					onChange={onChangeUpload}
 					beforeUpload={beforeUpload}

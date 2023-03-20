@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:22:20
+ * @LastEditTime: 2023-03-20 15:29:05
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -154,8 +154,10 @@ export class InternationalService {
     const result = await this.internationaModel.update(internationalInfo, {
       where: { id },
     });
+    // 根据主键查找出当前数据
+    const currentInfo = await this.internationaModel.findByPk(id);
     // 保存操作日志
-    await this.operationLogsService.saveLogs('更新国际化数据');
+    await this.operationLogsService.saveLogs(`编辑国际化：${currentInfo.name}`);
     return responseMessage(result);
   }
 

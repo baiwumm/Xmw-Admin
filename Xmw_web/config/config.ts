@@ -136,7 +136,6 @@ export default defineConfig({
   requestRecord: {},
   define: {
     'process.env': {
-      DOMAIN_URL: 'http://127.0.0.1:6688/',
       ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_mgcihy0nx89.js',
     },
   },

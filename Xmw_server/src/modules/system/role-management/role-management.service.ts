@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:31:14
+ * @LastEditTime: 2023-03-20 15:34:39
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -182,7 +182,11 @@ export class RoleManagementService {
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
       // 保存操作日志
-      await this.operationLogsService.saveLogs('更新角色数据');
+      // 根据主键查找出当前数据
+      const currentInfo = await this.roleModel.findByPk(role_id);
+      await this.operationLogsService.saveLogs(
+        `删除角色：${currentInfo.role_name}`,
+      );
       return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
@@ -241,8 +245,11 @@ export class RoleManagementService {
       { where: { role_id } },
     );
     // 保存操作日志
+    // 根据主键查找出当前数据
+    const currentInfo = await this.roleModel.findByPk(role_id);
     await this.operationLogsService.saveLogs(
-      `更新角色状态：${{ 0: '禁用', 1: '正常' }[status]}`,
+      `更新角色[${currentInfo.role_name}]状态：${{ 0: '禁用', 1: '正常' }[status]
+      }`,
     );
     return responseMessage(result);
   }

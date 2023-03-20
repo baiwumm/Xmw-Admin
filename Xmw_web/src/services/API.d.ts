@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:45:05
+ * @LastEditTime: 2023-03-20 14:57:45
  */
 declare namespace API {
   /**
@@ -165,6 +165,25 @@ declare namespace API {
     founder: string;
     sort: number; // 排序
     children?: INTERNATIONALIZATION[];
+  };
+
+  /**
+ * @description: 系统设置-操作日志
+ * @return {*}
+ * @author: Cyan
+ */
+  export type OPERATIONLOG = {
+    log_id: string; // id
+    user_id: string; // 用户id
+    content: string; // 日志内容
+    ip: string; // ip
+    path: string; // 前端路由
+    user_agent: string; // 代理
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE'; // 请求方式
+    params: Record<string, any>; // 请求参数
+    api_url: string; // 请求地址
+    created_time?: Date; // 创建时间
+    updated_time?: Date; // 最后一次更新时间
   };
 
   /**

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:26:32
+ * @LastEditTime: 2023-03-20 15:17:58
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -25,6 +25,8 @@ export class MenuManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwMenu)
     private readonly menuModel: typeof XmwMenu,
+    @InjectModel(XmwInternational)
+    private readonly internationaModel: typeof XmwInternational,
     private sequelize: Sequelize,
     private readonly operationLogsService: OperationLogsService,
   ) { }
@@ -116,8 +118,18 @@ export class MenuManagementService {
       ...menuInfo,
       founder: session.currentUserInfo.user_id,
     });
+    // 查询菜单 name 对应的中文名称
+    const internationalInfo = await this.internationaModel.findOne({
+      where: {
+        id: {
+          [Op.eq]: menuInfo.name,
+        },
+      },
+    });
     // 保存操作日志
-    await this.operationLogsService.saveLogs(`创建菜单：${menuInfo.name}`);
+    await this.operationLogsService.saveLogs(
+      `创建菜单：${internationalInfo['zh-CN']}`,
+    );
     return responseMessage(result);
   }
 
@@ -163,8 +175,20 @@ export class MenuManagementService {
     const result = await this.menuModel.update(menuInfo, {
       where: { menu_id },
     });
+    // 根据主键查找出当前数据
+    const currentInfo = await this.menuModel.findByPk(menu_id);
+    // 查询菜单 name 对应的中文名称
+    const internationalInfo = await this.internationaModel.findOne({
+      where: {
+        id: {
+          [Op.eq]: currentInfo.name,
+        },
+      },
+    });
     // 保存操作日志
-    await this.operationLogsService.saveLogs('更新菜单数据');
+    await this.operationLogsService.saveLogs(
+      `编辑菜单：${internationalInfo['zh-CN']}`,
+    );
     return responseMessage(result);
   }
 
@@ -186,8 +210,18 @@ export class MenuManagementService {
     const currentInfo = await this.menuModel.findByPk(menu_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.menuModel.destroy({ where: { menu_id } });
+    // 查询菜单 name 对应的中文名称
+    const internationalInfo = await this.internationaModel.findOne({
+      where: {
+        id: {
+          [Op.eq]: currentInfo.name,
+        },
+      },
+    });
     // 保存操作日志
-    await this.operationLogsService.saveLogs(`删除菜单：${currentInfo.name}`);
+    await this.operationLogsService.saveLogs(
+      `删除菜单：${internationalInfo['zh-CN']}`,
+    );
     return responseMessage(result);
   }
 }

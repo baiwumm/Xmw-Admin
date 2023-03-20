@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:34:10
+ * @LastEditTime: 2023-03-20 15:35:36
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -148,7 +148,11 @@ export class UserManagementService {
     // 更新 session 用户信息
     session.currentUserInfo = { ...session.currentUserInfo, ...userInfo };
     // 保存操作日志
-    await this.operationLogsService.saveLogs('更新用户数据');
+    // 根据主键查找出当前数据
+    const currentInfo = await this.userModel.findByPk(user_id);
+    await this.operationLogsService.saveLogs(
+      `编辑用户：${currentInfo.user_name}`,
+    );
     return responseMessage(result);
   }
 
@@ -192,8 +196,11 @@ export class UserManagementService {
       { where: { user_id } },
     );
     // 保存操作日志
+    // 根据主键查找出当前数据
+    const currentInfo = await this.userModel.findByPk(user_id);
     await this.operationLogsService.saveLogs(
-      `更新用户状态：${{ 0: '禁用', 1: '正常' }[status]}`,
+      `更新用户[${currentInfo.user_name}]状态：${{ 0: '禁用', 1: '正常' }[status]
+      }`,
     );
     return responseMessage(result);
   }
