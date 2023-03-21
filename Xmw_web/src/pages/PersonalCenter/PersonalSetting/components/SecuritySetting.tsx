@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-13 17:33:55
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 17:41:21
+ * @LastEditTime: 2023-03-21 10:20:28
  */
 import type { FC } from 'react'
 import { useIntl, useModel } from '@umijs/max'
@@ -14,6 +14,7 @@ import zxcvbn from 'zxcvbn'; // 密码强度校验
 import { keys } from 'lodash'
 import { decryptionAesPsd } from '@/utils'
 import { strengthMeterOptions } from '@/components/StrengthMeter/config'
+import { formatPerfix } from '../utils'
 
 const { Text } = Typography;
 
@@ -27,8 +28,6 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
   const { formatMessage } = useIntl();
   // 获取全局状态
   const { initialState } = useModel('@@initialState');
-  // 统一国际化前缀
-  const formatPerfix: string = 'pages.personal-center.personal-setting.security-setting'
   // 校验密码强度
   const passwordStrength = () => {
     const analysisValue: { score: number } = zxcvbn(decryptionAesPsd(initialState?.CurrentUser?.password || ''))
@@ -70,11 +69,11 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
         metas={{
           title: {
             dataIndex: 'name',
-            render: (text) => <Text strong>{formatMessage({ id: `${formatPerfix}.${text}` })}</Text>
+            render: (text) => <Text strong>{formatMessage({ id: `${formatPerfix}.security-setting.${text}` })}</Text>
           },
           description: {
             dataIndex: 'desc',
-            render: (text, record, index) => index > 0 ? <Text type="secondary">{formatMessage({ id: `${formatPerfix}.${record.name}.tip` })}：{text}</Text> : null
+            render: (text, record, index) => index > 0 ? <Text type="secondary">{formatMessage({ id: `${formatPerfix}.security-setting.${record.name}.tip` })}：{text}</Text> : null
           },
           actions: {
             render: (_, row, index) => [
@@ -85,7 +84,7 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
                   onClick={() => setActiveKey(row.activeKey || 'basicSetting')}>
                   {formatMessage({ id: 'global.button.modify' })}
                 </Button> :
-                <Tag key="edit" color="success">{formatMessage({ id: `${formatPerfix}.${row.name}.certified` })}</Tag>
+                <Tag key="edit" color="success">{formatMessage({ id: `${formatPerfix}.security-setting.${row.name}.certified` })}</Tag>
             ],
           },
         }}

@@ -1,28 +1,20 @@
-/*
- * @Description: 枚举配置项
- * @Version: 2.0
- * @Author: Cyan
- * @Date: 2022-09-13 14:27:33
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:44:26
+import type { MenuTypeProps } from './interface'
+/**
+ * @description: 统一国际化前缀
+ * @param {*} isMenu
+ * @return {*}
+ * @author: Cyan
  */
+export const formatPerfix = (isMenu = false): string => {
+  return `${isMenu ? 'menu' : 'pages'}.system.menu-management`
+}
 
-export const MENU_TYPE_OPTS = [
-  {
-    label: '目录',
-    value: 'dir',
-  },
-  {
-    label: '菜单',
-    value: 'menu',
-  },
-  {
-    label: '按钮',
-    value: 'button',
-  },
-];
-
-export const MENU_TYPE_TAGS: Record<string, { text: string; color: string }> = {
+/**
+ * @description: 菜单类型配置项
+ * @return {*}
+ * @author: Cyan
+ */
+export const MENU_TYPE_OPTS: Record<MenuTypeProps, { text: string; color: string }> = {
   dir: {
     text: '目录',
     color: 'cyan',
@@ -42,24 +34,7 @@ export const MENU_TYPE_TAGS: Record<string, { text: string; color: string }> = {
  * @return {*}
  * @author: Cyan
  */
-export const TARGET_OPTS = [
-  {
-    label: '_blank',
-    value: '_blank',
-  },
-  {
-    label: '_self',
-    value: '_self',
-  },
-  {
-    label: '_parent',
-    value: '_parent',
-  },
-  {
-    label: '_top',
-    value: '_top',
-  },
-];
+export const TARGET_OPTS = ['_blank', '_self', '_parent', '_top']
 
 /**
  * @description: 导航菜单的位置,side 为正常模式，top菜单显示在顶部，mix 两种兼有

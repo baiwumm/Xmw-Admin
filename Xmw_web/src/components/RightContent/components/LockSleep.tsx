@@ -20,6 +20,8 @@ const timeOut = 60 * 60 * 1000
 const LockSleep: FC = () => {
   const { formatMessage } = useIntl();
   const { initialState } = useModel('@@initialState');
+  // 统一国际化前缀
+  const formatPerfix: string = 'components.RightContent.LockSleep'
   // 弹窗显示
   const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 表单实例
@@ -51,7 +53,7 @@ const LockSleep: FC = () => {
         setFalse()
         setSleepInfo({ ...sleepInfo, isSleep: false })
       } else {
-        message.error(formatMessage({ id: 'components.RightContent.LockSleep.password.error' }))
+        message.error(formatMessage({ id: `${formatPerfix}.password.error` }))
       }
     })
   };
@@ -74,7 +76,7 @@ const LockSleep: FC = () => {
   })
   return (
     <Modal
-      title={formatMessage({ id: 'components.RightContent.LockSleep.title' })}
+      title={formatMessage({ id: `${formatPerfix}.title` })}
       open={openModal}
       maskClosable={false}
       closable={false}
@@ -92,8 +94,8 @@ const LockSleep: FC = () => {
         </Col>
         <Col>
           <Form form={form} style={{ textAlign: 'left' }}>
-            <Form.Item name="password" label={formatMessage({ id: 'components.RightContent.LockSleep.password' })} rules={[{ required: true }]}>
-              <Input.Password placeholder={formatMessage({ id: 'components.RightContent.LockSleep.password.placeholder' })} />
+            <Form.Item name="password" label={formatMessage({ id: `${formatPerfix}.password` })} rules={[{ required: true }]}>
+              <Input.Password placeholder={formatMessage({ id: `${formatPerfix}.password.placeholder` })} />
             </Form.Item>
           </Form>
         </Col>

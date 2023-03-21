@@ -1,3 +1,5 @@
+// 菜单类型
+export type MenuTypeProps = 'dir' | 'menu' | 'button'
 /**
  * @description: FormTemplate Props
  * @return {*}

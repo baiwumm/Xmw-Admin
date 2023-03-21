@@ -12,7 +12,7 @@ export default function access(initialState: InitialStateModel | undefined) {
   const hasRoutes = collectionRouteName(RouteMenu)
   return {
     // 判断是否有操作权限
-    operationPermission: (data: string) => Permissions?.includes(data),
+    operationPermission: (data: string) => Permissions ? Permissions.includes(data) : false,
     // 判断是否有权限访问菜单
     adminRouteFilter: (route: RouterTypes) => {
       return hasRoutes.includes(route.name)

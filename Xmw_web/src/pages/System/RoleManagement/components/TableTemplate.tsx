@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:53:17
+ * @LastEditTime: 2023-03-21 13:46:35
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -26,6 +26,7 @@ import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps, RoleStatusProps } from '../utils/interface'
+import { formatPerfix } from '../utils/config'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -95,7 +96,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { setCurrentRecord(record); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.system.role-management.edit' })}
+							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
 						</Button>
 					</Access>,
 					key: 'edit',
@@ -107,7 +108,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.role_id)} >
-							{formatMessage({ id: 'menu.system.role-management.delete' })}
+							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
 						</Button>
 					</Access>,
 					key: 'delete',
@@ -150,7 +151,7 @@ const TableTemplate: FC = () => {
 */
 	const columns: ProColumns<API.ROLEMANAGEMENT>[] = [
 		{
-			title: formatMessage({ id: 'pages.system.role-management.role_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.role_name` }),
 			dataIndex: 'role_name',
 			ellipsis: true,
 			width: 140,
@@ -162,7 +163,7 @@ const TableTemplate: FC = () => {
 			</Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.role-management.role_code' }),
+			title: formatMessage({ id: `${formatPerfix()}.role_code` }),
 			dataIndex: 'role_code',
 			width: 140,
 			ellipsis: true,
@@ -277,7 +278,7 @@ const TableTemplate: FC = () => {
 					<Access accessible={access.operationPermission(permissions.roleManagement.add)} fallback={null} key="plus">
 						<Button type="primary" onClick={() => { setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: 'menu.system.role-management.add' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
 					</Access>
 				]}

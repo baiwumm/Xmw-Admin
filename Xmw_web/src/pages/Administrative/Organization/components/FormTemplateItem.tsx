@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 18:19:02
+ * @LastEditTime: 2023-03-21 10:13:08
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -18,11 +18,13 @@ import {
 } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
+import { keys } from 'lodash'
 
 // 引入配置项
-import { ORG_TYPE_OPTS } from '../utils/enum' // 组织类型配置项
+import { ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 import type { FormTemplateItemProps } from '../utils/interface'
+import { formatPerfix } from '../utils/config'
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, userList }) => {
 	const { formatMessage } = useIntl();
@@ -52,16 +54,23 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			<ProFormText
 				name="org_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: 'pages.administrative.organization.org_name' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_name' })}
+				label={formatMessage({ id: `${formatPerfix()}.org_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32
 				}}
 				rules={[
-					{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_name' }) },
+					{ required: true, message: '' },
 					{
-						validator: (_, value) => value.length < 2 ? Promise.reject(new Error(formatMessage({ id: 'pages.administrative.organization.org_name.validator' }))) : Promise.resolve()
+						validator: (_, value) => {
+							if (!value) {
+								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_name` })))
+							} else if (value.length < 2) {
+								return Promise.reject(new Error(formatMessage({ id: `${formatPerfix()}.org_name.validator` })))
+							}
+							return Promise.resolve()
+						}
 					}
 				]}
 			/>
@@ -69,25 +78,25 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			<ProFormText
 				name="org_code"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: 'pages.administrative.organization.org_code' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_code' })}
+				label={formatMessage({ id: `${formatPerfix()}.org_code` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_code` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.organization.org_code' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_code` }) }]}
 			/>
 			{/* 组织类型 */}
 			<ProFormRadio.Group
 				name="org_type"
 				colProps={{ span: 14 }}
-				label={formatMessage({ id: 'pages.administrative.organization.org_type' })}
+				label={formatMessage({ id: `${formatPerfix()}.org_type` })}
 				radioType="button"
 				initialValue={'company'}
 				fieldProps={{
 					buttonStyle: "solid"
 				}}
-				options={ORG_TYPE_OPTS}
+				options={keys(ORG_TYPE_OPTS).map(type => ({ value: type, label: ORG_TYPE_OPTS[type as keyof typeof ORG_TYPE_OPTS].text }))}
 			/>
 			{/* 负责人 */}
 			<ProFormSelect

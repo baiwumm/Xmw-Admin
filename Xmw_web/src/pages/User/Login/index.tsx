@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 16:58:27
+ * @LastEditTime: 2023-03-21 14:35:11
  */
 
 // 引入第三方库
@@ -25,6 +25,7 @@ import { CACHE_KEY, encryptionAesPsd, formatResult, waitTime, timeFix } from '@/
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import type { LoginType, LoginParams } from './utils/indexface'
+import { formatPerfix } from './utils/config'
 import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.module.less'; // css 样式恩建
 import { Login } from '@/services/logic/login' // 登录相关接口
@@ -69,9 +70,9 @@ const LoginPage: FC = () => {
               notification.success({
                 message: `${timeFix()}，${userInfoAndAccess?.CurrentUser?.cn_name} 💕`,
                 description: login_last_time ? <span>
-                  {formatMessage({ id: 'pages.login.success.last-time' })}
+                  {formatMessage({ id: `${formatPerfix}.success.last-time` })}
                   <Typography.Text strong>{moment(login_last_time).fromNow()}</Typography.Text>
-                </span> : <Typography.Text strong>{formatMessage({ id: 'pages.login.success.first-login' })}</Typography.Text>,
+                </span> : <Typography.Text strong>{formatMessage({ id: `${formatPerfix}.success.first-login` })}</Typography.Text>,
                 icon: <IconFont type="icon-huanyingye" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />
               })
             }, 0)
@@ -96,13 +97,13 @@ const LoginPage: FC = () => {
         }
         // 如果是手机登录
         if (loginType === 'mobile' && values.captcha !== '1234') {
-          message.error(formatMessage({ id: 'pages.login.type.mobile.captcha.failure' }))
+          message.error(formatMessage({ id: `${formatPerfix}.type.mobile.captcha.failure` }))
           return
         }
         // 调用登录接口
         runLogin({ ...values, type: loginType })
       } catch (error) {
-        message.error(formatMessage({ id: 'pages.login.failure' }));
+        message.error(formatMessage({ id: `${formatPerfix}.failure` }));
       }
     },
     {
@@ -117,12 +118,12 @@ const LoginPage: FC = () => {
    */
   const TbasItems = [
     {
-      label: formatMessage({ id: 'pages.login.type.account' }),
+      label: formatMessage({ id: `${formatPerfix}.type.account` }),
       key: 'account',
       children: <Account />,
     },
     {
-      label: formatMessage({ id: 'pages.login.type.mobile' }),
+      label: formatMessage({ id: `${formatPerfix}.type.mobile` }),
       key: 'mobile',
       children: <Mobile />,
     }
@@ -150,7 +151,7 @@ const LoginPage: FC = () => {
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
             title="Xmw Admin"
-            subTitle={formatMessage({ id: 'pages.login.subtitle' })}
+            subTitle={formatMessage({ id: `${formatPerfix}.subtitle` })}
             onFinish={async (values) => {
               await waitTime(500)
               await handleSubmit(values as LoginParams);

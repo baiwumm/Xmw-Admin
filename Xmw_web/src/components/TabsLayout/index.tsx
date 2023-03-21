@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-16 15:56:44
+ * @LastEditTime: 2023-03-21 14:16:12
  */
 import { Tabs, message } from 'antd';
 import type { TabsProps } from 'antd';
@@ -58,7 +58,7 @@ export const TabsLayout = () => {
           onEdit={(targetKey: React.MouseEvent | React.KeyboardEvent | string) => {
             // 如果只有一个 tabs ，不能关闭
             if (tabsItems.length <= 1) {
-              message.info('至少要保留一个窗口')
+              message.info(formatMessage({ id: 'tabs.close' }))
               return
             }
             // 获取当前 tab 的索引

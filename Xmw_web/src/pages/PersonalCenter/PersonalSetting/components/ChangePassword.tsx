@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-12 16:10:13
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 17:51:37
+ * @LastEditTime: 2023-03-21 10:19:28
  */
 import type { FC } from 'react'
 import { useIntl, useModel } from '@umijs/max'
@@ -16,6 +16,8 @@ import { encryptionAesPsd, waitTime, CACHE_KEY, logoutToLogin } from '@/utils'
 import { updateUser } from '@/services/system/user-management'
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
+import { formatPerfix } from '../utils'
+
 
 type passwordProps = {
   originalPassword: string;
@@ -74,11 +76,11 @@ const ChangePassword: FC = () => {
   const handlerSubmit = (values: passwordProps) => {
     // 判断原密码是否正确
     if (encryptionAesPsd(values.originalPassword) !== initialState?.CurrentUser?.password) {
-      message.error(formatMessage({ id: 'pages.personal-center.personal-setting.change-password.error' }))
+      message.error(formatMessage({ id: `${formatPerfix}.change-password.error` }))
     } else {
       Modal.confirm({
         title: formatMessage({ id: 'global.warm-tips' }),
-        content: formatMessage({ id: 'pages.personal-center.personal-setting.change-password.tip' }),
+        content: formatMessage({ id: `${formatPerfix}.change-password.tip` }),
         onOk: async () => {
           const user_id = initialState?.CurrentUser?.user_id
           await waitTime(500)
@@ -93,7 +95,7 @@ const ChangePassword: FC = () => {
     <Form form={form} style={{ width: 500 }} labelCol={{ span: 4 }} onFinish={handlerSubmit}>
       {/* 原密码 */}
       <ProFormText.Password
-        label={formatMessage({ id: 'pages.personal-center.personal-setting.change-password.original-password' })}
+        label={formatMessage({ id: `${formatPerfix}.change-password.original-password` })}
         name="originalPassword"
         rules={[
           {

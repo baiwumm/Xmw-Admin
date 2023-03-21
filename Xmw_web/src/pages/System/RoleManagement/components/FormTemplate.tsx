@@ -18,13 +18,14 @@ import { omit } from 'lodash'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createRole, updateRole } from '@/services/system/role-management' // 角色管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, open, setOpenDrawerFalse }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.ROLEMANAGEMENT>();
 	// ModalForm 不同状态下 标题显示
-	const formTitle = formData?.role_id ? `${formatMessage({ id: 'menu.system.role-management.edit' }) + formatMessage({ id: 'pages.system.role-management.title' })}：${formData.role_name}` : (formatMessage({ id: 'menu.system.role-management.add' }) + formatMessage({ id: 'pages.system.role-management.title' }))
+	const formTitle = formData?.role_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.role_name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

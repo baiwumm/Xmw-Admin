@@ -10,6 +10,7 @@ import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
 import { Form } from 'antd' // antd 组件库
 import UploadAvatar from '@/components/UploadAvatar' // 上传头像组件
+import { formatPerfix } from '../utils/config'
 
 const SetAvatar: FC = () => {
 	const { formatMessage } = useIntl();
@@ -19,7 +20,7 @@ const SetAvatar: FC = () => {
 				name="avatar_url"
 				rules={[
 					{
-						required: true, message: formatMessage({ id: 'pages.system.user-management.steps-form.set-avatar' })
+						required: true, message: formatMessage({ id: `${formatPerfix()}.steps-form.set-avatar` })
 					}
 				]}
 			>

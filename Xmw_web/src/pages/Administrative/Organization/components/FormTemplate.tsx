@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 14:50:31
+ * @LastEditTime: 2023-03-21 10:08:06
  */
 
 // 引入第三方库
@@ -18,6 +18,7 @@ import { omit } from 'lodash';
 import FormTemplateItem from '../components/FormTemplateItem'; // 表单组件
 import { createOrganization, updateOrganization } from '@/services/administrative/organization'; // 组织管理接口
 import type { FormTemplateProps } from '../utils/interface'; // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -33,11 +34,11 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	const [form] = Form.useForm<API.ORGANIZATION>();
 	// DrawerForm 不同状态下 标题显示
 	const formTitle = formData?.org_id
-		? `${formatMessage({ id: 'menu.administrative.organization.edit' }) +
-		formatMessage({ id: 'pages.administrative.organization.title' })
+		? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
+		formatMessage({ id: `${formatPerfix()}.title` })
 		}：${formData.org_name}`
-		: formatMessage({ id: 'menu.administrative.organization.add' }) +
-		formatMessage({ id: 'pages.administrative.organization.title' });
+		: formatMessage({ id: `${formatPerfix(true)}.add` }) +
+		formatMessage({ id: `${formatPerfix()}.title` });
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

@@ -25,6 +25,8 @@ interface IProps {
 const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	// 多语言函数
 	const { formatMessage } = useIntl();
+	// 统一国际化前缀
+	const formatPerfix: string = 'components.UploadAvatar'
 	const [currentAvatar, setCurrentAvatar] = useState<string | undefined>()
 	// 获取 localstorage key
 	const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
@@ -39,12 +41,12 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 		// 限制图片类型
 		const isFileType = ['image/jpeg', 'image/png', 'image/gif'].includes(file.type)
 		if (!isFileType) {
-			message.error(formatMessage({ id: 'components.UploadAvatar.file-type' }))
+			message.error(formatMessage({ id: `${formatPerfix}.file-type` }))
 		}
 		// 大小限制2MB
 		const isLt2M = file.size / 1024 / 1024 < 2;
 		if (!isLt2M) {
-			message.error(formatMessage({ id: 'components.UploadAvatar.file-siz-limit' }));
+			message.error(formatMessage({ id: `${formatPerfix}.file-siz-limit` }));
 		}
 
 		return isFileType && isLt2M;
@@ -80,7 +82,7 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 					beforeUpload={beforeUpload}
 					headers={{ Authorization: `Bearer ${appCache.ACCESS_TOKEN}` }}
 				>
-					<Button style={{ marginTop: '10px' }}>{formatMessage({ id: 'components.UploadAvatar.title' })}</Button>
+					<Button style={{ marginTop: '10px' }}>{formatMessage({ id: `${formatPerfix}.title` })}</Button>
 				</Upload>
 			</ImgCrop>
 		</div>

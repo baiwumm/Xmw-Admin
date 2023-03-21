@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:26:32
+ * @LastEditTime: 2023-03-21 13:51:10
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -12,6 +12,7 @@ import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
 import { ProFormText, ProFormDigit, ProFormTextArea, ProFormRadio, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
+import { formatPerfix } from '../utils/config'
 
 const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) => {
 	const { formatMessage } = useIntl();
@@ -21,16 +22,23 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormText
 				name="role_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: 'pages.system.role-management.role_name' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_name' })}
+				label={formatMessage({ id: `${formatPerfix()}.role_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.role_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32
 				}}
 				rules={[
-					{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_name' }) },
+					{ required: true, message: '' },
 					{
-						validator: (_, value) => value.length < 2 ? Promise.reject(new Error(formatMessage({ id: 'pages.system.role-management.role_name.validator' }))) : Promise.resolve()
+						validator: (_, value) => {
+							if (!value) {
+								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.role_name` })))
+							} else if (value.length < 2) {
+								return Promise.reject(new Error(formatMessage({ id: `${formatPerfix()}.role_name.validator` })))
+							}
+							return Promise.resolve()
+						}
 					}
 				]}
 			/>
@@ -38,18 +46,18 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormText
 				name="role_code"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: 'pages.system.role-management.role_code' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_code' })}
+				label={formatMessage({ id: `${formatPerfix()}.role_code` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.role_code` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.role-management.role_code' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.role_code` }) }]}
 			/>
 			{/* 菜单权限 */}
 			<ProFormTreeSelect
 				name="menu_permission"
-				label={formatMessage({ id: 'pages.system.role-management.menu_permission' })}
+				label={formatMessage({ id: `${formatPerfix()}.menu_permission` })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					treeData: menuData,
@@ -61,9 +69,9 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 					maxTagCount: 10,
 					treeCheckable: true,
 					showCheckedStrategy: TreeSelect.SHOW_ALL,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.role-management.menu_permission' })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.menu_permission` })
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.role-management.menu_permission' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.menu_permission` }) }]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit

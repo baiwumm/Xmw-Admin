@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 15:34:20
+ * @LastEditTime: 2023-03-21 10:34:16
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -13,6 +13,7 @@ import { TreeSelect, Form } from 'antd' // antd 组件库
 import { ProFormTreeSelect, ProFormCascader, ProFormTextArea, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
 
 import type { UserInformationProps } from '../utils/interface'
+import { formatPerfix } from '../utils/config'
 import cascaderOptions from '@/utils/pca-code.json' // 省市区级联数据
 import FigureLabels from '@/components/FigureLabels'
 
@@ -29,17 +30,17 @@ const UserInformation: FC<UserInformationProps> = ({
 			{/* 所属角色 */}
 			<ProFormSelect
 				name="role_id"
-				label={formatMessage({ id: 'pages.system.user-management.role_id' })}
+				label={formatMessage({ id: `${formatPerfix()}.role_id` })}
 				colProps={{ span: 12 }}
-				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' })}
+				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.role_id` })}
 				options={roleData.map(r => ({ label: r.role_name, value: r.role_id }))}
 				disabled={disabledField}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.role_id' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.role_id` }) }]}
 			/>
 			{/* 所属组织 */}
 			<ProFormTreeSelect
 				name="org_id"
-				label={formatMessage({ id: 'pages.system.user-management.org_id' })}
+				label={formatMessage({ id: `${formatPerfix()}.org_id` })}
 				colProps={{ span: 12 }}
 				fieldProps={{
 					treeData: organizationData,
@@ -49,14 +50,14 @@ const UserInformation: FC<UserInformationProps> = ({
 						value: 'org_id'
 					},
 					showCheckedStrategy: TreeSelect.SHOW_ALL,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.org_id' })
+					placeholder: formatMessage({ id: `global.form.placeholder.seleted` }) + formatMessage({ id: `${formatPerfix()}.org_id` })
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.org_id' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.org_id` }) }]}
 			/>
 			{/* 所属岗位 */}
 			<ProFormTreeSelect
 				name="jobs_id"
-				label={formatMessage({ id: 'pages.system.user-management.jobs_id' })}
+				label={formatMessage({ id: `${formatPerfix()}.jobs_id` })}
 				colProps={{ span: 12 }}
 				fieldProps={{
 					treeData: jobsData,
@@ -66,14 +67,14 @@ const UserInformation: FC<UserInformationProps> = ({
 						value: 'jobs_id'
 					},
 					showCheckedStrategy: TreeSelect.SHOW_ALL,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.jobs_id' })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.jobs_id` })
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.jobs_id' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.jobs_id` }) }]}
 			/>
 			{/* 所属城市 */}
 			<ProFormCascader
 				name="city"
-				label={formatMessage({ id: 'pages.system.user-management.city' })}
+				label={formatMessage({ id: `${formatPerfix()}.city` })}
 				colProps={{ span: 12 }}
 				fieldProps={{
 					options: cascaderOptions,
@@ -82,24 +83,24 @@ const UserInformation: FC<UserInformationProps> = ({
 						value: 'code'
 					},
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.system.user-management.city' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.city` }) }]}
 			/>
 			{/* 详细地址 */}
 			<ProFormTextArea
 				name="address"
-				label={formatMessage({ id: 'pages.system.user-management.address' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.address' })}
+				label={formatMessage({ id: `${formatPerfix()}.address` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.address` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
 					rows: 4
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.address' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.address` }) }]}
 			/>
 			{/* 人物标签 */}
 			{
 				showLabel ? <Form.Item
-					label={formatMessage({ id: 'pages.system.user-management.tags' })}
+					label={formatMessage({ id: `${formatPerfix()}.tags` })}
 					name="tags"
 				>
 					<FigureLabels />

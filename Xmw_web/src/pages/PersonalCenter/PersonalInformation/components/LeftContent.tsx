@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-17 10:02:38
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 14:47:35
+ * @LastEditTime: 2023-03-21 14:25:44
  */
 import type { FC } from 'react'
 import { useModel } from '@umijs/max'
@@ -45,7 +45,7 @@ const LeftContent: FC = () => {
     let index = 0
     let result: string = ''
     function loopArea(tree: AreaProps[]) {
-      tree.map(node => {
+      tree.forEach(node => {
         if (node.code === city?.[index] && index < city.length) {
           index++
           result += node.name

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 14:43:51
+ * @LastEditTime: 2023-03-21 13:54:05
  */
 // 引入第三方库
 import { useBoolean } from 'ahooks';
@@ -25,6 +25,7 @@ import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { TableSearchProps } from '../utils/interface'
+import { formatPerfix } from '../utils/config'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -87,7 +88,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.id); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.system.internationalization.add-child' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
 					</Access>,
 					key: 'addChild',
@@ -101,7 +102,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.system.internationalization.edit' })}
+							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
 						</Button>
 					</Access>,
 					key: 'edit',
@@ -113,7 +114,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.id)} >
-							{formatMessage({ id: 'menu.system.internationalization.delete' })}
+							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
 						</Button>
 					</Access>,
 					key: 'delete',
@@ -128,35 +129,35 @@ const TableTemplate: FC = () => {
 	*/
 	const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
 		{
-			title: formatMessage({ id: 'pages.system.internationalization.name' }),
+			title: formatMessage({ id: `${formatPerfix()}.name` }),
 			dataIndex: 'name',
 			ellipsis: true,
 			width: 140,
 			render: text => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.internationalization.zh-CN' }),
+			title: formatMessage({ id: `${formatPerfix()}.zh-CN` }),
 			dataIndex: 'zh-CN',
 			ellipsis: true,
 			width: 120,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.internationalization.en-US' }),
+			title: formatMessage({ id: `${formatPerfix()}.en-US` }),
 			dataIndex: 'en-US',
 			ellipsis: true,
 			width: 120,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.internationalization.ja-JP' }),
+			title: formatMessage({ id: `${formatPerfix()}.ja-JP` }),
 			dataIndex: 'ja-JP',
 			ellipsis: true,
 			width: 120,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.internationalization.zh-TW' }),
+			title: formatMessage({ id: `${formatPerfix()}.zh-TW` }),
 			dataIndex: 'zh-TW',
 			ellipsis: true,
 			width: 120,
@@ -243,7 +244,7 @@ const TableTemplate: FC = () => {
 					<Access accessible={access.operationPermission(permissions.internationalization.add)} fallback={null} key="plus">
 						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: 'menu.system.internationalization.add' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
 					</Access>
 				]}

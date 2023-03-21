@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
         {
           key: '白雾茫茫丶',
           title: '白雾茫茫丶',
-          href: 'https://www.xmwpro.com/',
+          href: 'https://xmwpro.com/',
           blankTarget: true,
         },
         {

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-13 10:20:27
+ * @LastEditTime: 2023-03-21 10:27:05
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -29,6 +29,7 @@ import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import { renderColumnsStateMap } from '../utils'
+import { formatPerfix } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
 
 const TableTemplate: FC = () => {
@@ -105,7 +106,7 @@ const TableTemplate: FC = () => {
 							icon={<EditOutlined />} block
 							onClick={() => { setCurrentRecord(record); setModalVisibleTrue() }}
 						>
-							{formatMessage({ id: 'menu.system.user-management.edit' })}
+							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
 						</Button>
 					</Access>,
 					key: 'edit',
@@ -117,7 +118,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.user_id)} >
-							{formatMessage({ id: 'menu.system.user-management.delete' })}
+							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
 						</Button>
 					</Access>,
 					key: 'delete',
@@ -166,7 +167,7 @@ const TableTemplate: FC = () => {
 			align: 'center'
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.user_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.user_name` }),
 			dataIndex: 'user_name',
 			ellipsis: true,
 			width: 100,
@@ -178,21 +179,21 @@ const TableTemplate: FC = () => {
 			</Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.cn_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.cn_name` }),
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.en_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.en_name` }),
 			dataIndex: 'en_name',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.avatar_url' }),
+			title: formatMessage({ id: `${formatPerfix()}.avatar_url` }),
 			dataIndex: 'avatar_url',
 			key: 'avatar_url',
 			valueType: 'image',
@@ -201,7 +202,7 @@ const TableTemplate: FC = () => {
 			align: 'center'
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.sex' }),
+			title: formatMessage({ id: `${formatPerfix()}.sex` }),
 			dataIndex: 'sex',
 			ellipsis: true,
 			align: 'center',
@@ -209,9 +210,9 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: { text: formatMessage({ id: 'pages.system.user-management.sex.female' }), status: 'Default' },
-				1: { text: formatMessage({ id: 'pages.system.user-management.sex.male' }), status: 'Processing' },
-				2: { text: formatMessage({ id: 'pages.system.user-management.sex.secret' }), status: 'Processing' },
+				0: { text: formatMessage({ id: `${formatPerfix()}.sex.female` }), status: 'Default' },
+				1: { text: formatMessage({ id: `${formatPerfix()}.sex.male` }), status: 'Processing' },
+				2: { text: formatMessage({ id: `${formatPerfix()}.sex.secret` }), status: 'Processing' },
 			},
 			render: (_, record) => {
 				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff', }
@@ -224,14 +225,14 @@ const TableTemplate: FC = () => {
 			}
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.work_no' }),
+			title: formatMessage({ id: `${formatPerfix()}.work_no` }),
 			dataIndex: 'work_no',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.role_id' }),
+			title: formatMessage({ id: `${formatPerfix()}.role_id` }),
 			dataIndex: 'role_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -244,7 +245,7 @@ const TableTemplate: FC = () => {
 			</Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.org_id' }),
+			title: formatMessage({ id: `${formatPerfix()}.org_id` }),
 			dataIndex: 'org_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -257,7 +258,7 @@ const TableTemplate: FC = () => {
 			</Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.jobs_id' }),
+			title: formatMessage({ id: `${formatPerfix()}.jobs_id` }),
 			dataIndex: 'jobs_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -270,21 +271,21 @@ const TableTemplate: FC = () => {
 			</Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.age' }),
+			title: formatMessage({ id: `${formatPerfix()}.age` }),
 			dataIndex: 'age',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 60,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.phone' }),
+			title: formatMessage({ id: `${formatPerfix()}.phone` }),
 			dataIndex: 'phone',
 			hideInSearch: true,
 			width: 100,
 			ellipsis: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.email' }),
+			title: formatMessage({ id: `${formatPerfix()}.email` }),
 			dataIndex: 'email',
 			hideInSearch: true,
 			ellipsis: true,

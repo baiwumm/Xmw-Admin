@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:51:18
+ * @LastEditTime: 2023-03-21 14:31:11
  */
 import type { FC } from 'react';
 import { Space, Tag } from 'antd'
@@ -16,9 +16,15 @@ import { columnScrollX } from '@/utils'
 import { getOperationLogList } from '@/services/system/operation-log'
 import moment from 'moment'
 import { ClockCircleOutlined } from '@ant-design/icons' // antd 图标库
+import { formatPerfix } from '@/pages/System/UserManagement/utils/config'
 
 const OperationLog: FC = () => {
 	const { formatMessage } = useIntl();
+	/**
+ * @description: 统一国际化前缀
+ * @author: Cyan
+ */
+	const formatLogPerfix: string = 'pages.system.operation-log'
 	// 请求方式 Tag Color 隐射
 	const tagColorMap = {
 		GET: 'green',
@@ -33,32 +39,32 @@ const OperationLog: FC = () => {
 	*/
 	const columns: ProColumns<API.OPERATIONLOG>[] = [
 		{
-			title: formatMessage({ id: 'pages.system.user-management.user_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.user_name` }),
 			dataIndex: 'user_name',
 			hideInSearch: true,
 			width: 100
 		},
 		{
-			title: formatMessage({ id: 'pages.system.user-management.cn_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.cn_name` }),
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			width: 100
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.content' }),
+			title: formatMessage({ id: `${formatLogPerfix}.content` }),
 			dataIndex: 'content',
 			ellipsis: true,
 			width: 100,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.ip' }),
+			title: formatMessage({ id: `${formatLogPerfix}.ip` }),
 			dataIndex: 'ip',
 			width: 100,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.path' }),
+			title: formatMessage({ id: `${formatLogPerfix}.path` }),
 			dataIndex: 'path',
 			hideInSearch: true,
 			ellipsis: true,
@@ -69,14 +75,14 @@ const OperationLog: FC = () => {
 			}
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.api_url' }),
+			title: formatMessage({ id: `${formatLogPerfix}.api_url` }),
 			dataIndex: 'api_url',
 			ellipsis: true,
 			width: 100,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.method' }),
+			title: formatMessage({ id: `${formatLogPerfix}.method` }),
 			dataIndex: 'method',
 			width: 100,
 			hideInSearch: true,
@@ -84,7 +90,7 @@ const OperationLog: FC = () => {
 			render: (_, record) => <Tag color={tagColorMap[record.method]}>{record.method}</Tag>
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.params' }),
+			title: formatMessage({ id: `${formatLogPerfix}.params` }),
 			dataIndex: 'params',
 			hideInSearch: true,
 			ellipsis: true,
@@ -92,7 +98,7 @@ const OperationLog: FC = () => {
 			render: (_, record) => JSON.stringify(record.params)
 		},
 		{
-			title: formatMessage({ id: 'pages.system.operation-log.user_agent' }),
+			title: formatMessage({ id: `${formatLogPerfix}.user_agent` }),
 			dataIndex: 'user_agent',
 			hideInSearch: true,
 			width: 200,

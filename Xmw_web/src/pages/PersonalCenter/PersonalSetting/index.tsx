@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-12 15:19:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-16 10:00:30
+ * @LastEditTime: 2023-03-21 10:18:20
  */
 import type { FC } from 'react'
 import { useState } from 'react'
@@ -14,6 +14,7 @@ import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
 import BasicSetting from './components/BasicSetting' // 基本设置
 import SecuritySetting from './components/SecuritySetting' // 安全设置
 import ChangePassword from './components/ChangePassword' // 修改密码
+import { formatPerfix } from './utils'
 
 const PersonalSetting: FC = () => {
   const { formatMessage } = useIntl();
@@ -22,17 +23,17 @@ const PersonalSetting: FC = () => {
   //  Tabs 配置项
   const tabsItems = [
     {
-      label: formatMessage({ id: 'pages.personal-center.personal-setting.basic-setting' }),
+      label: formatMessage({ id: `${formatPerfix}.basic-setting` }),
       key: 'basicSetting',
       children: <BasicSetting />
     },
     {
-      label: formatMessage({ id: 'pages.personal-center.personal-setting.security-setting' }),
+      label: formatMessage({ id: `${formatPerfix}.security-setting` }),
       key: 'securitySetting',
       children: <SecuritySetting setActiveKey={setActiveKey} />
     },
     {
-      label: formatMessage({ id: 'pages.personal-center.personal-setting.change-password' }),
+      label: formatMessage({ id: `${formatPerfix}.change-password` }),
       key: 'changePassword',
       children: <ChangePassword />
     }

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 14:54:47
+ * @LastEditTime: 2023-03-20 17:47:24
  */
 
 // 引入第三方库
@@ -18,6 +18,7 @@ import { omit } from 'lodash'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -33,7 +34,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 初始化表单
 	const [form] = Form.useForm<API.JOBSMANAGEMENT>();
 	// DrawerForm 不同状态下 标题显示
-	const formTitle = formData?.jobs_id ? `${formatMessage({ id: 'menu.administrative.jobs-management.edit' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' })}：${formData.jobs_name}` : (formatMessage({ id: 'menu.administrative.jobs-management.add' }) + formatMessage({ id: 'pages.administrative.jobs-management.title' }))
+	const formTitle = formData?.jobs_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.jobs_name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

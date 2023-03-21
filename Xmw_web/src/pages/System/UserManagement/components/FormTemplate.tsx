@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-09 17:21:41
+ * @LastEditTime: 2023-03-21 10:28:50
  */
 
 // 引入第三方库
@@ -20,6 +20,7 @@ import { omit } from 'lodash'
 import { PersonalInformation, UserInformation, SetAvatar } from '../Steps'
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
 import { encryptionAesPsd, decryptionAesPsd } from '@/utils'
+import { formatPerfix } from '../utils/config'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 
@@ -28,7 +29,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 	// 初始化表单
 	const formMapRef = useRef<React.MutableRefObject<ProFormInstance>[]>([]);
 	// StepsForm 不同状态下 标题显示
-	const formTitle = formData?.user_id ? `${formatMessage({ id: 'menu.system.user-management.edit' }) + formatMessage({ id: 'pages.system.user-management.title' })}：${formData.user_name}` : (formatMessage({ id: 'menu.system.user-management.add' }) + formatMessage({ id: 'pages.system.user-management.title' }))
+	const formTitle = formData?.user_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.user_name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 	// 提交表单
 	const handlerSubmit = async (values: API.USERMANAGEMENT) => {
 		// 提交数据
@@ -54,22 +55,22 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 	const StepComponents = [
 		// 个人信息
 		{
-			title: 'pages.system.user-management.steps-form.personal-information',
+			title: `${formatPerfix()}.steps-form.personal-information`,
 			component: <PersonalInformation />
 		},
 		// 用户信息
 		{
-			title: 'pages.system.user-management.steps-form.user-information',
+			title: `${formatPerfix()}.steps-form.user-information`,
 			component: <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />
 		},
 		// 设置头像
 		{
-			title: 'pages.system.user-management.steps-form.set-avatar',
+			title: `${formatPerfix()}.steps-form.set-avatar`,
 			component: <SetAvatar />
 		},
 		// 设置密码
 		{
-			title: 'pages.system.user-management.steps-form.set-password',
+			title: `${formatPerfix()}.steps-form.set-password`,
 			component: <StrengthMeter />
 		}
 	]

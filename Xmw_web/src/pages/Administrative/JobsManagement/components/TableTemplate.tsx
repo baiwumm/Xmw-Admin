@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:54:01
+ * @LastEditTime: 2023-03-20 17:56:54
  */
 // 引入第三方库
 import { useRequest, useBoolean } from 'ahooks';
@@ -27,6 +27,7 @@ import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
 import type { ResData, PageResModel, PaginationProps, DropdownMenuProps } from '@/global/interface'
 import type { TableSearchProps } from '../utils/interface'
+import { formatPerfix } from '../utils/config'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -104,7 +105,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.jobs_id); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.administrative.jobs-management.add-child' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
 					</Access>,
 					key: 'addChild',
@@ -118,7 +119,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.administrative.jobs-management.edit' })}
+							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
 						</Button>
 					</Access>,
 					key: 'edit',
@@ -130,7 +131,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.jobs_id)} >
-							{formatMessage({ id: 'menu.administrative.jobs-management.delete' })}
+							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
 						</Button>
 					</Access>,
 					key: 'delete',
@@ -146,7 +147,7 @@ const TableTemplate: FC = () => {
 */
 	const columns: ProColumns<API.JOBSMANAGEMENT>[] = [
 		{
-			title: formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.jobs_name` }),
 			dataIndex: 'jobs_name',
 			ellipsis: true,
 			width: 120,
@@ -158,7 +159,7 @@ const TableTemplate: FC = () => {
 			)
 		},
 		{
-			title: formatMessage({ id: 'pages.administrative.jobs-management.org_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.org_name` }),
 			dataIndex: 'org_id',
 			ellipsis: true,
 			valueType: 'treeSelect',
@@ -262,7 +263,7 @@ const TableTemplate: FC = () => {
 					<Access accessible={access.operationPermission(permissions.jobsManagement.add)} fallback={null} key="plus">
 						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: 'menu.administrative.jobs-management.add' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
 					</Access>
 				]}

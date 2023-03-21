@@ -18,6 +18,7 @@ import { omit } from 'lodash'
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -31,7 +32,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 初始化表单
 	const [form] = Form.useForm<API.INTERNATIONALIZATION>();
 	// ModalForm 不同状态下 标题显示
-	const formTitle = formData?.id ? `${formatMessage({ id: 'menu.system.internationalization.edit' }) + formatMessage({ id: 'pages.system.internationalization.title' })}：${formData.name}` : (formatMessage({ id: 'menu.system.internationalization.add' }) + formatMessage({ id: 'pages.system.internationalization.title' }))
+	const formTitle = formData?.id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

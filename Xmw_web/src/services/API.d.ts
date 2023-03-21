@@ -7,6 +7,7 @@
  * @LastEditTime: 2023-03-20 14:57:45
  */
 declare namespace API {
+  import type { OrgTypeProps } from '@/pages/Administrative/Organization/utils/interface'
   /**
    * @description: 智能行政-组织管理
    * @return {*}
@@ -16,7 +17,7 @@ declare namespace API {
     org_id: string; // 组织id
     org_name: string; // 组织名称
     org_code: string; // 组织编码
-    org_type: string; // 组织类型
+    org_type: OrgTypeProps; // 组织类型
     describe: string; // 组织描述
     parent_id: string; // 父级id
     status: number; // 组织状态

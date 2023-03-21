@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 17:34:05
+ * @LastEditTime: 2023-03-20 18:07:28
  */
 // 引入第三方库
 import type { FC } from 'react';
@@ -18,6 +18,7 @@ import {
 } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree, userList }) => {
 	const { formatMessage } = useIntl();
@@ -47,23 +48,30 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			<ProFormText
 				name="jobs_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' })}
+				label={formatMessage({ id: `${formatPerfix()}.jobs_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.jobs_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32
 				}}
 				rules={[
-					{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.administrative.jobs-management.jobs_name' }) },
+					{ required: true, message: '' },
 					{
-						validator: (_, value) => value.length < 2 ? Promise.reject(new Error(formatMessage({ id: 'pages.administrative.jobs-management.jobs_name.validator' }))) : Promise.resolve()
+						validator: (_, value) => {
+							if (!value) {
+								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.jobs_name` })))
+							} else if (value.length < 2) {
+								return Promise.reject(new Error(formatMessage({ id: `${formatPerfix()}.jobs_name.validator` })))
+							}
+							return Promise.resolve()
+						}
 					}
 				]}
 			/>
 			{/* 所属组织 */}
 			<ProFormTreeSelect
 				name="org_id"
-				label={formatMessage({ id: 'pages.administrative.jobs-management.org_name' })}
+				label={formatMessage({ id: `${formatPerfix()}.org_name` })}
 				colProps={{ span: 24 }}
 				request={async () => orgTree}
 				fieldProps={{
@@ -73,9 +81,9 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.org_name` })
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'pages.administrative.jobs-management.org_name' }) }]}
+				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.org_name` }) }]}
 			/>
 			{/* 负责人 */}
 			<ProFormSelect

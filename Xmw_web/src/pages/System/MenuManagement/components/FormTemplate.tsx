@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:46:41
+ * @LastEditTime: 2023-03-21 10:54:38
  */
 
 // 引入第三方库
@@ -17,6 +17,7 @@ import { Form, message } from 'antd'; // antd 组件库
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 import { createMenu, updateMenu } from '@/services/system/menu-management' // 菜单管理接口
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '../utils/config'
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -31,7 +32,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 初始化表单
 	const [form] = Form.useForm<API.MENUMANAGEMENT>();
 	// DrawerForm 不同状态下 标题显示
-	const formTitle = formData?.menu_id ? `${formatMessage({ id: 'menu.system.menu-management.edit' }) + formatMessage({ id: 'pages.system.menu-management.title' })}：${formData[getLocale()]}` : (formatMessage({ id: 'menu.system.menu-management.add' }) + formatMessage({ id: 'pages.system.menu-management.title' }))
+	const formTitle = formData?.menu_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData[getLocale()]}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

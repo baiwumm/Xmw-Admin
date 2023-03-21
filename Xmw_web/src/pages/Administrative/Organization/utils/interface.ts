@@ -1,3 +1,5 @@
+// 组织类型
+export type OrgTypeProps = 'company' | 'unit' | 'department' | 'team'
 /**
  * @description: FormTemplate Props
  * @return {*}

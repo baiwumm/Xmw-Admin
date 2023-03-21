@@ -21,6 +21,7 @@ import { getOrganizationList } from '@/services/administrative/organization' // 
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
 import type { PageResModel, ResponseModel } from '@/global/interface'
 import { waitTime } from '@/utils'
+import { formatPerfix } from '@/pages/System/UserManagement/utils/config'
 
 const BasicSetting: FC = () => {
   const { formatMessage } = useIntl();
@@ -107,13 +108,13 @@ const BasicSetting: FC = () => {
         }
       }
     >
-      <Divider orientation="left">{formatMessage({ id: 'pages.system.user-management.steps-form.set-avatar' })}</Divider>
+      <Divider orientation="left">{formatMessage({ id: `${formatPerfix()}.steps-form.set-avatar` })}</Divider>
       <Row justify="center" style={{ width: '100%' }}>
         <SetAvatar />
       </Row>
-      <Divider orientation="left">{formatMessage({ id: 'pages.system.user-management.steps-form.personal-information' })}</Divider>
+      <Divider orientation="left">{formatMessage({ id: `${formatPerfix()}.steps-form.personal-information` })}</Divider>
       <PersonalInformation disabledField />
-      <Divider orientation="left">{formatMessage({ id: 'pages.system.user-management.steps-form.user-information' })}</Divider>
+      <Divider orientation="left">{formatMessage({ id: `${formatPerfix()}.steps-form.user-information` })}</Divider>
       <UserInformation
         roleData={roleData}
         jobsData={jobsData}

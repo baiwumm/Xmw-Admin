@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:53:52
+ * @LastEditTime: 2023-03-21 10:06:39
  */
 // 引入第三方库
 import { useRequest, useBoolean } from 'ahooks';
@@ -25,8 +25,8 @@ import { columnScrollX, formatResult } from '@/utils'
 import type { PageResModel, PaginationProps, DropdownMenuProps } from '@/global/interface'
 import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate'  // 表单组件
-import { ORG_TYPE_TAGS } from '../utils/enum'
 import type { TableSearchProps } from '../utils/interface'
+import { ORG_TYPE_OPTS, formatPerfix } from '../utils/config'
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -94,7 +94,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.org_id); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.administrative.organization.add-child' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
 					</Access>
 					,
@@ -109,7 +109,7 @@ const TableTemplate: FC = () => {
 							block
 							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
 						>
-							{formatMessage({ id: 'menu.administrative.organization.edit' })}
+							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
 						</Button>
 					</Access>,
 					key: 'edit',
@@ -121,7 +121,7 @@ const TableTemplate: FC = () => {
 							type="text"
 							size="small"
 							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.org_id)} >
-							{formatMessage({ id: 'menu.administrative.organization.delete' })}
+							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
 						</Button>
 					</Access>,
 					key: 'delete',
@@ -137,27 +137,33 @@ const TableTemplate: FC = () => {
 */
 	const columns: ProColumns<API.ORGANIZATION>[] = [
 		{
-			title: formatMessage({ id: 'pages.administrative.organization.org_name' }),
+			title: formatMessage({ id: `${formatPerfix()}.org_name` }),
 			dataIndex: 'org_name',
 			ellipsis: true,
 			width: 140,
 			render: text => <Space><IconFont type="icon-organization" className={PrimaryColor} /><span>{text}</span></Space>
 		},
 		{
-			title: formatMessage({ id: 'pages.administrative.organization.org_code' }),
+			title: formatMessage({ id: `${formatPerfix()}.org_code` }),
 			dataIndex: 'org_code',
 			ellipsis: true,
 			width: 120,
 			render: text => <Tag color="cyan">{text}</Tag>
 		},
 		{
-			title: formatMessage({ id: 'pages.administrative.organization.org_type' }),
+			title: formatMessage({ id: `${formatPerfix()}.org_type` }),
 			dataIndex: 'org_type',
 			filters: true,
 			onFilter: true,
 			width: 100,
-			valueEnum: ORG_TYPE_TAGS,
-			render: (_, record) => <Tag color={ORG_TYPE_TAGS[record.org_type].color}>{ORG_TYPE_TAGS[record.org_type].text}</Tag>
+			valueEnum: ORG_TYPE_OPTS,
+			render: (_, record) => {
+				const org_type = record.org_type as keyof typeof ORG_TYPE_OPTS
+				return <Tag
+					color={ORG_TYPE_OPTS[org_type].color}>
+					{ORG_TYPE_OPTS[org_type].text}
+				</Tag>
+			}
 		},
 		{
 			title: formatMessage({ id: 'global.status' }),
@@ -258,7 +264,7 @@ const TableTemplate: FC = () => {
 					<Access accessible={access.operationPermission(permissions.organization.add)} fallback={null} key="plus">
 						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: 'menu.administrative.organization.add' })}
+							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
 					</Access>
 				]}

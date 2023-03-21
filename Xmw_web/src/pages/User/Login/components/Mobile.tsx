@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 13:43:49
+ * @LastEditTime: 2023-03-21 14:38:16
  */
 import type { FC } from 'react'
 import { useIntl } from '@umijs/max'
 import { ProFormText, ProFormCaptcha } from '@ant-design/pro-components'; // antd 高级组件
 import { MobileOutlined } from '@ant-design/icons'; // antd 图标
 import { message } from 'antd'  // antd 组件
+import { formatPerfix } from '../utils/config'
 
 const Account: FC = () => {
 	const { formatMessage } = useIntl();
@@ -22,15 +23,15 @@ const Account: FC = () => {
 					prefix: <MobileOutlined className={'prefixIcon'} />,
 				}}
 				name="phone"
-				placeholder={formatMessage({ id: 'pages.login.type.mobile.phone' })}
+				placeholder={formatMessage({ id: `${formatPerfix}.type.mobile.phone` })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.login.type.mobile.phone' }),
+						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.type.mobile.phone` }),
 					},
 					{
 						pattern: /^1\d{10}$/,
-						message: formatMessage({ id: 'pages.login.type.mobile.phone.rules' }),
+						message: formatMessage({ id: `${formatPerfix}.type.mobile.phone.rules` }),
 					},
 				]}
 			/>
@@ -41,18 +42,18 @@ const Account: FC = () => {
 				captchaProps={{
 					size: 'large',
 				}}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.login.type.mobile.captcha' })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}
 				captchaTextRender={(timing, count) => {
 					if (timing) {
-						return `${count} ${formatMessage({ id: 'pages.login.type.mobile.captcha.obtain' }) + formatMessage({ id: 'pages.login.type.mobile.captcha' })}`;
+						return `${count} ${formatMessage({ id: `${formatPerfix}.type.mobile.captcha.obtain` }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}`;
 					}
-					return formatMessage({ id: 'pages.login.type.mobile.captcha.obtain' }) + formatMessage({ id: 'pages.login.type.mobile.captcha' });
+					return formatMessage({ id: `${formatPerfix}.type.mobile.captcha.obtain` }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` });
 				}}
 				name="captcha"
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.login.type.mobile.captcha' }),
+						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` }),
 					},
 				]}
 				onGetCaptcha={async () => {
