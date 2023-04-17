@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-28 18:19:34
+ * @LastEditTime: 2023-04-13 20:31:40
  */
 import { NestFactory } from '@nestjs/core';
 import * as express from 'express';
@@ -21,6 +21,7 @@ import { logger } from './middleware/logger.middleware'; // 日志收集中间�
 import { Logger } from '@/utils/log4js';
 import { ResponseModel } from '@/global/interface'; // 返回体结构
 import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
+import { requestMiddleware } from '@/middleware/request.middleware'; // 全局请求拦截中间件
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -43,6 +44,9 @@ async function bootstrap() {
 
   // 全局参数校验
   app.useGlobalPipes(new ValidationPipe());
+
+  // 全局请求拦截中间件
+  app.use(requestMiddleware);
 
   // 错误异常捕获 和 过滤处理
   app.useGlobalFilters(new AllExceptionsFilter());
