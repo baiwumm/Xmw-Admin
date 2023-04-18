@@ -11,13 +11,13 @@ export default defineConfig({
    * @name 开启 多tab标签页支持
    * @doc https://juejin.cn/post/7153525746751766559
    */
-  // keepalive: [/./],
-  // tabsLayout: {
-  //   // 是否使用自定义的 tabs 组件，需要搭配运行时配置 getCustomTabs 使用
-  //   hasCustomTabs: true,
-  //   // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
-  //   hasDropdown: true,
-  // },
+  keepalive: [/./],
+  tabsLayout: {
+    // 是否使用自定义的 tabs 组件，需要搭配运行时配置 getCustomTabs 使用
+    hasCustomTabs: true,
+    // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
+    hasDropdown: true,
+  },
   /**
    * @name 开启 hash 模式
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
