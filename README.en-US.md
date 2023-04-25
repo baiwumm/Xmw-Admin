@@ -32,7 +32,7 @@ Language : [中文](./README.md) | 英文
 - [Mysql](https://www.mysql.com/) (The Mysql version is 8.x)
 - [Redis](https://github.com/redis/redis/)
 
-## Project Operation
+## 🪴 Project Operation
 
 1. Pull the project code
 ```bash

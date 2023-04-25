@@ -32,7 +32,7 @@ Language : 中文 | [英文](./README.en-US.md)
 - [Mysql](https://www.mysql.com/) (Mysql版本为8.x)
 - [Redis](https://github.com/redis/redis/)
 
-## 项目运行
+## 🪴 项目运行
 
 1. 拉取项目代码
 ```bash
