@@ -1,64 +1,68 @@
-Language : [中文](./README.zh-CN.md) | 英文
+Language : 中文 | [英文](./README.en-US.md)
 
-<p align="center"><img width="100" src="http://react.xmwpro.com/logo.svg" alt="Xmw Admin"></p>
+<p align="center"><img width="100" src="https://ali-oss.xmwpro.com/project/xmw-admin/logo.svg" alt="Xmw Admin"></p>
 <h1 align="center">Xmw Admin</h1>
-<p align="center">Background application developed based on React +Nest</p>
+<p align="center">基于 React +Nest 开发的后台应用</p>
 
-## 🪴 Project Introduction
-- 🎯 Front-end technology stack: [React](https://react.dev/)、[Ant Design](https://ant.design/)、[Umi](https://umijs.org/)、[TypeScript](https://github.com/microsoft/TypeScript)
+## 🪴 项目简介
+- 🎯 前端技术栈： [React](https://react.dev/)、[Ant Design](https://ant.design/)、[Umi](https://umijs.org/)、[TypeScript](https://github.com/microsoft/TypeScript)
 
 
-- 🎯 Back-end technology stack: [Nest.js](https://docs.nestjs.cn/)、[Sequelize](https://github.com/sequelize/sequelize/)、[Redis](https://github.com/redis/redis/)、[Mysql](https://www.mysql.com/)
+- 🎯 后端技术栈： [Nest.js](https://docs.nestjs.cn/)、[Sequelize](https://github.com/sequelize/sequelize/)、[Redis](https://github.com/redis/redis/)、[Mysql](https://www.mysql.com/)
 
-- 😝 Online preview: http://react.xmwpro.com
+- 😝 线上预览： http://react.xmwpro.com
 
-- 🔑 User name: **admin**，密码：**abc123456**
+- 🔑 用户名：**admin**，密码：**abc123456**
 
-- 😝 Vue3 version: [Vue3 Admin](http://vue3.xmwpro.com/)
+- 😝 Vue3版本： [Vue3 Admin](http://vue3.xmwpro.com/)
 
-- 😝 Vue2 version: [Vue Admin](http://vue2.xmwpro.com/)
+- 😝 Vue2版本： [Vue Admin](http://vue2.xmwpro.com/)
 
-- ❤️ star：**If possible, please give me a star to express my encouragement to the author. Thank you very much!**
+- [🚀 github 仓库地址](https://github.com/Cyan-Xmw/Vue-Admin/)
 
-## 🪴 Environment and Dependence
-> Recommend this project use [pnpm](https://github.com/pnpm/pnpm/) package management tools
-- [node](https://nodejs.org/) (The Node.js version requires 14.x or later. 16.x or later is recommended here)
+- [🚀 码云仓库地址](https://gitee.com/Cyan-Xmw/Vue-Admin/)
+
+- ❤️ star：**如果可以的话，请顺手给个star，表示对作者的鼓励，万分感谢！**
+
+## 🪴 环境和依赖
+> 推荐本项目使用 [pnpm](https://github.com/pnpm/pnpm/) 包管理工具
+- [node](https://nodejs.org/) (Node.js 版本要求14.x以上，这里推荐 16.x 及以上)
 - [pnpm](https://github.com/pnpm/pnpm/)
 - [Umi](https://umijs.org/)
-- [Mysql](https://www.mysql.com/) (The Mysql version is 8.x)
+- [Mysql](https://www.mysql.com/) (Mysql版本为8.x)
 - [Redis](https://github.com/redis/redis/)
 
-## Project Operation
+## 项目运行
 
-1. Pull the project code
+1. 拉取项目代码
 ```bash
 git clone https://github.com/Cyan-Xmw/Xmw-Admin.git
 cd Xmw-Admin
-// Entry front end
+// 进入前端
 cd Xmw_web
-// Access back end
+// 进入后端
 cd Xmw_server
 ```
 
-2. Installation Dependency
+2. 安装依赖
 ```
 npm install -g pnpm
 pnpm install
 ```
 
-- Development mode operation
+- 开发模式运行
 ```
-// Front-end start
+// 前端启动
 pnpm start
-// Back-end boot
+// 后端启动
 pnpm start:dev
 ```
 
-- Compile project
+- 编译项目
 ```
 pnpm build
 ```
 
-## 🪴 Project Activity
+## 🪴 项目活动
 
 ![Alt](https://repobeats.axiom.co/api/embed/d70fa0fda028f36880de53d6a7e82305ee78b265.svg "Repobeats analytics image")
