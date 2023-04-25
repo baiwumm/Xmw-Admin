@@ -35,7 +35,7 @@ export class ResponseUserManagementDto extends ResponseDto {
           email: null,
           phone: '13800138000',
           avatar_url:
-            'https://react-umi-xmw.oss-cn-shenzhen.aliyuncs.com/avatar/girl1.svg',
+            'http://react.xmwpro.com/static/image/2023-01-13/5d7453ad-477c-47b9-be6e-212227710033.gif',
           sex: '0',
           sort: 1,
           status: 1,
@@ -87,7 +87,7 @@ export class CreateUserManagementDto extends ResponseDto {
       jobs_id: '046aeaa4-f707-4981-8a30-6e4a8488eb52',
       address: '123',
       avatar_url:
-        'https://react-umi-xmw.oss-cn-shenzhen.aliyuncs.com/avatar/girl1.svg',
+        'http://react.xmwpro.com/static/image/2023-01-13/5d7453ad-477c-47b9-be6e-212227710033.gif',
       password: 'v+M+IRi7oG0tn2sJGZUHRQ==',
       updated_time: '2022-11-10T06:28:13.581Z',
       created_time: '2022-11-10T06:28:13.581Z',

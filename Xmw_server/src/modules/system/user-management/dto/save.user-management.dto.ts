@@ -141,7 +141,7 @@ export class SaveUserManagementDto {
     type: String,
     description: '用户头像',
     default:
-      'https://react-umi-xmw.oss-cn-shenzhen.aliyuncs.com/avatar/boy.svg',
+      'http://react.xmwpro.com/static/image/2023-01-13/5d7453ad-477c-47b9-be6e-212227710033.gif',
     required: false,
   })
   avatar_url?: string;
