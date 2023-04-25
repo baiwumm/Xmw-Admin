@@ -14,9 +14,9 @@ Language : 中文 | [英文](./README.en-US.md)
 
 - 🔑 用户名：**admin**，密码：**abc123456**
 
-- 😝 Vue3版本： [Vue3 Admin](http://vue3.xmwpro.com/)
+- 😝 Vue3版本： [Vue3 Admin](https://github.com/Cyan-Xmw/Vue3-Admin/)
 
-- 😝 Vue2版本： [Vue Admin](http://vue2.xmwpro.com/)
+- 😝 Vue2版本： [Vue Admin](https://github.com/Cyan-Xmw/Vue2-Admin/)
 
 - [🚀 github 仓库地址](https://github.com/Cyan-Xmw/Vue-Admin/)
 
