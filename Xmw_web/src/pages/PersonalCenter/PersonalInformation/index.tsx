@@ -6,8 +6,9 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-17 09:42:01
  */
-import type { FC } from 'react'
 import { PageContainer, ProCard } from '@ant-design/pro-components' // antd 高级组件
+import type { FC } from 'react'
+
 import LeftContent from './components/LeftContent' // 左侧个人信息
 
 const PersonalInformation: FC = () => {

@@ -4,24 +4,26 @@
  * @Author: Cyan
  * @Date: 2022-09-13 08:52:20
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-29 16:03:03
+ * @LastEditTime: 2023-07-10 15:16:45
  */
 // 引入第三方库
-import type { RequestOptions, RequestError } from '@@/plugin-request/request'; // 请求配置项
+import 'nprogress/nprogress.css';
+
 import type { RequestConfig } from '@umijs/max';
 import { message, Modal } from 'antd'; // antd 组件库
-import { debounce } from 'lodash'; // lodash 工具函数
-import { CACHE_KEY, logoutToLogin } from '@/utils' // 全局工具函数
+import { debounce } from 'lodash-es'; // lodash 工具函数
+import Nprogress from 'nprogress';
+
 import type { AppLocalCacheModel } from '@/global/interface'
-import Nprogress from "nprogress";
-import "nprogress/nprogress.css";
+import { CACHE_KEY, logoutToLogin } from '@/utils' // 全局工具函数
+import type { RequestError, RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 /**
  * @description: 防抖函数统一处理异常错误
  * @param {*} debounce
  * @return {*}
  * @author: Cyan
  */
-const authError = debounce((content, duration = 3) => {
+const authError = debounce((content: string, duration = 3) => {
   message.error(content, duration);
 }, 300);
 
@@ -60,7 +62,7 @@ export const errorConfig: RequestConfig = {
                 // 退出登录返回到登录页
                 logoutToLogin()
                 Modal.destroyAll();
-              }
+              },
             });
             break;
           default:
@@ -126,7 +128,7 @@ export const errorConfig: RequestConfig = {
         // 进度条结束
         Nprogress.done();
         return Promise.reject(error)
-      }
-    ]
+      },
+    ],
   ],
 };

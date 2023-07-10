@@ -4,17 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 11:24:09
+ * @LastEditTime: 2023-07-10 14:24:13
  */
-import type { FC } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
-import type { InputRef } from 'antd';
-import { Input, Tag, Tooltip, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { updateUser } from '@/services/system/user-management' // 用户管理接口
+import { Input, InputRef, message, Tag, Tooltip } from 'antd';
+import { FC, useEffect, useRef, useState } from 'react'
+
 import type { ResponseModel } from '@/global/interface'
+import { updateUser } from '@/services/system/user-management' // 用户管理接口
 
 type IProps = {
 	value?: string[]
@@ -51,12 +50,15 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 			if (res.code === 200) {
 				message.success(res.msg)
 				// 更新全局状态
-				if (params[0]?.tags) {
-					setInitialState({ ...initialState, CurrentUser: { ...initialState?.CurrentUser, tags: params[0]?.tags } })
+				if (params[0]?.tags && initialState?.CurrentUser?.user_id) {
+					setInitialState({
+						...initialState,
+						CurrentUser: { ...initialState?.CurrentUser, tags: params[0]?.tags },
+					})
 				}
 			}
-		}
-	}
+		},
+	},
 	)
 
 	// 当显示 input 框的时候，聚焦
@@ -86,7 +88,7 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 
 	// 移除标签
 	const handleClose = (removedTag: string) => {
-		const newTags = tags.filter(tag => tag !== removedTag);
+		const newTags = tags.filter((tag) => tag !== removedTag);
 		setTags(newTags);
 		triggerChange(newTags)
 		// 判断是否需要更新用户信息
@@ -128,7 +130,19 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 
 	// 多彩 tags
 	const randomColor = () => {
-		const colors = ['magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple']
+		const colors = [
+			'magenta',
+			'red',
+			'volcano',
+			'orange',
+			'gold',
+			'lime',
+			'green',
+			'cyan',
+			'blue',
+			'geekblue',
+			'purple',
+		]
 		return colors[Math.floor(Math.random() * colors.length)]
 	}
 
@@ -143,7 +157,7 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 							key={tag}
 							size="small"
 							value={editInputValue}
-							onChange={e => setEditInputValue(e.target.value)}
+							onChange={(e) => setEditInputValue(e.target.value)}
 							onBlur={handleEditInputConfirm}
 							onPressEnter={handleEditInputConfirm}
 							maxLength={10}
@@ -160,7 +174,7 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 						key={tag}
 						closable={true}
 						onClose={() => handleClose(tag)}
-						onDoubleClick={e => {
+						onDoubleClick={(e) => {
 							setEditInputIndex(index);
 							setEditInputValue(tag);
 							e.preventDefault();
@@ -186,7 +200,7 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 					type="text"
 					size="small"
 					value={inputValue}
-					onChange={e => setInputValue(e.target.value)}
+					onChange={(e) => setInputValue(e.target.value)}
 					onBlur={handleInputConfirm}
 					onPressEnter={handleInputConfirm}
 					maxLength={10}

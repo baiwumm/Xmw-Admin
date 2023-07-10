@@ -1,18 +1,26 @@
+/*
+ * @Description: 用户下拉菜单
+ * @Version: 2.0
+ * @Author: Cyan
+ * @Date: 2022-12-28 09:38:28
+ * @LastEditors: Cyan
+ * @LastEditTime: 2023-07-10 15:15:11
+ */
+import { createFromIconfontCN, LockOutlined, PoweroffOutlined } from '@ant-design/icons';
+import { history, useIntl, useModel } from '@umijs/max';
 import { useLocalStorageState, useRequest } from 'ahooks';
-import { PoweroffOutlined, LockOutlined, createFromIconfontCN } from '@ant-design/icons';
-import { useModel, useIntl, history } from '@umijs/max';
-import { Modal } from 'antd';
-import type { MenuProps } from 'antd';
+import { MenuProps, Modal } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback, useRef } from 'react';
-import HeaderDropdown from '../../HeaderDropdown';
+
+import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
-import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 import routerConfig from '@/utils/routerConfig'
 
-import UserAvatar from './UserAvatar' // 用户头像
+import HeaderDropdown from '../../HeaderDropdown';
 import LockScreenModal from './LockScreenModal' // 锁定屏幕弹窗
+import UserAvatar from './UserAvatar' // 用户头像
 
 type LogoutProps = ResponseModel<Record<string, any>>
 
@@ -42,8 +50,8 @@ const AvatarDropdown: React.FC = () => {
         // 退出登录返回登录页
         logoutToLogin()
       }
-    }
-  }
+    },
+  },
   )
 
   /**
@@ -51,14 +59,14 @@ const AvatarDropdown: React.FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  const logOutClick = (): void => {
+  const logOutClick = () => {
     Modal.confirm({
       title: formatMessage({ id: 'global.warm-tips' }),
       content: formatMessage({ id: 'pages.logout.tip' }),
       onOk: async () => {
         await waitTime(500)
         loginOut()
-      }
+      },
     })
   }
 
@@ -101,7 +109,7 @@ const AvatarDropdown: React.FC = () => {
       key: 'logout',
       icon: <PoweroffOutlined style={{ fontSize: 14 }} />,
       label: formatMessage({ id: 'components.RightContent.Logout' }),
-    }
+    },
   ];
 
   return (

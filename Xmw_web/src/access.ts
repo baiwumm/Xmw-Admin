@@ -3,6 +3,7 @@
  * */
 // @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
+
 import type { InitialStateModel } from '@/global/interface'
 import { collectionRouteName } from '@/utils'
 
@@ -16,6 +17,6 @@ export default function access(initialState: InitialStateModel | undefined) {
     // 判断是否有权限访问菜单
     adminRouteFilter: (route: RouterTypes) => {
       return hasRoutes.includes(route.name)
-    }
+    },
   };
 }

@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:16:12
+ * @LastEditTime: 2023-07-10 16:21:55
  */
-import { Tabs, message } from 'antd';
-import type { TabsProps } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { useIntl } from '@umijs/max';
-import { findIndex, isString } from 'lodash'
+import { message, Tabs, TabsProps } from 'antd';
+import { findIndex, isString, last } from 'lodash-es'
 
 type IProps = {
   isKeep: boolean;
@@ -29,22 +29,27 @@ export const TabsLayout = () => {
     keepElements,
     navigate,
     dropByCacheKey,
-    activeKey
+    activeKey,
   }: IProps) => {
     const { formatMessage } = useIntl();
+    // 使用 iconfont.cn 资源
+    const IconFont = createFromIconfontCN({
+      scriptUrl: process.env.ICONFONT_URL,
+    });
     // Tabs 配置项
     const tabsItems: TabsProps['items'] = Object.entries(keepElements.current).map(
       ([pathname, element]: any) => {
+        const menuIcon = `icon-${last(pathname.split('/'))}`
         return {
           key: pathname,
           label:
             <span>
-              {element.icon}
+              {element.icon || <IconFont type={menuIcon} />}
               {formatMessage({ id: `menu${pathname.replaceAll('/', '.')}` })}
             </span>
           ,
         }
-      }
+      },
     );
     return (
       <div className="rumtime-keep-alive-tabs-layout" hidden={!isKeep}>
@@ -62,7 +67,7 @@ export const TabsLayout = () => {
               return
             }
             // 获取当前 tab 的索引
-            const targetIndex = findIndex(tabsItems, (pane) => pane.key === targetKey)
+            const targetIndex: number = findIndex(tabsItems, (pane) => pane.key === targetKey)
             if (isString(targetKey)) {
               // 清空当前页面的状态保持
               dropByCacheKey(targetKey);
@@ -75,6 +80,7 @@ export const TabsLayout = () => {
             }
           }}
           items={tabsItems}
+          size="small"
         >
         </Tabs>
       </div>

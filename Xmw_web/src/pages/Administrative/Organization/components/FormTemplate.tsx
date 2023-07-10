@@ -8,17 +8,18 @@
  */
 
 // 引入第三方库
-import type { FC } from 'react';
-import { useIntl } from '@umijs/max';
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
+import { useIntl } from '@umijs/max';
 import { Form, message } from 'antd'; // antd 组件库
-import { omit } from 'lodash';
+import { omit } from 'lodash-es';
+import type { FC } from 'react';
+
+import { createOrganization, updateOrganization } from '@/services/administrative/organization'; // 组织管理接口
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem'; // 表单组件
-import { createOrganization, updateOrganization } from '@/services/administrative/organization'; // 组织管理接口
-import type { FormTemplateProps } from '../utils/interface'; // 公共 interface
 import { formatPerfix } from '../utils/config'
+import type { FormTemplateProps } from '../utils/interface'; // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -27,7 +28,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	parent_id,
 	userList,
 	open,
-	setOpenDrawerFalse
+	setOpenDrawerFalse,
 }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
@@ -79,7 +80,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 			drawerProps={{
 				destroyOnClose: true,
 				maskClosable: false,
-				onClose: () => handlerClose()
+				onClose: () => handlerClose(),
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}

@@ -4,28 +4,35 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 13:54:05
+ * @LastEditTime: 2023-07-10 15:03:15
  */
 // 引入第三方库
-import { useBoolean } from 'ahooks';
-import type { FC } from 'react';
-import { useState, useRef } from 'react';
-import { useIntl, useAccess, Access } from '@umijs/max'
-import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
-import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
+import {
+	ClockCircleOutlined,
+	ClusterOutlined,
+	DeleteOutlined,
+	DownOutlined,
+	EditOutlined,
+	FontSizeOutlined,
+	PlusOutlined,
+} from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, FontSizeOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
-import moment from 'moment'
+import { Access, useAccess, useIntl } from '@umijs/max'
+import { useBoolean } from 'ahooks';
+import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
+import dayjs from 'dayjs'
+import { FC, useRef, useState } from 'react';
 
 // 引入业务组件
 import type { DropdownMenuProps } from '@/global/interface'
-import { getInternationalList, delInternational } from '@/services/system/internationalization' // 国际化接口
+import { delInternational, getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
-import FormTemplate from './FormTemplate'  // 表单组件
-import type { TableSearchProps } from '../utils/interface'
+
 import { formatPerfix } from '../utils/config'
+import type { TableSearchProps } from '../utils/interface'
+import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -60,14 +67,14 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				await delInternational(id).then(res => {
+				await delInternational(id).then((res) => {
 					if (res.code === 200) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
 					}
 				})
-			}
+			},
 		})
 	}
 	/**
@@ -80,13 +87,19 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <Access accessible={access.operationPermission(permissions.internationalization.addChild)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.internationalization.addChild)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
 							icon={<ClusterOutlined />}
 							block
-							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.id); setOpenDrawerTrue() }}
+							onClick={() => {
+								setCurrentRecord(undefined);
+								set_parent_id(record.id);
+								setOpenDrawerTrue()
+							}}
 						>
 							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
@@ -94,7 +107,9 @@ const TableTemplate: FC = () => {
 					key: 'addChild',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.internationalization.edit)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.internationalization.edit)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
@@ -108,7 +123,9 @@ const TableTemplate: FC = () => {
 					key: 'edit',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.internationalization.delete)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.internationalization.delete)}
+						fallback={null}>
 						<Button
 							block
 							type="text"
@@ -133,7 +150,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'name',
 			ellipsis: true,
 			width: 140,
-			render: text => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>
+			render: (text) => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.zh-CN` }),
@@ -170,7 +187,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 100,
-			render: text => <Tag color="purple">{text}</Tag>
+			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -179,11 +196,11 @@ const TableTemplate: FC = () => {
 			sorter: true,
 			hideInSearch: true,
 			width: 120,
-			render: text => (
+			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
-			)
+			),
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -193,8 +210,8 @@ const TableTemplate: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},
@@ -222,31 +239,38 @@ const TableTemplate: FC = () => {
 				actionRef={tableRef}
 				columns={columns}
 				request={async (params: TableSearchProps): Promise<RequestData<API.INTERNATIONALIZATION>> => {
-					{
-						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-						// 如果需要转化参数可以在这里进行修改
-						const response = await getInternationalList(params).then(res => {
-							setTreeData(res.data)
-							return {
-								data: res.data,
-								// success 请返回 true，不然 table 会停止解析数据，即使有数据
-								success: res.code === 200,
-							}
-						})
-						return Promise.resolve(response)
-					}
+					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+					// 如果需要转化参数可以在这里进行修改
+					const response = await getInternationalList(params).then((res) => {
+						setTreeData(res.data)
+						return {
+							data: res.data,
+							// success 请返回 true，不然 table 会停止解析数据，即使有数据
+							success: res.code === 200,
+						}
+					})
+					return Promise.resolve(response)
 				}
 				}
 				rowKey="id"
 				pagination={false}
 				// 工具栏
 				toolBarRender={() => [
-					<Access accessible={access.operationPermission(permissions.internationalization.add)} fallback={null} key="plus">
-						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+					<Access
+						accessible={access.operationPermission(permissions.internationalization.add)}
+						fallback={null}
+						key="plus">
+						<Button
+							type="primary"
+							onClick={() => {
+								set_parent_id('');
+								setCurrentRecord(undefined);
+								setOpenDrawerTrue()
+							}}>
 							<PlusOutlined />
 							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
-					</Access>
+					</Access>,
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>

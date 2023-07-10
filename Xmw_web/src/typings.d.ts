@@ -10,14 +10,7 @@ declare module '*.jpeg';
 declare module '*.gif';
 declare module '*.bmp';
 declare module '*.tiff';
-declare module 'omit.js';
-declare module 'numeral';
-declare module '@antv/data-set';
-declare module 'mockjs';
-declare module 'react-fittext';
-declare module 'bizcharts-plugin-slider';
 declare module 'crypto-js'
 declare module 'nprogress';
 declare module 'zxcvbn';
-
-declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
+declare module 'lodash-es';

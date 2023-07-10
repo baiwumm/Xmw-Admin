@@ -1,18 +1,19 @@
 /*
- * @Description: 
+ * @Description: 密码强度校验组件
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2023-01-09 17:15:19
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 17:36:16
+ * @LastEditTime: 2023-07-10 14:36:40
  */
-import type { FC } from 'react'
-import { useIntl } from '@umijs/max'
-import { Progress, Form, Row, Col } from 'antd';
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
+import { useIntl } from '@umijs/max'
+import { Col, Form, Progress, Row } from 'antd';
+import { keys, values } from 'lodash-es'
+import type { FC } from 'react'
 import zxcvbn from 'zxcvbn'; // 密码强度校验
-import { keys, values } from 'lodash'
-import { strengthMeterOptions, formatPerfix } from './config'
+
+import { formatPerfix, strengthMeterOptions } from './config'
 import styles from './index.module.less'
 
 const StrengthMeter: FC = () => {
@@ -41,8 +42,9 @@ const StrengthMeter: FC = () => {
         rules={[
           {
             required: true, min: 6, max: 12,
-            message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.password.rules` })
-          }
+            message: formatMessage({ id: 'global.form.placeholder' }) +
+              formatMessage({ id: `${formatPerfix}.password.rules` }),
+          },
         ]}
       />
       {/* 确认密码 */}
@@ -53,7 +55,8 @@ const StrengthMeter: FC = () => {
         rules={[
           {
             required: true,
-            message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.confirm-password` })
+            message: formatMessage({ id: 'global.form.placeholder' }) +
+              formatMessage({ id: `${formatPerfix}.confirm-password` }),
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -62,7 +65,7 @@ const StrengthMeter: FC = () => {
               }
               return Promise.reject(new Error(formatMessage({ id: `${formatPerfix}.confirm-password.rules` })));
             },
-          })
+          }),
         ]}
       />
       {/* 显示密码强度 */}
@@ -76,7 +79,8 @@ const StrengthMeter: FC = () => {
       </div>
       <Row justify="space-around" className={styles['process-steps']}>
         {
-          keys(strengthMeterOptions).map(value => <Col span={4} key={value}>{formatMessage({ id: `components.StrengthMeter.${value}` })}</Col>)
+          keys(strengthMeterOptions).map((value: string) =>
+            <Col span={4} key={value}>{formatMessage({ id: `components.StrengthMeter.${value}` })}</Col>)
         }
       </Row>
     </>

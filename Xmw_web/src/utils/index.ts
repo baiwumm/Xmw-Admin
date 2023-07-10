@@ -4,21 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 15:44:53
+ * @LastEditTime: 2023-07-10 16:12:12
  */
-import { history } from '@umijs/max';
 import type { ProColumns } from '@ant-design/pro-components';
-import { stringify } from 'querystring';
-import type { ResponseModel } from '@/global/interface';
+import { history } from '@umijs/max';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { isNumber, get } from 'lodash';
+import { get, isNumber } from 'lodash-es';
+import { stringify } from 'querystring';
+
+import type { ResponseModel } from '@/global/interface';
 import routerConfig from '@/utils/routerConfig' // 路由配置
 
 // 保存在 localstorage 的 key
 export const CACHE_KEY = 'APP_LOCAL_CACHE_KEY';
 
-const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六进制数作为密钥
-const CRYPTO_IV = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); //十六位十六进制数作为密钥偏移量
+const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); // 十六位十六进制数作为密钥
+const CRYPTO_IV = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); // 十六位十六进制数作为密钥偏移量
 /**
  * @description: AES/DES加密
  * @param {string} password
@@ -31,7 +32,7 @@ export const encryptionAesPsd = (password: string): string => {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7,
   });
-  return encrypted.toString(); //返回的是base64格式的密文
+  return encrypted.toString(); // 返回的是base64格式的密文
 };
 
 /**
@@ -46,7 +47,7 @@ export const decryptionAesPsd = (password: string): string => {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7,
   });
-  return decrypted.toString(CryptoJS.enc.Utf8); //返回的是解密后的字符串
+  return decrypted.toString(CryptoJS.enc.Utf8); // 返回的是解密后的字符串
 };
 
 /**
@@ -99,7 +100,7 @@ export const collectionRouteName = (routeTree: API.MENUMANAGEMENT[] | undefined)
   if (!routeTree) return []
   const result: string[] = []
   function loopMenu(treeNode: API.MENUMANAGEMENT[]) {
-    treeNode.forEach(route => {
+    treeNode.forEach((route) => {
       if (route.name) {
         result.push(route.name)
       }
@@ -157,16 +158,21 @@ export const welcomeWords = (): string => {
  * @return {*}
  * @author: Cyan
  */
-export function getItemByIdInTree<T>(tree: T[], value: string, field: string, children: string = 'children'): T | undefined {
+export function getItemByIdInTree<T>(
+  tree: T[],
+  value: string,
+  field: string,
+  children = 'children'): T | undefined {
   for (let i = 0; i < tree.length; i++) {
-    let treeNode = tree[i]
+    const treeNode = tree[i]
     if (treeNode[field] === value) {
       return treeNode
     } else if (treeNode[children]) {
-      let reuslt: T | undefined = getItemByIdInTree(treeNode[children], value, field)
+      const reuslt: T | undefined = getItemByIdInTree(treeNode[children], value, field, children)
       if (reuslt) {
         return reuslt
       }
     }
   }
+  return undefined
 }

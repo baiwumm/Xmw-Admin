@@ -7,11 +7,12 @@
  * @LastEditTime: 2023-01-12 14:23:46
  */
 import { addLocale, history } from '@umijs/max';
-import { ANTD_LANGS } from '@/global/lang'
-import routerConfig from '@/utils/routerConfig' // 路由配置
-import { getUserInfo, getPermissions, getRoutesMenus } from '@/services/logic/login' // 登录相关接口
-import { getAllLocalesLang } from '@/services/system/internationalization'
+
 import type { InitialStateModel } from '@/global/interface'
+import { ANTD_LANGS } from '@/global/lang'
+import { getPermissions, getRoutesMenus, getUserInfo } from '@/services/logic/login' // 登录相关接口
+import { getAllLocalesLang } from '@/services/system/internationalization'
+import routerConfig from '@/utils/routerConfig' // 路由配置
 
 /**
  * @description: 获取多语言层级对象

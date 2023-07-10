@@ -1,6 +1,7 @@
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { SelectLang, useModel } from '@umijs/max';
 import React from 'react';
+
 import AvatarDropdown from './components/AvatarDropdown';
 import FullScreen from './components/FullScreen'
 import LockSleep from './components/LockSleep'

@@ -4,19 +4,20 @@
  * @Author: Cyan
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:31:11
+ * @LastEditTime: 2023-07-10 13:52:36
  */
-import type { FC } from 'react';
-import { Space, Tag } from 'antd'
-import { useIntl } from '@umijs/max'
-import { PageContainer, ProTable } from '@ant-design/pro-components' // antd 高级组件
-import type { ProColumns, RequestData } from '@ant-design/pro-components'
-import { TableSearchProps } from './utils/interface'
-import { columnScrollX } from '@/utils'
-import { getOperationLogList } from '@/services/system/operation-log'
-import moment from 'moment'
 import { ClockCircleOutlined } from '@ant-design/icons' // antd 图标库
+import { PageContainer, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
+import { useIntl } from '@umijs/max'
+import { Space, Tag } from 'antd'
+import dayjs from 'dayjs'
+import type { FC } from 'react';
+
 import { formatPerfix } from '@/pages/System/UserManagement/utils/config'
+import { getOperationLogList } from '@/services/system/operation-log'
+import { columnScrollX } from '@/utils'
+
+import { TableSearchProps } from './utils/interface'
 
 const OperationLog: FC = () => {
 	const { formatMessage } = useIntl();
@@ -30,7 +31,7 @@ const OperationLog: FC = () => {
 		GET: 'green',
 		POST: 'orange',
 		PUT: 'blue',
-		DELETE: 'red'
+		DELETE: 'red',
 	}
 	/**
 	* @description: proTable columns 配置项
@@ -42,13 +43,13 @@ const OperationLog: FC = () => {
 			title: formatMessage({ id: `${formatPerfix()}.user_name` }),
 			dataIndex: 'user_name',
 			hideInSearch: true,
-			width: 100
+			width: 100,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.cn_name` }),
 			dataIndex: 'cn_name',
 			hideInSearch: true,
-			width: 100
+			width: 100,
 		},
 		{
 			title: formatMessage({ id: `${formatLogPerfix}.content` }),
@@ -72,7 +73,7 @@ const OperationLog: FC = () => {
 			render: (_, record) => {
 				const url = new URL(record.path)
 				return url.pathname
-			}
+			},
 		},
 		{
 			title: formatMessage({ id: `${formatLogPerfix}.api_url` }),
@@ -87,7 +88,7 @@ const OperationLog: FC = () => {
 			width: 100,
 			hideInSearch: true,
 			align: 'center',
-			render: (_, record) => <Tag color={tagColorMap[record.method]}>{record.method}</Tag>
+			render: (_, record) => <Tag color={tagColorMap[record.method]}>{record.method}</Tag>,
 		},
 		{
 			title: formatMessage({ id: `${formatLogPerfix}.params` }),
@@ -95,7 +96,7 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 300,
-			render: (_, record) => JSON.stringify(record.params)
+			render: (_, record) => JSON.stringify(record.params),
 		},
 		{
 			title: formatMessage({ id: `${formatLogPerfix}.user_agent` }),
@@ -111,11 +112,11 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 120,
-			render: text => (
+			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
-			)
+			),
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -125,31 +126,29 @@ const OperationLog: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},
-		}
+		},
 	]
 	return (
 		<PageContainer header={{ title: null }}>
 			<ProTable<API.OPERATIONLOG, TableSearchProps>
 				columns={columns}
 				request={async (params: TableSearchProps): Promise<RequestData<API.OPERATIONLOG>> => {
-					{
-						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-						// 如果需要转化参数可以在这里进行修改
-						const response = await getOperationLogList(params).then(res => {
-							return {
-								data: res.data.list,
-								// success 请返回 true，不然 table 会停止解析数据，即使有数据
-								success: res.code === 200,
-								total: res.data.total
-							}
-						})
-						return Promise.resolve(response)
-					}
+					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+					// 如果需要转化参数可以在这里进行修改
+					const response = await getOperationLogList(params).then((res) => {
+						return {
+							data: res.data.list,
+							// success 请返回 true，不然 table 会停止解析数据，即使有数据
+							success: res.code === 200,
+							total: res.data.total,
+						}
+					})
+					return Promise.resolve(response)
 				}
 				}
 				rowKey="log_id"

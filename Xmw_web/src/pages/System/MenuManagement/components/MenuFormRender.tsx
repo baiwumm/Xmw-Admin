@@ -1,9 +1,11 @@
-import type { FC } from 'react'
+import { ProFormRadio, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { Divider, Typography } from 'antd' // antd 组件库
-import { ProFormRadio, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
+import type { FC } from 'react'
+
 import { APP_FLAG_OPTS } from '@/global/enum' // 状态枚举
-import { formatPerfix, TARGET_OPTS, LAYOUT_OPTS, NAV_THEME_OPTS } from '../utils/config'
+
+import { formatPerfix, LAYOUT_OPTS, NAV_THEME_OPTS, TARGET_OPTS } from '../utils/config'
 
 const { Title } = Typography;
 
@@ -11,7 +13,9 @@ const MenuFormRender: FC = () => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
-			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}><Title level={4} style={{ marginBottom: '-14px' }}>路由配置</Title></Divider>
+			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}>
+				<Title level={4} style={{ marginBottom: '-14px' }}>路由配置</Title>
+			</Divider>
 			{/* 显示layout布局 */}
 			<ProFormSelect
 				name="layout"
@@ -21,7 +25,7 @@ const MenuFormRender: FC = () => {
 				tooltip={formatMessage({ id: `${formatPerfix()}.layout.tooltip` })}
 				options={LAYOUT_OPTS}
 				fieldProps={{
-					allowClear: false
+					allowClear: false,
 				}}
 			/>
 			{/* 菜单主题 */}
@@ -32,7 +36,7 @@ const MenuFormRender: FC = () => {
 				label={formatMessage({ id: `${formatPerfix()}.navTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{
-					allowClear: false
+					allowClear: false,
 				}}
 			/>
 			{/* 顶部导航的主题，mix 模式生效 */}
@@ -43,7 +47,7 @@ const MenuFormRender: FC = () => {
 				label={formatMessage({ id: `${formatPerfix()}.headerTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{
-					allowClear: false
+					allowClear: false,
 				}}
 			/>
 			{/* 窗口打开方式 */}
@@ -53,9 +57,9 @@ const MenuFormRender: FC = () => {
 				initialValue={'_blank'}
 				label={formatMessage({ id: `${formatPerfix()}.target` })}
 				tooltip={formatMessage({ id: `${formatPerfix()}.target.tooltip` })}
-				options={TARGET_OPTS.map(item => ({ value: item, label: item }))}
+				options={TARGET_OPTS.map((item) => ({ value: item, label: item }))}
 				fieldProps={{
-					allowClear: false
+					allowClear: false,
 				}}
 			/>
 			{/* 隐藏子路由 */}
@@ -66,7 +70,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -78,7 +82,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -90,7 +94,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -102,7 +106,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -114,7 +118,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -126,7 +130,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -138,7 +142,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -150,7 +154,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -162,7 +166,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>
@@ -174,7 +178,7 @@ const MenuFormRender: FC = () => {
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				options={APP_FLAG_OPTS}
 			/>

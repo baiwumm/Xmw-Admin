@@ -4,16 +4,18 @@
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:37:06
+ * @LastEditTime: 2023-07-10 14:46:29
  */
-import type { FC } from 'react'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
+import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks';
-import { Form, Input, Row, Col, Spin } from 'antd'
-import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
-import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
+import { Col, Form, Input, Row, Spin } from 'antd'
+import type { FC } from 'react'
+
 import { getCaptcha } from '@/services/logic/login' // 获取图形验证码
 import { formatResult } from '@/utils'
+
 import { formatPerfix } from '../utils/config'
 
 const Account: FC = () => {
@@ -42,7 +44,7 @@ const Account: FC = () => {
 				fieldProps={{
 					size: 'large',
 					prefix: <LockOutlined className={'prefixIcon'} />,
-					visibilityToggle: false
+					visibilityToggle: false,
 				}}
 				placeholder={formatMessage({ id: `${formatPerfix}.type.account.password.placeholder` })}
 				rules={[
@@ -58,11 +60,17 @@ const Account: FC = () => {
 						<Form.Item
 							name="verifyCode"
 							noStyle
-							rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` }) }]}
+							rules={[{
+								required: true,
+								message: formatMessage({ id: 'global.form.placeholder' }) +
+									formatMessage({ id: `${formatPerfix}.type.mobile.captcha` }),
+							}]}
 						>
 							<Input
 								size="large"
-								placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}
+								placeholder={
+									formatMessage({ id: 'global.form.placeholder' }) +
+									formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}
 							/>
 						</Form.Item>
 					</Col>

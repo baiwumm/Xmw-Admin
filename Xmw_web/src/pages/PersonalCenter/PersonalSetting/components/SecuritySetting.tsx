@@ -6,14 +6,16 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-21 10:20:28
  */
-import type { FC } from 'react'
-import { useIntl, useModel } from '@umijs/max'
-import { Typography, Button, Tag } from 'antd'
 import { ProList } from '@ant-design/pro-components';
+import { useIntl, useModel } from '@umijs/max'
+import { Button, Tag, Typography } from 'antd'
+import { keys } from 'lodash-es'
+import type { FC } from 'react'
 import zxcvbn from 'zxcvbn'; // 密码强度校验
-import { keys } from 'lodash'
-import { decryptionAesPsd } from '@/utils'
+
 import { strengthMeterOptions } from '@/components/StrengthMeter/config'
+import { decryptionAesPsd } from '@/utils'
+
 import { formatPerfix } from '../utils'
 
 const { Text } = Typography;
@@ -38,7 +40,7 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
   const regEmail = () => {
     const email = initialState?.CurrentUser?.email || ''
     const emailSplit = email.split('@')
-    return `${emailSplit[0].replace(/^(\d{3}).*(\d{4})$/, "$1***$2")}@${emailSplit[1]}`
+    return `${emailSplit[0].replace(/^(\d{3}).*(\d{4})$/, '$1***$2')}@${emailSplit[1]}`
   }
   // ProList 数据源
   const dataSource: dataSourceProps[] = [
@@ -48,18 +50,18 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
     {
       name: 'account-password',
       desc: passwordStrength(),
-      activeKey: 'changePassword'
+      activeKey: 'changePassword',
     },
     {
       name: 'security-phone',
-      desc: initialState?.CurrentUser?.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2"),
-      activeKey: 'basicSetting'
+      desc: initialState?.CurrentUser?.phone.replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2'),
+      activeKey: 'basicSetting',
     },
     {
       name: 'secure-mailbox',
       desc: regEmail(),
-      activeKey: 'basicSetting'
-    }
+      activeKey: 'basicSetting',
+    },
   ];
   return (
     <>
@@ -69,11 +71,14 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
         metas={{
           title: {
             dataIndex: 'name',
-            render: (text) => <Text strong>{formatMessage({ id: `${formatPerfix}.security-setting.${text}` })}</Text>
+            render: (text) => <Text strong>{formatMessage({ id: `${formatPerfix}.security-setting.${text}` })}</Text>,
           },
           description: {
             dataIndex: 'desc',
-            render: (text, record, index) => index > 0 ? <Text type="secondary">{formatMessage({ id: `${formatPerfix}.security-setting.${record.name}.tip` })}：{text}</Text> : null
+            render: (text, record, index) => index > 0 ?
+              <Text type="secondary">
+                {formatMessage({ id: `${formatPerfix}.security-setting.${record.name}.tip` })}：{text}
+              </Text> : null,
           },
           actions: {
             render: (_, row, index) => [
@@ -84,7 +89,9 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
                   onClick={() => setActiveKey(row.activeKey || 'basicSetting')}>
                   {formatMessage({ id: 'global.button.modify' })}
                 </Button> :
-                <Tag key="edit" color="success">{formatMessage({ id: `${formatPerfix}.security-setting.${row.name}.certified` })}</Tag>
+                <Tag key="edit" color="success">
+                  {formatMessage({ id: `${formatPerfix}.security-setting.${row.name}.certified` })}
+                </Tag>,
             ],
           },
         }}

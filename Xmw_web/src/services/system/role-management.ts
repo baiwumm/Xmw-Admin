@@ -7,8 +7,9 @@
  * @LastEditTime: 2022-11-29 16:41:07
  */
 import { request } from '@umijs/max';
-import type { PageResModel,ResponseModel } from '@/global/interface';
-import type { TableSearchProps,RoleStatusProps } from '@/pages/System/RoleManagement/utils/interface'
+
+import type { PageResModel, ResponseModel } from '@/global/interface';
+import type { RoleStatusProps, TableSearchProps } from '@/pages/System/RoleManagement/utils/interface'
 
 /**
  * @description:  获取角色列表
@@ -16,7 +17,8 @@ import type { TableSearchProps,RoleStatusProps } from '@/pages/System/RoleManage
  * @return {*}
  * @author: Cyan
  */
-export async function getRoleList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>> {
+export async function getRoleList(options?: TableSearchProps):
+  Promise<ResponseModel<PageResModel<API.ROLEMANAGEMENT>>> {
   return request('/api/system/role-management', {
     method: 'GET',
     params: options || {},
@@ -30,7 +32,7 @@ export async function getRoleList(options?: TableSearchProps): Promise<ResponseM
  * @author: Cyan
  */
 export async function createRole(
-  options: Omit<API.ROLEMANAGEMENT, 'role_id' | 'founder' | 'created_time' | 'updated_time'>
+  options: Omit<API.ROLEMANAGEMENT, 'role_id' | 'founder' | 'created_time' | 'updated_time'>,
 ): Promise<ResponseModel<API.ROLEMANAGEMENT>> {
   return request('/api/system/role-management', {
     method: 'POST',

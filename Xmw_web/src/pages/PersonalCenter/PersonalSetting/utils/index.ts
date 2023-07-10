@@ -3,4 +3,4 @@
  * @return {*}
  * @author: Cyan
  */
-export const formatPerfix: string = `pages.personal-center.personal-setting`
+export const formatPerfix: string = 'pages.personal-center.personal-setting'

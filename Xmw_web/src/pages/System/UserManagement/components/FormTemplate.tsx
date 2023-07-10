@@ -8,28 +8,37 @@
  */
 
 // 引入第三方库
-import type { FC } from 'react';
-import { useRef, useEffect } from 'react';
-import type { ProFormInstance } from '@ant-design/pro-components';
+import { ProFormInstance, StepsForm } from '@ant-design/pro-components'; // 高级组件
 import { useIntl } from '@umijs/max'
-import { StepsForm } from '@ant-design/pro-components'; // 高级组件
 import { message, Modal } from 'antd'; // antd 组件库
-import { omit } from 'lodash'
+import { omit } from 'lodash-es'
+import { FC, useEffect, useRef } from 'react';
+
+import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
+import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
+import { decryptionAesPsd, encryptionAesPsd } from '@/utils'
 
 // 引入业务组件
-import { PersonalInformation, UserInformation, SetAvatar } from '../Steps'
-import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
-import { encryptionAesPsd, decryptionAesPsd } from '@/utils'
+import { PersonalInformation, SetAvatar, UserInformation } from '../Steps'
 import { formatPerfix } from '../utils/config'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
-import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 
-const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, jobsData, organizationData, modalVisible, setModalVisibleFalse }) => {
+const FormTemplate: FC<FormTemplateProps> = ({
+	reloadTable,
+	formData,
+	roleData,
+	jobsData,
+	organizationData,
+	modalVisible,
+	setModalVisibleFalse,
+}) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const formMapRef = useRef<React.MutableRefObject<ProFormInstance>[]>([]);
 	// StepsForm 不同状态下 标题显示
-	const formTitle = formData?.user_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.user_name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
+	const formTitle = formData?.user_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
+		formatMessage({ id: `${formatPerfix()}.title` })}：${formData.user_name}` :
+		(formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 	// 提交表单
 	const handlerSubmit = async (values: API.USERMANAGEMENT) => {
 		// 提交数据
@@ -38,7 +47,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		params.password = encryptionAesPsd(params.password)
 		// 删除参数多余的属性
 		params = omit(params, ['confirmPassword'])
-		await (params.user_id ? updateUser : createUser)(params).then(res => {
+		await (params.user_id ? updateUser : createUser)(params).then((res) => {
 			if (res.code === 200) {
 				message.success(res.msg);
 				reloadTable()
@@ -56,23 +65,23 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 		// 个人信息
 		{
 			title: `${formatPerfix()}.steps-form.personal-information`,
-			component: <PersonalInformation />
+			component: <PersonalInformation />,
 		},
 		// 用户信息
 		{
 			title: `${formatPerfix()}.steps-form.user-information`,
-			component: <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />
+			component: <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />,
 		},
 		// 设置头像
 		{
 			title: `${formatPerfix()}.steps-form.set-avatar`,
-			component: <SetAvatar />
+			component: <SetAvatar />,
 		},
 		// 设置密码
 		{
 			title: `${formatPerfix()}.steps-form.set-password`,
-			component: <StrengthMeter />
-		}
+			component: <StrengthMeter />,
+		},
 	]
 
 	// 当 formData 有数据的时候  回显
@@ -113,7 +122,11 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, roleData, 
 			{
 				StepComponents.map((step, index) => {
 					return (
-						<StepsForm.StepForm title={formatMessage({ id: step.title })} grid={index !== 2} key={step.title}>
+						<StepsForm.StepForm
+							title={formatMessage({ id: step.title })}
+							grid={index !== 2}
+							key={step.title}
+						>
 							{step.component}
 						</StepsForm.StepForm>
 					)

@@ -4,33 +4,35 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:35:11
+ * @LastEditTime: 2023-07-10 14:18:43
  */
 
 // 引入第三方库
-import { useLocalStorageState, useRequest, useMount, useDebounceFn } from 'ahooks';
 import { createFromIconfontCN } from '@ant-design/icons';
-import type { FC } from 'react';
-import React, { useState } from 'react'; // react
-import { SelectLang, useModel, history, useIntl, getLocale } from '@umijs/max'
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
-import { message, Row, Col, Tabs, notification, Typography } from 'antd'  // antd 组件
-import { isEmpty } from 'lodash'
-import moment from 'moment'
+import { history, SelectLang, useIntl, useModel } from '@umijs/max'
+import { useDebounceFn, useLocalStorageState, useMount, useRequest } from 'ahooks';
+import { Col, message, notification, Row, Tabs, Typography } from 'antd' // antd 组件
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { isEmpty } from 'lodash-es'
+import React, { FC, useState } from 'react'; // react
 
+import Footer from '@/components/Footer'; // 全局页脚
 // 引入业务组件
 import type { LoginModel } from '@/global/interface';
+import { Login } from '@/services/logic/login' // 登录相关接口
+import { CACHE_KEY, encryptionAesPsd, formatResult, timeFix, waitTime } from '@/utils'
 import { initAllRequest } from '@/utils/initRequest'
-import { CACHE_KEY, encryptionAesPsd, formatResult, waitTime, timeFix } from '@/utils'
+
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
-import type { LoginType, LoginParams } from './utils/indexface'
-import { formatPerfix } from './utils/config'
-import Footer from '@/components/Footer'; // 全局页脚
 import styles from './index.module.less'; // css 样式恩建
-import { Login } from '@/services/logic/login' // 登录相关接口
+import { formatPerfix } from './utils/config'
+import type { LoginParams, LoginType } from './utils/indexface'
 
 const LoginPage: FC = () => {
+  dayjs.extend(relativeTime);
   // 使用 iconfont.cn 资源
   const IconFont = createFromIconfontCN({
     scriptUrl: process.env.ICONFONT_URL,
@@ -42,8 +44,6 @@ const LoginPage: FC = () => {
   const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>('account');
-  // moment语言转换
-  moment.locale(getLocale())
   /**
    * @description: 用户登录接口
    * @return {*}
@@ -69,17 +69,25 @@ const LoginPage: FC = () => {
               // 欢迎语
               notification.success({
                 message: `${timeFix()}，${userInfoAndAccess?.CurrentUser?.cn_name} 💕`,
-                description: login_last_time ? <span>
-                  {formatMessage({ id: `${formatPerfix}.success.last-time` })}
-                  <Typography.Text strong>{moment(login_last_time).fromNow()}</Typography.Text>
-                </span> : <Typography.Text strong>{formatMessage({ id: `${formatPerfix}.success.first-login` })}</Typography.Text>,
-                icon: <IconFont type="icon-huanyingye" style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />
+                description: login_last_time ?
+                  <span>
+                    {formatMessage({ id: `${formatPerfix}.success.last-time` })}
+                    <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
+                  </span>
+                  :
+                  <Typography.Text strong>
+                    {formatMessage({ id: `${formatPerfix}.success.first-login` })}
+                  </Typography.Text>,
+                icon:
+                  <IconFont
+                    type="icon-huanyingye"
+                    style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
               })
             }, 0)
           }
         }
-      }
-    }
+      },
+    },
   )
 
   /**
@@ -126,7 +134,7 @@ const LoginPage: FC = () => {
       label: formatMessage({ id: `${formatPerfix}.type.mobile` }),
       key: 'mobile',
       children: <Mobile />,
-    }
+    },
   ]
 
   // 初次渲染时清空token和用户信息，这里是为了避免token失效跳转到登录页

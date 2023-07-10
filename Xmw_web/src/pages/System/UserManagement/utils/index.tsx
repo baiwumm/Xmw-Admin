@@ -17,11 +17,11 @@ export const renderColumnsStateMap = () => {
         'en_name',
         'sort',
         'age',
-        'email'
+        'email',
     ];
-    MENU_CFG.forEach(ele => {
+    MENU_CFG.forEach((ele) => {
         result[ele] = {
-            show: false
+            show: false,
         }
     })
     return result

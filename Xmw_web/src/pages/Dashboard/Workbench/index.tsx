@@ -7,9 +7,9 @@
  * @LastEditTime: 2022-09-30 10:37:34
  */
 // 引入第三方库
-import type { FC } from 'react';
 import { useIntl } from '@umijs/max'
 import { Button } from 'antd'; // antd 组件
+import type { FC } from 'react';
 
 const Workbench: FC = () => {
     const { formatMessage } = useIntl();

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-29 15:12:55
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-10 17:47:30
+ * @LastEditTime: 2023-07-10 15:20:35
  */
 /**
  * @description: 默认不显示的 column 项
@@ -30,9 +30,9 @@ export const renderColumnsStateMap = () => {
         'fixedHeader',
         'fixSiderbar',
     ];
-    MENU_CFG.forEach(ele => {
+    MENU_CFG.forEach((ele) => {
         result[ele] = {
-            show: false
+            show: false,
         }
     })
     return result

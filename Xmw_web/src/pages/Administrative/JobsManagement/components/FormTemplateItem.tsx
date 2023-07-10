@@ -4,21 +4,22 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 18:07:28
+ * @LastEditTime: 2023-07-10 14:48:20
  */
 // 引入第三方库
-import type { FC } from 'react';
-import { useIntl } from '@umijs/max'
 import {
+	ProFormDigit,
+	ProFormSelect,
 	ProFormText,
 	ProFormTextArea,
 	ProFormTreeSelect,
-	ProFormDigit,
-	ProFormSelect
 } from '@ant-design/pro-components'; // antd 高级组件
+import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
-import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
+import type { FC } from 'react';
+
 import { formatPerfix } from '../utils/config'
+import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree, userList }) => {
 	const { formatMessage } = useIntl();
@@ -37,11 +38,12 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					defaultValue: parent_id || undefined,
 					fieldNames: {
 						label: 'jobs_name',
-						value: 'jobs_id'
+						value: 'jobs_id',
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: 'global.form.parent_id' }),
 				}}
 			/>
 			{/* 岗位名称 */}
@@ -49,23 +51,27 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 				name="jobs_name"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.jobs_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.jobs_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.jobs_name` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 32
+					maxLength: 32,
 				}}
 				rules={[
 					{ required: true, message: '' },
 					{
 						validator: (_, value) => {
 							if (!value) {
-								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.jobs_name` })))
+								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) +
+									formatMessage({ id: `${formatPerfix()}.jobs_name` })))
 							} else if (value.length < 2) {
-								return Promise.reject(new Error(formatMessage({ id: `${formatPerfix()}.jobs_name.validator` })))
+								return Promise.reject(new Error(formatMessage({
+									id: `${formatPerfix()}.jobs_name.validator`,
+								})))
 							}
 							return Promise.resolve()
-						}
-					}
+						},
+					},
 				]}
 			/>
 			{/* 所属组织 */}
@@ -77,22 +83,31 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 				fieldProps={{
 					fieldNames: {
 						label: 'org_name',
-						value: 'org_id'
+						value: 'org_id',
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.org_name` })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: `${formatPerfix()}.org_name` }),
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: `${formatPerfix()}.org_name` }) }]}
+				rules={[{
+					required: true,
+					message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: `${formatPerfix()}.org_name` }),
+				}]}
 			/>
 			{/* 负责人 */}
 			<ProFormSelect
 				name="leader"
 				label={formatMessage({ id: 'global.form.leader' })}
 				colProps={{ span: 24 }}
-				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' })}
-				options={userList.map(u => ({ label: u.cn_name, value: u.user_id }))}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' }) }]}
+				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) +
+					formatMessage({ id: 'global.form.leader' })}
+				options={userList.map((u) => ({ label: u.cn_name, value: u.user_id }))}
+				rules={[{
+					required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: 'global.form.leader' }),
+				}]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit
@@ -109,13 +124,18 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			<ProFormTextArea
 				name="describe"
 				label={formatMessage({ id: 'global.table.describe' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: 'global.table.describe' })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' }) }]}
+				rules={[{
+					required: true,
+					message: formatMessage({ id: 'global.form.placeholder' }) +
+						formatMessage({ id: 'global.table.describe' }),
+				}]}
 			/>
 		</>
 	)

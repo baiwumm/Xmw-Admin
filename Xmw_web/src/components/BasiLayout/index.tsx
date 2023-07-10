@@ -4,25 +4,25 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 17:06:15
+ * @LastEditTime: 2023-07-10 16:18:34
  */
 // 引入第三方库
-import React from 'react'
-import { SettingDrawer } from '@ant-design/pro-components'; // 高级组件
-import { history, Link, KeepAliveContext, useIntl } from '@umijs/max';
-import { Space } from 'antd' // antd 组件库
-import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
-import { last, isEmpty, cloneDeep } from 'lodash' //lodash 工具库
-import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
+import { history, KeepAliveContext, Link, useIntl } from '@umijs/max';
+import { useLocalStorageState } from 'ahooks'; // ahook 函数
+import { Space } from 'antd' // antd 组件库
 import { ItemType } from 'antd/es/breadcrumb/Breadcrumb'
+import { cloneDeep, isEmpty, last } from 'lodash-es' // lodash 工具库
+import React from 'react'
 
+import Footer from '@/components/Footer'; // 全局底部版权组件
 // 引入业务组件
 import RightContent from '@/components/RightContent'
+import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { CACHE_KEY, getItemByIdInTree } from '@/utils' // 全局工具函数
 import routerConfig from '@/utils/routerConfig' // 路由配置
-import Footer from '@/components/Footer'; // 全局底部版权组件
-import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
+
 import { appList } from './config'
 
 export const BasiLayout = ({ initialState, setInitialState }: any) => {
@@ -34,7 +34,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 	// 获取 localstorage key
 	const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
 	// 多标签切换
-	// const { updateTab } = React.useContext(KeepAliveContext);
+	const { updateTab } = React.useContext(KeepAliveContext);
 	return {
 		/* 菜单图标使用iconfont */
 		iconfontUrl: process.env.ICONFONT_URL,
@@ -53,32 +53,42 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				history.push(routerConfig.LOGIN);
 			} else if (initialState?.RouteMenu && initialState?.Locales) {
 				// 获取当前路由信息
-				const currentRouteInfo = cloneDeep(getItemByIdInTree<API.MENUMANAGEMENT>(initialState?.RouteMenu, location.pathname, 'path', 'routes'))
+				const currentRouteInfo = cloneDeep(
+					getItemByIdInTree<API.MENUMANAGEMENT>(initialState?.RouteMenu, location.pathname, 'path', 'routes'))
 				// 有父级才做跳转
 				if (currentRouteInfo?.icon && currentRouteInfo.parent_id) {
-					// updateTab(location.pathname, {
-					// 	icon: <IconFont type={currentRouteInfo.icon} />,
-					// 	name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),
-					// 	closable: true,
-					// });
+					updateTab(location.pathname, {
+						icon: <IconFont type={currentRouteInfo.icon} />,
+						name: formatMessage({ id: `menu${location.pathname.replaceAll('/', '.')}` }),
+						closable: true,
+					});
 				}
 			}
 		},
 		menu: {
-			request: async () => initialState?.RouteMenu
+			request: async () => initialState?.RouteMenu,
 		},
 		/* 自定义面包屑 */
 		breadcrumbProps: {
 			itemRender: (route: ItemType) => {
-				return (
-					<Link to={route.path} >
+				// 获取当前路由信息
+				const currentRouteInfo = cloneDeep(
+					getItemByIdInTree<API.MENUMANAGEMENT>(initialState?.RouteMenu, route.linkPath, 'path', 'routes'))
+				const linkPath = route.linkPath || ''
+				const renderName = () => {
+					return (
 						<Space>
-							<IconFont type={`icon-${last(route.path.split('/'))}`} />
+							<IconFont type={`icon-${last(linkPath.split('/'))}`} />
 							<span>{route.breadcrumbName}</span>
 						</Space>
-					</Link>
+					)
+				}
+				return (
+					currentRouteInfo?.parent_id ? <Link to={linkPath} >
+						{renderName()}
+					</Link> : renderName()
 				)
-			}
+			},
 		},
 		/* 自定义菜单项的 render 方法 */
 		menuItemRender: (menuItemProps: any, defaultDom: React.ReactNode) => {
@@ -86,7 +96,8 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 				/* 渲染二级菜单图标 */
 				<Link to={menuItemProps.path} style={{ display: 'flex', alignItems: 'center' }}>
 					{/* 分组布局不用渲染图标，避免重复 */}
-					{!(appCache?.UMI_LAYOUT?.siderMenuType === 'group') && menuItemProps.pro_layout_parentKeys?.length &&
+					{!(appCache?.UMI_LAYOUT?.siderMenuType === 'group') &&
+						menuItemProps.pro_layout_parentKeys?.length &&
 						<IconFont type={menuItemProps.icon} style={{ marginRight: 10 }} />}
 					{defaultDom}
 				</Link>

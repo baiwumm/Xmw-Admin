@@ -8,7 +8,7 @@ export const strengthMeterOptions: Record<string, string> = {
   'weak': '#EFBD47',
   'general': '#ffa500',
   'strong': '#1bbf1b',
-  'very-strong': '#008000'
+  'very-strong': '#008000',
 }
 
 // 统一国际化前缀

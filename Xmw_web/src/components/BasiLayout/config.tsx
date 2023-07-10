@@ -6,7 +6,7 @@ const IconFont = createFromIconfontCN({
 // 跨站点导航列表
 export const appList = [
     {
-        icon: 'https://cyan-blog.oss-cn-shenzhen.aliyuncs.com/global/avatar.jpg',
+        icon: 'https://ali-oss.xmwpro.com/global/avatar.jpg',
         title: '白雾茫茫丶',
         desc: '好好吃饭🍣好好睡觉💤敲敲代码💻谈谈恋爱💑',
         url: 'https://xmwpro.com/',

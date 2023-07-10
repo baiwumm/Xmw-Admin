@@ -7,24 +7,24 @@
  * @LastEditTime: 2023-03-21 10:13:08
  */
 // 引入第三方库
-import type { FC } from 'react';
 import {
+	ProFormDigit,
 	ProFormRadio,
+	ProFormSelect,
 	ProFormText,
 	ProFormTextArea,
-	ProFormDigit,
 	ProFormTreeSelect,
-	ProFormSelect
 } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
-import { keys } from 'lodash'
+import { keys } from 'lodash-es'
+import type { FC } from 'react';
+
+import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
 
 // 引入配置项
-import { ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
-import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
+import { formatPerfix, ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
 import type { FormTemplateItemProps } from '../utils/interface'
-import { formatPerfix } from '../utils/config'
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, userList }) => {
 	const { formatMessage } = useIntl();
@@ -43,11 +43,12 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 					defaultValue: parent_id || undefined,
 					fieldNames: {
 						label: 'org_name',
-						value: 'org_id'
+						value: 'org_id',
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' }),
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: 'global.form.parent_id' }),
 				}}
 			/>
 			{/* 组织名称 */}
@@ -55,23 +56,26 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				name="org_name"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.org_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.org_name` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 32
+					maxLength: 32,
 				}}
 				rules={[
 					{ required: true, message: '' },
 					{
 						validator: (_, value) => {
 							if (!value) {
-								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_name` })))
+								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) +
+									formatMessage({ id: `${formatPerfix()}.org_name` })))
 							} else if (value.length < 2) {
-								return Promise.reject(new Error(formatMessage({ id: `${formatPerfix()}.org_name.validator` })))
+								return Promise.reject(new Error(formatMessage(
+									{ id: `${formatPerfix()}.org_name.validator` })))
 							}
 							return Promise.resolve()
-						}
-					}
+						},
+					},
 				]}
 			/>
 			{/* 组织编码 */}
@@ -79,12 +83,17 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				name="org_code"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.org_code` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_code` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.org_code` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 32
+					maxLength: 32,
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.org_code` }) }]}
+				rules={[{
+					required: true,
+					message: formatMessage({ id: 'global.form.placeholder' }) +
+						formatMessage({ id: `${formatPerfix()}.org_code` }),
+				}]}
 			/>
 			{/* 组织类型 */}
 			<ProFormRadio.Group
@@ -94,18 +103,25 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				radioType="button"
 				initialValue={'company'}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
-				options={keys(ORG_TYPE_OPTS).map(type => ({ value: type, label: ORG_TYPE_OPTS[type as keyof typeof ORG_TYPE_OPTS].text }))}
+				options={keys(ORG_TYPE_OPTS).map((type: string) => ({
+					value: type,
+					label: ORG_TYPE_OPTS[type as keyof typeof ORG_TYPE_OPTS].text,
+				}))}
 			/>
 			{/* 负责人 */}
 			<ProFormSelect
 				name="leader"
 				label={formatMessage({ id: 'global.form.leader' })}
 				colProps={{ span: 24 }}
-				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' })}
-				options={userList.map(u => ({ label: u.cn_name, value: u.user_id }))}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.leader' }) }]}
+				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) +
+					formatMessage({ id: 'global.form.leader' })}
+				options={userList.map((u) => ({ label: u.cn_name, value: u.user_id }))}
+				rules={[{
+					required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: 'global.form.leader' }),
+				}]}
 			/>
 			{/* 状态 */}
 			<ProFormRadio.Group
@@ -113,7 +129,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				colProps={{ span: 8 }}
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				label={formatMessage({ id: 'global.status' })}
 				options={APP_STATUS_OPTS}
@@ -133,13 +149,17 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			<ProFormTextArea
 				name="describe"
 				label={formatMessage({ id: 'global.table.describe' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: 'global.table.describe' })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'global.table.describe' }) }]}
+				rules={[{
+					required: true, message: formatMessage({ id: 'global.form.placeholder' }) +
+						formatMessage({ id: 'global.table.describe' }),
+				}]}
 			/>
 		</>
 	)

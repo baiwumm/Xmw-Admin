@@ -4,33 +4,42 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 10:27:05
+ * @LastEditTime: 2023-07-10 14:11:05
  */
 // 引入第三方库
-import type { FC } from 'react';
-import { useRequest } from 'ahooks'
-import { useState, useRef } from 'react';
-import { useBoolean } from 'ahooks';
-import { useIntl, useAccess, Access } from '@umijs/max'
-import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
-import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
+import {
+	ClockCircleOutlined,
+	createFromIconfontCN,
+	DeleteOutlined,
+	DownOutlined,
+	EditOutlined,
+	ManOutlined,
+	PlusOutlined,
+	UnlockOutlined,
+	UserOutlined,
+	WomanOutlined,
+} from '@ant-design/icons' // antd 图标库
+import { ActionType, ColumnsState, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, UserOutlined, PlusOutlined, createFromIconfontCN, WomanOutlined, ManOutlined, UnlockOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message, Switch, Popconfirm } from 'antd' // antd 组件库
-import moment from 'moment'
+import { Access, useAccess, useIntl } from '@umijs/max'
+import { useBoolean, useRequest } from 'ahooks'
+import { Button, message, Modal, Popconfirm, Space, Switch, Tag } from 'antd' // antd 组件库
+import dayjs from 'dayjs'
+import { FC, useRef, useState } from 'react';
 
-// 引入业务组件
-import { getUserList, delUser, setUserStatus } from '@/services/system/user-management' // 用户管理接口
-import { getRoleList } from '@/services/system/role-management' // 角色管理接口
+import type { DropdownMenuProps, PageResModel, ResponseModel } from '@/global/interface'
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
-import type { PageResModel, ResponseModel, DropdownMenuProps } from '@/global/interface'
+import { getRoleList } from '@/services/system/role-management' // 角色管理接口
+// 引入业务组件
+import { delUser, getUserList, setUserStatus } from '@/services/system/user-management' // 用户管理接口
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
-import FormTemplate from './FormTemplate'  // 表单组件
+
 import { renderColumnsStateMap } from '../utils'
 import { formatPerfix } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
+import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -77,14 +86,14 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				await delUser(user_id).then(res => {
+				await delUser(user_id).then((res) => {
 					if (res.code === 200) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
 					}
 				})
-			}
+			},
 		})
 
 	}
@@ -99,28 +108,36 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <Access accessible={access.operationPermission(permissions.userManagement.edit)} fallback={null}>
-						<Button
-							type="text"
-							size="small"
-							icon={<EditOutlined />} block
-							onClick={() => { setCurrentRecord(record); setModalVisibleTrue() }}
+					name:
+						<Access
+							accessible={access.operationPermission(permissions.userManagement.edit)}
+							fallback={null}
 						>
-							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-						</Button>
-					</Access>,
+							<Button
+								type="text"
+								size="small"
+								icon={<EditOutlined />} block
+								onClick={() => { setCurrentRecord(record); setModalVisibleTrue() }}
+							>
+								{formatMessage({ id: `${formatPerfix(true)}.edit` })}
+							</Button>
+						</Access>,
 					key: 'edit',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.userManagement.delete)} fallback={null}>
-						<Button
-							block
-							type="text"
-							size="small"
-							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.user_id)} >
-							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-						</Button>
-					</Access>,
+					name:
+						<Access
+							accessible={access.operationPermission(permissions.userManagement.delete)}
+							fallback={null}
+						>
+							<Button
+								block
+								type="text"
+								size="small"
+								icon={<DeleteOutlined />} onClick={() => handlerDelete(record.user_id)} >
+								{formatMessage({ id: `${formatPerfix(true)}.delete` })}
+							</Button>
+						</Access>,
 					key: 'delete',
 				},
 			]
@@ -129,7 +146,7 @@ const TableTemplate: FC = () => {
 
 	// 设置用户状态
 	const changeUserStatus = async ({ user_id, status }: API.USERMANAGEMENT) => {
-		await setUserStatus({ user_id, status: status === 0 ? 1 : 0 }).then(result => {
+		await setUserStatus({ user_id, status: status === 0 ? 1 : 0 }).then((result) => {
 			message.success(result.msg)
 			reloadTable()
 		}).finally(() => {
@@ -164,19 +181,19 @@ const TableTemplate: FC = () => {
 			dataIndex: 'index',
 			valueType: 'indexBorder',
 			width: 48,
-			align: 'center'
+			align: 'center',
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.user_name` }),
 			dataIndex: 'user_name',
 			ellipsis: true,
 			width: 100,
-			render: text => <Space>
+			render: (text) => <Space>
 				<Tag
 					icon={<UserOutlined className={PrimaryColor} />} >
 					{text}
 				</Tag>
-			</Space>
+			</Space>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.cn_name` }),
@@ -199,7 +216,7 @@ const TableTemplate: FC = () => {
 			valueType: 'image',
 			width: 80,
 			hideInSearch: true,
-			align: 'center'
+			align: 'center',
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.sex` }),
@@ -215,14 +232,14 @@ const TableTemplate: FC = () => {
 				2: { text: formatMessage({ id: `${formatPerfix()}.sex.secret` }), status: 'Processing' },
 			},
 			render: (_, record) => {
-				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff', }
+				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff' }
 				const styles = { fontSize: 20 }
 				return {
 					0: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
 					1: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
-					2: <UnlockOutlined style={styles} className={PrimaryColor} />
+					2: <UnlockOutlined style={styles} className={PrimaryColor} />,
 				}[record.sex]
-			}
+			},
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.work_no` }),
@@ -237,12 +254,12 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 100,
-			render: text => <Space>
+			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
 					{text}
 				</Tag>
-			</Space>
+			</Space>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.org_id` }),
@@ -250,12 +267,12 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 100,
-			render: text => <Space>
+			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-organization" className={PrimaryColor} />} >
 					{text}
 				</Tag>
-			</Space>
+			</Space>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.jobs_id` }),
@@ -263,12 +280,12 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 100,
-			render: text => <Space>
+			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-jobs-management" className={PrimaryColor} />} >
 					{text}
 				</Tag>
-			</Space>
+			</Space>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.age` }),
@@ -302,7 +319,7 @@ const TableTemplate: FC = () => {
 				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
 			},
 			width: 80,
-			render: (_, record) => renderRoleStatus(record)
+			render: (_, record) => renderRoleStatus(record),
 		},
 		{
 			title: formatMessage({ id: 'global.table.sort' }),
@@ -311,7 +328,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 80,
-			render: text => <Tag color="purple">{text}</Tag>
+			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -320,11 +337,11 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 120,
-			render: text => (
+			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
-			)
+			),
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -334,8 +351,8 @@ const TableTemplate: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},
@@ -353,8 +370,8 @@ const TableTemplate: FC = () => {
 						{formatMessage({ id: 'global.table.operation' })}
 						<DownOutlined />
 					</Button>
-				</TableDropdown>
-			]
+				</TableDropdown>,
+			],
 		},
 	]
 
@@ -363,13 +380,13 @@ const TableTemplate: FC = () => {
 	 * @return {*}
 	 * @author: Cyan
 	 */
-	useRequest(async params => await getRoleList(params), {
+	useRequest(async (params) => await getRoleList(params), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 		onSuccess: (res: ResponseModel<PageResModel<API.ROLEMANAGEMENT>>) => {
 			if (res.code === 200) {
 				setRoleData(res.data.list)
 			}
-		}
+		},
 	})
 
 
@@ -383,7 +400,7 @@ const TableTemplate: FC = () => {
 			if (res.code === 200) {
 				setJobsData(res.data)
 			}
-		}
+		},
 	})
 
 	/**
@@ -396,7 +413,7 @@ const TableTemplate: FC = () => {
 			if (res.code === 200) {
 				setOrganizationData(res.data)
 			}
-		}
+		},
 	})
 
 	return (
@@ -405,19 +422,17 @@ const TableTemplate: FC = () => {
 				actionRef={tableRef}
 				columns={columns}
 				request={async (params: TableSearchProps): Promise<RequestData<API.USERMANAGEMENT>> => {
-					{
-						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-						// 如果需要转化参数可以在这里进行修改
-						const response = await getUserList(params).then(res => {
-							return {
-								data: res.data.list,
-								// success 请返回 true，不然 table 会停止解析数据，即使有数据
-								success: res.code === 200,
-								total: res.data.total
-							}
-						})
-						return Promise.resolve(response)
-					}
+					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+					// 如果需要转化参数可以在这里进行修改
+					const response = await getUserList(params).then((res) => {
+						return {
+							data: res.data.list,
+							// success 请返回 true，不然 table 会停止解析数据，即使有数据
+							success: res.code === 200,
+							total: res.data.total,
+						}
+					})
+					return Promise.resolve(response)
 				}
 				}
 				rowKey="user_id"
@@ -430,12 +445,16 @@ const TableTemplate: FC = () => {
 				}}
 				// 工具栏
 				toolBarRender={() => [
-					<Access accessible={access.operationPermission(permissions.userManagement.add)} fallback={null} key="add" >
+					<Access
+						accessible={access.operationPermission(permissions.userManagement.add)}
+						fallback={null}
+						key="add"
+					>
 						<Button type="primary" onClick={() => { setModalVisibleTrue(); setCurrentRecord(undefined) }}>
 							<PlusOutlined />
 							{formatMessage({ id: 'menu.system.user-management.add' })}
 						</Button>
-					</Access>
+					</Access>,
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>

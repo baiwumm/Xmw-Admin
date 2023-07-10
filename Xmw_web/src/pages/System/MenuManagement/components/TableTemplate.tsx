@@ -4,33 +4,48 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 11:11:15
+ * @LastEditTime: 2023-07-10 13:50:31
  */
 // 引入第三方库
-import type { FC } from 'react';
-import { useRequest, useBoolean } from 'ahooks'
-import React, { useState, useRef } from 'react';
-import { useIntl, getLocale, useAccess, Access } from '@umijs/max'
-import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
-import type { ActionType, ProColumns, ColumnsState, RequestData } from '@ant-design/pro-components'
+import {
+	ClockCircleOutlined,
+	ClusterOutlined,
+	createFromIconfontCN,
+	DeleteOutlined,
+	DownOutlined,
+	EditOutlined,
+	InfoCircleOutlined,
+	PlusOutlined,
+} from '@ant-design/icons' // antd 图标库
+import {
+	ActionType,
+	ColumnsState,
+	ProColumns,
+	ProTable,
+	RequestData,
+	TableDropdown,
+} from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, InfoCircleOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
-import { Space, Button, Modal, message, Tag, Tooltip } from 'antd' // antd 组件库
+import { Access, getLocale, useAccess, useIntl } from '@umijs/max'
+import { useBoolean, useRequest } from 'ahooks'
+import { Button, message, Modal, Space, Tag, Tooltip } from 'antd' // antd 组件库
 import type { LabeledValue } from 'antd/es/select/index';
-import moment from 'moment'
-import { find } from 'lodash'
+import dayjs from 'dayjs'
+import { find } from 'lodash-es'
+import React, { FC, useRef, useState } from 'react';
 
-// 引入业务组件
-import { getMenuList, delMenu } from '@/services/system/menu-management' // 菜单管理接口
-import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
-import FormTemplate from './FormTemplate'  // 表单组件
 import { APP_FLAG_OPTS } from '@/global/enum'
 import type { DropdownMenuProps } from '@/global/interface'
+import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
+// 引入业务组件
+import { delMenu, getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
+
 import { renderColumnsStateMap } from '../utils'
+import { formatPerfix, LAYOUT_OPTS, MENU_TYPE_OPTS, NAV_THEME_OPTS } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
-import { formatPerfix, MENU_TYPE_OPTS, NAV_THEME_OPTS, LAYOUT_OPTS } from '../utils/config'
+import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -73,14 +88,14 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				await delMenu(menu_id).then(res => {
+				await delMenu(menu_id).then((res) => {
 					if (res.code === 200) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
 					}
 				})
-			}
+			},
 		})
 
 	}
@@ -95,13 +110,19 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <Access accessible={access.operationPermission(permissions.menuManagement.addChild)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.menuManagement.addChild)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
 							icon={<ClusterOutlined />}
 							block
-							onClick={() => { setCurrentRecord(undefined); set_parent_id(record?.menu_id); setOpenDrawerTrue() }}
+							onClick={() => {
+								setCurrentRecord(undefined);
+								set_parent_id(record?.menu_id);
+								setOpenDrawerTrue()
+							}}
 						>
 							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
@@ -109,7 +130,9 @@ const TableTemplate: FC = () => {
 					key: 'addChild',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.menuManagement.edit)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.menuManagement.edit)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
@@ -123,7 +146,9 @@ const TableTemplate: FC = () => {
 					key: 'edit',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.menuManagement.delete)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.menuManagement.delete)}
+						fallback={null}>
 						<Button
 							block
 							type="text"
@@ -139,7 +164,11 @@ const TableTemplate: FC = () => {
 	}
 
 	// 渲染 columns 函数
-	const renderColumns = (record: API.MENUMANAGEMENT, opts: LabeledValue[], field: string, color = 'cyan'): React.ReactNode => {
+	const renderColumns = (
+		record: API.MENUMANAGEMENT,
+		opts: LabeledValue[],
+		field: string,
+		color = 'cyan'): React.ReactNode => {
 		const value = record[field]
 		const renderItem = find(opts, { value })
 		return <Tag color={color}>{renderItem?.label || '-'}</Tag>
@@ -163,10 +192,10 @@ const TableTemplate: FC = () => {
 				allowClear: true,
 				fieldNames: {
 					label: 'zh-CN',
-					value: 'id'
+					value: 'id',
 				},
 				options: internationalData,
-				placeholder: formatMessage({ id: 'global.form.placeholder.seleted' })
+				placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }),
 			},
 			render: (_, record) => {
 				return record.redirect ?
@@ -182,7 +211,7 @@ const TableTemplate: FC = () => {
 						}
 
 					</Space>
-			}
+			},
 		},
 		/* 菜单类型 */
 		{
@@ -196,7 +225,7 @@ const TableTemplate: FC = () => {
 			render: (_, record) => {
 				const menu_type = record.menu_type as keyof typeof MENU_TYPE_OPTS
 				return <Tag color={MENU_TYPE_OPTS[menu_type].color}>{MENU_TYPE_OPTS[menu_type].text}</Tag>
-			}
+			},
 		},
 		/* 路由地址 */
 		{
@@ -236,7 +265,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			width: 250,
-			render: text => <Tag color="volcano">{text}</Tag>
+			render: (text) => <Tag color="volcano">{text}</Tag>,
 		},
 		/* 状态 */
 		{
@@ -258,7 +287,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 100,
-			render: text => <Tag color="purple">{text}</Tag>
+			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		/* 菜单主题 */
 		{
@@ -268,7 +297,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'navTheme')
+			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'navTheme'),
 		},
 		/* 顶部菜单主题 */
 		{
@@ -278,7 +307,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'headerTheme')
+			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'headerTheme'),
 		},
 		/* 显示layout布局 */
 		{
@@ -288,7 +317,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, LAYOUT_OPTS, 'layout')
+			render: (_, record) => renderColumns(record, LAYOUT_OPTS, 'layout'),
 		},
 		/* 隐藏子路由 */
 		{
@@ -298,7 +327,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideChildrenInMenu')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideChildrenInMenu'),
 		},
 		/* 隐藏菜单 */
 		{
@@ -308,7 +337,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInMenu')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInMenu'),
 		},
 		/* 显示在面包屑中 */
 		{
@@ -318,7 +347,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInBreadcrumb')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'hideInBreadcrumb'),
 		},
 		/* 显示顶栏 */
 		{
@@ -328,7 +357,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'headerRender')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'headerRender'),
 		},
 		/* 显示页脚 */
 		{
@@ -338,7 +367,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'footerRender')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'footerRender'),
 		},
 		/* 显示菜单 */
 		{
@@ -348,7 +377,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuRender')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuRender'),
 		},
 		/* 显示菜单顶栏 */
 		{
@@ -358,7 +387,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuHeaderRender')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'menuHeaderRender'),
 		},
 		/* 子项往上提 */
 		{
@@ -368,7 +397,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'flatMenu')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'flatMenu'),
 		},
 		/* 固定顶栏 */
 		{
@@ -378,7 +407,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixedHeader')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixedHeader'),
 		},
 		/* 固定菜单 */
 		{
@@ -388,7 +417,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixSiderbar')
+			render: (_, record) => renderColumns(record, APP_FLAG_OPTS, 'fixSiderbar'),
 		},
 		/* 创建时间 */
 		{
@@ -398,11 +427,11 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 120,
-			render: text => (
+			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
-			)
+			),
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -412,8 +441,8 @@ const TableTemplate: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},
@@ -431,7 +460,7 @@ const TableTemplate: FC = () => {
 						<DownOutlined />
 					</Button>
 				</TableDropdown>,
-			]
+			],
 		},
 	]
 
@@ -441,7 +470,7 @@ const TableTemplate: FC = () => {
 			if (res.code === 200) {
 				setInternationalData(res.data)
 			}
-		}
+		},
 	})
 
 	return (
@@ -450,19 +479,17 @@ const TableTemplate: FC = () => {
 				actionRef={tableRef}
 				columns={columns}
 				request={async (params: TableSearchProps): Promise<RequestData<API.MENUMANAGEMENT>> => {
-					{
-						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-						// 如果需要转化参数可以在这里进行修改
-						const response = await getMenuList(params).then(res => {
-							setTreeData(res.data)
-							return {
-								data: res.data,
-								// success 请返回 true，不然 table 会停止解析数据，即使有数据
-								success: res.code === 200,
-							}
-						})
-						return Promise.resolve(response)
-					}
+					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+					// 如果需要转化参数可以在这里进行修改
+					const response = await getMenuList(params).then((res) => {
+						setTreeData(res.data)
+						return {
+							data: res.data,
+							// success 请返回 true，不然 table 会停止解析数据，即使有数据
+							success: res.code === 200,
+						}
+					})
+					return Promise.resolve(response)
 				}
 				}
 				rowKey="menu_id"
@@ -473,12 +500,20 @@ const TableTemplate: FC = () => {
 				}}
 				// 工具栏
 				toolBarRender={() => [
-					<Access accessible={access.operationPermission(permissions.menuManagement.add)} fallback={null} key="plus">
-						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+					<Access
+						accessible={access.operationPermission(permissions.menuManagement.add)}
+						fallback={null}
+						key="plus">
+						<Button
+							type="primary" onClick={() => {
+								set_parent_id('');
+								setCurrentRecord(undefined);
+								setOpenDrawerTrue()
+							}}>
 							<PlusOutlined />
 							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
-					</Access>
+					</Access>,
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>

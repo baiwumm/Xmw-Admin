@@ -4,16 +4,18 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 13:58:07
+ * @LastEditTime: 2023-07-10 15:02:39
  */
 // 引入第三方库
-import type { FC } from 'react';
+import { ProFormDigit, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
-import { ProFormText, ProFormDigit, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
 import { TreeSelect } from 'antd' // antd 组件库
-import { formatPerfix } from '../utils/config'
+import type { FC } from 'react';
 
-const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: string }> = ({ treeData, parent_id }) => {
+import { formatPerfix } from '../utils/config'
+import { FormTemplateProps } from '../utils/interface'
+
+const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = ({ treeData, parent_id }) => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
@@ -30,11 +32,12 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: s
 					defaultValue: parent_id || null,
 					fieldNames: {
 						label: 'name',
-						value: 'id'
+						value: 'id',
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) + formatMessage({ id: 'global.form.parent_id' })
+					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
+						formatMessage({ id: 'global.form.parent_id' }),
 				}}
 			/>
 			{/* 国际化字段 */}
@@ -42,22 +45,28 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: s
 				name="name"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.name` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 32
+					maxLength: 32,
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.name` }) }]}
+				rules={[{
+					required: true,
+					message: formatMessage({ id: 'global.form.placeholder' }) +
+						formatMessage({ id: `${formatPerfix()}.name` }),
+				}]}
 			/>
 			{/* 中文 */}
 			<ProFormText
 				name="zh-CN"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.zh-CN` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.zh-CN` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.zh-CN` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
 			/>
 			{/* 英文 */}
@@ -65,10 +74,11 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: s
 				name="en-US"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.en-US` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.en-US` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.en-US` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
 			/>
 			{/* 日文 */}
@@ -76,10 +86,11 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: s
 				name="ja-JP"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.ja-JP` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.ja-JP` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.ja-JP` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
 			/>
 			{/* 繁体中文 */}
@@ -87,10 +98,11 @@ const FormTemplateItem: FC<{ treeData: API.INTERNATIONALIZATION[], parent_id?: s
 				name="zh-TW"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.zh-TW` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.zh-TW` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.zh-TW` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 200
+					maxLength: 200,
 				}}
 			/>
 			{/* 排序 */}

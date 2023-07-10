@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from '@umijs/max';
+
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
@@ -17,6 +18,7 @@ export default defineConfig({
     hasCustomTabs: true,
     // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
     hasDropdown: true,
+    hasFixedHeader: true,
   },
   /**
    * @name 开启 hash 模式
@@ -70,7 +72,7 @@ export default defineConfig({
    * @description 一个不错的热更新组件，更新时可以保留 state
    */
   fastRefresh: true,
-  //============== 以下都是max的插件配置 ===============
+  // ============== 以下都是max的插件配置 ===============
   /**
    * @name 数据流插件
    * @@doc https://umijs.org/docs/max/data-flow
@@ -128,7 +130,7 @@ export default defineConfig({
    * @doc https://umijs.org/docs/max/access
    */
   access: {},
-  //================ pro 插件配置 =================
+  // ================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
   mfsu: {
     strategy: 'normal',

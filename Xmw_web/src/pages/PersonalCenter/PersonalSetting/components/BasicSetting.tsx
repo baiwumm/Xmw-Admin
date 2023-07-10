@@ -6,22 +6,22 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-01-17 11:21:48
  */
-import type { FC } from 'react'
-import { useState } from 'react'
-import { useIntl, useModel } from '@umijs/max'
-import { Divider, message, Row } from 'antd'
-import { useRequest } from 'ahooks'
 import { ProForm } from '@ant-design/pro-components'; // antd 高级组件
+import { useIntl, useModel } from '@umijs/max'
+import { useRequest } from 'ahooks'
+import { Divider, message, Row } from 'antd'
+import { FC, useState } from 'react'
+
+import type { PageResModel, ResponseModel } from '@/global/interface'
 import PersonalInformation from '@/pages/System/UserManagement/Steps/PersonalInformation' // 个人信息
-import UserInformation from '@/pages/System/UserManagement/Steps/UserInformation' // 用户信息
 import SetAvatar from '@/pages/System/UserManagement/Steps/SetAvatar' // 设置用户头像
-import { getRoleList } from '@/services/system/role-management' // 角色管理接口
+import UserInformation from '@/pages/System/UserManagement/Steps/UserInformation' // 用户信息
+import { formatPerfix } from '@/pages/System/UserManagement/utils/config'
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
+import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
-import type { PageResModel, ResponseModel } from '@/global/interface'
 import { waitTime } from '@/utils'
-import { formatPerfix } from '@/pages/System/UserManagement/utils/config'
 
 const BasicSetting: FC = () => {
   const { formatMessage } = useIntl();
@@ -39,13 +39,13 @@ const BasicSetting: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  useRequest(async params => await getRoleList(params), {
+  useRequest(async (params) => await getRoleList(params), {
     defaultParams: [{ current: 1, pageSize: 9999 }],
     onSuccess: (res: ResponseModel<PageResModel<API.ROLEMANAGEMENT>>) => {
       if (res.code === 200) {
         setRoleData(res.data.list)
       }
-    }
+    },
   })
 
 
@@ -59,7 +59,7 @@ const BasicSetting: FC = () => {
       if (res.code === 200) {
         setJobsData(res.data)
       }
-    }
+    },
   })
 
   /**
@@ -72,7 +72,7 @@ const BasicSetting: FC = () => {
       if (res.code === 200) {
         setOrganizationData(res.data)
       }
-    }
+    },
   })
 
   /**
@@ -88,8 +88,8 @@ const BasicSetting: FC = () => {
         // 更新全局状态
         setInitialState({ ...initialState, CurrentUser: { ...initialState?.CurrentUser, ...params[0] } })
       }
-    }
-  }
+    },
+  },
   )
   return (
     <ProForm<API.USERMANAGEMENT | undefined>

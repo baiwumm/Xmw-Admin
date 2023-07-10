@@ -7,8 +7,9 @@
  * @LastEditTime: 2022-11-29 16:41:47
  */
 import { request } from '@umijs/max';
+
 import type { ResponseModel } from '@/global/interface';
-import type { TableSearchProps, CreateJobsProps } from '@/pages/Administrative/JobsManagement/utils/interface'
+import type { CreateJobsProps, TableSearchProps } from '@/pages/Administrative/JobsManagement/utils/interface'
 
 /**
  * @description: 获取岗位管理列表

@@ -7,8 +7,9 @@
  * @LastEditTime: 2022-11-29 16:42:04
  */
 import { request } from '@umijs/max';
+
 import type { ResponseModel } from '@/global/interface';
-import type { TableSearchProps,CreateOrgProps } from '@/pages/Administrative/Organization/utils/interface'
+import type { CreateOrgProps, TableSearchProps } from '@/pages/Administrative/Organization/utils/interface'
 
 /**
  * @description: 获取组织管理列表

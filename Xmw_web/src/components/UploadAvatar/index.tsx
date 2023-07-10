@@ -6,14 +6,14 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-20 15:56:04
  */
-import { Upload, Button, Avatar, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useIntl } from '@umijs/max'
-import ImgCrop from 'antd-img-crop';
+import { Avatar, Button, message, Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import type { FC } from 'react';
-import { useState, useEffect } from 'react'
-import { last, get } from 'lodash'
+import ImgCrop from 'antd-img-crop';
+import { get, last } from 'lodash-es'
+import { FC, useEffect, useState } from 'react'
+
 import type { AppLocalCacheModel } from '@/global/interface'
 import { CACHE_KEY } from '@/utils'
 

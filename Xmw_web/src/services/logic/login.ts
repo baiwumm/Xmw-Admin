@@ -7,7 +7,8 @@
  * @LastEditTime: 2022-12-13 11:13:10
  */
 import { request } from '@umijs/max';
-import type { ResponseModel, LoginModel } from '@/global/interface';
+
+import type { LoginModel, ResponseModel } from '@/global/interface';
 import type { LoginParams } from '@/pages/User/Login/utils/indexface'
 
 /**

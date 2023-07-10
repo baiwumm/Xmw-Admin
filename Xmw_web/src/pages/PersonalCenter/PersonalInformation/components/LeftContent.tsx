@@ -6,11 +6,12 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-21 14:25:44
  */
-import type { FC } from 'react'
-import { useModel } from '@umijs/max'
-import { Space, Avatar, Typography, Divider, Col } from 'antd'
-import FigureLabels from '@/components/FigureLabels' // 标签
 import { createFromIconfontCN } from '@ant-design/icons' // antd 图标库
+import { useModel } from '@umijs/max'
+import { Avatar, Col, Divider, Space, Typography } from 'antd'
+import type { FC } from 'react'
+
+import FigureLabels from '@/components/FigureLabels' // 标签
 import cascaderOptions from '@/utils/pca-code.json' // 省市区级联数据
 
 const { Title, Paragraph } = Typography;
@@ -29,7 +30,17 @@ type AreaProps = {
 const LeftContent: FC = () => {
   // 获取全局状态
   const { initialState } = useModel('@@initialState');
-  const { avatar_url, cn_name, motto, role_name, org_name, jobs_name, address, tags, city } = initialState?.CurrentUser || {}
+  const {
+    avatar_url,
+    cn_name,
+    motto,
+    role_name,
+    org_name,
+    jobs_name,
+    address,
+    tags,
+    city,
+  } = initialState?.CurrentUser || {}
   // 使用 iconfont.cn 资源
   const IconFont = createFromIconfontCN({
     scriptUrl: process.env.ICONFONT_URL,
@@ -45,7 +56,7 @@ const LeftContent: FC = () => {
     let index = 0
     let result: string = ''
     function loopArea(tree: AreaProps[]) {
-      tree.forEach(node => {
+      tree.forEach((node) => {
         if (node.code === city?.[index] && index < city.length) {
           index++
           result += node.name

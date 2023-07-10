@@ -4,17 +4,18 @@
  * @Author: Cyan
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 11:20:16
+ * @LastEditTime: 2023-07-10 14:36:09
  */
-import type { FC } from 'react'
 import { useIntl, useModel } from '@umijs/max'
-import { useBoolean, useInterval, useEventListener, useLocalStorageState, useMount } from 'ahooks'
-import { Modal, Button, Row, Col, Avatar, Typography, Form, Input, message } from 'antd'
+import { useBoolean, useEventListener, useInterval, useLocalStorageState, useMount } from 'ahooks'
+import { Avatar, Button, Col, Form, Input, message, Modal, Row, Typography } from 'antd'
+import type { FC } from 'react'
+
 import { encryptionAesPsd } from '@/utils'
 
 const { Title } = Typography;
 
-//用户未操作超时时间: 60分钟
+// 用户未操作超时时间: 60分钟
 const timeOut = 60 * 60 * 1000
 
 const LockSleep: FC = () => {
@@ -32,7 +33,7 @@ const LockSleep: FC = () => {
     {
       defaultValue: {
         last_time: new Date().getTime(),
-        isSleep: false
+        isSleep: false,
       },
     },
   );
@@ -40,7 +41,7 @@ const LockSleep: FC = () => {
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
     // 判断是否超时
-    if (currentTime - sleepInfo.last_time > timeOut) {
+    if (sleepInfo && currentTime - sleepInfo.last_time > timeOut) {
       setTrue()
       setSleepInfo({ ...sleepInfo, isSleep: true })
     }
@@ -49,7 +50,7 @@ const LockSleep: FC = () => {
   const hanlderSubmit = () => {
     // 触发表单校验
     form.validateFields().then((values: { password: string }) => {
-      if (initialState?.CurrentUser?.password === encryptionAesPsd(values.password)) {
+      if (sleepInfo && initialState?.CurrentUser?.password === encryptionAesPsd(values.password)) {
         setFalse()
         setSleepInfo({ ...sleepInfo, isSleep: false })
       } else {
@@ -65,12 +66,14 @@ const LockSleep: FC = () => {
 
   // 监听用户是否有操作行为
   useEventListener('mousemove', () => {
-    setSleepInfo({ ...sleepInfo, last_time: new Date().getTime() })
+    if (sleepInfo) {
+      setSleepInfo({ ...sleepInfo, last_time: new Date().getTime() })
+    }
   })
 
   // 一开始就检测
   useMount(() => {
-    if (sleepInfo.isSleep) {
+    if (sleepInfo?.isSleep) {
       setTrue()
     }
   })
@@ -94,7 +97,11 @@ const LockSleep: FC = () => {
         </Col>
         <Col>
           <Form form={form} style={{ textAlign: 'left' }}>
-            <Form.Item name="password" label={formatMessage({ id: `${formatPerfix}.password` })} rules={[{ required: true }]}>
+            <Form.Item
+              name="password"
+              label={formatMessage({ id: `${formatPerfix}.password` })}
+              rules={[{ required: true }]}
+            >
               <Input.Password placeholder={formatMessage({ id: `${formatPerfix}.password.placeholder` })} />
             </Form.Item>
           </Form>

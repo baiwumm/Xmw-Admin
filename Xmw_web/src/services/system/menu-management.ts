@@ -7,8 +7,9 @@
  * @LastEditTime: 2022-11-29 16:40:47
  */
 import { request } from '@umijs/max';
+
 import type { ResponseModel } from '@/global/interface';
-import type {TableSearchProps} from '@/pages/System/MenuManagement/utils/interface'
+import type { TableSearchProps } from '@/pages/System/MenuManagement/utils/interface'
 
 /**
  * @description:  获取菜单列表
@@ -30,7 +31,7 @@ export async function getMenuList(options?: TableSearchProps): Promise<ResponseM
  * @return {*}
  * @author: Cyan
  */
- export async function createMenu(options: Partial<API.MENUMANAGEMENT>): Promise<ResponseModel<API.MENUMANAGEMENT>> {
+export async function createMenu(options: Partial<API.MENUMANAGEMENT>): Promise<ResponseModel<API.MENUMANAGEMENT>> {
   return request('/api/system/menu-management', {
     method: 'POST',
     data: options || {},
@@ -43,7 +44,7 @@ export async function getMenuList(options?: TableSearchProps): Promise<ResponseM
  * @return {*}
  * @author: Cyan
  */
- export async function updateMenu({ menu_id, ...options }: API.MENUMANAGEMENT): Promise<ResponseModel<number[]>> {
+export async function updateMenu({ menu_id, ...options }: API.MENUMANAGEMENT): Promise<ResponseModel<number[]>> {
   return request(`/api/system/menu-management/${menu_id}`, {
     method: 'PUT',
     data: options || {},

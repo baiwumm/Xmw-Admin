@@ -4,15 +4,16 @@
  * @Author: Cyan
  * @Date: 2022-09-24 11:16:36
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 10:16:33
+ * @LastEditTime: 2023-07-10 14:54:44
  */
+import { NodeData, OrganizationGraph } from '@ant-design/charts';
+import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
 import { useRequest } from 'ahooks'
 import { Card } from 'antd'
 import type { FC } from 'react';
-import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import { formatResult } from '@/utils'
-import { OrganizationGraph, NodeData } from '@ant-design/charts';
 
 const Structure: FC = () => {
 	/**
@@ -20,7 +21,8 @@ const Structure: FC = () => {
 	 * @param {*} tree
 	 * @author: Cyan
 	 */
-	function loopTree<T>(tree: (NodeData<{ name?: string }> & T & { [key: string]: string })[], idField: string, nameField: string) {
+	function loopTree<T>(tree: (NodeData<{ name?: string }> & T &
+	{ [key: string]: string })[], idField: string, nameField: string) {
 		tree.forEach((node) => {
 			node.id = node[idField]
 			node.value = {}
@@ -46,9 +48,9 @@ const Structure: FC = () => {
 	const data = {
 		id: '1',
 		value: {
-			name: 'Xmw Admin'
+			name: 'Xmw Admin',
 		},
-		children: orgList
+		children: orgList,
 	}
 	return (
 		<PageContainer header={{ title: null }}>

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 14:57:45
+ * @LastEditTime: 2023-07-10 15:17:25
  */
 declare namespace API {
   import type { OrgTypeProps } from '@/pages/Administrative/Organization/utils/interface'
@@ -23,7 +23,7 @@ declare namespace API {
     status: number; // 组织状态
     sort: number; // 排序
     created_time: Date; // 创建时间
-    updated_time: Date;  // 最后一次更新时间
+    updated_time: Date; // 最后一次更新时间
     leader: string; // 岗位负责人
     founder: string; // 创建人
     children?: ORGANIZATION[];

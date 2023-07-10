@@ -6,12 +6,13 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-01-11 18:04:10
  */
-import type { FC } from 'react'
-import React, { useImperativeHandle } from 'react'
 import { useIntl, useModel } from '@umijs/max'
-import { Modal, Row, Col, Avatar, Typography, Form, Input } from 'antd'
 import { useBoolean, useLocalStorageState, useMount } from 'ahooks'
+import { Avatar, Col, Form, Input, Modal, Row, Typography } from 'antd'
+import React, { FC, useImperativeHandle } from 'react'
+
 import { encryptionAesPsd } from '@/utils'
+
 import LockScreen from './LockScreen' // 锁屏弹窗
 
 const { Title } = Typography;
@@ -73,9 +74,16 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
           </Col>
           <Col>
             <Form form={form} style={{ textAlign: 'left' }}>
-              <Form.Item name="password" label={formatMessage({ id: 'components.RightContent.LockScreen.password' })} rules={[{ required: true, min: 6, max: 12 }]}>
+              <Form.Item
+                name="password"
+                label={formatMessage({ id: 'components.RightContent.LockScreen.password' })}
+                rules={[{ required: true, min: 6, max: 12 }]}
+              >
                 <Input.Password
-                  placeholder={`${formatMessage({ id: 'global.form.placeholder' })}${formatMessage({ id: 'components.RightContent.LockScreen.password' })}`}
+                  placeholder={`
+                  ${formatMessage({ id: 'global.form.placeholder' })}
+                  ${formatMessage({ id: 'components.RightContent.LockScreen.password' })}`
+                  }
                 />
               </Form.Item>
             </Form>

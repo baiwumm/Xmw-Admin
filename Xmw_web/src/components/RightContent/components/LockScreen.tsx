@@ -4,13 +4,14 @@
  * @Author: Cyan
  * @Date: 2023-01-06 14:20:20
  * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 18:09:38
+ * @LastEditTime: 2023-07-10 14:30:06
  */
-import type { FC } from 'react'
-import { useIntl, useModel } from '@umijs/max'
-import { Row, Col, Avatar, Typography, Form, Input, Button, message } from 'antd'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
+import { useIntl, useModel } from '@umijs/max'
 import { useLocalStorageState } from 'ahooks'
+import { Avatar, Button, Col, Form, Input, message, Row, Typography } from 'antd'
+import type { FC } from 'react'
+
 import { encryptionAesPsd } from '@/utils'
 
 const { Title } = Typography;
@@ -35,7 +36,7 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
       left: 0,
       width: '100vw',
       height: '100vh',
-      background: `url('/images/lockScreen.jpg') no-repeat fixed center`
+      background: 'url(\'/images/lockScreen.jpg\') no-repeat fixed center',
     };
   });
 
@@ -64,12 +65,19 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
           <Form form={form} style={{ textAlign: 'left' }}>
             <Form.Item name="password" rules={[{ required: true, min: 6, max: 12 }]}>
               <Input.Password
-                placeholder={`${formatMessage({ id: 'global.form.placeholder' })}${formatMessage({ id: 'components.RightContent.LockScreen.password' })}`}
+                placeholder={`
+                ${formatMessage({ id: 'global.form.placeholder' })}
+                ${formatMessage({ id: 'components.RightContent.LockScreen.password' })}
+                `}
               />
             </Form.Item>
           </Form>
         </Col>
-        <Button type="primary" block onClick={hanlderSubmit}>{formatMessage({ id: 'components.RightContent.LockScreen.access-system' })}</Button>
+        <Button
+          type="primary"
+          block
+          onClick={hanlderSubmit}>{formatMessage({ id: 'components.RightContent.LockScreen.access-system' })
+          }</Button>
       </Row>
     </div>
   )

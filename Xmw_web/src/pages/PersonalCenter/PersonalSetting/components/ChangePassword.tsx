@@ -6,16 +6,18 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-21 10:19:28
  */
-import type { FC } from 'react'
-import { useIntl, useModel } from '@umijs/max'
-import { Form, Button, message, Modal } from 'antd'
-import { useLocalStorageState, useRequest } from 'ahooks'
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
+import { useIntl, useModel } from '@umijs/max'
+import { useLocalStorageState, useRequest } from 'ahooks'
+import { Button, Form, message, Modal } from 'antd'
+import type { FC } from 'react'
+
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
-import { encryptionAesPsd, waitTime, CACHE_KEY, logoutToLogin } from '@/utils'
-import { updateUser } from '@/services/system/user-management'
-import { Logout } from '@/services/logic/login' // 登录相关接口
 import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
+import { Logout } from '@/services/logic/login' // 登录相关接口
+import { updateUser } from '@/services/system/user-management'
+import { CACHE_KEY, encryptionAesPsd, logoutToLogin, waitTime } from '@/utils'
+
 import { formatPerfix } from '../utils'
 
 
@@ -50,8 +52,8 @@ const ChangePassword: FC = () => {
         // 退出登录返回登录页
         logoutToLogin()
       }
-    }
-  }
+    },
+  },
   )
 
   /**
@@ -68,8 +70,8 @@ const ChangePassword: FC = () => {
         // 销毁对话框
         Modal.destroyAll();
       }
-    }
-  }
+    },
+  },
   )
 
   // 表单提交
@@ -87,7 +89,7 @@ const ChangePassword: FC = () => {
           if (user_id) {
             runUpdateUser({ password: encryptionAesPsd(values.password), user_id })
           }
-        }
+        },
       })
     }
   }
@@ -100,8 +102,9 @@ const ChangePassword: FC = () => {
         rules={[
           {
             required: true, min: 6, max: 12,
-            message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: 'pages.system.user-management.password.rules' })
-          }
+            message: formatMessage({ id: 'global.form.placeholder' }) +
+              formatMessage({ id: 'pages.system.user-management.password.rules' }),
+          },
         ]}
       />
       {/* 密码强度 */}

@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2022-09-08 15:37:44
+ * @LastEditTime: 2023-07-10 16:24:38
  */
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
@@ -33,8 +33,8 @@ const Footer: React.FC = () => {
           blankTarget: true,
         },
         {
-          key: 'vue3-xmw-admin',
-          title: 'vue3-xmw-admin',
+          key: 'Vue3 Admin',
+          title: 'Vue3 Admin',
           href: 'http://vue3.xmwpro.com/',
           blankTarget: true,
         },

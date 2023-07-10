@@ -7,6 +7,7 @@
  * @LastEditTime: 2023-01-17 11:14:00
  */
 import { request } from '@umijs/max';
+
 import type { PageResModel, ResponseModel } from '@/global/interface';
 import type { TableSearchProps, UserStatusProps } from '@/pages/System/UserManagement/utils/interface'
 
@@ -16,7 +17,8 @@ import type { TableSearchProps, UserStatusProps } from '@/pages/System/UserManag
  * @return {*}
  * @author: Cyan
  */
-export async function getUserList(options?: TableSearchProps): Promise<ResponseModel<PageResModel<API.USERMANAGEMENT>>> {
+export async function getUserList(options?: TableSearchProps):
+  Promise<ResponseModel<PageResModel<API.USERMANAGEMENT>>> {
   return request('/api/system/user-management', {
     method: 'GET',
     params: options || {},
@@ -30,7 +32,7 @@ export async function getUserList(options?: TableSearchProps): Promise<ResponseM
  * @author: Cyan
  */
 export async function createUser(
-  options: API.USERMANAGEMENT
+  options: API.USERMANAGEMENT,
 ): Promise<ResponseModel<API.USERMANAGEMENT>> {
   return request('/api/system/user-management', {
     method: 'POST',
@@ -44,7 +46,8 @@ export async function createUser(
  * @return {*}
  * @author: Cyan
  */
-export async function updateUser({ user_id, ...options }: Partial<API.USERMANAGEMENT>): Promise<ResponseModel<number[]>> {
+export async function updateUser({ user_id, ...options }:
+  Partial<API.USERMANAGEMENT>): Promise<ResponseModel<number[]>> {
   return request(`/api/system/user-management/${user_id}`, {
     method: 'PUT',
     data: options || {},

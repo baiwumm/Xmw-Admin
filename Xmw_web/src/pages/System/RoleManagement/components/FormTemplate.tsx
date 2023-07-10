@@ -8,24 +8,27 @@
  */
 
 // 引入第三方库
-import type { FC } from 'react';
-import { useIntl } from '@umijs/max'
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
+import { useIntl } from '@umijs/max'
 import { Form, message } from 'antd'; // antd 组件库
-import { omit } from 'lodash'
+import { omit } from 'lodash-es'
+import type { FC } from 'react';
+
+import { createRole, updateRole } from '@/services/system/role-management' // 角色管理接口
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { createRole, updateRole } from '@/services/system/role-management' // 角色管理接口
-import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 import { formatPerfix } from '../utils/config'
+import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, open, setOpenDrawerFalse }) => {
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.ROLEMANAGEMENT>();
 	// ModalForm 不同状态下 标题显示
-	const formTitle = formData?.role_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) + formatMessage({ id: `${formatPerfix()}.title` })}：${formData.role_name}` : (formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
+	const formTitle = formData?.role_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
+		formatMessage({ id: `${formatPerfix()}.title` })}：${formData.role_name}` :
+		(formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {
@@ -39,7 +42,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, 
 	const handlerSubmit = async (values: API.ROLEMANAGEMENT): Promise<void> => {
 		// 提交数据
 		const params = { ...formData, ...values }
-		await (params.role_id ? updateRole : createRole)(params).then(res => {
+		await (params.role_id ? updateRole : createRole)(params).then((res) => {
 			if (res.code === 200) {
 				message.success(res.msg);
 				// 刷新表格
@@ -60,7 +63,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, 
 			modalProps={{
 				destroyOnClose: true,
 				maskClosable: false,
-				onCancel: () => handlerClose()
+				onCancel: () => handlerClose(),
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}
@@ -68,7 +71,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, 
 				// 提交数据
 				await handlerSubmit(values)
 			}}
-			onVisibleChange={visiable => {
+			onVisibleChange={(visiable) => {
 				if (visiable && formData) {
 					// menu_permission的值需要单独回显
 					const roleMenus = formData.menu_permission.map((role: API.ROLEMENU) => role.menu_id)

@@ -4,29 +4,36 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 10:06:39
+ * @LastEditTime: 2023-07-10 13:49:24
  */
 // 引入第三方库
-import { useRequest, useBoolean } from 'ahooks';
-import type { FC } from 'react';
-import { useState, useRef } from 'react';
-import { useIntl, useAccess, Access } from '@umijs/max'
-import { ProTable, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
-import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components'
+import {
+	ClockCircleOutlined,
+	ClusterOutlined,
+	createFromIconfontCN,
+	DeleteOutlined,
+	DownOutlined,
+	EditOutlined,
+	PlusOutlined,
+} from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { ClockCircleOutlined, EditOutlined, DeleteOutlined, DownOutlined, ClusterOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
-import { Tag, Space, Button, Modal, message } from 'antd' // antd 组件库
-import moment from 'moment'
+import { Access, useAccess, useIntl } from '@umijs/max'
+import { useBoolean, useRequest } from 'ahooks';
+import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
+import dayjs from 'dayjs'
+import { FC, useRef, useState } from 'react';
 
+import type { DropdownMenuProps, PageResModel, PaginationProps } from '@/global/interface'
+import { delOrganization, getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
-import { getOrganizationList, delOrganization } from '@/services/administrative/organization' // 组织管理接口
 import { columnScrollX, formatResult } from '@/utils'
-import type { PageResModel, PaginationProps, DropdownMenuProps } from '@/global/interface'
 import permissions from '@/utils/permission'
-import FormTemplate from './FormTemplate'  // 表单组件
+
+import { formatPerfix, ORG_TYPE_OPTS } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
-import { ORG_TYPE_OPTS, formatPerfix } from '../utils/config'
+import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -57,7 +64,7 @@ const TableTemplate: FC = () => {
 	// 获取用户列表
 	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
 		async (params) => formatResult(await getUserList(params)), {
-		defaultParams: [{ current: 1, pageSize: 9999 }]
+		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
 	// 删除列表
 	const handlerDelete = (org_id: string): void => {
@@ -65,14 +72,14 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: 'global.message.delete.title' }),
 			content: formatMessage({ id: 'global.message.delete.content' }),
 			onOk: async () => {
-				await delOrganization(org_id).then(res => {
+				await delOrganization(org_id).then((res) => {
 					if (res.code === 200) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
 					}
 				})
-			}
+			},
 		})
 
 	}
@@ -86,13 +93,19 @@ const TableTemplate: FC = () => {
 		return (
 			[
 				{
-					name: <Access accessible={access.operationPermission(permissions.organization.addChild)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.organization.addChild)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
 							icon={<ClusterOutlined />}
 							block
-							onClick={() => { setCurrentRecord(undefined); set_parent_id(record.org_id); setOpenDrawerTrue() }}
+							onClick={() => {
+								setCurrentRecord(undefined);
+								set_parent_id(record.org_id);
+								setOpenDrawerTrue()
+							}}
 						>
 							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
 						</Button>
@@ -101,7 +114,9 @@ const TableTemplate: FC = () => {
 					key: 'addChild',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.organization.edit)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.organization.edit)}
+						fallback={null}>
 						<Button
 							type="text"
 							size="small"
@@ -115,7 +130,9 @@ const TableTemplate: FC = () => {
 					key: 'edit',
 				},
 				{
-					name: <Access accessible={access.operationPermission(permissions.organization.delete)} fallback={null}>
+					name: <Access
+						accessible={access.operationPermission(permissions.organization.delete)}
+						fallback={null}>
 						<Button
 							block
 							type="text"
@@ -141,14 +158,19 @@ const TableTemplate: FC = () => {
 			dataIndex: 'org_name',
 			ellipsis: true,
 			width: 140,
-			render: text => <Space><IconFont type="icon-organization" className={PrimaryColor} /><span>{text}</span></Space>
+			render: (text) => (
+				<Space>
+					<IconFont type="icon-organization" className={PrimaryColor} />
+					<span>{text}</span>
+				</Space>
+			),
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.org_code` }),
 			dataIndex: 'org_code',
 			ellipsis: true,
 			width: 120,
-			render: text => <Tag color="cyan">{text}</Tag>
+			render: (text) => <Tag color="cyan">{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix()}.org_type` }),
@@ -163,7 +185,7 @@ const TableTemplate: FC = () => {
 					color={ORG_TYPE_OPTS[org_type].color}>
 					{ORG_TYPE_OPTS[org_type].text}
 				</Tag>
-			}
+			},
 		},
 		{
 			title: formatMessage({ id: 'global.status' }),
@@ -183,7 +205,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			sorter: true,
-			render: text => <Tag color="purple">{text}</Tag>
+			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -192,11 +214,11 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 120,
-			render: text => (
+			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
-			)
+			),
 		},
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
@@ -206,8 +228,8 @@ const TableTemplate: FC = () => {
 			search: {
 				transform: (value) => {
 					return {
-						start_time: moment(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: moment(value[1]._d).format('YYYY-MM-DD 23:59:59'),
+						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
+						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
 					};
 				},
 			},
@@ -217,7 +239,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'describe',
 			ellipsis: true,
 			width: 140,
-			hideInSearch: true
+			hideInSearch: true,
 		},
 		{
 			title: formatMessage({ id: 'global.table.operation' }),
@@ -232,7 +254,7 @@ const TableTemplate: FC = () => {
 						<DownOutlined />
 					</Button>
 				</TableDropdown>,
-			]
+			],
 		},
 	]
 
@@ -242,31 +264,34 @@ const TableTemplate: FC = () => {
 				actionRef={tableRef}
 				columns={columns}
 				request={async (params: TableSearchProps): Promise<RequestData<API.ORGANIZATION>> => {
-					{
-						// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-						// 如果需要转化参数可以在这里进行修改
-						const response = await getOrganizationList(params).then(res => {
-							setTreeData(res.data)
-							return {
-								data: res.data,
-								// success 请返回 true，不然 table 会停止解析数据，即使有数据
-								success: res.code === 200,
-							}
-						})
-						return Promise.resolve(response)
-					}
+					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
+					// 如果需要转化参数可以在这里进行修改
+					const response = await getOrganizationList(params).then((res) => {
+						setTreeData(res.data)
+						return {
+							data: res.data,
+							// success 请返回 true，不然 table 会停止解析数据，即使有数据
+							success: res.code === 200,
+						}
+					})
+					return Promise.resolve(response)
 				}
 				}
 				rowKey="org_id"
 				pagination={false}
 				// 工具栏
 				toolBarRender={() => [
-					<Access accessible={access.operationPermission(permissions.organization.add)} fallback={null} key="plus">
-						<Button type="primary" onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
+					<Access
+						accessible={access.operationPermission(permissions.organization.add)}
+						fallback={null}
+						key="plus">
+						<Button
+							type="primary"
+							onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
 							{formatMessage({ id: `${formatPerfix(true)}.add` })}
 						</Button>
-					</Access>
+					</Access>,
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>

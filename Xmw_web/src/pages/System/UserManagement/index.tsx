@@ -7,8 +7,8 @@
  * @LastEditTime: 2023-01-10 18:03:51
  */
 // 引入第三方库
-import type { FC } from 'react';
 import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+import type { FC } from 'react';
 
 // 引入业务工具类
 import TableTemplate from './components/TableTemplate'

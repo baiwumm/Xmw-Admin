@@ -9,15 +9,23 @@
 
 // 引入第三方库
 import type { RunTimeLayoutConfig } from '@umijs/max';
+
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 import { TabsLayout } from '@/components/TabsLayout' // 多标签页配置
-import defaultSettings from '../config/defaultSettings'; // 全局默认配置
+import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
 import { CACHE_KEY } from '@/utils' // 全局工具函数
-import { initLocalesLang, fetchUserInfo, fetchPermissions, fetchRouteMenu, initAllRequest } from '@/utils/initRequest' // 初始化共用接口请求
+import {
+  fetchPermissions,
+  fetchRouteMenu,
+  fetchUserInfo,
+  initAllRequest,
+  initLocalesLang,
+} from '@/utils/initRequest' // 初始化共用接口请求
 import routerConfig from '@/utils/routerConfig' // 路由配置
-import type { InitialStateModel, AppLocalCacheModel } from '@/global/interface'
 import { errorConfig } from '@/utils/umiRequest'; // umi-request 请求封装
+
+import defaultSettings from '../config/defaultSettings'; // 全局默认配置
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state

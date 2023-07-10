@@ -1,8 +1,8 @@
-import type { FC } from 'react'
+import { setAlpha } from '@ant-design/pro-components';
+import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useModel } from '@umijs/max';
 import { Avatar } from 'antd'
-import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { setAlpha } from '@ant-design/pro-components';
+import type { FC } from 'react'
 
 const UserAvatar: FC = () => {
   const { initialState } = useModel('@@initialState');

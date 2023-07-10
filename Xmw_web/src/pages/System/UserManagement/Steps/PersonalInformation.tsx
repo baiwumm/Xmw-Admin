@@ -7,10 +7,12 @@
  * @LastEditTime: 2023-03-21 10:31:45
  */
 // 引入第三方库
-import type { FC } from 'react';
+import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
-import { ProFormText, ProFormDigit, ProFormRadio } from '@ant-design/pro-components'; // antd 高级组件
-import { APP_STATUS_OPTS, APP_SEX_OPTS } from '@/global/enum' // 状态枚举
+import type { FC } from 'react';
+
+import { APP_SEX_OPTS, APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
+
 import { formatPerfix } from '../utils/config'
 
 const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = false }) => {
@@ -22,22 +24,24 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="user_name"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.user_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.user_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.user_name` })}
 				disabled={disabledField}
 				fieldProps={{
 					showCount: true,
-					maxLength: 20
+					maxLength: 20,
 				}}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.user_name` }),
-						whitespace: true
+						message: formatMessage({ id: 'global.form.placeholder' }) +
+							formatMessage({ id: `${formatPerfix()}.user_name` }),
+						whitespace: true,
 					},
 					{
 						pattern: /^[a-zA-Z0-9_-]{4,16}$/,
 						message: formatMessage({ id: `${formatPerfix()}.user_name.rules` }),
-					}
+					},
 				]}
 			/>
 			{/* 用户工号 */}
@@ -45,18 +49,20 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="work_no"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.work_no` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.work_no` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.work_no` })}
 				disabled={disabledField}
 				fieldProps={{
 					showCount: true,
-					maxLength: 20
+					maxLength: 20,
 				}}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.work_no` }),
-						whitespace: true
-					}
+						message: formatMessage({ id: 'global.form.placeholder' }) +
+							formatMessage({ id: `${formatPerfix()}.work_no` }),
+						whitespace: true,
+					},
 				]}
 			/>
 			{/* 中文名 */}
@@ -64,22 +70,29 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="cn_name"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.cn_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.cn_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.cn_name` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 20
+					maxLength: 20,
 				}}
-				rules={[{ required: true, message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.cn_name` }), whitespace: true }]}
+				rules={[{
+					required: true,
+					message: formatMessage({ id: 'global.form.placeholder' }) +
+						formatMessage({ id: `${formatPerfix()}.cn_name` }),
+					whitespace: true,
+				}]}
 			/>
 			{/* 英文 */}
 			<ProFormText
 				name="en_name"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.en_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.en_name` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.en_name` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 20
+					maxLength: 20,
 				}}
 			/>
 			{/* 年龄 */}
@@ -98,7 +111,7 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				colProps={{ span: 12 }}
 				initialValue={'1'}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				label={formatMessage({ id: `${formatPerfix()}.sex` })}
 				options={APP_SEX_OPTS}
@@ -108,21 +121,23 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="phone"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.phone` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.phone` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.phone` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 11
+					maxLength: 11,
 				}}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.phone` }),
-						whitespace: true
+						message: formatMessage({ id: 'global.form.placeholder' }) +
+							formatMessage({ id: `${formatPerfix()}.phone` }),
+						whitespace: true,
 					},
 					{
 						pattern: /^1\d{10}$/,
 						message: formatMessage({ id: `${formatPerfix()}.phone.rules` }),
-					}
+					},
 				]}
 			/>
 			{/* 电子邮箱 */}
@@ -130,12 +145,17 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="email"
 				colProps={{ span: 12 }}
 				label={formatMessage({ id: `${formatPerfix()}.email` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.email` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.email` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 50
+					maxLength: 50,
 				}}
-				rules={[{ type: 'email', message: formatMessage({ id: `${formatPerfix()}.email.rules` }), whitespace: true }]}
+				rules={[{
+					type: 'email',
+					message: formatMessage({ id: `${formatPerfix()}.email.rules` }),
+					whitespace: true,
+				}]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit
@@ -154,7 +174,7 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				colProps={{ span: 12 }}
 				initialValue={1}
 				fieldProps={{
-					buttonStyle: "solid"
+					buttonStyle: 'solid',
 				}}
 				label={formatMessage({ id: 'global.status' })}
 				options={APP_STATUS_OPTS}
@@ -164,10 +184,11 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 				name="motto"
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: `${formatPerfix()}.motto` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) + formatMessage({ id: `${formatPerfix()}.motto` })}
+				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
+					formatMessage({ id: `${formatPerfix()}.motto` })}
 				fieldProps={{
 					showCount: true,
-					maxLength: 32
+					maxLength: 32,
 				}}
 			/>
 		</>

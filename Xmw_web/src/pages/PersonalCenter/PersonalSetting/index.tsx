@@ -6,14 +6,14 @@
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-21 10:18:20
  */
-import type { FC } from 'react'
-import { useState } from 'react'
-import { Tabs, Card } from 'antd';
-import { useIntl } from '@umijs/max'
 import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+import { useIntl } from '@umijs/max'
+import { Card, Tabs } from 'antd';
+import { FC, useState } from 'react'
+
 import BasicSetting from './components/BasicSetting' // 基本设置
-import SecuritySetting from './components/SecuritySetting' // 安全设置
 import ChangePassword from './components/ChangePassword' // 修改密码
+import SecuritySetting from './components/SecuritySetting' // 安全设置
 import { formatPerfix } from './utils'
 
 const PersonalSetting: FC = () => {
@@ -25,18 +25,18 @@ const PersonalSetting: FC = () => {
     {
       label: formatMessage({ id: `${formatPerfix}.basic-setting` }),
       key: 'basicSetting',
-      children: <BasicSetting />
+      children: <BasicSetting />,
     },
     {
       label: formatMessage({ id: `${formatPerfix}.security-setting` }),
       key: 'securitySetting',
-      children: <SecuritySetting setActiveKey={setActiveKey} />
+      children: <SecuritySetting setActiveKey={setActiveKey} />,
     },
     {
       label: formatMessage({ id: `${formatPerfix}.change-password` }),
       key: 'changePassword',
-      children: <ChangePassword />
-    }
+      children: <ChangePassword />,
+    },
   ]
   return (
     <PageContainer header={{ title: null }}>
