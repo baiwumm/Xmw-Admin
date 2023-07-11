@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:36:09
+ * @LastEditTime: 2023-07-11 13:40:35
  */
 import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useEventListener, useInterval, useLocalStorageState, useMount } from 'ahooks'
@@ -12,6 +12,8 @@ import { Avatar, Button, Col, Form, Input, message, Modal, Row, Typography } fro
 import type { FC } from 'react'
 
 import { encryptionAesPsd } from '@/utils'
+
+import { LockSleepProps } from '../type'
 
 const { Title } = Typography;
 
@@ -28,7 +30,7 @@ const LockSleep: FC = () => {
   // 表单实例
   const [form] = Form.useForm()
   // 记录用户最后一次移动鼠标的时间
-  const [sleepInfo, setSleepInfo] = useLocalStorageState<{ last_time: number; isSleep: boolean }>(
+  const [sleepInfo, setSleepInfo] = useLocalStorageState<LockSleepProps>(
     'lock_sleep',
     {
       defaultValue: {

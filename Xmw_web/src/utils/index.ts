@@ -4,12 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 16:12:12
+ * @LastEditTime: 2023-07-11 13:50:50
  */
 import type { ProColumns } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { get, isNumber } from 'lodash-es';
+import { get, reduce, toNumber } from 'lodash-es';
 import { stringify } from 'querystring';
 
 import type { ResponseModel } from '@/global/interface';
@@ -55,10 +55,10 @@ export const decryptionAesPsd = (password: string): string => {
  * @return {*}
  * @author: Cyan
  */
-export const columnScrollX = (columns: ProColumns[]): number =>
-  columns.reduce((acc, item) => {
-    return acc + (item.width && isNumber(item.width) ? item.width : 0);
-  }, 0);
+export const columnScrollX = (columns: ProColumns[]): number => reduce(
+  columns,
+  (sum: number, record: ProColumns) => sum + (toNumber(record.width) || 100),
+  0)
 
 /**
  * @description: 统一获取接口中的data
@@ -74,11 +74,17 @@ export function formatResult<T>(response: ResponseModel<T>): T {
  * @return {*}
  * @author: Cyan
  */
-export const logoutToLogin = (): void => {
+export const logoutToLogin = () => {
   const { search, pathname } = window.location;
+  // 获取 localStorage 信息
+  const lock_sleep = localStorage.getItem('lock_sleep');
   const urlParams = new URL(window.location.href).searchParams;
   /** 此方法会跳转到 redirect 参数所在的位置 */
   const redirect = urlParams.get('redirect');
+  // 取消睡眠弹窗
+  if (lock_sleep) {
+    localStorage.setItem('lock_sleep', { ...JSON.parse(lock_sleep), isSleep: false })
+  }
   // 重定向地址
   if (window.location.pathname !== routerConfig.LOGIN && !redirect) {
     history.replace({

@@ -14,7 +14,7 @@ import { message, Modal } from 'antd'; // antd 组件库
 import { debounce } from 'lodash-es'; // lodash 工具函数
 import Nprogress from 'nprogress';
 
-import type { AppLocalCacheModel } from '@/global/interface'
+import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 import { CACHE_KEY, logoutToLogin } from '@/utils' // 全局工具函数
 import type { RequestError, RequestOptions } from '@@/plugin-request/request'; // 请求配置项
 /**
@@ -101,7 +101,7 @@ export const errorConfig: RequestConfig = {
       // 响应处理
       (response) => {
         // 拦截响应数据，进行个性化处理
-        const { data } = response as any;
+        const { data } = response as ResponseModel<any>;
         // 根据返回状态码，统一处理，需要前端和后端沟通确认
         switch (data.code) {
           // 成功发起请求并成功处理，一般用于数据库字段校验
