@@ -11,7 +11,7 @@
 
 1. 拉取项目代码
 ```bash
-git clone https://github.com/Cyan-Xmw/Xmw-Admin.git
+git clone https://github.com/baiwumm/Xmw-Admin.git
 cd Xmw-Admin
 cd Xmw_web
 ```

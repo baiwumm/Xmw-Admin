@@ -4,7 +4,7 @@
   "author": {
     "name": "Cyan",
     "email": "843348394@qq.com",
-    "url": "https://github.com/Cyan-Xmw"
+    "url": "https://github.com/baiwumm"
   },
   "private": true,
   "description": "An out-of-box UI solution for enterprise applications",
@@ -53,10 +53,10 @@
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^4.8.0",
-    "@ant-design/pro-components": "^2.6.4",
+    "@ant-design/pro-components": "^2.6.8",
     "@ant-design/use-emotion-css": "1.0.4",
     "ahooks": "^3.7.8",
-    "antd": "^5.6.4",
+    "antd": "^5.7.3",
     "antd-img-crop": "^4.9.0",
     "classnames": "^2.3.2",
     "crypto-js": "^4.1.1",

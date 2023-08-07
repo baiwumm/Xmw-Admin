@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: Cyan
- * @LastEditTime: 2023-04-13 20:31:40
+ * @LastEditTime: 2023-07-26 17:27:41
  */
 import { NestFactory } from '@nestjs/core';
 import * as express from 'express';
@@ -46,7 +46,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // 全局请求拦截中间件
-  app.use(requestMiddleware);
+  // app.use(requestMiddleware);
 
   // 错误异常捕获 和 过滤处理
   app.useGlobalFilters(new AllExceptionsFilter());

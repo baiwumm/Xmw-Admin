@@ -14,13 +14,13 @@ Language : [中文](./README.md) | 英文
 
 - 🔑 User name: **admin**，密码：**abc123456**
 
-- 😝 Vue3 version: [Vue3 Admin](https://github.com/Cyan-Xmw/Vue3-Admin/)
+- 😝 Vue3 version: [Vue3 Admin](https://github.com/baiwumm/Vue3-Admin/)
 
-- 😝 Vue2 version: [Vue Admin](https://github.com/Cyan-Xmw/Vue2-Admin/)
+- 😝 Vue2 version: [Vue Admin](https://github.com/baiwumm/Vue2-Admin/)
 
-- [🚀 github 仓库地址](https://github.com/Cyan-Xmw/Vue-Admin/)
+- [🚀 github 仓库地址](https://github.com/baiwumm/Vue-Admin/)
 
-- [🚀 码云仓库地址](https://gitee.com/Cyan-Xmw/Vue-Admin/)
+- [🚀 码云仓库地址](https://gitee.com/baiwumm/Vue-Admin/)
 
 - ❤️ star：**If possible, please give me a star to express my encouragement to the author. Thank you very much!**
 
@@ -36,7 +36,7 @@ Language : [中文](./README.md) | 英文
 
 1. Pull the project code
 ```bash
-git clone https://github.com/Cyan-Xmw/Xmw-Admin.git
+git clone https://github.com/baiwumm/Xmw-Admin.git
 cd Xmw-Admin
 // Entry front end
 cd Xmw_web

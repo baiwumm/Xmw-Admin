@@ -15,27 +15,31 @@ const Footer: React.FC = () => {
 
   return (
     <DefaultFooter
-      style={{
-        background: 'none',
-      }}
-      copyright={`${currentYear} Cyan by 843348394@qq.com`}
+      style={{ background: 'none' }}
+      copyright={`${currentYear} 白雾茫茫丶 by 843348394@qq.com`}
       links={[
         {
           key: '白雾茫茫丶',
           title: '白雾茫茫丶',
-          href: 'https://xmwpro.com/',
+          href: 'https://baiwumm.com/',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/Cyan-Xmw/',
+          href: 'https://github.com/baiwumm/',
           blankTarget: true,
         },
         {
           key: 'Vue3 Admin',
           title: 'Vue3 Admin',
-          href: 'http://vue3.xmwpro.com/',
+          href: 'https://vue3.xmwpro.com/',
+          blankTarget: true,
+        },
+        {
+          key: 'Vue2 Admin',
+          title: 'Vue2 Admin',
+          href: 'https://vue2.xmwpro.com/',
           blankTarget: true,
         },
       ]}
