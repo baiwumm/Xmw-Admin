@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 16:24:38
+ * @LastEditTime: 2023-08-08 09:15:20
  */
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
@@ -33,13 +33,13 @@ const Footer: React.FC = () => {
         {
           key: 'Vue3 Admin',
           title: 'Vue3 Admin',
-          href: 'https://vue3.xmwpro.com/',
+          href: 'https://vue3.baiwumm.com/',
           blankTarget: true,
         },
         {
           key: 'Vue2 Admin',
           title: 'Vue2 Admin',
-          href: 'https://vue2.xmwpro.com/',
+          href: 'https://vue2.baiwumm.com/',
           blankTarget: true,
         },
       ]}

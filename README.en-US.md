@@ -1,6 +1,6 @@
 Language : [中文](./README.md) | 英文
 
-<p align="center"><img width="100" src="https://ali-oss.xmwpro.com/project/xmw-admin/logo.svg" alt="Xmw Admin"></p>
+<p align="center"><img width="100" src="https://cdn.baiwumm.com/project/xmw-admin/logo.svg" alt="Xmw Admin"></p>
 <h1 align="center">Xmw Admin</h1>
 <p align="center">Background application developed based on React +Nest</p>
 
@@ -10,7 +10,7 @@ Language : [中文](./README.md) | 英文
 
 - 🎯 Back-end technology stack: [Nest.js](https://docs.nestjs.cn/)、[Sequelize](https://github.com/sequelize/sequelize/)、[Redis](https://github.com/redis/redis/)、[Mysql](https://www.mysql.com/)
 
-- 😝 Online preview: http://react.xmwpro.com
+- 😝 Online preview: https://react.baiwumm.com/
 
 - 🔑 User name: **admin**，密码：**abc123456**
 

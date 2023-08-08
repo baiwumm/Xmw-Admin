@@ -6,7 +6,7 @@ const IconFont = createFromIconfontCN({
 // 跨站点导航列表
 export const appList = [
     {
-        icon: 'https://ali-oss.xmwpro.com/global/avatar.jpg!cyan',
+        icon: 'https://cdn.baiwumm.com/blog/avatar.jpg!baiwu',
         title: '白雾茫茫丶',
         desc: '好好吃饭🍣好好睡觉💤敲敲代码💻谈谈恋爱💑',
         url: 'https://baiwumm.com/',
@@ -34,17 +34,17 @@ export const appList = [
         target: '_blank',
     },
     {
-        icon: 'https://ali-oss.xmwpro.com/project/vue3-admin/logo.png!cyan',
+        icon: 'https://cdn.baiwumm.com/project/vue3-admin/logo.png!baiwu',
         title: 'Vue3 Admin',
         desc: '基于 Vue3.0 + TypeScript 的后台解决方案',
-        url: 'https://vue3.xmwpro.com/',
+        url: 'https://vue3.baiwumm.com/',
         target: '_blank',
     },
     {
-        icon: 'https://ali-oss.xmwpro.com/project/vue2-admin/logo.svg',
+        icon: 'https://cdn.baiwumm.com/project/vue2-admin/logo.svg',
         title: 'Vue2 Admin',
         desc: '基于 Vue2.0 + ElementUI 的后台解决方案',
-        url: 'https://vue2.xmwpro.com/',
+        url: 'https://vue2.baiwumm.com/',
         target: '_blank',
     },
     {

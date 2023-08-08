@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
  * @LastEditors: Cyan
- * @LastEditTime: 2022-12-29 10:51:02
+ * @LastEditTime: 2023-08-08 09:28:47
  */
 export default {
     path: '/dashboard',
@@ -21,6 +21,13 @@ export default {
             path: '/dashboard/work-bench',
             name: 'work-bench',
             component: './Dashboard/Workbench',
+            access: 'adminRouteFilter',
+            exact: true,
+        },
+        {
+            path: '/dashboard/environmental-dependence',
+            name: 'environmental-dependence',
+            component: './Dashboard/EnvironmentalDependence',
             access: 'adminRouteFilter',
             exact: true,
         },

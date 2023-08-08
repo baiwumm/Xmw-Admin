@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-11-10 11:30:40
  * @LastEditors: Cyan
- * @LastEditTime: 2022-11-10 14:46:34
+ * @LastEditTime: 2023-08-08 09:14:49
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -141,7 +141,7 @@ export class SaveUserManagementDto {
     type: String,
     description: '用户头像',
     default:
-      'http://react.xmwpro.com/static/image/2023-01-13/5d7453ad-477c-47b9-be6e-212227710033.gif',
+      'https://react.baiwumm.com/static/image/2023-01-13/5d7453ad-477c-47b9-be6e-212227710033.gif',
     required: false,
   })
   avatar_url?: string;
