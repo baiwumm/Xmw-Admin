@@ -4,10 +4,12 @@
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: Cyan
- * @LastEditTime: 2023-08-08 09:15:20
+ * @LastEditTime: 2023-08-11 16:48:23
  */
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
+
+import styles from './index.module.less'
 
 const Footer: React.FC = () => {
 
@@ -17,6 +19,7 @@ const Footer: React.FC = () => {
     <DefaultFooter
       style={{ background: 'none' }}
       copyright={`${currentYear} 白雾茫茫丶 by 843348394@qq.com`}
+      className={styles['global-footer']}
       links={[
         {
           key: '白雾茫茫丶',
