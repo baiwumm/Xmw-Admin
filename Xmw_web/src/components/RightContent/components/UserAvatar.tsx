@@ -6,7 +6,7 @@ import type { FC } from 'react'
 
 const UserAvatar: FC = () => {
   const { initialState } = useModel('@@initialState');
-  const { CurrentUser } = initialState || {};
+  const { CurrentUser, Collapsed } = initialState || {};
   // 用户中文名
   const Name = () => {
     const nameClassName = useEmotionCss(({ token }) => {
@@ -27,7 +27,7 @@ const UserAvatar: FC = () => {
   const AvatarLogo = () => {
     const avatarClassName = useEmotionCss(({ token }) => {
       return {
-        marginRight: '8px',
+        marginRight: Collapsed ? 0 : '8px',
         color: token.colorPrimary,
         verticalAlign: 'top',
         background: setAlpha(token.colorBgContainer, 0.85),
@@ -58,7 +58,7 @@ const UserAvatar: FC = () => {
   return (
     <span className={actionClassName}>
       <AvatarLogo />
-      <Name />
+      {Collapsed ? null : <Name />}
     </span>
   )
 }

@@ -34,16 +34,12 @@ export default {
     {
       path: 'https://ant.design/',
       name: 'ant-design',
-      component: '',
       access: 'adminRouteFilter',
-      exact: true,
     },
     {
       path: 'https://v3.umijs.org/',
       name: 'umi',
-      component: '',
       access: 'adminRouteFilter',
-      exact: true,
     },
   ],
 }

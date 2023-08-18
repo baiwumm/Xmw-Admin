@@ -12,7 +12,7 @@ const GlobalHeaderRight: React.FC = () => {
   const actionClassName = useEmotionCss(({ token }) => {
     return {
       cursor: 'pointer',
-      padding: '0 12px',
+      padding: '12px',
       fontSize: 18,
       overflow: 'hidden',
       borderRadius: token.borderRadius,
@@ -29,7 +29,11 @@ const GlobalHeaderRight: React.FC = () => {
   }
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: initialState?.Collapsed ? 'column' : 'row',
+      alignItems: 'center',
+    }}>
       {/* 全屏 */}
       <FullScreen actionClassName={actionClassName} />
       {/* 用户下拉菜单 */}

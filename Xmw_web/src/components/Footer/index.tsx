@@ -30,19 +30,19 @@ const Footer: React.FC = () => {
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/baiwumm/',
+          href: 'https://github.com/baiwumm/Xmw-Admin/',
           blankTarget: true,
         },
         {
           key: 'Vue3 Admin',
           title: 'Vue3 Admin',
-          href: 'https://vue3.baiwumm.com/',
+          href: 'https://github.com/baiwumm/Vue3-Admin/',
           blankTarget: true,
         },
         {
           key: 'Vue2 Admin',
           title: 'Vue2 Admin',
-          href: 'https://vue2.baiwumm.com/',
+          href: 'https://github.com/baiwumm/Vue2-Admin/',
           blankTarget: true,
         },
       ]}

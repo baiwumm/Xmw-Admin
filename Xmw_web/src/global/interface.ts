@@ -57,6 +57,7 @@ export type InitialStateModel = {
   CurrentUser?: API.USERMANAGEMENT;
   Permissions?: string[];
   RouteMenu?: API.MENUMANAGEMENT[];
+  Collapsed?: boolean;
   fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
   fetchPermissions?: () => Promise<string[] | undefined>;
   fetchRouteMenu?: () => Promise<API.MENUMANAGEMENT[] | undefined>;

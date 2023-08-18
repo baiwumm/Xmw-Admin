@@ -55,9 +55,20 @@ p, h1, h2, h3, h4, h5, h6 {
 .ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
   left: unset;
 }
-:where(.css-dev-only-do-not-override-15ops9o).ant-menu .ant-menu-item .anticon +span{
-  margin-inline-start:0;
+.ant-menu-item .anticon +span{
+  margin-inline-start:0 !important;
 }
+.ant-pro-page-container{
+  .ant-page-header{
+    padding-inline:20px !important;
+    padding-block:0;
+  }
+  .ant-pro-page-container-children-container{
+    padding-inline: 20px;
+    padding-block: 12px;
+  }
+}
+
 
 @media (max-width: 768px) {
   .ant-table {

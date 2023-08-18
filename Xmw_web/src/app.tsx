@@ -42,6 +42,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
     fetchPermissions,
     fetchRouteMenu,
     Settings: appCache?.UMI_LAYOUT || defaultSettings,
+    Collapsed: false,
   }
   // 如果不是登录页面，执行
   if (window.location.pathname !== routerConfig.LOGIN) {
