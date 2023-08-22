@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-08-22 10:51:46
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-22 14:13:55
  */
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { CheckCard, PageContainer } from '@ant-design/pro-components';
@@ -19,7 +19,7 @@ import RenderContent from './components/RenderContent' // 顶部布局
 import StatisticChart from './components/StatisticChart' // 指标卡片
 import { latestAnnouncement, latestNews, technologyStack } from './utils/config'
 
-const { Paragraph, Text, Title } = Typography;
+const { Paragraph, Text, Title, Link } = Typography;
 
 const Workbench: FC = () => {
   dayjs.extend(relativeTime);
@@ -132,7 +132,11 @@ const Workbench: FC = () => {
                       return {
                         children: (
                           <>
-                            <Title level={5} style={{ marginBottom: 0 }}>{item.commit.message}</Title>
+                            <Link href={item.html_url} target="_blank">
+                              <Title level={5} style={{ marginBottom: 0 }}>
+                                {item.commit.message}
+                              </Title>
+                            </Link>
                             <Text type="secondary">{dayjs(item.commit.author.date).fromNow()}</Text>
                           </>
                         ),
