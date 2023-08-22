@@ -61,6 +61,7 @@ export type InitialStateModel = {
   fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
   fetchPermissions?: () => Promise<string[] | undefined>;
   fetchRouteMenu?: () => Promise<API.MENUMANAGEMENT[] | undefined>;
+  PageLoading?: boolean;
 }
 
 /**

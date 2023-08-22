@@ -149,4 +149,12 @@ export default defineConfig({
     // 解决首次加载时白屏的问题
     { src: '/scripts/loading.js', async: true },
   ],
+  // 站点统计
+  analytics: {
+    ga_v2: 'G-1LVFWQ9FZ7', // google analytics 的 key (GA 4)
+    baidu: '8be1d11f8b2db2727b2b063e9158161d',
+  },
+  metas: [
+    { name: 'google-site-verification', content: '4YBtBTmg5H9MGoyvCmvEeJx8viyBPjLnK4INCHT9SQs' },
+  ],
 });

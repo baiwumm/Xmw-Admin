@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: Cyan
- * @LastEditTime: 2023-08-18 17:04:58
+ * @LastEditTime: 2023-08-22 10:51:46
  */
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { CheckCard, PageContainer } from '@ant-design/pro-components';
@@ -12,6 +12,7 @@ import { useModel } from '@umijs/max';
 import { useRequest } from 'ahooks'
 import { Avatar, Card, Col, List, Row, Space, Tag, Timeline, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FC } from 'react';
 
 import RenderContent from './components/RenderContent' // 顶部布局
@@ -21,6 +22,7 @@ import { latestAnnouncement, latestNews, technologyStack } from './utils/config'
 const { Paragraph, Text, Title } = Typography;
 
 const Workbench: FC = () => {
+  dayjs.extend(relativeTime);
   const { initialState } = useModel('@@initialState');
   // 使用 iconfont.cn 资源
   const IconFont = createFromIconfontCN({
@@ -84,21 +86,19 @@ const Workbench: FC = () => {
                   </Row>
                 </CheckCard.Group>
               </Card>
-              <Card title="最新动态" extra={
-                <Tooltip title="访问博客">
-                  <a href="https://baiwumm.com/" target='_blank'>
-                    <Avatar src='https://cdn.baiwumm.com/blog/avatar.jpg!baiwu' />
-                  </a>
-                </Tooltip>
-              }>
+              <Card title="最新动态">
                 <List
                   pagination={{ position: 'bottom', align: 'start' }}
                   dataSource={latestNews}
-                  renderItem={(item, index) => (
+                  renderItem={(item) => (
                     <List.Item>
                       <List.Item.Meta
                         avatar={
-                          <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />
+                          <Tooltip title="访问博客">
+                            <a href="https://baiwumm.com/" target='_blank'>
+                              <Avatar src='https://cdn.baiwumm.com/blog/avatar.jpg!baiwu' />
+                            </a>
+                          </Tooltip>
                         }
                         title={<a href={item.link} target='_blank'>{item.title}</a>}
                         description={renderSecondary(item.content, 2)}
@@ -119,7 +119,7 @@ const Workbench: FC = () => {
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Tag color={item.color}>{item.type}</Tag>}
-                        title={<a href='https://baiwumm.com/' target='_blank'>{renderSecondary(item.title, 1)}</a>}
+                        title={renderSecondary(item.title, 1)}
                       />
                     </List.Item>
                   )}

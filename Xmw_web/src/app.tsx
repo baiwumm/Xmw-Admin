@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 13:55:55
+ * @LastEditTime: 2023-08-22 10:42:05
  */
 
 // 引入第三方库
@@ -43,6 +43,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
     fetchRouteMenu,
     Settings: appCache?.UMI_LAYOUT || defaultSettings,
     Collapsed: false,
+    PageLoading: true,
   }
   // 如果不是登录页面，执行
   if (window.location.pathname !== routerConfig.LOGIN) {

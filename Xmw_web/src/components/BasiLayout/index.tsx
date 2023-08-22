@@ -4,11 +4,11 @@
  * @Author: Cyan
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: Cyan
- * @LastEditTime: 2023-08-18 10:01:03
+ * @LastEditTime: 2023-08-22 10:40:01
  */
 // 引入第三方库
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
-import { SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
+import { PageLoading, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
 import { history, KeepAliveContext, Link, useIntl } from '@umijs/max';
 import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { Space, Typography } from 'antd' // antd 组件库
@@ -134,6 +134,7 @@ export const BasiLayout = ({ initialState, setInitialState }: any) => {
 		appList,
 		// 增加一个 loading 的状态
 		childrenRender: (children: JSX.Element) => {
+			// if (initialState?.pageLoading) return <PageLoading />
 			return (
 				<>
 					{children}

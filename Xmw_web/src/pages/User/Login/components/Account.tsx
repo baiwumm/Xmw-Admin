@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:46:29
+ * @LastEditTime: 2023-08-22 10:46:11
  */
 import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
@@ -38,6 +38,7 @@ const Account: FC = () => {
 						message: formatMessage({ id: `${formatPerfix}.type.account.user_name.required` }),
 					},
 				]}
+				initialValue="admin"
 			/>
 			<ProFormText.Password
 				name="password"
@@ -53,6 +54,7 @@ const Account: FC = () => {
 						message: formatMessage({ id: `${formatPerfix}.type.account.password.required` }),
 					},
 				]}
+				initialValue="abc123456"
 			/>
 			<Form.Item>
 				<Row gutter={8}>
