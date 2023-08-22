@@ -4,11 +4,8 @@
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: Cyan
- * @LastEditTime: 2023-08-22 10:42:05
+ * @LastEditTime: 2023-08-22 13:55:35
  */
-
-// 引入第三方库
-import type { RunTimeLayoutConfig } from '@umijs/max';
 
 // 引入业务组件
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
@@ -59,7 +56,7 @@ export async function getInitialState(): Promise<InitialStateModel> {
  * @doc ProLayout 支持的api https://procomponents.ant.design/components/layout
  * @author: Cyan
  */
-export const layout: RunTimeLayoutConfig = BasiLayout
+export const layout = BasiLayout
 
 /**
  * @description: tabsLayout 返回一个对象

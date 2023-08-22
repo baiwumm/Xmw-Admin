@@ -157,4 +157,21 @@ export default defineConfig({
   metas: [
     { name: 'google-site-verification', content: '4YBtBTmg5H9MGoyvCmvEeJx8viyBPjLnK4INCHT9SQs' },
   ],
+  // 启后，可通过 Option+Click/Alt+Click 点击组件跳转至编辑器源码位置，Option+Right-click/Alt+Right-click 可以打开上下文，查看父组件。
+  clickToComponent: {},
+  // 检测未使用的文件和导出，仅在 build 阶段开启。
+  deadCode: {},
+  // 默认情况下，站点将使用约定 favicon 来创建图标的 meta 头标签。
+  favicons: ['/favicon.ico'],
+  // 配置 mock 功能。
+  mock: false,
+  // 当使用未在 package.json 中声明的依赖，以及也没有通过 alias 或 externals 进行配置时，会抛错并提醒。
+  phantomDependency: {
+    exclude: ['querystring'],
+  },
+  // 针对 verify-commit 命令的配置项。
+  verifyCommit: {
+    scope: ['feat', 'fix', 'pref'],
+    allowEmoji: true,
+  },
 });
