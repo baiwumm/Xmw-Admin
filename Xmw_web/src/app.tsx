@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-17 20:33:50
- * @LastEditors: Cyan
- * @LastEditTime: 2023-08-22 13:55:35
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-24 10:10:56
  */
 
 // 引入业务组件
@@ -63,11 +63,11 @@ export const layout = BasiLayout
  * @doc https://alitajs.com/zh-CN/docs/guides/tabs#tabslayout
  * @author: Cyan
  */
-export function tabsLayout() {
-  return {
-    size: 'small',
-  };
-}
+// export function tabsLayout() {
+//   return {
+//     size: 'small',
+//   };
+// }
 
 /**
  * @description: 完全覆盖内置的多 Tabs 组件，需要搭配配置 hasCustomTabs:true 使用。

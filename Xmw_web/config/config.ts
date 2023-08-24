@@ -15,7 +15,7 @@ export default defineConfig({
   keepalive: [/./],
   tabsLayout: {
     // 是否使用自定义的 tabs 组件，需要搭配运行时配置 getCustomTabs 使用
-    hasCustomTabs: true,
+    // hasCustomTabs: true,
     // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
     hasDropdown: true,
     hasFixedHeader: true,
@@ -165,13 +165,4 @@ export default defineConfig({
   favicons: ['/favicon.ico'],
   // 配置 mock 功能。
   mock: false,
-  // 当使用未在 package.json 中声明的依赖，以及也没有通过 alias 或 externals 进行配置时，会抛错并提醒。
-  phantomDependency: {
-    exclude: ['querystring'],
-  },
-  // 针对 verify-commit 命令的配置项。
-  verifyCommit: {
-    scope: ['feat', 'fix', 'pref'],
-    allowEmoji: true,
-  },
 });
