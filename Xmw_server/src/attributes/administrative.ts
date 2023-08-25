@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-27 10:12:33
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 10:00:32
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-25 16:16:04
  */
 /**
  * @description: xmw_organization Attributes
@@ -44,4 +44,20 @@ export type JobsAttributes = {
   created_time?: Date; // 创建时间
   updated_time?: Date; // 最后一次更新时间
   children?: JobsAttributes[];
+};
+
+/**
+ * @description: xmw_announcement Attributes
+ * @return {*}
+ * @author: 白雾茫茫丶
+ */
+export type AnnouncementAttributes = {
+  announcement_id: string; // id 主键
+  user_id: string; // 作者 id
+  title: string; // 标题
+  content: string; // 正文内容
+  type: string; // 类型
+  status: number; // 状态
+  pinned: number; // 是否置顶
+  readCounts: number; // 阅读次数
 };

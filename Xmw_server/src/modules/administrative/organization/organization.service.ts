@@ -1,5 +1,5 @@
 /*
- * @Description:
+ * @Description: Organization Service
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-20 16:42:35
