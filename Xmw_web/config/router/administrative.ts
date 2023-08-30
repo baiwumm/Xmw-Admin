@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-29 16:12:13
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-28 09:34:25
  */
 export default {
     path: '/administrative',
@@ -15,6 +15,13 @@ export default {
         {
             path: '/administrative',
             redirect: '/administrative/organization',
+            exact: true,
+        },
+        {
+            path: '/administrative/announcement',
+            name: 'announcement',
+            component: './Administrative/Announcement',
+            access: 'adminRouteFilter',
             exact: true,
         },
         {

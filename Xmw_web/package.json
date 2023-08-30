@@ -53,7 +53,7 @@
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^5.2.5",
-    "@ant-design/pro-components": "^2.6.13",
+    "@ant-design/pro-components": "^2.6.15",
     "@ant-design/use-emotion-css": "1.0.4",
     "ahooks": "^3.7.8",
     "antd": "^5.8.4",
@@ -65,6 +65,7 @@
     "nprogress": "^0.2.0",
     "rc-menu": "^9.11.1",
     "react": "^18.2.0",
+    "react-quill": "^2.0.0",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

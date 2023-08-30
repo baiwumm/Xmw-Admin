@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 11:09:03
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:18:43
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-30 09:11:18
  */
 
 // 引入第三方库
@@ -12,7 +12,7 @@ import { createFromIconfontCN } from '@ant-design/icons';
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { history, SelectLang, useIntl, useModel } from '@umijs/max'
 import { useDebounceFn, useLocalStorageState, useMount, useRequest } from 'ahooks';
-import { Col, message, notification, Row, Tabs, Typography } from 'antd' // antd 组件
+import { Col, message, notification, Row, Tabs, TabsProps, Typography } from 'antd' // antd 组件
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { isEmpty } from 'lodash-es'
@@ -124,7 +124,7 @@ const LoginPage: FC = () => {
    * @return {*}
    * @author: Cyan
    */
-  const TbasItems = [
+  const TbasItems: TabsProps['items'] = [
     {
       label: formatMessage({ id: `${formatPerfix}.type.account` }),
       key: 'account',
@@ -170,7 +170,6 @@ const LoginPage: FC = () => {
               activeKey={loginType}
               onChange={(activeKey) => setLoginType(activeKey as LoginType)}
               items={TbasItems}
-              destroyInactiveTabPane
             />
           </LoginForm>
         </Col>

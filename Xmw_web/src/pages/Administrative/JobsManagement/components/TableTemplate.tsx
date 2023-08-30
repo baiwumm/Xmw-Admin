@@ -204,7 +204,7 @@ const TableTemplate: FC = () => {
 		{
 			title: formatMessage({ id: 'global.table.created_time' }),
 			dataIndex: 'created_time',
-			valueType: 'date',
+			valueType: 'dateTime',
 			sorter: true,
 			hideInSearch: true,
 			width: 120,

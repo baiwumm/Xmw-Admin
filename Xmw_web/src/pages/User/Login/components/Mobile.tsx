@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-11 14:52:29
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:38:16
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-29 17:41:34
  */
 import { MobileOutlined } from '@ant-design/icons'; // antd 图标
 import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components'; // antd 高级组件
@@ -14,7 +14,7 @@ import type { FC } from 'react'
 
 import { formatPerfix } from '../utils/config'
 
-const Account: FC = () => {
+const Mobile: FC = () => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
@@ -69,4 +69,4 @@ const Account: FC = () => {
 		</>
 	)
 }
-export default Account
+export default Mobile

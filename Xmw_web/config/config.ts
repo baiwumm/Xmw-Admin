@@ -138,7 +138,7 @@ export default defineConfig({
   requestRecord: {},
   define: {
     'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_2cmzqb5naln.js',
+      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_x0dxkt3btrg.js',
     },
   },
   /**

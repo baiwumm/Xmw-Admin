@@ -50,6 +50,26 @@ declare namespace API {
   };
 
   /**
+   * @description: 智能行政-活动公告
+   * @return {*}
+   * @author: 白雾茫茫丶
+   */
+  type ANNOUNCEMENT = {
+    announcement_id: string; // id 主键
+    user_id: string; // 作者 id
+    cn_name: string; // 中文名
+    avatar_url: string; // 作者头像
+    title: string; // 标题
+    content: string; // 正文内容
+    type: string; // 类型
+    status: number; // 状态
+    pinned: number; // 是否置顶
+    readCounts: number; // 阅读次数
+    created_time: Date; // 创建时间
+    updated_time: Date; // 最后一次更新时间
+  }
+
+  /**
    * @description: 系统设置-菜单管理
    * @return {*}
    * @author: Cyan

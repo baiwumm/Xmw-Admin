@@ -52,7 +52,7 @@ export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT): P
 }
 
 /**
- * @description: 
+ * @description: 删除岗位数据
  * @param {string} jobs_id
  * @return {*}
  * @author: Cyan

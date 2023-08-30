@@ -7,6 +7,7 @@ import {
   IsUUID,
   ForeignKey,
   IsIn,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { AnnouncementAttributes } from '@/attributes/administrative';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
@@ -89,4 +90,7 @@ export class XmwAnnouncement
     comment: '阅读次数',
   })
   readCounts: number;
+
+  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  userInfo: XmwUser;
 }

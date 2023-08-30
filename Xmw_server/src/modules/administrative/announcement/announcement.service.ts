@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-25 17:08:39
+ * @LastEditTime: 2023-08-30 09:22:45
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -49,7 +49,7 @@ export class AnnouncementService {
     // 分页查询数据
     const { count, rows } = await this.announcementModel.findAndCountAll({
       attributes: {
-        include: ['u.cn_name'],
+        include: ['u.cn_name', 'u.avatar_url'],
       },
       // 联表查询
       include: [

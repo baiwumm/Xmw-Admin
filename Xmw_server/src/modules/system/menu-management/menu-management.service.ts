@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-27 10:37:42
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:17:58
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-28 17:32:37
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -46,7 +46,10 @@ export class MenuManagementService {
     if (start_time && end_time)
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 如果是查询菜单权限的，过滤掉重定向有值的数据
-    if (isPremission) where.redirect = { [Op.is]: null };
+    if (isPremission) {
+      where.redirect = { [Op.is]: null };
+      where.status = { [Op.ne]: '0' };
+    }
     // 查询数据
     const sqlData = await this.menuModel.findAll({
       attributes: {
