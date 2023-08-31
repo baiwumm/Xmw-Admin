@@ -3,15 +3,16 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-07 16:12:53
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-11 13:50:50
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 14:30:08
  */
 import type { ProColumns } from '@ant-design/pro-components';
-import { history } from '@umijs/max';
+import { history, useIntl } from '@umijs/max';
 import CryptoJS from 'crypto-js'; // AES/DES加密
 import { get, reduce, toNumber } from 'lodash-es';
 import { stringify } from 'querystring';
 
+import { OPERATION } from '@/enums'
 import type { ResponseModel } from '@/global/interface';
 import routerConfig from '@/utils/routerConfig' // 路由配置
 
@@ -198,4 +199,27 @@ export const isHttpLink = (link: string): boolean => {
     '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string  
     '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator  
   return pattern.test(link);
+}
+
+/**
+ * @description: Tag 标签颜色
+ * @author: 白雾茫茫丶
+ */
+export const TagColors = ['magenta', 'volcano', 'cyan', 'blue']
+
+/**
+ * @description: 渲染标题
+ * @author: 白雾茫茫丶
+ */
+export const renderFormTitle = <T extends Record<string, any>>
+  (record: T | undefined, formatPerfix: string, id: string, name: string) => {
+  // 国际化工具
+  const { formatMessage } = useIntl();
+  const result = record?.[id]
+    ? `${formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` }) +
+    formatMessage({ id: `pages.${formatPerfix}.title` })
+    }：${record[name]}`
+    : formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADD}` }) +
+    formatMessage({ id: `pages.${formatPerfix}.title` });
+  return result
 }

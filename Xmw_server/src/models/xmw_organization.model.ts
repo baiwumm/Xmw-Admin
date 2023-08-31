@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 18:19:47
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 17:02:21
  */
 import {
   PrimaryKey,
@@ -16,14 +16,14 @@ import {
   Length,
   IsUUID,
   IsIn,
+  IsUrl,
 } from 'sequelize-typescript';
 import type { OrgAttributes } from '@/attributes/administrative';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
   extends Model<OrgAttributes, OrgAttributes>
-  implements OrgAttributes
-{
+  implements OrgAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({
@@ -46,16 +46,21 @@ export class XmwOrganization
 
   //组织类型
   @IsIn({
-    args: [['company', 'unit', 'department']],
+    args: [['group', 'company', 'unit', 'department']],
     msg: '组织类型：org_type 字段值错误',
   })
   @Column({
     type: DataType.ENUM,
-    values: ['company', 'unit', 'department', 'team'],
+    values: ['group', 'company', 'unit', 'department'],
     allowNull: false,
-    comment: '组织类型（company:公司,unit:单位,department:部门,team:小组）',
+    comment: '组织类型（group:集团,company:公司,unit:单位,department:部门）',
   })
   org_type: string;
+
+  //组织 logo
+  @IsUrl
+  @Column({ type: DataType.STRING(200), comment: '组织logo' })
+  org_logo: string;
 
   //父级id
   @IsUUID(4)

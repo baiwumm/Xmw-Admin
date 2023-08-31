@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-20 16:50:38
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:59:43
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 16:39:51
  */
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -28,7 +28,7 @@ export class ListOrganizationDto {
   @ApiProperty({
     type: String,
     description: '组织类型',
-    enum: ['company', 'unit', 'department', 'team'],
+    enum: ['group', 'company', 'unit', 'department'],
     default: 'company',
     required: false,
   })

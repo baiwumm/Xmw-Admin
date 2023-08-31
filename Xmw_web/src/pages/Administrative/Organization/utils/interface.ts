@@ -1,5 +1,5 @@
 // 组织类型
-export type OrgTypeProps = 'company' | 'unit' | 'department' | 'team'
+export type OrgTypeProps = 'group' | 'company' | 'unit' | 'department'
 /**
  * @description: FormTemplate Props
  * @return {*}
@@ -48,6 +48,7 @@ export type CreateOrgProps = {
   parent_id?: string; // 父级id
   org_name: string; // 组织名称
   org_type: string; // 组织编码
+  org_logo: string; // 组织logo
   status: number; // 组织状态
   sort: number; // 排序
   describe: string; // 组织描述

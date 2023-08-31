@@ -1,34 +1,26 @@
+import { TagColors } from '@/utils'
+
 import type { OrgTypeProps } from './interface'
+
 /**
  * @description: 组织类型配置项
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export const ORG_TYPE_OPTS: Record<OrgTypeProps, { text: string; color: string }> = {
+  group: {
+    text: '集团',
+    color: TagColors[0],
+  },
   company: {
     text: '公司',
-    color: 'cyan',
+    color: TagColors[1],
   },
   unit: {
     text: '单位',
-    color: 'blue',
+    color: TagColors[2],
   },
   department: {
     text: '部门',
-    color: 'geekblue',
-  },
-  team: {
-    text: '小组',
-    color: 'purple',
+    color: TagColors[3],
   },
 };
-
-/**
- * @description: 统一国际化前缀
- * @param {*} isMenu
- * @return {*}
- * @author: Cyan
- */
-export const formatPerfix = (isMenu = false): string => {
-  return `${isMenu ? 'menu' : 'pages'}.administrative.organization`
-}

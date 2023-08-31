@@ -3,35 +3,30 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 13:49:24
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 16:37:51
  */
 // 引入第三方库
-import {
-	ClockCircleOutlined,
-	ClusterOutlined,
-	createFromIconfontCN,
-	DeleteOutlined,
-	DownOutlined,
-	EditOutlined,
-	PlusOutlined,
-} from '@ant-design/icons' // antd 图标库
-import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
+import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
 import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
-import type { DropdownMenuProps, PageResModel, PaginationProps } from '@/global/interface'
+import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
+import { INTERNATION, MENU, OPERATION, STATUS } from '@/enums'
+import type { PageResModel, PaginationProps } from '@/global/interface'
 import { delOrganization, getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
-import { columnScrollX, formatResult } from '@/utils'
+import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 
-import { formatPerfix, ORG_TYPE_OPTS } from '../utils/config'
+import { ORG_TYPE_OPTS } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
@@ -63,14 +58,14 @@ const TableTemplate: FC = () => {
 	}
 	// 获取用户列表
 	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
-		async (params) => formatResult(await getUserList(params)), {
+		async (params) => get(await getUserList(params), 'data', []), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
 	// 删除列表
 	const handlerDelete = (org_id: string): void => {
 		Modal.confirm({
-			title: formatMessage({ id: 'global.message.delete.title' }),
-			content: formatMessage({ id: 'global.message.delete.content' }),
+			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
+			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delOrganization(org_id).then((res) => {
 					if (res.code === 200) {
@@ -81,70 +76,6 @@ const TableTemplate: FC = () => {
 				})
 			},
 		})
-
-	}
-	/**
-	* @description: 渲染操作下拉菜单子项
-	* @param {API} record
-	* @return {*}
-	* @author: Cyan
-	*/
-	const DropdownMenu = (record: API.ORGANIZATION): DropdownMenuProps[] => {
-		return (
-			[
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.organization.addChild)}
-						fallback={null}>
-						<Button
-							type="text"
-							size="small"
-							icon={<ClusterOutlined />}
-							block
-							onClick={() => {
-								setCurrentRecord(undefined);
-								set_parent_id(record.org_id);
-								setOpenDrawerTrue()
-							}}
-						>
-							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
-						</Button>
-					</Access>
-					,
-					key: 'addChild',
-				},
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.organization.edit)}
-						fallback={null}>
-						<Button
-							type="text"
-							size="small"
-							icon={<EditOutlined />}
-							block
-							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
-						>
-							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-						</Button>
-					</Access>,
-					key: 'edit',
-				},
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.organization.delete)}
-						fallback={null}>
-						<Button
-							block
-							type="text"
-							size="small"
-							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.org_id)} >
-							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-						</Button>
-					</Access>,
-					key: 'delete',
-				},
-			]
-		);
 	}
 
 	/**
@@ -154,7 +85,7 @@ const TableTemplate: FC = () => {
 */
 	const columns: ProColumns<API.ORGANIZATION>[] = [
 		{
-			title: formatMessage({ id: `${formatPerfix()}.org_name` }),
+			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_name` }),
 			dataIndex: 'org_name',
 			ellipsis: true,
 			width: 140,
@@ -166,18 +97,31 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.org_code` }),
+			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_code` }),
 			dataIndex: 'org_code',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			render: (text) => <Tag color="cyan">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.org_type` }),
+			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_logo` }),
+			dataIndex: 'org_logo',
+			valueType: {
+				type: 'image',
+				width: 60,
+			},
+			align: 'center',
+			hideInSearch: true,
+			width: 120,
+		},
+		{
+			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_type` }),
 			dataIndex: 'org_type',
 			filters: true,
 			onFilter: true,
 			width: 100,
+			align: 'center',
 			valueEnum: ORG_TYPE_OPTS,
 			render: (_, record) => {
 				const org_type = record.org_type as keyof typeof ORG_TYPE_OPTS
@@ -188,32 +132,35 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.status' }),
+			title: formatMessage({ id: INTERNATION.STATUS }),
 			dataIndex: 'status',
 			width: 100,
 			filters: true,
 			onFilter: true,
+			align: 'center',
 			valueEnum: {
-				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
-				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.sort' }),
+			title: formatMessage({ id: INTERNATION.SORT }),
 			dataIndex: 'sort',
 			ellipsis: true,
 			hideInSearch: true,
 			width: 100,
 			sorter: true,
+			align: 'center',
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateTime',
 			hideInSearch: true,
 			sorter: true,
-			width: 120,
+			width: 160,
+			align: 'center',
 			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -221,7 +168,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateRange',
 			hideInTable: true,
@@ -235,26 +182,38 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.describe' }),
+			title: formatMessage({ id: INTERNATION.DESCRIBE }),
 			dataIndex: 'describe',
 			ellipsis: true,
 			width: 140,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'global.table.operation' }),
+			title: formatMessage({ id: INTERNATION.OPERATION }),
 			valueType: 'option',
 			width: 80,
 			align: 'center',
 			key: 'option',
-			render: (_, record) => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
-					<Button size="small">
-						{formatMessage({ id: 'global.table.operation' })}
-						<DownOutlined />
-					</Button>
-				</TableDropdown>,
-			],
+			render: (_, record) =>
+				[
+					<DropdownMenu
+						formatPerfix={MENU.ORGANIZATION}
+						addChildCallback={() => {
+							setCurrentRecord(undefined);
+							set_parent_id(record.org_id);
+							setOpenDrawerTrue()
+						}
+						}
+						editCallback={() => {
+							set_parent_id('');
+							setCurrentRecord(record);
+							setOpenDrawerTrue()
+						}}
+						deleteCallback={() => handlerDelete(record.org_id)}
+						key="dropdownMenu"
+					/>,
+				],
 		},
 	]
 
@@ -282,14 +241,17 @@ const TableTemplate: FC = () => {
 				// 工具栏
 				toolBarRender={() => [
 					<Access
-						accessible={access.operationPermission(permissions.organization.add)}
+						accessible={
+							access.operationPermission(
+								get(permissions, `${MENU.ORGANIZATION}.${OPERATION.ADD}`, ''),
+							)}
 						fallback={null}
 						key="plus">
 						<Button
 							type="primary"
 							onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: `${formatPerfix(true)}.add` })}
+							{formatMessage({ id: `menu.${MENU.ORGANIZATION}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

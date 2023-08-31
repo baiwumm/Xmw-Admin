@@ -18,6 +18,7 @@ declare namespace API {
     org_name: string; // 组织名称
     org_code: string; // 组织编码
     org_type: OrgTypeProps; // 组织类型
+    org_logo: string; // 组织 logo
     describe: string; // 组织描述
     parent_id: string; // 父级id
     status: number; // 组织状态
