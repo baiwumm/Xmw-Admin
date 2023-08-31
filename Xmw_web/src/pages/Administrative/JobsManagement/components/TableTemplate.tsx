@@ -3,36 +3,30 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:50:44
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 17:27:27
  */
 // 引入第三方库
-import {
-	ClockCircleOutlined,
-	ClusterOutlined,
-	createFromIconfontCN,
-	DeleteOutlined,
-	DownOutlined,
-	EditOutlined,
-	PlusOutlined,
-} from '@ant-design/icons' // antd 图标库
-import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
+import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
 import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import React, { FC, useRef, useState } from 'react';
 
-import type { DropdownMenuProps, PageResModel, PaginationProps, ResData } from '@/global/interface'
+import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
+import { INTERNATION, MENU, OPERATION } from '@/enums'
 import { delJobs, getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
+import { PageResponse, PaginationParams } from '@/types'
 import { columnScrollX, formatResult } from '@/utils'
 import permissions from '@/utils/permission'
 
-import { formatPerfix } from '../utils/config'
 import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
@@ -45,11 +39,11 @@ const TableTemplate: FC = () => {
 		scriptUrl: process.env.ICONFONT_URL,
 	});
 	// 获取组织树形数据
-	const { data: orgTree } = useRequest<API.ORGANIZATION[], ResData[]>(
+	const { data: orgTree } = useRequest<API.ORGANIZATION[], Record<string, any>[]>(
 		async () => formatResult(await getOrganizationList()),
 	);
 	// 获取用户列表
-	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
+	const { data: userList } = useRequest<PageResponse<API.USERMANAGEMENT>, PaginationParams[]>(
 		async (params) => formatResult(await getUserList(params)), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
@@ -75,13 +69,12 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 删除岗位数据
 	 * @param {string} jobs_id
-	 * @return {*}
 	 * @author: Cyan
 	 */
 	const handlerDelete = (jobs_id: string): void => {
 		Modal.confirm({
-			title: formatMessage({ id: 'global.message.delete.title' }),
-			content: formatMessage({ id: 'global.message.delete.content' }),
+			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
+			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delJobs(jobs_id).then((res) => {
 					if (res.code === 200) {
@@ -92,79 +85,15 @@ const TableTemplate: FC = () => {
 				})
 			},
 		})
-
-	}
-	/**
-	* @description: 渲染操作下拉菜单子项
-	* @param {API} record
-	* @return {*}
-	* @author: Cyan
-	*/
-	const DropdownMenu = (record: API.JOBSMANAGEMENT): DropdownMenuProps[] => {
-		return (
-			[
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.jobsManagement.addChild)}
-							fallback={null}>
-							<Button
-								type="text"
-								size="small"
-								icon={<ClusterOutlined />}
-								block
-								onClick={() => {
-									setCurrentRecord(undefined); set_parent_id(record.jobs_id); setOpenDrawerTrue()
-								}}
-							>
-								{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
-							</Button>
-						</Access>,
-					key: 'addChild',
-				},
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.jobsManagement.edit)}
-							fallback={null}>
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />}
-								block
-								onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
-							>
-								{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-							</Button>
-						</Access>,
-					key: 'edit',
-				},
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.jobsManagement.delete)}
-						fallback={null}>
-						<Button
-							block
-							type="text"
-							size="small"
-							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.jobs_id)} >
-							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-						</Button>
-					</Access>,
-					key: 'delete',
-				},
-			]
-		);
 	}
 
 	/**
 * @description: proTable columns 配置项
-* @return {*}
 * @author: Cyan
 */
 	const columns: ProColumns<API.JOBSMANAGEMENT>[] = [
 		{
-			title: formatMessage({ id: `${formatPerfix()}.jobs_name` }),
+			title: formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` }),
 			dataIndex: 'jobs_name',
 			ellipsis: true,
 			width: 120,
@@ -176,7 +105,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.org_name` }),
+			title: formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
 			dataIndex: 'org_id',
 			ellipsis: true,
 			valueType: 'treeSelect',
@@ -187,13 +116,13 @@ const TableTemplate: FC = () => {
 					value: 'org_id',
 				},
 				options: orgTree,
-				placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }),
+				placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }),
 			},
 			width: 120,
 			render: (_, record) => <Tag className={PrimaryColor}>{record.org_name}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.sort' }),
+			title: formatMessage({ id: INTERNATION.SORT }),
 			dataIndex: 'sort',
 			ellipsis: true,
 			hideInSearch: true,
@@ -202,7 +131,7 @@ const TableTemplate: FC = () => {
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateTime',
 			sorter: true,
@@ -215,7 +144,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateRange',
 			hideInTable: true,
@@ -229,25 +158,35 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.describe' }),
+			title: formatMessage({ id: INTERNATION.DESCRIBE }),
 			dataIndex: 'describe',
 			ellipsis: true,
 			width: 140,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'global.table.operation' }),
+			title: formatMessage({ id: INTERNATION.OPERATION }),
 			valueType: 'option',
 			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
-					<Button size="small">
-						{formatMessage({ id: 'global.table.operation' })}
-						<DownOutlined />
-					</Button>
-				</TableDropdown>,
+				<DropdownMenu
+					formatPerfix={MENU.JOBSMANAGEMENT}
+					addChildCallback={() => {
+						setCurrentRecord(undefined);
+						set_parent_id(record.jobs_id);
+						setOpenDrawerTrue()
+					}
+					}
+					editCallback={() => {
+						set_parent_id('');
+						setCurrentRecord(record);
+						setOpenDrawerTrue()
+					}}
+					deleteCallback={() => handlerDelete(record.jobs_id)}
+					key="dropdownMenu"
+				/>,
 			],
 		},
 	]
@@ -276,14 +215,16 @@ const TableTemplate: FC = () => {
 				// 工具栏
 				toolBarRender={() => [
 					<Access
-						accessible={access.operationPermission(permissions.jobsManagement.add)}
+						accessible={access.operationPermission(
+							get(permissions, `${MENU.JOBSMANAGEMENT}.${OPERATION.ADD}`, ''),
+						)}
 						fallback={null}
 						key="plus">
 						<Button
 							type="primary"
 							onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: `${formatPerfix(true)}.add` })}
+							{formatMessage({ id: `menu.${MENU.JOBSMANAGEMENT}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

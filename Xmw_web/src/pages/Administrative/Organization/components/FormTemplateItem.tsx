@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 16:25:22
+ * @LastEditTime: 2023-08-31 17:40:42
  */
 // 引入第三方库
 import {
@@ -21,8 +21,7 @@ import { keys } from 'lodash-es'
 import type { FC } from 'react';
 
 import UploadImage from '@/components/UploadImage'
-import { INTERNATION, MENU } from '@/enums'
-import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
+import { INTERNATION, MENU, STATUS_OPTS } from '@/enums'
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
@@ -152,7 +151,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 					buttonStyle: 'solid',
 				}}
 				label={formatMessage({ id: INTERNATION.STATUS })}
-				options={APP_STATUS_OPTS}
+				options={STATUS_OPTS}
 			/>
 			{/* 排序 */}
 			<ProFormDigit

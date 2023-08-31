@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 16:37:51
+ * @LastEditTime: 2023-08-31 17:36:41
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -19,10 +19,10 @@ import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { INTERNATION, MENU, OPERATION, STATUS } from '@/enums'
-import type { PageResModel, PaginationProps } from '@/global/interface'
 import { delOrganization, getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
+import { PageResponse, PaginationParams } from '@/types'
 import { columnScrollX } from '@/utils'
 import permissions from '@/utils/permission'
 
@@ -57,7 +57,7 @@ const TableTemplate: FC = () => {
 		tableRef?.current?.reload()
 	}
 	// 获取用户列表
-	const { data: userList } = useRequest<PageResModel<API.USERMANAGEMENT>, PaginationProps[]>(
+	const { data: userList } = useRequest<PageResponse<API.USERMANAGEMENT>, PaginationParams[]>(
 		async (params) => get(await getUserList(params), 'data', []), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});

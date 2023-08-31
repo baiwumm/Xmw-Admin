@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-12-05 15:11:02
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 17:22:50
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 17:24:29
  */
 
 export default {
@@ -12,9 +12,16 @@ export default {
     // 组织管理
     organization: {
       add: 'administrative:organization:add', // 新建
-      addChild: 'administrative:organization:add-child', // 添加子级
+      'add-child': 'administrative:organization:add-child', // 添加子级
       edit: 'administrative:organization:edit', // 编辑
       delete: 'administrative:organization:delete', // 删除
+    },
+    // 岗位管理
+    'jobs-management': {
+      add: 'administrative:jobs-management:add', // 新建
+      'add-child': 'administrative:jobs-management:add-child', // 添加子级
+      edit: 'administrative:jobs-management:edit', // 编辑
+      delete: 'administrative:jobs-management:delete', // 删除
     },
   },
   // 活动公告
@@ -22,13 +29,6 @@ export default {
     add: 'administrative:announcement:add', // 新建
     edit: 'administrative:announcement:edit', // 编辑
     delete: 'administrative:announcement:delete', // 删除
-  },
-  // 岗位管理
-  jobsManagement: {
-    add: 'administrative:jobs-management:add', // 新建
-    addChild: 'administrative:jobs-management:add-child', // 添加子级
-    edit: 'administrative:jobs-management:edit', // 编辑
-    delete: 'administrative:jobs-management:delete', // 删除
   },
   // 用户管理
   userManagement: {

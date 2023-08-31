@@ -3,22 +3,22 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-13 11:33:11
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:47:51
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 17:31:31
  */
 
 // 引入第三方库
 import { DrawerForm } from '@ant-design/pro-components'; // 高级组件
-import { useIntl } from '@umijs/max'
 import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash-es'
 import type { FC } from 'react';
 
+import { MENU } from '@/enums'
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
+import { renderFormTitle } from '@/utils'
 
 // 引入业务组件
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { formatPerfix } from '../utils/config'
 import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({
@@ -31,14 +31,10 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	open,
 	setOpenDrawerFalse,
 }) => {
-	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.JOBSMANAGEMENT>();
-	// DrawerForm 不同状态下 标题显示
-	const formTitle = formData?.jobs_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
-		formatMessage({ id: `${formatPerfix()}.title` })}：${formData.jobs_name}`
-		: (formatMessage({ id: `${formatPerfix(true)}.add` }) +
-			formatMessage({ id: `${formatPerfix()}.title` }))
+	// 渲染标题
+	const formTitle = renderFormTitle<API.JOBSMANAGEMENT>(formData, MENU.JOBSMANAGEMENT, 'jobs_id', 'jobs_name')
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

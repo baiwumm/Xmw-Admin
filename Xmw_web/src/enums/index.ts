@@ -4,6 +4,7 @@
  */
 export enum MENU {
   ORGANIZATION = 'administrative.organization', // 智能行政-组织管理
+  JOBSMANAGEMENT = 'administrative.jobs-management', // 智能行政-岗位管理
 }
 
 /**
@@ -38,7 +39,7 @@ export enum OPERATION {
   ADD = 'add', // 新增
   EDIT = 'edit', // 编辑
   DELETE = 'delete', // 删除
-  ADDCHILD = 'addChild', // 添加子级
+  ADDCHILD = 'add-child', // 添加子级
 }
 
 /**
@@ -49,3 +50,14 @@ export enum STATUS {
   DISABLE, // 禁用
   NORMAL, // 正常
 }
+
+export const STATUS_OPTS = [
+  {
+    label: '正常',
+    value: STATUS.NORMAL,
+  },
+  {
+    label: '禁用',
+    value: STATUS.DISABLE,
+  },
+];

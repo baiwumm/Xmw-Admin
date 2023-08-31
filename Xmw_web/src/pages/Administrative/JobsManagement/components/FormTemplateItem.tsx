@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-13 14:05:54
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:48:20
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-08-31 17:35:06
  */
 // 引入第三方库
 import {
@@ -18,7 +18,8 @@ import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FC } from 'react';
 
-import { formatPerfix } from '../utils/config'
+import { INTERNATION, MENU } from '@/enums'
+
 import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree, userList }) => {
@@ -28,9 +29,9 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			{/* 父级 */}
 			<ProFormTreeSelect
 				name="parent_id"
-				label={formatMessage({ id: 'global.form.parent_id' })}
+				label={formatMessage({ id: INTERNATION.PARENT_ID })}
 				colProps={{ span: 24 }}
-				tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.PARENT_ID_TIP })}
 				fieldProps={{
 					treeData,
 					allowClear: true,
@@ -42,17 +43,17 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: 'global.form.parent_id' }),
+					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: INTERNATION.PARENT_ID }),
 				}}
 			/>
 			{/* 岗位名称 */}
 			<ProFormText
 				name="jobs_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.jobs_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.jobs_name` })}
+				label={formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -62,11 +63,11 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					{
 						validator: (_, value) => {
 							if (!value) {
-								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) +
-									formatMessage({ id: `${formatPerfix()}.jobs_name` })))
+								return Promise.reject(new Error(formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+									formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })))
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(formatMessage({
-									id: `${formatPerfix()}.jobs_name.validator`,
+									id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name.validator`,
 								})))
 							}
 							return Promise.resolve()
@@ -77,7 +78,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			{/* 所属组织 */}
 			<ProFormTreeSelect
 				name="org_id"
-				label={formatMessage({ id: `${formatPerfix()}.org_name` })}
+				label={formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` })}
 				colProps={{ span: 24 }}
 				request={async () => orgTree}
 				fieldProps={{
@@ -87,45 +88,45 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: `${formatPerfix()}.org_name` }),
+					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
 				}}
 				rules={[{
 					required: true,
-					message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: `${formatPerfix()}.org_name` }),
+					message: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
 				}]}
 			/>
 			{/* 负责人 */}
 			<ProFormSelect
 				name="leader"
-				label={formatMessage({ id: 'global.form.leader' })}
+				label={formatMessage({ id: INTERNATION.LEADER })}
 				colProps={{ span: 24 }}
-				placeholder={formatMessage({ id: 'global.form.placeholder.seleted' }) +
-					formatMessage({ id: 'global.form.leader' })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+					formatMessage({ id: INTERNATION.LEADER })}
 				options={userList.map((u) => ({ label: u.cn_name, value: u.user_id }))}
 				rules={[{
-					required: true, message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: 'global.form.leader' }),
+					required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: INTERNATION.LEADER }),
 				}]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit
-				label={formatMessage({ id: 'global.table.sort' })}
+				label={formatMessage({ id: INTERNATION.SORT })}
 				name="sort"
 				colProps={{ span: 24 }}
 				min={1}
 				max={99}
 				initialValue={1}
-				tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
 				fieldProps={{ precision: 0 }}
 			/>
 			{/* 描述 */}
 			<ProFormTextArea
 				name="describe"
-				label={formatMessage({ id: 'global.table.describe' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: 'global.table.describe' })}
+				label={formatMessage({ id: INTERNATION.DESCRIBE })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: INTERNATION.DESCRIBE })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					showCount: true,
@@ -133,8 +134,8 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 				}}
 				rules={[{
 					required: true,
-					message: formatMessage({ id: 'global.form.placeholder' }) +
-						formatMessage({ id: 'global.table.describe' }),
+					message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+						formatMessage({ id: INTERNATION.DESCRIBE }),
 				}]}
 			/>
 		</>
