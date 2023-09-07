@@ -1,18 +1,8 @@
-import type { MenuTypeProps } from './interface'
-/**
- * @description: 统一国际化前缀
- * @param {*} isMenu
- * @return {*}
- * @author: Cyan
- */
-export const formatPerfix = (isMenu = false): string => {
-  return `${isMenu ? 'menu' : 'pages'}.system.menu-management`
-}
+import type { MenuTypeProps } from '@/utils/types/system/menu-management'
 
 /**
  * @description: 菜单类型配置项
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const MENU_TYPE_OPTS: Record<MenuTypeProps, { text: string; color: string }> = {
   dir: {
@@ -31,15 +21,13 @@ export const MENU_TYPE_OPTS: Record<MenuTypeProps, { text: string; color: string
 
 /**
  * @description: 窗口打开方式
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const TARGET_OPTS = ['_blank', '_self', '_parent', '_top']
 
 /**
  * @description: 导航菜单的位置,side 为正常模式，top菜单显示在顶部，mix 两种兼有
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const LAYOUT_OPTS = [
   {
@@ -58,8 +46,7 @@ export const LAYOUT_OPTS = [
 
 /**
  * @description: 导航菜单的主题
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const NAV_THEME_OPTS = [
   {
@@ -71,3 +58,25 @@ export const NAV_THEME_OPTS = [
     value: 'light',
   },
 ];
+
+/**
+ * @description: 默认不显示的 column 项
+ * @author: 白雾茫茫丶丶
+ */
+export const MENU_CFG = [
+  'redirect',
+  'navTheme',
+  'headerTheme',
+  'layout',
+  'hideChildrenInMenu',
+  'hideInMenu',
+  'hideInBreadcrumb',
+  'headerRender',
+  'headerRender',
+  'footerRender',
+  'menuRender',
+  'menuHeaderRender',
+  'flatMenu',
+  'fixedHeader',
+  'fixSiderbar',
+]

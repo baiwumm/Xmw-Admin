@@ -1,37 +1,29 @@
 /*
  * @Description: 国际化-表格列表
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 15:03:15
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 16:19:05
  */
 // 引入第三方库
-import {
-	ClockCircleOutlined,
-	ClusterOutlined,
-	DeleteOutlined,
-	DownOutlined,
-	EditOutlined,
-	FontSizeOutlined,
-	PlusOutlined,
-} from '@ant-design/icons' // antd 图标库
-import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
+import { ClockCircleOutlined, FontSizeOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { useBoolean } from 'ahooks';
 import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
-// 引入业务组件
-import type { DropdownMenuProps } from '@/global/interface'
+import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { delInternational, getInternationalList } from '@/services/system/internationalization' // 国际化接口
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
+import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import type { SearchParams } from '@/utils/types/system/internationalization'
 
-import { formatPerfix } from '../utils/config'
-import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -59,13 +51,12 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 删除国际化数据
 	 * @param {string} id
-	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	const handlerDelete = (id: string): void => {
 		Modal.confirm({
-			title: formatMessage({ id: 'global.message.delete.title' }),
-			content: formatMessage({ id: 'global.message.delete.content' }),
+			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
+			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delInternational(id).then((res) => {
 					if (res.code === 200) {
@@ -77,125 +68,70 @@ const TableTemplate: FC = () => {
 			},
 		})
 	}
-	/**
-	 * @description: 渲染操作下拉菜单子项
-	 * @param {API} record
-	 * @return {*}
-	 * @author: Cyan
-	 */
-	const DropdownMenu = (record: API.INTERNATIONALIZATION): DropdownMenuProps[] => {
-		return (
-			[
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.internationalization.addChild)}
-						fallback={null}>
-						<Button
-							type="text"
-							size="small"
-							icon={<ClusterOutlined />}
-							block
-							onClick={() => {
-								setCurrentRecord(undefined);
-								set_parent_id(record.id);
-								setOpenDrawerTrue()
-							}}
-						>
-							{formatMessage({ id: `${formatPerfix(true)}.add-child` })}
-						</Button>
-					</Access>,
-					key: 'addChild',
-				},
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.internationalization.edit)}
-						fallback={null}>
-						<Button
-							type="text"
-							size="small"
-							icon={<EditOutlined />}
-							block
-							onClick={() => { set_parent_id(''); setCurrentRecord(record); setOpenDrawerTrue() }}
-						>
-							{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-						</Button>
-					</Access>,
-					key: 'edit',
-				},
-				{
-					name: <Access
-						accessible={access.operationPermission(permissions.internationalization.delete)}
-						fallback={null}>
-						<Button
-							block
-							type="text"
-							size="small"
-							icon={<DeleteOutlined />} onClick={() => handlerDelete(record.id)} >
-							{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-						</Button>
-					</Access>,
-					key: 'delete',
-				},
-			]
-		);
-	}
+
 	/**
 	* @description: proTable columns 配置项
-	* @return {*}
-	* @author: Cyan
+	* @author: 白雾茫茫丶丶
 	*/
 	const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
 		{
-			title: formatMessage({ id: `${formatPerfix()}.name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.name` }),
 			dataIndex: 'name',
 			ellipsis: true,
 			width: 140,
+			align: 'center',
 			render: (text) => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.zh-CN` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` }),
 			dataIndex: 'zh-CN',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.en-US` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` }),
 			dataIndex: 'en-US',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.ja-JP` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` }),
 			dataIndex: 'ja-JP',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.zh-TW` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` }),
 			dataIndex: 'zh-TW',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'global.table.sort' }),
+			title: formatMessage({ id: INTERNATION.SORT }),
 			dataIndex: 'sort',
 			ellipsis: true,
 			hideInSearch: true,
 			sorter: true,
 			width: 100,
+			align: 'center',
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateTime',
 			sorter: true,
 			hideInSearch: true,
-			width: 120,
+			width: 160,
+			align: 'center',
 			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -203,7 +139,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateRange',
 			hideInTable: true,
@@ -217,28 +153,39 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.operation' }),
+			title: formatMessage({ id: INTERNATION.OPERATION }),
 			valueType: 'option',
 			width: 80,
 			align: 'center',
 			key: 'option',
+			fixed: 'right',
 			render: (_, record) => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
-					<Button size="small">
-						{formatMessage({ id: 'global.table.operation' })}
-						<DownOutlined />
-					</Button>
-				</TableDropdown>,
+				<DropdownMenu
+					formatPerfix={formatPathName(ROUTES.INTERNATIONALIZATION)}
+					addChildCallback={() => {
+						setCurrentRecord(undefined);
+						set_parent_id(record.id);
+						setOpenDrawerTrue()
+					}
+					}
+					editCallback={() => {
+						set_parent_id('');
+						setCurrentRecord(record);
+						setOpenDrawerTrue()
+					}}
+					deleteCallback={() => handlerDelete(record.id)}
+					key="dropdownMenu"
+				/>,
 			],
 		},
 	]
 
 	return (
 		<>
-			<ProTable<API.INTERNATIONALIZATION, TableSearchProps>
+			<ProTable<API.INTERNATIONALIZATION, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: TableSearchProps): Promise<RequestData<API.INTERNATIONALIZATION>> => {
+				request={async (params: SearchParams): Promise<RequestData<API.INTERNATIONALIZATION>> => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getInternationalList(params).then((res) => {
@@ -257,7 +204,8 @@ const TableTemplate: FC = () => {
 				// 工具栏
 				toolBarRender={() => [
 					<Access
-						accessible={access.operationPermission(permissions.internationalization.add)}
+						accessible={access.operationPermission(
+							get(permissions, `${formatPathName(ROUTES.INTERNATIONALIZATION)}.${OPERATION.ADD}`, ''))}
 						fallback={null}
 						key="plus">
 						<Button
@@ -268,7 +216,9 @@ const TableTemplate: FC = () => {
 								setOpenDrawerTrue()
 							}}>
 							<PlusOutlined />
-							{formatMessage({ id: `${formatPerfix(true)}.add` })}
+							{formatMessage({
+								id: `${formatPerfix(ROUTES.INTERNATIONALIZATION, true)}.${OPERATION.ADD}`,
+							})}
 						</Button>
 					</Access>,
 				]}

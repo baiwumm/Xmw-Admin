@@ -4,8 +4,8 @@
 // @ts-ignore
 import type { RouterTypes } from '@ant-design/pro-layout/lib/typings';
 
-import type { InitialStateTypes } from '@/types'
 import { collectionRouteName } from '@/utils'
+import type { InitialStateTypes } from '@/utils/types'
 
 export default function access(initialState: InitialStateTypes | undefined) {
   // 获取按钮权限集合

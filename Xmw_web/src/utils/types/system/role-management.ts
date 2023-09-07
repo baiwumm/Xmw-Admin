@@ -1,8 +1,7 @@
-import type { PaginationProps } from '@/global/interface'
+import type { PaginationParams } from '@/utils/types'
 /**
  * @description: FormTemplate Props
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
   menuData: API.MENUMANAGEMENT[];
@@ -13,11 +12,10 @@ export type FormTemplateProps = {
 };
 
 /**
- * @description: 头部搜索表单 Props
- * @return {*}
- * @author: Cyan
+ * @description: 头部搜索表单 Params
+ * @author: 白雾茫茫丶丶
  */
-export type TableSearchProps = PaginationProps & {
+export type SearchParams = PaginationParams & {
   role_name?: string; // 角色名称
   role_code?: string; // 角色编码
   status?: string; // 角色状态
@@ -26,9 +24,8 @@ export type TableSearchProps = PaginationProps & {
 }
 
 /**
- * @description: 设置角色状态 Props
- * @return {*}
- * @author: Cyan
+ * @description: 设置角色状态 Params
+ * @author: 白雾茫茫丶丶
  */
 export type RoleStatusProps = {
   role_id: string;

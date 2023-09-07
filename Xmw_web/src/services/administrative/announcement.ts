@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:32:45
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-29 09:49:24
+ * @LastEditTime: 2023-09-07 15:38:43
  */
 import { request } from '@umijs/max';
 
-import type { PageResModel, ResponseModel } from '@/global/interface';
 import type { CreateAnnouncementProps, TableSearchProps } from '@/pages/Administrative/Announcement/utils/interface'
+import type { PageResponse, Response } from '@/utils/types'
 
 /**
  * @description: 获取活动公告列表
@@ -17,7 +17,7 @@ import type { CreateAnnouncementProps, TableSearchProps } from '@/pages/Administ
  * @author: 白雾茫茫丶
  */
 export async function getAnnouncementList(options?: TableSearchProps) {
-  return request<ResponseModel<PageResModel<API.ANNOUNCEMENT>>>('/api/administrative/announcement', {
+  return request<Response<PageResponse<API.ANNOUNCEMENT>>>('/api/administrative/announcement', {
     method: 'GET',
     params: options || {},
   });
@@ -29,7 +29,7 @@ export async function getAnnouncementList(options?: TableSearchProps) {
  * @author: 白雾茫茫丶
  */
 export async function createAnnouncement(options: CreateAnnouncementProps) {
-  return request<ResponseModel<API.ANNOUNCEMENT>>('/api/administrative/announcement', {
+  return request<Response<API.ANNOUNCEMENT>>('/api/administrative/announcement', {
     method: 'POST',
     data: options || {},
   });
@@ -42,7 +42,7 @@ export async function createAnnouncement(options: CreateAnnouncementProps) {
  * @author: 白雾茫茫丶
  */
 export async function updateAnnouncement({ announcement_id, ...options }: API.ANNOUNCEMENT) {
-  return request<ResponseModel<number[]>>(`/api/administrative/announcement/${announcement_id}`, {
+  return request<Response<number[]>>(`/api/administrative/announcement/${announcement_id}`, {
     method: 'PUT',
     data: options || {},
   });
@@ -54,7 +54,7 @@ export async function updateAnnouncement({ announcement_id, ...options }: API.AN
  * @author: 白雾茫茫丶
  */
 export async function delAnnouncement(announcement_id: string) {
-  return request<ResponseModel<number>>(`/api/administrative/announcement/${announcement_id}`, {
+  return request<Response<number>>(`/api/administrative/announcement/${announcement_id}`, {
     method: 'DELETE',
   });
 }

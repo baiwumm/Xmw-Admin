@@ -1,10 +1,10 @@
 /*
  * @Description: 安全设置
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-13 17:33:55
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 10:20:28
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 16:06:06
  */
 import { ProList } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
@@ -14,9 +14,8 @@ import type { FC } from 'react'
 import zxcvbn from 'zxcvbn'; // 密码强度校验
 
 import { strengthMeterOptions } from '@/components/StrengthMeter/config'
-import { decryptionAesPsd } from '@/utils'
-
-import { formatPerfix } from '../utils'
+import { decryptionAesPsd, formatPerfix } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 
 const { Text } = Typography;
 
@@ -71,13 +70,16 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
         metas={{
           title: {
             dataIndex: 'name',
-            render: (text) => <Text strong>{formatMessage({ id: `${formatPerfix}.security-setting.${text}` })}</Text>,
+            render: (text) => <Text strong>
+              {formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${text}` })}
+            </Text>,
           },
           description: {
             dataIndex: 'desc',
             render: (text, record, index) => index > 0 ?
               <Text type="secondary">
-                {formatMessage({ id: `${formatPerfix}.security-setting.${record.name}.tip` })}：{text}
+                {formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${record.name}.tip` })}：
+                {text}
               </Text> : null,
           },
           actions: {
@@ -90,7 +92,9 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
                   {formatMessage({ id: 'global.button.modify' })}
                 </Button> :
                 <Tag key="edit" color="success">
-                  {formatMessage({ id: `${formatPerfix}.security-setting.${row.name}.certified` })}
+                  {formatMessage({
+                    id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${row.name}.certified`,
+                  })}
                 </Tag>,
             ],
           },

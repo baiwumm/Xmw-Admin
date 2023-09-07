@@ -1,7 +1,7 @@
 /*
  * @Description: 接口数据类型定义
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: Cyan
  * @LastEditTime: 2023-07-10 15:17:25
@@ -11,7 +11,7 @@ declare namespace API {
   /**
    * @description: 智能行政-组织管理
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type ORGANIZATION = {
     org_id: string; // 组织id
@@ -33,7 +33,7 @@ declare namespace API {
   /**
    * @description: 智能行政-岗位管理
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type JOBSMANAGEMENT = {
     jobs_id: string; // 岗位id
@@ -73,7 +73,7 @@ declare namespace API {
   /**
    * @description: 系统设置-菜单管理
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type MENUMANAGEMENT = {
     menu_id: string; // 菜单id
@@ -115,7 +115,7 @@ declare namespace API {
   /**
    * @description: 系统设置-用户管理
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type USERMANAGEMENT = {
     user_id: string; // 用户id
@@ -154,7 +154,7 @@ declare namespace API {
   /**
    * @description: 系统设置-角色管理
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type ROLEMENU = {
     menu_id: string;
@@ -175,7 +175,7 @@ declare namespace API {
   /**
    * @description: 系统设置-国际化
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   type LOCALESLANG = 'zh-CN' | 'en-US' | 'ja-JP' | 'zh-TW'
   type INTERNATIONALIZATION<T = string> = { [key in LOCALESLANG]: T } & {
@@ -192,7 +192,7 @@ declare namespace API {
   /**
  * @description: 系统设置-操作日志
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
   export type OPERATIONLOG = {
     log_id: string; // id
@@ -211,7 +211,7 @@ declare namespace API {
   /**
  * @description: 国际化多语言层级对象
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
   type LOCALESLANGAll = Pick<INTERNATIONALIZATION<ResData>, LOCALESLANG> & {
     [key: string]: string

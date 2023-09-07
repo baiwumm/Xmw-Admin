@@ -1,28 +1,28 @@
 /*
  * @Description: 账户密码登录
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-11 14:52:29
- * @LastEditors: Cyan
- * @LastEditTime: 2023-08-22 10:46:11
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-01 14:04:49
  */
 import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks';
 import { Col, Form, Input, Row, Spin } from 'antd'
+import { get } from 'lodash-es'
 import type { FC } from 'react'
 
 import { getCaptcha } from '@/services/logic/login' // 获取图形验证码
-import { formatResult } from '@/utils'
-
-import { formatPerfix } from '../utils/config'
+import { formatPerfix } from '@/utils'
+import { INTERNATION, ROUTES } from '@/utils/enums'
 
 const Account: FC = () => {
 	const { formatMessage } = useIntl();
 	// 获取图形验证码
 	const { loading, run: getVerifyCode, data: verifyCode } = useRequest(
-		async () => formatResult(await getCaptcha()));
+		async () => get(await getCaptcha(), 'data'));
 	return (
 		<>
 			<ProFormText
@@ -31,11 +31,11 @@ const Account: FC = () => {
 					size: 'large',
 					prefix: <UserOutlined className={'prefixIcon'} />,
 				}}
-				placeholder={formatMessage({ id: `${formatPerfix}.type.account.user_name.placeholder` })}
+				placeholder={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.user_name.placeholder` })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: `${formatPerfix}.type.account.user_name.required` }),
+						message: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.user_name.required` }),
 					},
 				]}
 				initialValue="admin"
@@ -47,11 +47,11 @@ const Account: FC = () => {
 					prefix: <LockOutlined className={'prefixIcon'} />,
 					visibilityToggle: false,
 				}}
-				placeholder={formatMessage({ id: `${formatPerfix}.type.account.password.placeholder` })}
+				placeholder={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.password.placeholder` })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: `${formatPerfix}.type.account.password.required` }),
+						message: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.password.required` }),
 					},
 				]}
 				initialValue="abc123456"
@@ -64,15 +64,15 @@ const Account: FC = () => {
 							noStyle
 							rules={[{
 								required: true,
-								message: formatMessage({ id: 'global.form.placeholder' }) +
-									formatMessage({ id: `${formatPerfix}.type.mobile.captcha` }),
+								message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+									formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` }),
 							}]}
 						>
 							<Input
 								size="large"
 								placeholder={
-									formatMessage({ id: 'global.form.placeholder' }) +
-									formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}
+									formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+									formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` })}
 							/>
 						</Form.Item>
 					</Col>

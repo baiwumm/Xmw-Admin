@@ -59,8 +59,9 @@ export type InitialStateTypes = {
  * @author: 白雾茫茫丶
  */
 export type AppLocalCacheTypes = {
-  UMI_LAYOUT?: Partial<LayoutSettings>;
-  ACCESS_TOKEN?: string
+  USER_INFO?: API.USERMANAGEMENT;
+  LAYOUT?: Partial<LayoutSettings>;
+  ACCESS_TOKEN?: string;
 }
 
 /**
@@ -73,10 +74,26 @@ export type LoginTypes = {
 }
 
 /**
+ * @description: 用户休眠
+ * @author: 白雾茫茫丶
+ */
+export type LockSleepTypes = {
+  last_time: number;
+  isSleep: boolean;
+}
+
+/**
  * @description: 表格下拉菜单
  * @author: 白雾茫茫丶
  */
 export type DropdownMenuTypes = {
   name: React.ReactNode;
   key: string;
+  show?: number;
 }
+
+/**
+ * @description: 语言类型
+ * @author: 白雾茫茫丶
+ */
+export type LANGS = 'zh-CN' | 'en-US' | 'ja-JP' | 'zh-TW'

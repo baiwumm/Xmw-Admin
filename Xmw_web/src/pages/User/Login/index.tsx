@@ -1,35 +1,34 @@
 /*
  * @Description: 登录页
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-30 09:11:18
+ * @LastEditTime: 2023-09-07 16:15:19
  */
 
 // 引入第三方库
 import { createFromIconfontCN } from '@ant-design/icons';
 import { LoginForm } from '@ant-design/pro-components'; // antd 高级组件
 import { history, SelectLang, useIntl, useModel } from '@umijs/max'
-import { useDebounceFn, useLocalStorageState, useMount, useRequest } from 'ahooks';
+import { useDebounceFn, useRequest } from 'ahooks';
 import { Col, message, notification, Row, Tabs, TabsProps, Typography } from 'antd' // antd 组件
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { isEmpty } from 'lodash-es'
+import { get, isEmpty } from 'lodash-es'
 import React, { FC, useState } from 'react'; // react
 
 import Footer from '@/components/Footer'; // 全局页脚
-// 引入业务组件
-import type { LoginModel } from '@/global/interface';
 import { Login } from '@/services/logic/login' // 登录相关接口
-import { CACHE_KEY, encryptionAesPsd, formatResult, timeFix, waitTime } from '@/utils'
+import { encryptionAesPsd, formatPerfix, setLocalStorageItem, timeFix, waitTime } from '@/utils'
+import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 import { initAllRequest } from '@/utils/initRequest'
+import type { InitialStateTypes, LoginTypes } from '@/utils/types'
+import type { LoginParams, LoginType } from '@/utils/types/login'
 
 import Account from './components/Account' // 账户密码登录
 import Mobile from './components/Mobile' // 手机号码登录
 import styles from './index.module.less'; // css 样式恩建
-import { formatPerfix } from './utils/config'
-import type { LoginParams, LoginType } from './utils/indexface'
 
 const LoginPage: FC = () => {
   dayjs.extend(relativeTime);
@@ -40,28 +39,26 @@ const LoginPage: FC = () => {
   const { formatMessage } = useIntl();
   // 初始化状态
   const { initialState, setInitialState } = useModel('@@initialState');
-  // 获取 localstorage key
-  const [appCache, setappCache] = useLocalStorageState<Record<string, any> | undefined>(CACHE_KEY);
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>('account');
   /**
    * @description: 用户登录接口
    * @return {*}
-   * @author: Cyan
+   * @Author: 白雾茫茫丶
    */
-  const { run: runLogin } = useRequest<LoginModel, LoginParams[]>(
-    async (params) => formatResult<LoginModel>(await Login(params)),
+  const { run: runLogin } = useRequest<LoginTypes, LoginParams[]>(
+    async (params) => get(await Login(params), 'data', {}),
     {
       manual: true,
-      onSuccess: async (res: LoginModel) => {
+      onSuccess: async (res: LoginTypes) => {
         if (!isEmpty(res)) {
           const { access_token, login_last_time } = res
           // 将 token 保存到localstorage
-          setappCache({ ...appCache, ACCESS_TOKEN: access_token })
+          setLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN, access_token)
           // 获取用户信息和权限
           const userInfoAndAccess = await initAllRequest()
           if (!isEmpty(userInfoAndAccess)) {
-            await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
+            await setInitialState((s: InitialStateTypes) => ({ ...s, ...userInfoAndAccess }));
             setTimeout(() => {
               const urlParams = new URL(window.location.href).searchParams;
               // 路由跳转
@@ -71,12 +68,12 @@ const LoginPage: FC = () => {
                 message: `${timeFix()}，${userInfoAndAccess?.CurrentUser?.cn_name} 💕`,
                 description: login_last_time ?
                   <span>
-                    {formatMessage({ id: `${formatPerfix}.success.last-time` })}
+                    {formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.success.last-time` })}
                     <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
                   </span>
                   :
                   <Typography.Text strong>
-                    {formatMessage({ id: `${formatPerfix}.success.first-login` })}
+                    {formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.success.first-login` })}
                   </Typography.Text>,
                 icon:
                   <IconFont
@@ -93,8 +90,7 @@ const LoginPage: FC = () => {
   /**
    * @description: 登录表单提交
    * @param {LoginParams} values
-   * @return {*}
-   * @author: Cyan
+   * @Author: 白雾茫茫丶
    */
   const { run: handleSubmit } = useDebounceFn(
     async (values: LoginParams): Promise<void> => {
@@ -105,13 +101,13 @@ const LoginPage: FC = () => {
         }
         // 如果是手机登录
         if (loginType === 'mobile' && values.captcha !== '1234') {
-          message.error(formatMessage({ id: `${formatPerfix}.type.mobile.captcha.failure` }))
+          message.error(formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha.failure` }))
           return
         }
         // 调用登录接口
         runLogin({ ...values, type: loginType })
       } catch (error) {
-        message.error(formatMessage({ id: `${formatPerfix}.failure` }));
+        message.error(formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.failure` }));
       }
     },
     {
@@ -121,27 +117,20 @@ const LoginPage: FC = () => {
 
   /**
    * @description: Tabs 标签页配置
-   * @return {*}
-   * @author: Cyan
+   * @Author: 白雾茫茫丶
    */
   const TbasItems: TabsProps['items'] = [
     {
-      label: formatMessage({ id: `${formatPerfix}.type.account` }),
+      label: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account` }),
       key: 'account',
       children: <Account />,
     },
     {
-      label: formatMessage({ id: `${formatPerfix}.type.mobile` }),
+      label: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile` }),
       key: 'mobile',
       children: <Mobile />,
     },
   ]
-
-  // 初次渲染时清空token和用户信息，这里是为了避免token失效跳转到登录页
-  useMount(() => {
-    setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
-    setappCache({ ...appCache, ACCESS_TOKEN: undefined })
-  })
 
   return (
     <div className={styles.container}>
@@ -159,13 +148,14 @@ const LoginPage: FC = () => {
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
             title="Xmw Admin"
-            subTitle={formatMessage({ id: `${formatPerfix}.subtitle` })}
+            subTitle={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.subtitle` })}
             onFinish={async (values) => {
               await waitTime(500)
               await handleSubmit(values as LoginParams);
             }}
           >
             <Tabs
+              destroyInactiveTabPane
               centered
               activeKey={loginType}
               onChange={(activeKey) => setLoginType(activeKey as LoginType)}

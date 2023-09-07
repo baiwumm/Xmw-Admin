@@ -1,34 +1,32 @@
 /*
  * @Description: 用户下拉菜单
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-12-28 09:38:28
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 15:15:11
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 17:31:03
  */
 import { createFromIconfontCN, LockOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { history, useIntl, useModel } from '@umijs/max';
-import { useLocalStorageState, useRequest } from 'ahooks';
+import { useRequest } from 'ahooks';
 import { MenuProps, Modal } from 'antd';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback, useRef } from 'react';
 
-import type { AppLocalCacheModel, ResponseModel } from '@/global/interface'
 import { Logout } from '@/services/logic/login' // 登录相关接口
-import { CACHE_KEY, logoutToLogin, waitTime } from '@/utils'
-import routerConfig from '@/utils/routerConfig'
+import { logoutToLogin, removeLocalStorageItem, waitTime } from '@/utils'
+import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import type { Response } from '@/utils/types'
 
 import HeaderDropdown from '../../HeaderDropdown';
 import LockScreenModal from './LockScreenModal' // 锁定屏幕弹窗
 import UserAvatar from './UserAvatar' // 用户头像
 
-type LogoutProps = ResponseModel<Record<string, any>>
+type LogoutProps = Response<Record<string, any>>
 
 const AvatarDropdown: React.FC = () => {
   const { formatMessage } = useIntl();
   const { setInitialState } = useModel('@@initialState');
-  // 获取 localstorage key
-  const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
   // 绑定元素
   const cRef = useRef() as React.MutableRefObject<any>;
   // 使用 iconfont.cn 资源
@@ -39,14 +37,14 @@ const AvatarDropdown: React.FC = () => {
   /**
  * @description: 退出登录，并且将当前的 url 保存
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
   const { run: loginOut } = useRequest<LogoutProps, unknown[]>(Logout, {
     manual: true,
     onSuccess: async (res: LogoutProps) => {
       if (res.code === 200) {
         setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
-        setappCache({ ...appCache, ACCESS_TOKEN: undefined })
+        removeLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN)
         // 退出登录返回登录页
         logoutToLogin()
       }
@@ -57,7 +55,7 @@ const AvatarDropdown: React.FC = () => {
   /**
    * @description: 退出登录
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   const logOutClick = () => {
     Modal.confirm({
@@ -76,7 +74,7 @@ const AvatarDropdown: React.FC = () => {
       switch (event.key) {
         // 跳转至个人中心
         case 'personalCenter':
-          history.push(routerConfig['PERSONAL_CENTER'])
+          history.push(ROUTES.PERSONALINFOMATION)
           break
         // 锁定屏幕
         case 'lockScreen':

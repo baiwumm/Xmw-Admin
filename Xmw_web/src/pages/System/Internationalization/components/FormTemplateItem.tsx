@@ -1,10 +1,10 @@
 /*
  * @Description: 表单配置项
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 15:02:39
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-04 13:56:27
  */
 // 引入第三方库
 import { ProFormDigit, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
@@ -12,8 +12,9 @@ import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FC } from 'react';
 
-import { formatPerfix } from '../utils/config'
-import { FormTemplateProps } from '../utils/interface'
+import { formatPerfix } from '@/utils'
+import { INTERNATION, ROUTES } from '@/utils/enums'
+import { FormTemplateProps } from '@/utils/types/system/internationalization'
 
 const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = ({ treeData, parent_id }) => {
 	const { formatMessage } = useIntl();
@@ -22,9 +23,9 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			{/* 父级 */}
 			<ProFormTreeSelect
 				name="parent_id"
-				label={formatMessage({ id: 'global.form.parent_id' })}
+				label={formatMessage({ id: INTERNATION.PARENT_ID })}
 				colProps={{ span: 24 }}
-				tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.PARENT_ID_TIP })}
 				fieldProps={{
 					treeData,
 					allowClear: true,
@@ -36,34 +37,34 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: 'global.form.parent_id' }),
+					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: INTERNATION.PARENT_ID }),
 				}}
 			/>
 			{/* 国际化字段 */}
 			<ProFormText
 				name="name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.name` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
 				}}
 				rules={[{
 					required: true,
-					message: formatMessage({ id: 'global.form.placeholder' }) +
-						formatMessage({ id: `${formatPerfix()}.name` }),
+					message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.name` }),
 				}]}
 			/>
 			{/* 中文 */}
 			<ProFormText
 				name="zh-CN"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.zh-CN` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.zh-CN` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -73,9 +74,9 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			<ProFormText
 				name="en-US"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.en-US` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.en-US` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -85,9 +86,9 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			<ProFormText
 				name="ja-JP"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.ja-JP` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.ja-JP` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -97,9 +98,9 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			<ProFormText
 				name="zh-TW"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.zh-TW` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.zh-TW` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -107,13 +108,13 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			/>
 			{/* 排序 */}
 			<ProFormDigit
-				label={formatMessage({ id: 'global.table.sort' })}
+				label={formatMessage({ id: INTERNATION.SORT })}
 				name="sort"
 				colProps={{ span: 24 }}
 				min={1}
 				max={99}
 				initialValue={1}
-				tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
 				fieldProps={{ precision: 0 }}
 			/>
 		</>

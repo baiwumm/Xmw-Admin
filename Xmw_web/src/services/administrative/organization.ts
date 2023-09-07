@@ -1,63 +1,49 @@
 /*
  * @Description: 智能行政-组织管理-API
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 18:10:19
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:42:04
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 09:18:43
  */
-import { request } from '@umijs/max';
+import { ROUTES } from '@/utils/enums'
+import type { CreateOrgParams, SearchParams } from '@/utils/types/administrative/organization'
+import { httpRequest } from '@/utils/umiRequest'
 
-import type { ResponseModel } from '@/global/interface';
-import type { CreateOrgProps, TableSearchProps } from '@/pages/Administrative/Organization/utils/interface'
+const baseURL = ROUTES.ORGANIZATION
 
 /**
  * @description: 获取组织管理列表
- * @param {TableSearchProps} options
- * @return {*}
- * @author: Cyan
+ * @param {SearchParams} options
+ * @Author: 白雾茫茫丶
  */
-export async function getOrganizationList(options?: TableSearchProps): Promise<ResponseModel<API.ORGANIZATION[]>> {
-  return request('/api/administrative/organization', {
-    method: 'GET',
-    params: options || {},
-  });
+export async function getOrganizationList(options?: SearchParams) {
+  return httpRequest.get<API.ORGANIZATION[]>(`${baseURL}`, options);
 }
 
 /**
  * @description: 新增组织数据
- * @param {CreateOrgProps} options
- * @return {*}
- * @author: Cyan
+ * @param {CreateOrgParams} options
+ * @Author: 白雾茫茫丶
  */
-export async function createOrganization(options: CreateOrgProps): Promise<ResponseModel<API.ORGANIZATION>> {
-  return request('/api/administrative/organization', {
-    method: 'POST',
-    data: options || {},
-  });
+export async function createOrganization(options: CreateOrgParams) {
+  return httpRequest.post<API.ORGANIZATION>(`${baseURL}`, options);
 }
 
 /**
  * @description: 更新组织数据
  * @param {API.ORGANIZATION} options
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function updateOrganization({ org_id, ...options }: API.ORGANIZATION): Promise<ResponseModel<number[]>> {
-  return request(`/api/administrative/organization/${org_id}`, {
-    method: 'PUT',
-    data: options || {},
-  });
+export async function updateOrganization({ org_id, ...options }: API.ORGANIZATION) {
+  return httpRequest.put<number[]>(`${baseURL}/${org_id}`, options);
 }
 
 /**
  * @description: 删除组织数据
  * @param {string} org_id
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function delOrganization(org_id: string): Promise<ResponseModel<number>> {
-  return request(`/api/administrative/organization/${org_id}`, {
-    method: 'DELETE',
-  });
+export async function delOrganization(org_id: string) {
+  return httpRequest.delete(`${baseURL}/${org_id}`);
 }

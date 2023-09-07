@@ -1,7 +1,7 @@
 /*
  * @Description: 锁定屏幕页面
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 14:20:20
  * @LastEditors: Cyan
  * @LastEditTime: 2023-07-10 14:30:06

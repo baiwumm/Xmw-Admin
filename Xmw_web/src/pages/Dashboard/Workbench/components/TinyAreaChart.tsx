@@ -1,7 +1,7 @@
 /*
  * @Description: 迷你面积图
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-08-08 14:55:20
  * @LastEditors: Cyan
  * @LastEditTime: 2023-08-08 15:00:13

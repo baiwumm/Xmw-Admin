@@ -1,10 +1,10 @@
 /*
  * @Description: 表单配置项
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 13:51:10
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 09:54:00
  */
 // 引入第三方库
 import {
@@ -18,9 +18,9 @@ import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FC } from 'react';
 
-import { APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
-
-import { formatPerfix } from '../utils/config'
+import { formatPerfix } from '@/utils'
+import { STATUS_OPTS } from '@/utils/const'
+import { INTERNATION, ROUTES } from '@/utils/enums'
 
 const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) => {
 	const { formatMessage } = useIntl();
@@ -30,9 +30,9 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormText
 				name="role_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.role_name` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.role_name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -42,11 +42,13 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 					{
 						validator: (_, value) => {
 							if (!value) {
-								return Promise.reject(new Error(formatMessage({ id: 'global.form.placeholder' }) +
-									formatMessage({ id: `${formatPerfix()}.role_name` })))
+								return Promise.reject(new Error(formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+									formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })))
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(
-									formatMessage({ id: `${formatPerfix()}.role_name.validator` })))
+									formatMessage({
+										id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name.validator`
+									})))
 							}
 							return Promise.resolve()
 						},
@@ -57,22 +59,22 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormText
 				name="role_code"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix()}.role_code` })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.role_code` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
 				}}
 				rules={[{
-					required: true, message: formatMessage({ id: 'global.form.placeholder' }) +
-						formatMessage({ id: `${formatPerfix()}.role_code` }),
+					required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` }),
 				}]}
 			/>
 			{/* 菜单权限 */}
 			<ProFormTreeSelect
 				name="menu_permission"
-				label={formatMessage({ id: `${formatPerfix()}.menu_permission` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					treeData: menuData,
@@ -84,24 +86,24 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 					maxTagCount: 10,
 					treeCheckable: true,
 					showCheckedStrategy: TreeSelect.SHOW_ALL,
-					placeholder: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: `${formatPerfix()}.menu_permission` }),
+					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` }),
 				}}
 				rules={[{
 					required: true,
-					message: formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: `${formatPerfix()}.menu_permission` }),
+					message: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` }),
 				}]}
 			/>
 			{/* 排序 */}
 			<ProFormDigit
-				label={formatMessage({ id: 'global.table.sort' })}
+				label={formatMessage({ id: INTERNATION.SORT })}
 				name="sort"
 				colProps={{ span: 24 }}
 				min={1}
 				max={99}
 				initialValue={1}
-				tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
 				fieldProps={{ precision: 0 }}
 			/>
 			{/* 状态 */}
@@ -112,15 +114,15 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				label={formatMessage({ id: 'global.status' })}
-				options={APP_STATUS_OPTS}
+				label={formatMessage({ id: INTERNATION.STATUS })}
+				options={STATUS_OPTS}
 			/>
 			{/* 描述 */}
 			<ProFormTextArea
 				name="describe"
-				label={formatMessage({ id: 'global.table.describe' })}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: 'global.table.describe' })}
+				label={formatMessage({ id: INTERNATION.DESCRIBE })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: INTERNATION.DESCRIBE })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					showCount: true,
@@ -128,8 +130,8 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 				}}
 				rules={[{
 					required: true,
-					message: formatMessage({ id: 'global.form.placeholder' }) +
-						formatMessage({ id: 'global.table.describe' }),
+					message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+						formatMessage({ id: INTERNATION.DESCRIBE }),
 				}]}
 			/>
 		</>

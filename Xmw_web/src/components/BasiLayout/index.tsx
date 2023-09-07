@@ -1,16 +1,15 @@
 /*
  * @Description: 入口文件-全局 layout 配置
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-24 09:18:49
+ * @LastEditTime: 2023-09-07 17:28:10
  */
 // 引入第三方库
 import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
 import { history, KeepAliveContext, Link, RunTimeLayoutConfig, useIntl } from '@umijs/max';
-import { useLocalStorageState } from 'ahooks'; // ahook 函数
 import { Space, Typography } from 'antd' // antd 组件库
 import { ItemType } from 'antd/es/breadcrumb/Breadcrumb'
 import { cloneDeep, isEmpty, last } from 'lodash-es' // lodash 工具库
@@ -19,9 +18,9 @@ import React from 'react'
 import Footer from '@/components/Footer'; // 全局底部版权组件
 // 引入业务组件
 import RightContent from '@/components/RightContent'
-import type { AppLocalCacheModel, InitialStateModel } from '@/global/interface'
-import { CACHE_KEY, getItemByIdInTree, isHttpLink } from '@/utils' // 全局工具函数
-import routerConfig from '@/utils/routerConfig' // 路由配置
+import { getItemByIdInTree, getLocalStorageItem, isHttpLink, setLocalStorageItem } from '@/utils' // 全局工具函数
+import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 
 import { appList } from './config'
 
@@ -33,8 +32,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
 	});
-	// 获取 localstorage key
-	const [appCache, setappCache] = useLocalStorageState<AppLocalCacheModel | undefined>(CACHE_KEY);
+	// 获取 LAYOUT 的值
+	const LAYOUT = getLocalStorageItem<LayoutSettings>(LOCAL_STORAGE.LAYOUT)
 	// 多标签切换
 	const { updateTab } = React.useContext(KeepAliveContext);
 	return {
@@ -51,8 +50,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 		/* 页面切换时触发 */
 		onPageChange: (location: Location) => {
 			// 如果没有登录，重定向到 login
-			if (isEmpty(initialState?.CurrentUser) && location.pathname !== routerConfig.LOGIN) {
-				history.push(routerConfig.LOGIN);
+			if (isEmpty(initialState?.CurrentUser) && location.pathname !== ROUTES.LOGIN) {
+				history.push(ROUTES.LOGIN);
 			} else if (initialState?.RouteMenu && initialState?.Locales) {
 				// 获取当前路由信息
 				const currentRouteInfo = cloneDeep(
@@ -98,7 +97,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 				return (
 					<>
 						{/* 分组布局不用渲染图标，避免重复 */}
-						{!(appCache?.UMI_LAYOUT?.siderMenuType === 'group') &&
+						{!(LAYOUT?.siderMenuType === 'group') &&
 							menuItemProps.pro_layout_parentKeys?.length &&
 							<IconFont type={menuItemProps.icon} style={{ marginRight: 10 }} />}
 						<Paragraph
@@ -125,7 +124,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 		},
 		// 菜单的折叠收起事件
 		onCollapse: (collapsed: boolean) => {
-			setInitialState((preInitialState: InitialStateModel) => ({
+			setInitialState((preInitialState: InitialStateTypes) => ({
 				...preInitialState,
 				Collapsed: collapsed,
 			}));
@@ -140,10 +139,10 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 					<SettingDrawer
 						disableUrlParams
 						enableDarkTheme
-						settings={appCache?.UMI_LAYOUT}
+						settings={LAYOUT}
 						onSettingChange={(Settings: LayoutSettings) => {
-							setappCache({ ...appCache, UMI_LAYOUT: { ...initialState.Settings, ...Settings } })
-							setInitialState((preInitialState: InitialStateModel) => ({
+							setLocalStorageItem(LOCAL_STORAGE.LAYOUT, { ...initialState.Settings, ...Settings })
+							setInitialState((preInitialState: InitialStateTypes) => ({
 								...preInitialState,
 								Settings,
 							}));
@@ -152,6 +151,6 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 				</>
 			);
 		},
-		...appCache?.UMI_LAYOUT,
+		...LAYOUT,
 	};
 }

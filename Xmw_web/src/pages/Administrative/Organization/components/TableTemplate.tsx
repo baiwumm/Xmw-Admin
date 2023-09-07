@@ -1,10 +1,10 @@
 /*
  * @Description: 组织管理-表格列表
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:36:41
+ * @LastEditTime: 2023-09-07 15:47:53
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -18,16 +18,16 @@ import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
-import { INTERNATION, MENU, OPERATION, STATUS } from '@/enums'
 import { delOrganization, getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
-import { PageResponse, PaginationParams } from '@/types'
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
+import { INTERNATION, OPERATION, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import { PageResponse, PaginationParams } from '@/utils/types'
+import type { SearchParams } from '@/utils/types/administrative/organization'
 
 import { ORG_TYPE_OPTS } from '../utils/config'
-import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -81,11 +81,11 @@ const TableTemplate: FC = () => {
 	/**
 * @description: proTable columns 配置项
 * @return {*}
-* @author: Cyan
+* @author: 白雾茫茫丶丶
 */
 	const columns: ProColumns<API.ORGANIZATION>[] = [
 		{
-			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_name` }),
 			dataIndex: 'org_name',
 			ellipsis: true,
 			width: 140,
@@ -97,7 +97,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_code` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_code` }),
 			dataIndex: 'org_code',
 			ellipsis: true,
 			width: 120,
@@ -105,7 +105,7 @@ const TableTemplate: FC = () => {
 			render: (text) => <Tag color="cyan">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_logo` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_logo` }),
 			dataIndex: 'org_logo',
 			valueType: {
 				type: 'image',
@@ -116,7 +116,7 @@ const TableTemplate: FC = () => {
 			width: 120,
 		},
 		{
-			title: formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_type` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_type` }),
 			dataIndex: 'org_type',
 			filters: true,
 			onFilter: true,
@@ -195,10 +195,11 @@ const TableTemplate: FC = () => {
 			width: 80,
 			align: 'center',
 			key: 'option',
+			fixed: 'right',
 			render: (_, record) =>
 				[
 					<DropdownMenu
-						formatPerfix={MENU.ORGANIZATION}
+						formatPerfix={formatPathName(ROUTES.ORGANIZATION)}
 						addChildCallback={() => {
 							setCurrentRecord(undefined);
 							set_parent_id(record.org_id);
@@ -219,10 +220,10 @@ const TableTemplate: FC = () => {
 
 	return (
 		<>
-			<ProTable<API.ORGANIZATION, TableSearchProps>
+			<ProTable<API.ORGANIZATION, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: TableSearchProps): Promise<RequestData<API.ORGANIZATION>> => {
+				request={async (params: SearchParams): Promise<RequestData<API.ORGANIZATION>> => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getOrganizationList(params).then((res) => {
@@ -243,7 +244,7 @@ const TableTemplate: FC = () => {
 					<Access
 						accessible={
 							access.operationPermission(
-								get(permissions, `${MENU.ORGANIZATION}.${OPERATION.ADD}`, ''),
+								get(permissions, `${formatPathName(ROUTES.ORGANIZATION)}.${OPERATION.ADD}`, ''),
 							)}
 						fallback={null}
 						key="plus">
@@ -251,7 +252,7 @@ const TableTemplate: FC = () => {
 							type="primary"
 							onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: `menu.${MENU.ORGANIZATION}.${OPERATION.ADD}` })}
+							{formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION, true)}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

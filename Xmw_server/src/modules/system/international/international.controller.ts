@@ -46,7 +46,7 @@ import { responseMessage } from '@/utils'; // 全局工具函数
   description: 'token令牌',
 })
 @ApiBearerAuth()
-@Controller('system/international')
+@Controller('system/internationalization')
 export class InternationalController {
   constructor(private readonly internationalService: InternationalService) { }
   /**

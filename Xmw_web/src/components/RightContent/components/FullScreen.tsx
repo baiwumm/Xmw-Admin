@@ -1,7 +1,7 @@
 /*
  * @Description: 全屏
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-03 15:46:18
  * @LastEditors: Cyan
  * @LastEditTime: 2023-07-10 14:32:14

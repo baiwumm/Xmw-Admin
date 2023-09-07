@@ -1,10 +1,10 @@
 /*
  * @Description: 人物标签
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:24:13
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 15:25:40
  */
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
@@ -12,8 +12,8 @@ import { useBoolean, useRequest } from 'ahooks';
 import { Input, InputRef, message, Tag, Tooltip } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react'
 
-import type { ResponseModel } from '@/global/interface'
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
+import type { Response } from '@/utils/types'
 
 type IProps = {
 	value?: string[]
@@ -42,11 +42,11 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 	/**
  * @description: 更新用户信息
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
-	const { run: runUpdateUser } = useRequest<ResponseModel<number[]>, Partial<API.USERMANAGEMENT>[]>(updateUser, {
+	const { run: runUpdateUser } = useRequest<Response<number[]>, Partial<API.USERMANAGEMENT>[]>(updateUser, {
 		manual: true,
-		onSuccess: async (res: ResponseModel<number[]>, params: Partial<API.USERMANAGEMENT>[]) => {
+		onSuccess: async (res: Response<number[]>, params: Partial<API.USERMANAGEMENT>[]) => {
 			if (res.code === 200) {
 				message.success(res.msg)
 				// 更新全局状态

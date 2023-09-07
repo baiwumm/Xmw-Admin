@@ -1,7 +1,7 @@
 /*
  * @Description: 左侧个人信息
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-17 10:02:38
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-21 14:25:44
@@ -12,7 +12,7 @@ import { Avatar, Col, Divider, Space, Typography } from 'antd'
 import type { FC } from 'react'
 
 import FigureLabels from '@/components/FigureLabels' // 标签
-import cascaderOptions from '@/utils/pca-code.json' // 省市区级联数据
+import cascaderOptions from '@/utils/const/pca-code.json' // 省市区级联数据
 
 const { Title, Paragraph } = Typography;
 

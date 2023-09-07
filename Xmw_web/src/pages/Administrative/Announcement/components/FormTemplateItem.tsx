@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-29 10:03:35
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-29 16:25:16
+ * @LastEditTime: 2023-09-07 15:26:41
  */
 import {
   ProFormRadio,
@@ -16,7 +16,7 @@ import { Col, Form, Row } from 'antd';
 import { FC } from 'react'
 
 import QuillEditor from '@/components/QuillEditor'
-import { APP_FLAG_OPTS, APP_STATUS_OPTS } from '@/global/enum' // 状态枚举
+import { FLAG_OPTS, STATUS_OPTS } from '@/utils/const'
 
 import { AnnouncementTypeEnum, formatPerfix } from '../utils/config'
 
@@ -59,7 +59,7 @@ const FormTemplateItem: FC = () => {
           buttonStyle: 'solid',
         }}
         label={formatMessage({ id: `${formatPerfix()}.pinned` })}
-        options={APP_FLAG_OPTS}
+        options={FLAG_OPTS}
         rules={[{ required: true }]}
       />
       {/* 状态 */}
@@ -71,7 +71,7 @@ const FormTemplateItem: FC = () => {
           buttonStyle: 'solid',
         }}
         label={formatMessage({ id: 'global.status' })}
-        options={APP_STATUS_OPTS}
+        options={STATUS_OPTS}
         rules={[{ required: true }]}
       />
       <Row style={{ width: '100%' }}>

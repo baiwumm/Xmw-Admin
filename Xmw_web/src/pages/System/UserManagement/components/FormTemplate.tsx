@@ -1,10 +1,10 @@
 /*
  * @Description: 新建表单
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 10:28:50
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 17:13:54
  */
 
 // 引入第三方库
@@ -16,12 +16,12 @@ import { FC, useEffect, useRef } from 'react';
 
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
-import { decryptionAesPsd, encryptionAesPsd } from '@/utils'
+import { decryptionAesPsd, encryptionAesPsd, formatPathName, formatPerfix, renderFormTitle } from '@/utils'
+import { ROUTES } from '@/utils/enums'
+import type { FormTemplateProps } from '@/utils/types/system/user-management'
 
 // 引入业务组件
 import { PersonalInformation, SetAvatar, UserInformation } from '../Steps'
-import { formatPerfix } from '../utils/config'
-import type { FormTemplateProps } from '../utils/interface' // 公共 interface
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	reloadTable,
@@ -35,10 +35,10 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	const { formatMessage } = useIntl();
 	// 初始化表单
 	const formMapRef = useRef<React.MutableRefObject<ProFormInstance>[]>([]);
-	// StepsForm 不同状态下 标题显示
-	const formTitle = formData?.user_id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
-		formatMessage({ id: `${formatPerfix()}.title` })}：${formData.user_name}` :
-		(formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
+	// 渲染标题
+	const formTitle = renderFormTitle<API.USERMANAGEMENT>(formData,
+		formatPathName(ROUTES.USERMANAGEMENT), 'user_id', 'user_name')
+
 	// 提交表单
 	const handlerSubmit = async (values: API.USERMANAGEMENT) => {
 		// 提交数据
@@ -59,27 +59,27 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	/**
 	 * @description: 分步组件对应的组件
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	const StepComponents = [
 		// 个人信息
 		{
-			title: `${formatPerfix()}.steps-form.personal-information`,
+			title: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.personal-information`,
 			component: <PersonalInformation />,
 		},
 		// 用户信息
 		{
-			title: `${formatPerfix()}.steps-form.user-information`,
+			title: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.user-information`,
 			component: <UserInformation roleData={roleData} jobsData={jobsData} organizationData={organizationData} />,
 		},
 		// 设置头像
 		{
-			title: `${formatPerfix()}.steps-form.set-avatar`,
+			title: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.set-avatar`,
 			component: <SetAvatar />,
 		},
 		// 设置密码
 		{
-			title: `${formatPerfix()}.steps-form.set-password`,
+			title: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.set-password`,
 			component: <StrengthMeter />,
 		},
 	]

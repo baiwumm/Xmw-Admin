@@ -1,37 +1,30 @@
 /*
  * @Description: 角色管理-表格列表
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:13:39
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-04 16:27:16
  */
 // 引入第三方库
-import {
-	ClockCircleOutlined,
-	createFromIconfontCN,
-	DeleteOutlined,
-	DownOutlined,
-	EditOutlined,
-	PlusOutlined,
-} from '@ant-design/icons' // antd 图标库
-import { ActionType, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components' // antd 高级组件
+import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
+import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl, useRequest } from '@umijs/max'
 import { useBoolean } from 'ahooks';
 import { Button, message, Modal, Popconfirm, Space, Switch, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
-// 引入业务组件
-import type { DropdownMenuProps } from '@/global/interface'
+import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { delRole, getRoleList, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
+import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import type { RoleStatusProps, SearchParams } from '@/utils/types/system/role-management'
 
-import { formatPerfix } from '../utils/config'
-import type { RoleStatusProps, TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -65,12 +58,12 @@ const TableTemplate: FC = () => {
 	 * @description: 删除角色数据
 	 * @param {string} role_id
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	const handlerDelete = (role_id: string): void => {
 		Modal.confirm({
-			title: formatMessage({ id: 'global.message.delete.title' }),
-			content: formatMessage({ id: 'global.message.delete.content' }),
+			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
+			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delRole(role_id).then((res) => {
 					if (res.code === 200) {
@@ -82,53 +75,6 @@ const TableTemplate: FC = () => {
 			},
 		})
 
-	}
-
-	/**
-	 * @description: 渲染操作下拉菜单子项
-	 * @param {API} record
-	 * @return {*}
-	 * @author: Cyan
-	 */
-	const DropdownMenu = (record: API.ROLEMANAGEMENT): DropdownMenuProps[] => {
-		return (
-			[
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.roleManagement.edit)}
-							fallback={null}
-						>
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />}
-								block
-								onClick={() => { setCurrentRecord(record); setOpenDrawerTrue() }}
-							>
-								{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-							</Button>
-						</Access>,
-					key: 'edit',
-				},
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.roleManagement.delete)}
-							fallback={null}
-						>
-							<Button
-								block
-								type="text"
-								size="small"
-								icon={<DeleteOutlined />} onClick={() => handlerDelete(record?.role_id)} >
-								{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-							</Button>
-						</Access>,
-					key: 'delete',
-				},
-			]
-		);
 	}
 
 	// 设置角色状态
@@ -150,8 +96,8 @@ const TableTemplate: FC = () => {
 			onCancel={() => setRoleLoadingFalse()}
 			key="popconfirm"
 		><Switch
-				checkedChildren={formatMessage({ id: 'global.status.normal' })}
-				unCheckedChildren={formatMessage({ id: 'global.status.disable' })}
+				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
 				checked={record.status === 1}
 				loading={roleId === record.role_id && roleLoading}
 				onChange={() => { setRoleLoadingTrue(); setRoleId(record.role_id) }}
@@ -161,11 +107,11 @@ const TableTemplate: FC = () => {
 	/**
 * @description: proTable columns 配置项
 * @return {*}
-* @author: Cyan
+* @author: 白雾茫茫丶丶
 */
 	const columns: ProColumns<API.ROLEMANAGEMENT>[] = [
 		{
-			title: formatMessage({ id: `${formatPerfix()}.role_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` }),
 			dataIndex: 'role_name',
 			ellipsis: true,
 			width: 140,
@@ -177,26 +123,26 @@ const TableTemplate: FC = () => {
 			</Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.role_code` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` }),
 			dataIndex: 'role_code',
 			width: 140,
 			ellipsis: true,
 		},
 		/* 状态 */
 		{
-			title: formatMessage({ id: 'global.status' }),
+			title: formatMessage({ id: INTERNATION.STATUS }),
 			dataIndex: 'status',
 			filters: true,
 			onFilter: true,
 			width: 100,
 			valueEnum: {
-				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
-				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+				0: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				1: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 			render: (_, record) => renderRoleStatus(record),
 		},
 		{
-			title: formatMessage({ id: 'global.table.sort' }),
+			title: formatMessage({ id: INTERNATION.SORT }),
 			dataIndex: 'sort',
 			ellipsis: true,
 			hideInSearch: true,
@@ -205,12 +151,12 @@ const TableTemplate: FC = () => {
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateTime',
 			hideInSearch: true,
 			sorter: true,
-			width: 120,
+			width: 160,
 			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -218,7 +164,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateRange',
 			hideInTable: true,
@@ -232,25 +178,28 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.describe' }),
+			title: formatMessage({ id: INTERNATION.DESCRIBE }),
 			dataIndex: 'describe',
 			ellipsis: true,
 			width: 100,
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: 'global.table.operation' }),
+			title: formatMessage({ id: INTERNATION.OPERATION }),
 			valueType: 'option',
 			width: 80,
 			align: 'center',
 			key: 'option',
 			render: (_, record) => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
-					<Button size="small">
-						{formatMessage({ id: 'global.table.operation' })}
-						<DownOutlined />
-					</Button>
-				</TableDropdown>,
+				<DropdownMenu
+					formatPerfix={formatPathName(ROUTES.ROLEMANAGEMENT)}
+					editCallback={() => {
+						setCurrentRecord(record);
+						setOpenDrawerTrue()
+					}}
+					deleteCallback={() => handlerDelete(record.role_id)}
+					key="dropdownMenu"
+				/>,
 			],
 		},
 	]
@@ -264,10 +213,10 @@ const TableTemplate: FC = () => {
 
 	return (
 		<>
-			<ProTable<API.ROLEMANAGEMENT, TableSearchProps>
+			<ProTable<API.ROLEMANAGEMENT, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: TableSearchProps): Promise<RequestData<API.ROLEMANAGEMENT>> => {
+				request={async (params: SearchParams): Promise<RequestData<API.ROLEMANAGEMENT>> => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getRoleList(params).then((res) => {
@@ -288,13 +237,15 @@ const TableTemplate: FC = () => {
 				// 工具栏
 				toolBarRender={() => [
 					<Access
-						accessible={access.operationPermission(permissions.roleManagement.add)}
+						accessible={access.operationPermission(
+							get(permissions, `${formatPathName(ROUTES.ROLEMANAGEMENT)}.${OPERATION.ADD}`, ''),
+						)}
 						fallback={null}
 						key="plus"
 					>
 						<Button type="primary" onClick={() => { setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: `${formatPerfix(true)}.add` })}
+							{formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT, true)}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

@@ -1,23 +1,22 @@
 /*
  * @Description: 初始化共用接口请求
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-12-07 15:05:34
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-12 14:23:46
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 15:44:13
  */
 import { addLocale, history } from '@umijs/max';
 
-import type { InitialStateModel } from '@/global/interface'
-import { ANTD_LANGS } from '@/global/lang'
 import { getPermissions, getRoutesMenus, getUserInfo } from '@/services/logic/login' // 登录相关接口
 import { getAllLocalesLang } from '@/services/system/internationalization'
-import routerConfig from '@/utils/routerConfig' // 路由配置
+import { ANTD_LANGS } from '@/utils/const'
+import { ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 
 /**
  * @description: 获取多语言层级对象
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export const initLocalesLang = async (): Promise<Record<string, any>> => {
   const res = await getAllLocalesLang()
@@ -34,8 +33,7 @@ export const initLocalesLang = async (): Promise<Record<string, any>> => {
 
 /**
  * @description: 获取用户信息
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export const fetchUserInfo = async (): Promise<API.USERMANAGEMENT | undefined> => {
   try {
@@ -44,15 +42,14 @@ export const fetchUserInfo = async (): Promise<API.USERMANAGEMENT | undefined> =
       return result.data
     }
   } catch (error) {
-    history.push(routerConfig.LOGIN);
+    history.push(ROUTES.LOGIN);
   }
   return undefined;
 };
 
 /**
  * @description: 获取用户按钮权限
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export const fetchPermissions = async (): Promise<string[] | undefined> => {
   try {
@@ -61,15 +58,14 @@ export const fetchPermissions = async (): Promise<string[] | undefined> => {
       return result.data
     }
   } catch (error) {
-    history.push(routerConfig.LOGIN);
+    history.push(ROUTES.LOGIN);
   }
   return undefined;
 };
 
 /**
  * @description: 获取用户菜单权限
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export const fetchRouteMenu = async (): Promise<API.MENUMANAGEMENT[] | undefined> => {
   try {
@@ -78,17 +74,16 @@ export const fetchRouteMenu = async (): Promise<API.MENUMANAGEMENT[] | undefined
       return result.data
     }
   } catch (error) {
-    history.push(routerConfig.LOGIN);
+    history.push(ROUTES.LOGIN);
   }
   return undefined;
 };
 
 /**
  * @description: 每次登录成功或者刷新都要请求的接口
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-type initAllRequestModel = Pick<InitialStateModel, 'CurrentUser' | 'Permissions' | 'RouteMenu'>
+type initAllRequestModel = Pick<InitialStateTypes, 'CurrentUser' | 'Permissions' | 'RouteMenu'>
 export const initAllRequest = async () => {
   const result: initAllRequestModel = {}
   // 获取用户信息

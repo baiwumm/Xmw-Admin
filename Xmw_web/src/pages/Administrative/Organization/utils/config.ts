@@ -1,12 +1,11 @@
 import { TagColors } from '@/utils'
-
-import type { OrgTypeProps } from './interface'
+import type { OrgTypes } from '@/utils/types/administrative/organization'
 
 /**
  * @description: 组织类型配置项
  * @author: 白雾茫茫丶
  */
-export const ORG_TYPE_OPTS: Record<OrgTypeProps, { text: string; color: string }> = {
+export const ORG_TYPE_OPTS: Record<OrgTypes, { text: string; color: string }> = {
   group: {
     text: '集团',
     color: TagColors[0],

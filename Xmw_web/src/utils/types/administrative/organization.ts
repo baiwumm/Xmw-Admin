@@ -1,9 +1,8 @@
 // 组织类型
-export type OrgTypeProps = 'group' | 'company' | 'unit' | 'department'
+export type OrgTypes = 'group' | 'company' | 'unit' | 'department'
 /**
  * @description: FormTemplate Props
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
@@ -17,8 +16,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: FormTemplateItem Props
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export type FormTemplateItemProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
@@ -27,11 +25,10 @@ export type FormTemplateItemProps = {
 }
 
 /**
- * @description: 头部搜索表单 Props
- * @return {*}
- * @author: Cyan
+ * @description: 头部搜索表单 Params
+ * @author: 白雾茫茫丶丶
  */
-export type TableSearchProps = {
+export type SearchParams = {
   org_name?: string; // 组织名称
   org_code?: string; // 组织编码
   org_type?: string; // 组织类型
@@ -40,11 +37,10 @@ export type TableSearchProps = {
 }
 
 /**
- * @description: 新增组织 Props
- * @return {*}
- * @author: Cyan
+ * @description: 新增组织 Params
+ * @author: 白雾茫茫丶丶
  */
-export type CreateOrgProps = {
+export type CreateOrgParams = {
   parent_id?: string; // 父级id
   org_name: string; // 组织名称
   org_type: string; // 组织编码

@@ -1,7 +1,7 @@
 /*
  * @Description: 密码强度校验组件
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-09 17:15:19
  * @LastEditors: Cyan
  * @LastEditTime: 2023-08-02 08:58:55
@@ -26,7 +26,7 @@ const StrengthMeter: FC = () => {
    * @description: 监听密码强度相应变化
    * @param {string} password
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶丶
    */
   const watchStrength = (password: string): number => {
     const analysisValue = zxcvbn(password)

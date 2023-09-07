@@ -1,64 +1,50 @@
 /*
  * @Description: 系统设置-菜单管理-API
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 18:10:19
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:40:47
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 10:05:02
  */
-import { request } from '@umijs/max';
+import { ROUTES } from '@/utils/enums'
+import type { SearchParams } from '@/utils/types/system/menu-management'
+import { httpRequest } from '@/utils/umiRequest'
 
-import type { ResponseModel } from '@/global/interface';
-import type { TableSearchProps } from '@/pages/System/MenuManagement/utils/interface'
+const baseURL = ROUTES.MENUMANAGEMENT
 
 /**
  * @description:  获取菜单列表
- * @param {TableSearchProps} options
- * @return {*}
- * @author: Cyan
+ * @param {SearchParams} options
+ * @Author: 白雾茫茫丶
  */
 
-export async function getMenuList(options?: TableSearchProps): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
-  return request('/api/system/menu-management', {
-    method: 'GET',
-    params: options || {},
-  });
+export async function getMenuList(options?: SearchParams) {
+  return httpRequest.get<API.MENUMANAGEMENT[]>(`${baseURL}`, options);
 }
 
 /**
  * @description: 新增菜单数据
  * @param {Partial<API.MENUMANAGEMENT>} options
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function createMenu(options: Partial<API.MENUMANAGEMENT>): Promise<ResponseModel<API.MENUMANAGEMENT>> {
-  return request('/api/system/menu-management', {
-    method: 'POST',
-    data: options || {},
-  });
+export async function createMenu(options: Partial<API.MENUMANAGEMENT>) {
+  return httpRequest.post<API.MENUMANAGEMENT>(`${baseURL}`, options);
 }
 
 /**
  * @description: 更新菜单数据
  * @param {API.MENUMANAGEMENT} options
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function updateMenu({ menu_id, ...options }: API.MENUMANAGEMENT): Promise<ResponseModel<number[]>> {
-  return request(`/api/system/menu-management/${menu_id}`, {
-    method: 'PUT',
-    data: options || {},
-  });
+export async function updateMenu({ menu_id, ...options }: API.MENUMANAGEMENT) {
+  return httpRequest.put<number[]>(`${baseURL}/${menu_id}`, options);
 }
 
 /**
  * @description: 删除菜单数据
  * @param {string} menu_id
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function delMenu(menu_id: string): Promise<ResponseModel<number>> {
-  return request(`/api/system/menu-management/${menu_id}`, {
-    method: 'DELETE',
-  });
+export async function delMenu(menu_id: string) {
+  return httpRequest.delete<number>(`${baseURL}/${menu_id}`);
 }

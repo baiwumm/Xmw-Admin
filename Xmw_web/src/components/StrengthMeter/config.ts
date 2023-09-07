@@ -1,7 +1,7 @@
 /**
  * @description: 密码强度配置项
  * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export const strengthMeterOptions: Record<string, string> = {
   'very-weak': '#e74242',

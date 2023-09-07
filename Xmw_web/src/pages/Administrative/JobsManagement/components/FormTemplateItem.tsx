@@ -1,10 +1,10 @@
 /*
  * @Description: 表单配置项
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:35:06
+ * @LastEditTime: 2023-09-07 15:47:10
  */
 // 引入第三方库
 import {
@@ -18,9 +18,9 @@ import { useIntl } from '@umijs/max'
 import { TreeSelect } from 'antd' // antd 组件库
 import type { FC } from 'react';
 
-import { INTERNATION, MENU } from '@/enums'
-
-import type { FormTemplateItemProps } from '../utils/interface' // 公共 interface
+import { formatPerfix } from '@/utils'
+import { INTERNATION, ROUTES } from '@/utils/enums'
+import type { FormTemplateItemProps } from '@/utils/types/administrative/jobs-management' // 公共 interface
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgTree, userList }) => {
 	const { formatMessage } = useIntl();
@@ -51,9 +51,9 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			<ProFormText
 				name="jobs_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.jobs_name` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.jobs_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -64,10 +64,10 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 						validator: (_, value) => {
 							if (!value) {
 								return Promise.reject(new Error(formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-									formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` })))
+									formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.jobs_name` })))
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(formatMessage({
-									id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name.validator`,
+									id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.jobs_name.validator`,
 								})))
 							}
 							return Promise.resolve()
@@ -78,7 +78,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 			{/* 所属组织 */}
 			<ProFormTreeSelect
 				name="org_id"
-				label={formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.org_name` })}
 				colProps={{ span: 24 }}
 				request={async () => orgTree}
 				fieldProps={{
@@ -89,12 +89,12 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, orgT
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
 					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
+						formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.org_name` }),
 				}}
 				rules={[{
 					required: true,
 					message: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
+						formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.org_name` }),
 				}]}
 			/>
 			{/* 负责人 */}

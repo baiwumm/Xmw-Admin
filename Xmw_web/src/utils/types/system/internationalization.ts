@@ -1,7 +1,6 @@
 /**
  * @description: FormTemplate Props
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
   treeData: API.INTERNATIONALIZATION[]; // 国际化树形数据
@@ -13,11 +12,10 @@ export type FormTemplateProps = {
 };
 
 /**
- * @description: 头部搜索表单 Props
- * @return {*}
- * @author: Cyan
+ * @description: 头部搜索表单 Params
+ * @author: 白雾茫茫丶丶
  */
-export type TableSearchProps = {
+export type SearchParams = {
   name?: string; // 国际化字段
   isMenu?: boolean; // 是否是菜单数据
   start_time?: string; // 开始日期
@@ -25,11 +23,10 @@ export type TableSearchProps = {
 }
 
 /**
- * @description: 新增国际化字段 Props
- * @return {*}
- * @author: Cyan
+ * @description: 新增国际化字段 Params
+ * @author: 白雾茫茫丶丶
  */
-export type CreateInternationalProps = {
+export type CreateInternationalParams = {
   parent_id?: string; // 父级id
   name: string; // 国际化字段
   'zh-CN'?: string; // 中文

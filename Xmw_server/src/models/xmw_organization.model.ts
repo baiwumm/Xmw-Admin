@@ -60,7 +60,7 @@ export class XmwOrganization
   //组织 logo
   @IsUrl
   @Column({ type: DataType.STRING(200), comment: '组织logo' })
-  org_logo: string;
+  org_logo?: string;
 
   //父级id
   @IsUUID(4)

@@ -1,7 +1,7 @@
 /*
  * @Description: 多标签页配置
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: Cyan
  * @LastEditTime: 2023-07-10 16:21:55

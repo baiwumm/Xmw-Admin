@@ -1,7 +1,7 @@
 /**
  * @description: 最新动态
  * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 type LatestNewsTypes = {
   title: string,
@@ -39,7 +39,7 @@ export const latestNews: LatestNewsTypes[] = [
 /**
  * @description: 项目主要技术栈
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const technologyStack = [
   {
@@ -71,7 +71,7 @@ export const technologyStack = [
 /**
  * @description: 最新公告
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export const latestAnnouncement = [
   {

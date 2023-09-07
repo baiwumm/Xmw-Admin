@@ -1,7 +1,7 @@
 /*
  * @Description: 组织架构
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-24 11:16:36
  * @LastEditors: Cyan
  * @LastEditTime: 2023-07-10 14:54:44
@@ -10,16 +10,16 @@ import { NodeData, OrganizationGraph } from '@ant-design/charts';
 import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
 import { useRequest } from 'ahooks'
 import { Card } from 'antd'
+import { get } from 'lodash-es'
 import type { FC } from 'react';
 
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
-import { formatResult } from '@/utils'
 
 const Structure: FC = () => {
 	/**
 	 * @description: 递归遍历树结构
 	 * @param {*} tree
-	 * @author: Cyan
+	 * @Author: 白雾茫茫丶
 	 */
 	function loopTree<T>(tree: (NodeData<{ name?: string }> & T &
 	{ [key: string]: string })[], idField: string, nameField: string) {
@@ -36,11 +36,11 @@ const Structure: FC = () => {
 	/**
 	 * @description: 获取组织管理列表
 	 * @return {*}
-	 * @author: Cyan
+	 * @Author: 白雾茫茫丶
 	 */
 	const { data: orgList, loading } = useRequest<API.ORGANIZATION[], unknown[]>(
 		async () => {
-			const treeData = formatResult(await getOrganizationList())
+			const treeData = get(await getOrganizationList(), 'data', [])
 			loopTree<API.ORGANIZATION>(treeData, 'org_id', 'org_name')
 			return treeData
 		});

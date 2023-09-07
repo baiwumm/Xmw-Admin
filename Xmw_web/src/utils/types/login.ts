@@ -1,14 +1,12 @@
 /**
  * @description: 登录类型
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export type LoginType = 'mobile' | 'account';
 
 /**
  * @description: 登录表单参数
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 export type LoginParams = {
   type: string;

@@ -1,81 +1,61 @@
 /*
  * @Description: 用户登录模块 API
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-29 16:38:17
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-13 11:13:10
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 16:12:30
  */
-import { request } from '@umijs/max';
-
-import type { LoginModel, ResponseModel } from '@/global/interface';
-import type { LoginParams } from '@/pages/User/Login/utils/indexface'
+import type { LoginTypes } from '@/utils/types';
+import type { LoginParams } from '@/utils/types/login'
+import { httpRequest } from '@/utils/umiRequest'
 
 /**
  * @description: 用户登录接口
  * @param {LoginParams} options
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function Login(options?: LoginParams): Promise<ResponseModel<LoginModel>> {
-  return request('/api/auth/login', {
-    method: 'POST',
-    data: options || {},
-  });
+export async function Login(options?: LoginParams) {
+  return httpRequest.post<LoginTypes>('/auth/login', options);
 }
 
 /**
  * @description: 用户退出登录
  * @param {LoginParams} options
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function Logout(): Promise<ResponseModel<Record<string, any>>> {
-  return request('/api/auth/logout', {
-    method: 'POST',
-  });
+export async function Logout() {
+  return httpRequest.post<Record<string, any>>('/auth/logout');
 }
 
 /**
  * @description: 获取当前用户信息
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function getUserInfo(): Promise<ResponseModel<API.USERMANAGEMENT>> {
-  return request('/api/auth/user-info', {
-    method: 'GET',
-  });
+export async function getUserInfo() {
+  return httpRequest.get<API.USERMANAGEMENT>('/auth/user-info');
 }
 
 /**
  * @description: 获取当前用户按钮权限
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function getPermissions(): Promise<ResponseModel<string[]>> {
-  return request('/api/auth/permissions', {
-    method: 'GET',
-  });
+export async function getPermissions() {
+  return httpRequest.get<string[]>('/auth/permissions');
 }
 
 /**
  * @description: 获取用户权限菜单
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function getRoutesMenus(): Promise<ResponseModel<API.MENUMANAGEMENT[]>> {
-  return request('/api/auth/routes-menu', {
-    method: 'GET',
-  });
+export async function getRoutesMenus() {
+  return httpRequest.get<API.MENUMANAGEMENT[]>('/auth/routes-menu');
 }
 
 /**
  * @description: 获取图形验证码
- * @return {*}
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
-export async function getCaptcha(): Promise<ResponseModel<string>> {
-  return request('/api/auth/verify-code', {
-    method: 'GET',
-  });
+export async function getCaptcha() {
+  return httpRequest.get<string>('/auth/verify-code');
 }

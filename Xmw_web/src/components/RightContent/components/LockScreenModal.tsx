@@ -1,7 +1,7 @@
 /*
  * @Description: 锁定屏幕弹窗
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-11 11:18:51
  * @LastEditors: Cyan
  * @LastEditTime: 2023-01-11 18:04:10

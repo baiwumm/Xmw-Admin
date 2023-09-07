@@ -1,10 +1,10 @@
 /*
  * @Description: 手机号码登录
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-11 14:52:29
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-29 17:41:34
+ * @LastEditTime: 2023-09-07 16:17:27
  */
 import { MobileOutlined } from '@ant-design/icons'; // antd 图标
 import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components'; // antd 高级组件
@@ -12,7 +12,8 @@ import { useIntl } from '@umijs/max'
 import { message } from 'antd' // antd 组件
 import type { FC } from 'react'
 
-import { formatPerfix } from '../utils/config'
+import { formatPerfix } from '@/utils'
+import { INTERNATION, ROUTES } from '@/utils/enums'
 
 const Mobile: FC = () => {
 	const { formatMessage } = useIntl();
@@ -24,16 +25,16 @@ const Mobile: FC = () => {
 					prefix: <MobileOutlined className={'prefixIcon'} />,
 				}}
 				name="phone"
-				placeholder={formatMessage({ id: `${formatPerfix}.type.mobile.phone` })}
+				placeholder={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.phone` })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) +
-							formatMessage({ id: `${formatPerfix}.type.mobile.phone` }),
+						message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+							formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.phone` }),
 					},
 					{
 						pattern: /^1\d{10}$/,
-						message: formatMessage({ id: `${formatPerfix}.type.mobile.phone.rules` }),
+						message: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.phone.rules` }),
 					},
 				]}
 			/>
@@ -44,22 +45,24 @@ const Mobile: FC = () => {
 				captchaProps={{
 					size: 'large',
 				}}
-				placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}
+				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` })}
 				captchaTextRender={(timing, count) => {
 					if (timing) {
-						return `${count} ${formatMessage({ id: `${formatPerfix}.type.mobile.captcha.obtain` }) +
-							formatMessage({ id: `${formatPerfix}.type.mobile.captcha` })}`;
+						return `${count} ${formatMessage({
+							id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha.obtain`
+						}) +
+							formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` })}`;
 					}
-					return formatMessage({ id: `${formatPerfix}.type.mobile.captcha.obtain` }) +
-						formatMessage({ id: `${formatPerfix}.type.mobile.captcha` });
+					return formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha.obtain` }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` });
 				}}
 				name="captcha"
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: 'global.form.placeholder' }) +
-							formatMessage({ id: `${formatPerfix}.type.mobile.captcha` }),
+						message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+							formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` }),
 					},
 				]}
 				onGetCaptcha={async () => {

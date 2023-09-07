@@ -1,10 +1,10 @@
 /*
  * @Description: 表单配置项
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:40:42
+ * @LastEditTime: 2023-09-07 15:49:23
  */
 // 引入第三方库
 import {
@@ -21,11 +21,13 @@ import { keys } from 'lodash-es'
 import type { FC } from 'react';
 
 import UploadImage from '@/components/UploadImage'
-import { INTERNATION, MENU, STATUS_OPTS } from '@/enums'
+import { formatPerfix } from '@/utils'
+import { STATUS_OPTS } from '@/utils/const'
+import { INTERNATION, ROUTES } from '@/utils/enums'
+import type { FormTemplateItemProps } from '@/utils/types/administrative/organization'
 
 // 引入配置项
 import { ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
-import type { FormTemplateItemProps } from '../utils/interface'
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, userList }) => {
 	const { formatMessage } = useIntl();
@@ -59,9 +61,9 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			<ProFormText
 				name="org_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_name` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_name` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_name` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -72,10 +74,10 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 						validator: (_, value) => {
 							if (!value) {
 								return Promise.reject(new Error(formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-									formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_name` })))
+									formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_name` })))
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(formatMessage(
-									{ id: `pages.${MENU.ORGANIZATION}.org_name.validator` })))
+									{ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_name.validator` })))
 							}
 							return Promise.resolve()
 						},
@@ -86,9 +88,9 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			<ProFormText
 				name="org_code"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_code` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_code` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_code` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_code` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -96,14 +98,14 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				rules={[{
 					required: true,
 					message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-						formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_code` }),
+						formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_code` }),
 				}]}
 			/>
 			{/* 组织类型 */}
 			<ProFormRadio.Group
 				name="org_type"
 				colProps={{ span: 14 }}
-				label={formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_type` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_type` })}
 				radioType="button"
 				initialValue={'company'}
 				fieldProps={{
@@ -130,7 +132,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 			{/* logo */}
 			<UploadImage
 				name="org_logo"
-				label={formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_logo` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_logo` })}
 				colProps={{ span: 24 }}
 				max={1}
 				fieldProps={{
@@ -139,7 +141,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				value={org_logo}
 				rules={[{
 					required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER_UPLOAD }) +
-						formatMessage({ id: `pages.${MENU.ORGANIZATION}.org_logo` }),
+						formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_logo` }),
 				}]}
 			/>
 			{/* 状态 */}

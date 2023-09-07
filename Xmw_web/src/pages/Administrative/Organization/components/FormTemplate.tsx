@@ -1,10 +1,10 @@
 /*
  * @Description: 新建表单
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 16:13:56
+ * @LastEditTime: 2023-09-07 15:23:22
  */
 
 // 引入第三方库
@@ -13,13 +13,13 @@ import { Form, message } from 'antd'; // antd 组件库
 import { get, isString, omit } from 'lodash-es';
 import type { FC } from 'react';
 
-import { MENU } from '@/enums'
 import { createOrganization, updateOrganization } from '@/services/administrative/organization'; // 组织管理接口
-import { renderFormTitle } from '@/utils'
+import { formatPathName, renderFormTitle } from '@/utils'
+import { ROUTES } from '@/utils/enums'
+import type { FormTemplateProps } from '@/utils/types/administrative/organization'; // 公共 interface
 
 // 引入业务组件
-import FormTemplateItem from '../components/FormTemplateItem'; // 表单组件
-import type { FormTemplateProps } from '../utils/interface'; // 公共 interface
+import FormTemplateItem from './FormTemplateItem'; // 表单组件
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -33,7 +33,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 初始化表单
 	const [form] = Form.useForm<API.ORGANIZATION>();
 	// 渲染标题
-	const formTitle = renderFormTitle<API.ORGANIZATION>(formData, MENU.ORGANIZATION, 'org_id', 'org_name')
+	const formTitle = renderFormTitle<API.ORGANIZATION>(formData,
+		formatPathName(ROUTES.ORGANIZATION), 'org_id', 'org_name')
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

@@ -1,25 +1,25 @@
 /*
  * @Description: 新建表单
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 16:31:34
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 16:22:36
  */
 
 // 引入第三方库
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
-import { useIntl } from '@umijs/max'
 import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash-es'
 import type { FC } from 'react';
 
 import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
+import { formatPathName, renderFormTitle } from '@/utils'
+import { ROUTES } from '@/utils/enums'
+import type { FormTemplateProps } from '@/utils/types/system/internationalization' // 公共 interface
 
 // 引入业务组件
-import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import { formatPerfix } from '../utils/config'
-import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import FormTemplateItem from './FormTemplateItem' // 表单组件 
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -29,13 +29,11 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	open,
 	setOpenDrawerFalse,
 }) => {
-	const { formatMessage } = useIntl();
 	// 初始化表单
 	const [form] = Form.useForm<API.INTERNATIONALIZATION>();
-	// ModalForm 不同状态下 标题显示
-	const formTitle = formData?.id ? `${formatMessage({ id: `${formatPerfix(true)}.edit` }) +
-		formatMessage({ id: `${formatPerfix()}.title` })}：${formData.name}` :
-		(formatMessage({ id: `${formatPerfix(true)}.add` }) + formatMessage({ id: `${formatPerfix()}.title` }))
+	// 渲染标题
+	const formTitle = renderFormTitle<API.INTERNATIONALIZATION>(formData,
+		formatPathName(ROUTES.INTERNATIONALIZATION), 'id', 'name')
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

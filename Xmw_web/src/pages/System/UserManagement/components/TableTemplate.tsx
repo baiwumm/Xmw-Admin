@@ -1,44 +1,41 @@
 /*
  * @Description: 用户管理-表格列表
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:11:05
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 17:20:52
  */
 // 引入第三方库
 import {
 	ClockCircleOutlined,
 	createFromIconfontCN,
-	DeleteOutlined,
-	DownOutlined,
-	EditOutlined,
 	ManOutlined,
 	PlusOutlined,
 	UnlockOutlined,
 	UserOutlined,
 	WomanOutlined,
 } from '@ant-design/icons' // antd 图标库
-import { ActionType, ColumnsState, ProColumns, ProTable, RequestData, TableDropdown } from '@ant-design/pro-components'
+import { ActionType, ColumnsState, ProColumns, ProTable, RequestData } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
 import { Button, message, Modal, Popconfirm, Space, Switch, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
-import type { DropdownMenuProps, PageResModel, ResponseModel } from '@/global/interface'
+import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 // 引入业务组件
 import { delUser, getUserList, setUserStatus } from '@/services/system/user-management' // 用户管理接口
-import { columnScrollX } from '@/utils'
+import { columnScrollX, formatPathName, formatPerfix, renderColumnsStateMap } from '@/utils'
+import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import type { SearchParams } from '@/utils/types/system/user-management'
 
-import { renderColumnsStateMap } from '../utils'
-import { formatPerfix } from '../utils/config'
-import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -65,7 +62,12 @@ const TableTemplate: FC = () => {
 	// Modal 框显隐
 	const [modalVisible, { setTrue: setModalVisibleTrue, setFalse: setModalVisibleFalse }] = useBoolean(false);
 	// 受控的表格设置栏
-	const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>(renderColumnsStateMap());
+	const [columnsStateMap, setColumnsStateMap] = useState<Record<string, ColumnsState>>(renderColumnsStateMap([
+		'en_name',
+		'sort',
+		'age',
+		'email',
+	]));
 	// 跟随主题色变化
 	const PrimaryColor = useEmotionCss(({ token }) => {
 		return { color: token.colorPrimary, fontSize: 16 };
@@ -79,12 +81,12 @@ const TableTemplate: FC = () => {
 	 * @description: 删除用户数据
 	 * @param {string} user_id
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	const handlerDelete = (user_id: string): void => {
 		Modal.confirm({
-			title: formatMessage({ id: 'global.message.delete.title' }),
-			content: formatMessage({ id: 'global.message.delete.content' }),
+			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
+			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delUser(user_id).then((res) => {
 					if (res.code === 200) {
@@ -96,52 +98,6 @@ const TableTemplate: FC = () => {
 			},
 		})
 
-	}
-
-	/**
-	 * @description: 渲染操作下拉菜单子项
-	 * @param {API} record
-	 * @return {*}
-	 * @author: Cyan
-	 */
-	const DropdownMenu = (record: API.USERMANAGEMENT): DropdownMenuProps[] => {
-		return (
-			[
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.userManagement.edit)}
-							fallback={null}
-						>
-							<Button
-								type="text"
-								size="small"
-								icon={<EditOutlined />} block
-								onClick={() => { setCurrentRecord(record); setModalVisibleTrue() }}
-							>
-								{formatMessage({ id: `${formatPerfix(true)}.edit` })}
-							</Button>
-						</Access>,
-					key: 'edit',
-				},
-				{
-					name:
-						<Access
-							accessible={access.operationPermission(permissions.userManagement.delete)}
-							fallback={null}
-						>
-							<Button
-								block
-								type="text"
-								size="small"
-								icon={<DeleteOutlined />} onClick={() => handlerDelete(record.user_id)} >
-								{formatMessage({ id: `${formatPerfix(true)}.delete` })}
-							</Button>
-						</Access>,
-					key: 'delete',
-				},
-			]
-		);
 	}
 
 	// 设置用户状态
@@ -163,8 +119,8 @@ const TableTemplate: FC = () => {
 			onCancel={() => setUserLoadingFalse()}
 			key="popconfirm"
 		><Switch
-				checkedChildren={formatMessage({ id: 'global.status.normal' })}
-				unCheckedChildren={formatMessage({ id: 'global.status.disable' })}
+				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
 				checked={record.status === 1}
 				loading={userId === record.user_id && userLoading}
 				onChange={() => { setUserLoadingTrue(); setUserId(record.user_id) }}
@@ -174,7 +130,7 @@ const TableTemplate: FC = () => {
 	/**
 * @description: proTable columns 配置项
 * @return {*}
-* @author: Cyan
+* @author: 白雾茫茫丶丶
 */
 	const columns: ProColumns<API.USERMANAGEMENT>[] = [
 		{
@@ -184,7 +140,7 @@ const TableTemplate: FC = () => {
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.user_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.user_name` }),
 			dataIndex: 'user_name',
 			ellipsis: true,
 			width: 100,
@@ -196,21 +152,21 @@ const TableTemplate: FC = () => {
 			</Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.cn_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.cn_name` }),
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.en_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.en_name` }),
 			dataIndex: 'en_name',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.avatar_url` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.avatar_url` }),
 			dataIndex: 'avatar_url',
 			key: 'avatar_url',
 			valueType: 'image',
@@ -219,7 +175,7 @@ const TableTemplate: FC = () => {
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.sex` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex` }),
 			dataIndex: 'sex',
 			ellipsis: true,
 			align: 'center',
@@ -227,9 +183,21 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: { text: formatMessage({ id: `${formatPerfix()}.sex.female` }), status: 'Default' },
-				1: { text: formatMessage({ id: `${formatPerfix()}.sex.male` }), status: 'Processing' },
-				2: { text: formatMessage({ id: `${formatPerfix()}.sex.secret` }), status: 'Processing' },
+				0: {
+					text: formatMessage({
+						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.female`,
+					}), status: 'Default',
+				},
+				1: {
+					text: formatMessage({
+						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.male`,
+					}), status: 'Processing',
+				},
+				2: {
+					text: formatMessage({
+						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.secret`,
+					}), status: 'Processing',
+				},
 			},
 			render: (_, record) => {
 				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff' }
@@ -242,14 +210,14 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.work_no` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.work_no` }),
 			dataIndex: 'work_no',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 80,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.role_id` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.role_id` }),
 			dataIndex: 'role_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -262,7 +230,7 @@ const TableTemplate: FC = () => {
 			</Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.org_id` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.org_id` }),
 			dataIndex: 'org_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -275,7 +243,7 @@ const TableTemplate: FC = () => {
 			</Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.jobs_id` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.jobs_id` }),
 			dataIndex: 'jobs_name',
 			hideInSearch: true,
 			ellipsis: true,
@@ -288,21 +256,21 @@ const TableTemplate: FC = () => {
 			</Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.age` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.age` }),
 			dataIndex: 'age',
 			hideInSearch: true,
 			ellipsis: true,
 			width: 60,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.phone` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.phone` }),
 			dataIndex: 'phone',
 			hideInSearch: true,
 			width: 100,
 			ellipsis: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix()}.email` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.email` }),
 			dataIndex: 'email',
 			hideInSearch: true,
 			ellipsis: true,
@@ -310,19 +278,19 @@ const TableTemplate: FC = () => {
 		},
 		/* 状态 */
 		{
-			title: formatMessage({ id: 'global.status' }),
+			title: formatMessage({ id: INTERNATION.STATUS }),
 			dataIndex: 'status',
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: { text: formatMessage({ id: 'global.status.disable' }), status: 'Default' },
-				1: { text: formatMessage({ id: 'global.status.normal' }), status: 'Processing' },
+				0: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				1: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 			width: 80,
 			render: (_, record) => renderRoleStatus(record),
 		},
 		{
-			title: formatMessage({ id: 'global.table.sort' }),
+			title: formatMessage({ id: INTERNATION.SORT }),
 			dataIndex: 'sort',
 			ellipsis: true,
 			hideInSearch: true,
@@ -331,7 +299,7 @@ const TableTemplate: FC = () => {
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateTime',
 			hideInSearch: true,
@@ -344,7 +312,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: 'global.table.created_time' }),
+			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
 			dataIndex: 'created_time',
 			valueType: 'dateRange',
 			hideInTable: true,
@@ -358,31 +326,32 @@ const TableTemplate: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: 'global.table.operation' }),
+			title: formatMessage({ id: INTERNATION.OPERATION }),
 			valueType: 'option',
 			width: 80,
 			align: 'center',
 			key: 'option',
 			fixed: 'right',
-			render: (_, record) => [
-				<TableDropdown key="actionGroup" menus={DropdownMenu(record)}>
-					<Button size="small">
-						{formatMessage({ id: 'global.table.operation' })}
-						<DownOutlined />
-					</Button>
-				</TableDropdown>,
-			],
+			render: (_, record) => <DropdownMenu
+				formatPerfix={formatPathName(ROUTES.USERMANAGEMENT)}
+				editCallback={() => {
+					setCurrentRecord(record);
+					setModalVisibleTrue()
+				}}
+				deleteCallback={() => handlerDelete(record.user_id)}
+				key="dropdownMenu"
+			/>,
 		},
 	]
 
 	/**
 	 * @description: 获取角色列表
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	useRequest(async (params) => await getRoleList(params), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
-		onSuccess: (res: ResponseModel<PageResModel<API.ROLEMANAGEMENT>>) => {
+		onSuccess: (res) => {
 			if (res.code === 200) {
 				setRoleData(res.data.list)
 			}
@@ -393,10 +362,10 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 获取岗位列表
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	useRequest(async () => await getJobsList(), {
-		onSuccess: (res: ResponseModel<API.JOBSMANAGEMENT[]>) => {
+		onSuccess: (res) => {
 			if (res.code === 200) {
 				setJobsData(res.data)
 			}
@@ -406,10 +375,10 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 获取组织列表
 	 * @return {*}
-	 * @author: Cyan
+	 * @author: 白雾茫茫丶丶
 	 */
 	useRequest(async () => await getOrganizationList(), {
-		onSuccess: (res: ResponseModel<API.ORGANIZATION[]>) => {
+		onSuccess: (res) => {
 			if (res.code === 200) {
 				setOrganizationData(res.data)
 			}
@@ -418,10 +387,10 @@ const TableTemplate: FC = () => {
 
 	return (
 		<>
-			<ProTable<API.USERMANAGEMENT, TableSearchProps>
+			<ProTable<API.USERMANAGEMENT, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: TableSearchProps): Promise<RequestData<API.USERMANAGEMENT>> => {
+				request={async (params: SearchParams): Promise<RequestData<API.USERMANAGEMENT>> => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getUserList(params).then((res) => {
@@ -446,13 +415,14 @@ const TableTemplate: FC = () => {
 				// 工具栏
 				toolBarRender={() => [
 					<Access
-						accessible={access.operationPermission(permissions.userManagement.add)}
+						accessible={access.operationPermission(
+							get(permissions, `${formatPathName(ROUTES.USERMANAGEMENT)}.${OPERATION.ADD}`, ''))}
 						fallback={null}
 						key="add"
 					>
 						<Button type="primary" onClick={() => { setModalVisibleTrue(); setCurrentRecord(undefined) }}>
 							<PlusOutlined />
-							{formatMessage({ id: 'menu.system.user-management.add' })}
+							{formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT, true)}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

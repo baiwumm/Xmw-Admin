@@ -1,10 +1,10 @@
 /*
  * @Description: 岗位管理-表格列表
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:27:27
+ * @LastEditTime: 2023-09-07 15:46:36
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -18,16 +18,16 @@ import { get } from 'lodash-es'
 import React, { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
-import { INTERNATION, MENU, OPERATION } from '@/enums'
 import { delJobs, getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
-import { PageResponse, PaginationParams } from '@/types'
-import { columnScrollX, formatResult } from '@/utils'
+import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
+import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import { PageResponse, PaginationParams } from '@/utils/types'
+import type { SearchParams } from '@/utils/types/administrative/jobs-management'
 
-import type { TableSearchProps } from '../utils/interface'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -40,11 +40,11 @@ const TableTemplate: FC = () => {
 	});
 	// 获取组织树形数据
 	const { data: orgTree } = useRequest<API.ORGANIZATION[], Record<string, any>[]>(
-		async () => formatResult(await getOrganizationList()),
+		async () => get(await getOrganizationList(), 'data', []),
 	);
 	// 获取用户列表
 	const { data: userList } = useRequest<PageResponse<API.USERMANAGEMENT>, PaginationParams[]>(
-		async (params) => formatResult(await getUserList(params)), {
+		async (params) => get(await getUserList(params), 'data', []), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
 	// 获取表格实例
@@ -69,7 +69,7 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 删除岗位数据
 	 * @param {string} jobs_id
-	 * @author: Cyan
+	 * @Author: 白雾茫茫丶
 	 */
 	const handlerDelete = (jobs_id: string): void => {
 		Modal.confirm({
@@ -89,11 +89,11 @@ const TableTemplate: FC = () => {
 
 	/**
 * @description: proTable columns 配置项
-* @author: Cyan
+* @Author: 白雾茫茫丶
 */
 	const columns: ProColumns<API.JOBSMANAGEMENT>[] = [
 		{
-			title: formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.jobs_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.jobs_name` }),
 			dataIndex: 'jobs_name',
 			ellipsis: true,
 			width: 120,
@@ -105,7 +105,7 @@ const TableTemplate: FC = () => {
 			),
 		},
 		{
-			title: formatMessage({ id: `pages.${MENU.JOBSMANAGEMENT}.org_name` }),
+			title: formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT)}.org_name` }),
 			dataIndex: 'org_id',
 			ellipsis: true,
 			valueType: 'treeSelect',
@@ -119,6 +119,7 @@ const TableTemplate: FC = () => {
 				placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }),
 			},
 			width: 120,
+			align: 'center',
 			render: (_, record) => <Tag className={PrimaryColor}>{record.org_name}</Tag>,
 		},
 		{
@@ -128,6 +129,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			sorter: true,
+			align: 'center',
 			render: (text) => <Tag color="purple">{text}</Tag>,
 		},
 		{
@@ -136,7 +138,8 @@ const TableTemplate: FC = () => {
 			valueType: 'dateTime',
 			sorter: true,
 			hideInSearch: true,
-			width: 120,
+			width: 160,
+			align: 'center',
 			render: (text) => (
 				<Space>
 					<ClockCircleOutlined /><span>{text}</span>
@@ -162,6 +165,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'describe',
 			ellipsis: true,
 			width: 140,
+			align: 'center',
 			hideInSearch: true,
 		},
 		{
@@ -170,33 +174,32 @@ const TableTemplate: FC = () => {
 			width: 80,
 			align: 'center',
 			key: 'option',
-			render: (_, record) => [
-				<DropdownMenu
-					formatPerfix={MENU.JOBSMANAGEMENT}
-					addChildCallback={() => {
-						setCurrentRecord(undefined);
-						set_parent_id(record.jobs_id);
-						setOpenDrawerTrue()
-					}
-					}
-					editCallback={() => {
-						set_parent_id('');
-						setCurrentRecord(record);
-						setOpenDrawerTrue()
-					}}
-					deleteCallback={() => handlerDelete(record.jobs_id)}
-					key="dropdownMenu"
-				/>,
-			],
+			fixed: 'right',
+			render: (_, record) => <DropdownMenu
+				formatPerfix={formatPathName(ROUTES.JOBSMANAGEMENT)}
+				addChildCallback={() => {
+					setCurrentRecord(undefined);
+					set_parent_id(record.jobs_id);
+					setOpenDrawerTrue()
+				}
+				}
+				editCallback={() => {
+					set_parent_id('');
+					setCurrentRecord(record);
+					setOpenDrawerTrue()
+				}}
+				deleteCallback={() => handlerDelete(record.jobs_id)}
+				key="dropdownMenu"
+			/>,
 		},
 	]
 
 	return (
 		<>
-			<ProTable<API.JOBSMANAGEMENT, TableSearchProps>
+			<ProTable<API.JOBSMANAGEMENT, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: TableSearchProps): Promise<RequestData<API.JOBSMANAGEMENT>> => {
+				request={async (params: SearchParams): Promise<RequestData<API.JOBSMANAGEMENT>> => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getJobsList(params).then((res) => {
@@ -216,7 +219,7 @@ const TableTemplate: FC = () => {
 				toolBarRender={() => [
 					<Access
 						accessible={access.operationPermission(
-							get(permissions, `${MENU.JOBSMANAGEMENT}.${OPERATION.ADD}`, ''),
+							get(permissions, `${formatPathName(ROUTES.JOBSMANAGEMENT)}.${OPERATION.ADD}`, ''),
 						)}
 						fallback={null}
 						key="plus">
@@ -224,7 +227,7 @@ const TableTemplate: FC = () => {
 							type="primary"
 							onClick={() => { set_parent_id(''); setCurrentRecord(undefined); setOpenDrawerTrue() }}>
 							<PlusOutlined />
-							{formatMessage({ id: `menu.${MENU.JOBSMANAGEMENT}.${OPERATION.ADD}` })}
+							{formatMessage({ id: `${formatPerfix(ROUTES.JOBSMANAGEMENT, true)}.${OPERATION.ADD}` })}
 						</Button>
 					</Access>,
 				]}

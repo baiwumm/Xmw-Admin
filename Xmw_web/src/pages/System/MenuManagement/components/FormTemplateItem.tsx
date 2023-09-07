@@ -1,10 +1,10 @@
 /*
  * @Description: 表单配置项
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:48:11
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 16:41:15
  */
 // 引入第三方库
 import {
@@ -19,10 +19,12 @@ import { Divider, TreeSelect, Typography } from 'antd'; // antd 组件库
 import { keys } from 'lodash-es';
 import type { FC } from 'react';
 
-import { APP_STATUS_OPTS } from '@/global/enum'; // 状态枚举
+import { formatPerfix } from '@/utils'
+import { STATUS_OPTS } from '@/utils/const'
+import { INTERNATION, ROUTES } from '@/utils/enums'
+import type { FormItemProps } from '@/utils/types/system/menu-management';
 
-import { formatPerfix, MENU_TYPE_OPTS } from '../utils/config';
-import type { FormItemProps } from '../utils/interface';
+import { MENU_TYPE_OPTS } from '../utils/config';
 import MenuFormRender from './MenuFormRender';
 
 const { Title } = Typography;
@@ -36,10 +38,10 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="component"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix()}.component` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.component` })}
 				placeholder={
-					formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.component` })
+					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.component` })
 				}
 				fieldProps={{
 					showCount: true,
@@ -50,10 +52,10 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="redirect"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix()}.redirect` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.redirect` })}
 				placeholder={
-					formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.redirect` })
+					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.redirect` })
 				}
 				fieldProps={{
 					showCount: true,
@@ -69,10 +71,10 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="path"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix()}.path` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` })}
 				placeholder={
-					formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.path` })
+					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` })
 				}
 				fieldProps={{
 					showCount: true,
@@ -82,8 +84,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 					{
 						required: true,
 						message:
-							formatMessage({ id: 'global.form.placeholder' }) +
-							formatMessage({ id: `${formatPerfix()}.path` }),
+							formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+							formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` }),
 					},
 				]}
 			/>
@@ -91,12 +93,12 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="icon"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix()}.icon` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon` })}
 				placeholder={
-					formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.icon` })
+					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon` })
 				}
-				tooltip={formatMessage({ id: `${formatPerfix()}.icon.tooltip` })}
+				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon.tooltip` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 50,
@@ -110,7 +112,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormRadio.Group
 				name="menu_type"
 				colProps={{ span: 10 }}
-				label={formatMessage({ id: `${formatPerfix()}.menu_type` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menu_type` })}
 				radioType="button"
 				initialValue={'dir'}
 				fieldProps={{
@@ -124,9 +126,9 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			{/* 父级 */}
 			<ProFormTreeSelect
 				name="parent_id"
-				label={formatMessage({ id: 'global.form.parent_id' })}
+				label={formatMessage({ id: INTERNATION.PARENT_ID })}
 				colProps={{ span: 14 }}
-				tooltip={formatMessage({ id: 'global.form.parent_id.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.PARENT_ID_TIP })}
 				fieldProps={{
 					treeData,
 					allowClear: true,
@@ -139,8 +141,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
 					placeholder:
-						formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: 'global.form.parent_id' }),
+						formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: INTERNATION.PARENT_ID }),
 				}}
 			/>
 			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}>
@@ -151,9 +153,9 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			{/* 路由名称 */}
 			<ProFormTreeSelect
 				name="name"
-				label={formatMessage({ id: `${formatPerfix()}.name` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` })}
 				colProps={{ span: 12 }}
-				tooltip={formatMessage({ id: `${formatPerfix()}.name.tooltip` })}
+				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name.tooltip` })}
 				fieldProps={{
 					treeData: internationalData,
 					fieldNames: {
@@ -163,15 +165,15 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
 					placeholder:
-						formatMessage({ id: 'global.form.placeholder.seleted' }) +
-						formatMessage({ id: `${formatPerfix()}.name` }),
+						formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+						formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
 				}}
 				rules={[
 					{
 						required: true,
 						message:
-							formatMessage({ id: 'global.form.placeholder.seleted' }) +
-							formatMessage({ id: `${formatPerfix()}.name` }),
+							formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
+							formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
 					},
 				]}
 			/>
@@ -190,12 +192,12 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="permission"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix()}.permission` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission` })}
 				placeholder={
-					formatMessage({ id: 'global.form.placeholder' }) +
-					formatMessage({ id: `${formatPerfix()}.permission` })
+					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission` })
 				}
-				tooltip={formatMessage({ id: `${formatPerfix()}.permission.tooltip` })}
+				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission.tooltip` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 100,
@@ -203,13 +205,13 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			/>
 			{/* 排序 */}
 			<ProFormDigit
-				label={formatMessage({ id: 'global.table.sort' })}
+				label={formatMessage({ id: INTERNATION.SORT })}
 				name="sort"
 				colProps={{ span: 8 }}
 				min={1}
 				max={99}
 				initialValue={1}
-				tooltip={formatMessage({ id: 'global.table.sort.tooltip' })}
+				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
 				fieldProps={{ precision: 0 }}
 			/>
 			{/* 状态 */}
@@ -220,8 +222,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				label={formatMessage({ id: 'global.status' })}
-				options={APP_STATUS_OPTS}
+				label={formatMessage({ id: INTERNATION.STATUS })}
+				options={STATUS_OPTS}
 			/>
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {

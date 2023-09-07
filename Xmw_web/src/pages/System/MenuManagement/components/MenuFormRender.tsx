@@ -3,10 +3,11 @@ import { useIntl } from '@umijs/max'
 import { Divider, Typography } from 'antd' // antd 组件库
 import type { FC } from 'react'
 
-import { APP_FLAG_OPTS } from '@/global/enum' // 状态枚举
+import { formatPerfix } from '@/utils'
+import { FLAG_OPTS } from '@/utils/const'
+import { ROUTES } from '@/utils/enums'
 
-import { formatPerfix, LAYOUT_OPTS, NAV_THEME_OPTS, TARGET_OPTS } from '../utils/config'
-
+import { LAYOUT_OPTS, NAV_THEME_OPTS, TARGET_OPTS } from '../utils/config'
 const { Title } = Typography;
 
 const MenuFormRender: FC = () => {
@@ -21,8 +22,8 @@ const MenuFormRender: FC = () => {
 				name="layout"
 				colProps={{ span: 12 }}
 				initialValue={'side'}
-				label={formatMessage({ id: `${formatPerfix()}.layout` })}
-				tooltip={formatMessage({ id: `${formatPerfix()}.layout.tooltip` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.layout` })}
+				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.layout.tooltip` })}
 				options={LAYOUT_OPTS}
 				fieldProps={{
 					allowClear: false,
@@ -33,7 +34,7 @@ const MenuFormRender: FC = () => {
 				name="navTheme"
 				colProps={{ span: 12 }}
 				initialValue={'light'}
-				label={formatMessage({ id: `${formatPerfix()}.navTheme` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.navTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{
 					allowClear: false,
@@ -44,7 +45,7 @@ const MenuFormRender: FC = () => {
 				name="headerTheme"
 				colProps={{ span: 12 }}
 				initialValue={'light'}
-				label={formatMessage({ id: `${formatPerfix()}.headerTheme` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.headerTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{
 					allowClear: false,
@@ -55,8 +56,8 @@ const MenuFormRender: FC = () => {
 				name="target"
 				colProps={{ span: 12 }}
 				initialValue={'_blank'}
-				label={formatMessage({ id: `${formatPerfix()}.target` })}
-				tooltip={formatMessage({ id: `${formatPerfix()}.target.tooltip` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.target` })}
+				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.target.tooltip` })}
 				options={TARGET_OPTS.map((item) => ({ value: item, label: item }))}
 				fieldProps={{
 					allowClear: false,
@@ -66,121 +67,121 @@ const MenuFormRender: FC = () => {
 			<ProFormRadio.Group
 				name="hideChildrenInMenu"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.hideChildrenInMenu` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideChildrenInMenu` })}
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 隐藏菜单 */}
 			<ProFormRadio.Group
 				name="hideInMenu"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.hideInMenu` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInMenu` })}
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 在面包屑中隐藏 */}
 			<ProFormRadio.Group
 				name="hideInBreadcrumb"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.hideInBreadcrumb` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInBreadcrumb` })}
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 显示顶栏 */}
 			<ProFormRadio.Group
 				name="headerRender"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.headerRender` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.headerRender` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 显示页脚 */}
 			<ProFormRadio.Group
 				name="footerRender"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.footerRender` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.footerRender` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 显示菜单 */}
 			<ProFormRadio.Group
 				name="menuRender"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.menuRender` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuRender` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 显示菜单顶栏 */}
 			<ProFormRadio.Group
 				name="menuHeaderRender"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.menuHeaderRender` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuHeaderRender` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 子项往上提 */}
 			<ProFormRadio.Group
 				name="flatMenu"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.flatMenu` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.flatMenu` })}
 				radioType="button"
 				initialValue={0}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 固定顶栏 */}
 			<ProFormRadio.Group
 				name="fixedHeader"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.fixedHeader` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixedHeader` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 			{/* 固定菜单 */}
 			<ProFormRadio.Group
 				name="fixSiderbar"
 				colProps={{ span: 8 }}
-				label={formatMessage({ id: `${formatPerfix()}.fixSiderbar` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixSiderbar` })}
 				radioType="button"
 				initialValue={1}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={APP_FLAG_OPTS}
+				options={FLAG_OPTS}
 			/>
 		</>
 	)

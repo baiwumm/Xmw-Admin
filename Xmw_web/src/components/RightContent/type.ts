@@ -1,6 +1,6 @@
 /**
  * @description: 睡眠 Props
- * @author: Cyan
+ * @Author: 白雾茫茫丶
  */
 export type LockSleepProps = {
   last_time: number;

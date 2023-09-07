@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-12-12 10:10:55
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 16:33:40
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 10:08:39
  */
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { OperationLogsService } from './operation-logs.service'; // OperationLogs Service
@@ -15,7 +15,7 @@ import { ResponseModel, PageResModel } from '@/global/interface'; // TS类型注
 import { ListOperationLogsDto, ResponseOperationLogsDto } from './dto';
 import { responseMessage } from '@/utils'; // 全局工具函数
 
-@Controller('system/operation-logs')
+@Controller('system/operation-log')
 export class OperationLogsController {
   constructor(private readonly operationLogsService: OperationLogsService) { }
   /**

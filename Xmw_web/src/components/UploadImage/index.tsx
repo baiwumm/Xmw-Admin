@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 13:49:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 16:19:36
+ * @LastEditTime: 2023-09-01 10:57:40
  */
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -20,8 +20,8 @@ import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { get, isEmpty } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
 
-import type { AppLocalCacheModel } from '@/global/interface'
-import { CACHE_KEY, isHttpLink } from '@/utils'
+import { LOCAL_STORAGE } from '@/utils/enums'
+import { getLocalStorageItem, isHttpLink } from '@/utils'
 
 const { Text } = Typography;
 
@@ -44,8 +44,8 @@ const UploadImage: FC<IProps> = ({
   },
   ...uploadProps
 }) => {
-  // 获取 localstorage key
-  const appCache: AppLocalCacheModel = JSON.parse(window.localStorage.getItem(CACHE_KEY) || '{}')
+  // 获取 Token
+  const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
   // 上传图片loading
   const [uploadLoading, { setTrue: setUploadLoadingTrue, setFalse: setUploadLoadingFalse }] = useBoolean(false)
   // 文件列表
@@ -79,7 +79,7 @@ const UploadImage: FC<IProps> = ({
       // 上传地址
       action: '/api/upload/single-file',
       // 请求头添加token
-      headers: { Authorization: `Bearer ${appCache.ACCESS_TOKEN}` },
+      headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
       // 上传图片回调
       onChange: onChangeUpload,
       // 文件列表

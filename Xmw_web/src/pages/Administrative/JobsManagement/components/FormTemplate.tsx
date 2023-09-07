@@ -1,10 +1,10 @@
 /*
  * @Description: 新建表单
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:31:31
+ * @LastEditTime: 2023-09-07 09:44:30
  */
 
 // 引入第三方库
@@ -13,13 +13,13 @@ import { Form, message } from 'antd'; // antd 组件库
 import { omit } from 'lodash-es'
 import type { FC } from 'react';
 
-import { MENU } from '@/enums'
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
-import { renderFormTitle } from '@/utils'
+import { formatPathName, renderFormTitle } from '@/utils'
+import { ROUTES } from '@/utils/enums'
+import type { FormTemplateProps } from '@/utils/types/administrative/jobs-management' // 公共 interface
 
 // 引入业务组件
-import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
-import type { FormTemplateProps } from '../utils/interface' // 公共 interface
+import FormTemplateItem from './FormTemplateItem' // 表单组件 
 
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
@@ -34,7 +34,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 初始化表单
 	const [form] = Form.useForm<API.JOBSMANAGEMENT>();
 	// 渲染标题
-	const formTitle = renderFormTitle<API.JOBSMANAGEMENT>(formData, MENU.JOBSMANAGEMENT, 'jobs_id', 'jobs_name')
+	const formTitle = renderFormTitle<API.JOBSMANAGEMENT>(formData,
+		formatPathName(ROUTES.JOBSMANAGEMENT), 'jobs_id', 'jobs_name')
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {

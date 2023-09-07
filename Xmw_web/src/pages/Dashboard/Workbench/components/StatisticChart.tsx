@@ -1,7 +1,7 @@
 /*
  * @Description: 指标卡片
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-08-08 14:50:57
  * @LastEditors: Cyan
  * @LastEditTime: 2023-08-08 15:20:05

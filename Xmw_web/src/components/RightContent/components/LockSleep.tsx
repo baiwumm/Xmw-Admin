@@ -1,19 +1,19 @@
 /*
  * @Description: 睡眠弹窗
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 16:40:34
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-11 13:40:35
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 17:33:42
  */
 import { useIntl, useModel } from '@umijs/max'
-import { useBoolean, useEventListener, useInterval, useLocalStorageState, useMount } from 'ahooks'
+import { useBoolean, useEventListener, useInterval, useMount } from 'ahooks'
 import { Avatar, Button, Col, Form, Input, message, Modal, Row, Typography } from 'antd'
 import type { FC } from 'react'
 
-import { encryptionAesPsd } from '@/utils'
-
-import { LockSleepProps } from '../type'
+import { encryptionAesPsd, getLocalStorageItem, setLocalStorageItem } from '@/utils'
+import { LOCAL_STORAGE } from '@/utils/enums'
+import { LockSleepTypes } from '@/utils/types'
 
 const { Title } = Typography;
 
@@ -29,32 +29,24 @@ const LockSleep: FC = () => {
   const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 表单实例
   const [form] = Form.useForm()
-  // 记录用户最后一次移动鼠标的时间
-  const [sleepInfo, setSleepInfo] = useLocalStorageState<LockSleepProps>(
-    'lock_sleep',
-    {
-      defaultValue: {
-        last_time: new Date().getTime(),
-        isSleep: false,
-      },
-    },
-  );
+  // 获取 LOCK_SLEEP 信息
+  const LOCK_SLEEP = getLocalStorageItem<LockSleepTypes>(LOCAL_STORAGE.LOCK_SLEEP)
   // 判断用户未操作时间是否拆过设定值
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
     // 判断是否超时
-    if (sleepInfo && currentTime - sleepInfo.last_time > timeOut) {
+    if (LOCK_SLEEP && currentTime - LOCK_SLEEP.last_time > timeOut) {
       setTrue()
-      setSleepInfo({ ...sleepInfo, isSleep: true })
+      setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, isSleep: true })
     }
   }
   // 提交表单
   const hanlderSubmit = () => {
     // 触发表单校验
     form.validateFields().then((values: { password: string }) => {
-      if (sleepInfo && initialState?.CurrentUser?.password === encryptionAesPsd(values.password)) {
+      if (LOCK_SLEEP && initialState?.CurrentUser?.password === encryptionAesPsd(values.password)) {
         setFalse()
-        setSleepInfo({ ...sleepInfo, isSleep: false })
+        setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, isSleep: false })
       } else {
         message.error(formatMessage({ id: `${formatPerfix}.password.error` }))
       }
@@ -68,16 +60,20 @@ const LockSleep: FC = () => {
 
   // 监听用户是否有操作行为
   useEventListener('mousemove', () => {
-    if (sleepInfo) {
-      setSleepInfo({ ...sleepInfo, last_time: new Date().getTime() })
+    if (LOCK_SLEEP) {
+      setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, last_time: new Date().getTime() })
     }
   })
 
   // 一开始就检测
   useMount(() => {
-    if (sleepInfo?.isSleep) {
+    if (LOCK_SLEEP?.isSleep) {
       setTrue()
     }
+    setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, {
+      last_time: new Date().getTime(),
+      isSleep: false,
+    })
   })
   return (
     <Modal

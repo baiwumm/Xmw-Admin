@@ -1,17 +1,16 @@
-import { request } from '@umijs/max';
 
-import type { PageResModel, ResponseModel } from '@/global/interface';
-import type { TableSearchProps } from '@/pages/System/OperationLog/utils/interface'
+import { ROUTES } from '@/utils/enums'
+import type { PageResponse } from '@/utils/types'
+import type { SearchParams } from '@/utils/types/system/operation-log'
+import { httpRequest } from '@/utils/umiRequest'
+
+const baseURL = ROUTES.OPERATIONLOG
+
 /**
  * @description: 操作日志列表
- * @param {TableSearchProps} options
- * @return {*}
- * @author: Cyan
+ * @param {SearchParams} options
+ * @Author: 白雾茫茫丶
  */
-export async function getOperationLogList(options?: TableSearchProps):
-  Promise<ResponseModel<PageResModel<API.OPERATIONLOG>>> {
-  return request('/api/system/operation-logs', {
-    method: 'GET',
-    params: options || {},
-  });
+export async function getOperationLogList(options?: SearchParams) {
+  return httpRequest.get<PageResponse<API.OPERATIONLOG>>(`${baseURL}`, options);
 }

@@ -1,64 +1,50 @@
 /*
  * @Description: 智能行政-岗位管理-API
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 18:10:19
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-29 16:41:47
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-07 10:12:37
  */
-import { request } from '@umijs/max';
+import { ROUTES } from '@/utils/enums'
+import type { CreateJobsParams, SearchParams } from '@/utils/types/administrative/jobs-management'
+import { httpRequest } from '@/utils/umiRequest'
 
-import type { ResponseModel } from '@/global/interface';
-import type { CreateJobsProps, TableSearchProps } from '@/pages/Administrative/JobsManagement/utils/interface'
+const baseURL = ROUTES.JOBSMANAGEMENT
 
 /**
  * @description: 获取岗位管理列表
- * @param {TableSearchProps} options
- * @return {*}
- * @author: Cyan
+ * @param {SearchParams} options
+ * @author: 白雾茫茫丶丶
  */
-export async function getJobsList(options?: TableSearchProps): Promise<ResponseModel<API.JOBSMANAGEMENT[]>> {
-  return request('/api/administrative/jobs-management', {
-    method: 'GET',
-    params: options || {},
-  });
+export async function getJobsList(options?: SearchParams) {
+  return httpRequest.get<API.JOBSMANAGEMENT[]>(`${baseURL}`, options);
 }
 
 /**
  * @description: 创建岗位数据
- * @param {CreateJobsProps} options
- * @return {*}
- * @author: Cyan
+ * @param {CreateJobsParams} options
+ * @author: 白雾茫茫丶丶
  */
-export async function createJobs(options: CreateJobsProps): Promise<ResponseModel<API.JOBSMANAGEMENT>> {
-  return request('/api/administrative/jobs-management', {
-    method: 'POST',
-    data: options || {},
-  });
+export async function createJobs(options: CreateJobsParams) {
+  return httpRequest.post<API.JOBSMANAGEMENT>(`${baseURL}`, options);
 }
 
 /**
  * @description: 更新岗位数据
  * @param {API.JOBSMANAGEMENT} options
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
 
-export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT): Promise<ResponseModel<number[]>> {
-  return request(`/api/administrative/jobs-management/${jobs_id}`, {
-    method: 'PUT',
-    data: options || {},
-  });
+export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT) {
+  return httpRequest.put<number[]>(`${baseURL}/${jobs_id}`, options);
 }
 
 /**
  * @description: 删除岗位数据
  * @param {string} jobs_id
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶丶
  */
-export async function delJobs(jobs_id: string): Promise<ResponseModel<number>> {
-  return request(`/api/administrative/jobs-management/${jobs_id}`, {
-    method: 'DELETE',
-  });
+export async function delJobs(jobs_id: string) {
+  return httpRequest.delete<number>(`${baseURL}/${jobs_id}`);
 }

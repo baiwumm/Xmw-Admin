@@ -4,18 +4,18 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 17:50:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 11:24:28
+ * @LastEditTime: 2023-09-07 17:33:27
  */
 import { ClusterOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons' // antd 图标库
 import { TableDropdown } from '@ant-design/pro-components'
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { Button, Space } from 'antd'
-import { get } from 'lodash-es'
+import { filter, get } from 'lodash-es'
 import { FC } from 'react'
 
-import { INTERNATION, OPERATION } from '@/enums'
-import type { DropdownMenuTypes } from '@/types'
+import { INTERNATION, OPERATION } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import type { DropdownMenuTypes } from '@/utils/types'
 
 type IProps = {
   formatPerfix: string; // 国际化前缀
@@ -38,10 +38,11 @@ const DropdownMenu: FC<IProps> = ({ formatPerfix, addChildCallback, editCallback
         fallback={null}>
         <Space size='small' onClick={() => addChildCallback?.()}>
           <ClusterOutlined />
-          <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` })}</span>
+          <span>{addChildCallback ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` }) : null}</span>
         </Space>
       </Access>,
       key: OPERATION.ADDCHILD,
+      show: addChildCallback ? 1 : 0,
     },
     // 编辑
     {
@@ -54,6 +55,7 @@ const DropdownMenu: FC<IProps> = ({ formatPerfix, addChildCallback, editCallback
         </Space>
       </Access>,
       key: OPERATION.EDIT,
+      show: editCallback ? 1 : 0,
     },
     // 删除
     {
@@ -66,10 +68,11 @@ const DropdownMenu: FC<IProps> = ({ formatPerfix, addChildCallback, editCallback
         </Space>
       </Access>,
       key: OPERATION.DELETE,
+      show: deleteCallback ? 1 : 0,
     },
   ]
   return (
-    <TableDropdown menus={menuItems}>
+    <TableDropdown menus={filter(menuItems, ['show', 1])}>
       <Button size="small">
         {formatMessage({ id: INTERNATION.OPERATION })}
         <DownOutlined />
