@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:47:53
+ * @LastEditTime: 2023-09-13 18:22:00
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -22,12 +22,12 @@ import { delOrganization, getOrganizationList } from '@/services/administrative/
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
 import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
-import { INTERNATION, OPERATION, ROUTES, STATUS } from '@/utils/enums'
+import { ORG_TYPE_OPTS, randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import { PageResponse, PaginationParams } from '@/utils/types'
-import type { SearchParams } from '@/utils/types/administrative/organization'
+import type { OrgTypes, SearchParams } from '@/utils/types/administrative/organization'
 
-import { ORG_TYPE_OPTS } from '../utils/config'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
@@ -68,7 +68,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delOrganization(org_id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -80,8 +80,7 @@ const TableTemplate: FC = () => {
 
 	/**
 * @description: proTable columns 配置项
-* @return {*}
-* @author: 白雾茫茫丶丶
+* @author: 白雾茫茫丶
 */
 	const columns: ProColumns<API.ORGANIZATION>[] = [
 		{
@@ -102,7 +101,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			width: 120,
 			align: 'center',
-			render: (text) => <Tag color="cyan">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_logo` }),
@@ -124,7 +123,7 @@ const TableTemplate: FC = () => {
 			align: 'center',
 			valueEnum: ORG_TYPE_OPTS,
 			render: (_, record) => {
-				const org_type = record.org_type as keyof typeof ORG_TYPE_OPTS
+				const org_type: OrgTypes = record.org_type
 				return <Tag
 					color={ORG_TYPE_OPTS[org_type].color}>
 					{ORG_TYPE_OPTS[org_type].text}
@@ -151,7 +150,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			sorter: true,
 			align: 'center',
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
@@ -227,11 +226,12 @@ const TableTemplate: FC = () => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getOrganizationList(params).then((res) => {
-						setTreeData(res.data)
+						const data = get(res, 'data', [])
+						setTreeData(data)
 						return {
-							data: res.data,
+							data,
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
+							success: res.code === REQUEST_CODE.SUCCESS,
 						}
 					})
 					return Promise.resolve(response)

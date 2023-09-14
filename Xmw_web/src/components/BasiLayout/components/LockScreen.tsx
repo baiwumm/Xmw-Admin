@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 14:20:20
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 14:30:06
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-14 15:50:19
  */
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl, useModel } from '@umijs/max'
@@ -13,6 +13,7 @@ import { Avatar, Button, Col, Form, Input, message, Row, Typography } from 'antd
 import type { FC } from 'react'
 
 import { encryptionAesPsd } from '@/utils'
+import { INTERNATION } from '@/utils/enums'
 
 const { Title } = Typography;
 
@@ -48,7 +49,7 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
         setLockPageFalse()
         setLockPassword(undefined)
       } else {
-        message.error(formatMessage({ id: 'components.RightContent.LockScreen.error' }))
+        message.error(formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen.error` }))
       }
     })
   };
@@ -66,8 +67,8 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
             <Form.Item name="password" rules={[{ required: true, min: 6, max: 12 }]}>
               <Input.Password
                 placeholder={`
-                ${formatMessage({ id: 'global.form.placeholder' })}
-                ${formatMessage({ id: 'components.RightContent.LockScreen.password' })}
+                ${formatMessage({ id: INTERNATION.PLACEHOLDER })}
+                ${formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen.password` })}
                 `}
               />
             </Form.Item>
@@ -76,7 +77,7 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
         <Button
           type="primary"
           block
-          onClick={hanlderSubmit}>{formatMessage({ id: 'components.RightContent.LockScreen.access-system' })
+          onClick={hanlderSubmit}>{formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen.access-system` })
           }</Button>
       </Row>
     </div>

@@ -9,6 +9,12 @@
 
 export default {
   administrative: {
+    // 活动公告
+    announcement: {
+      add: 'administrative:announcement:add', // 新建
+      edit: 'administrative:announcement:edit', // 编辑
+      delete: 'administrative:announcement:delete', // 删除
+    },
     // 组织管理
     organization: {
       add: 'administrative:organization:add', // 新建
@@ -51,11 +57,5 @@ export default {
       edit: 'system:internationalization:edit', // 编辑
       delete: 'system:internationalization:delete', // 删除
     },
-  },
-  // 活动公告
-  announcement: {
-    add: 'administrative:announcement:add', // 新建
-    edit: 'administrative:announcement:edit', // 编辑
-    delete: 'administrative:announcement:delete', // 删除
   },
 }

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 09:54:00
+ * @LastEditTime: 2023-09-13 18:02:19
  */
 // 引入第三方库
 import {
@@ -20,7 +20,7 @@ import type { FC } from 'react';
 
 import { formatPerfix } from '@/utils'
 import { STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { INTERNATION, ROUTES, STATUS } from '@/utils/enums'
 
 const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) => {
 	const { formatMessage } = useIntl();
@@ -47,7 +47,7 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(
 									formatMessage({
-										id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name.validator`
+										id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name.validator`,
 									})))
 							}
 							return Promise.resolve()
@@ -110,7 +110,7 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormRadio.Group
 				name="status"
 				colProps={{ span: 8 }}
-				initialValue={1}
+				initialValue={STATUS.NORMAL}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}

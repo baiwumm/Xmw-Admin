@@ -23,7 +23,7 @@ import { Login } from '@/services/logic/login' // 登录相关接口
 import { encryptionAesPsd, formatPerfix, setLocalStorageItem, timeFix, waitTime } from '@/utils'
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 import { initAllRequest } from '@/utils/initRequest'
-import type { InitialStateTypes, LoginTypes } from '@/utils/types'
+import type { LoginTypes } from '@/utils/types'
 import type { LoginParams, LoginType } from '@/utils/types/login'
 
 import Account from './components/Account' // 账户密码登录
@@ -43,14 +43,13 @@ const LoginPage: FC = () => {
   const [loginType, setLoginType] = useState<LoginType>('account');
   /**
    * @description: 用户登录接口
-   * @return {*}
    * @Author: 白雾茫茫丶
    */
   const { run: runLogin } = useRequest<LoginTypes, LoginParams[]>(
     async (params) => get(await Login(params), 'data', {}),
     {
       manual: true,
-      onSuccess: async (res: LoginTypes) => {
+      onSuccess: async (res) => {
         if (!isEmpty(res)) {
           const { access_token, login_last_time } = res
           // 将 token 保存到localstorage
@@ -58,7 +57,7 @@ const LoginPage: FC = () => {
           // 获取用户信息和权限
           const userInfoAndAccess = await initAllRequest()
           if (!isEmpty(userInfoAndAccess)) {
-            await setInitialState((s: InitialStateTypes) => ({ ...s, ...userInfoAndAccess }));
+            await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
             setTimeout(() => {
               const urlParams = new URL(window.location.href).searchParams;
               // 路由跳转

@@ -8,6 +8,8 @@
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
+import { REQUEST_METHODS } from '@/utils/enums'
+
 /**
  * @description: Response 返回体
  * @author: 白雾茫茫丶
@@ -35,6 +37,12 @@ export type PaginationParams = {
   current: number; // 当前页码
   pageSize: number; // 每页条数
 }
+
+/**
+ * @description: 请求方法
+ * @author: 白雾茫茫丶
+ */
+export type RequestMethods = (typeof REQUEST_METHODS)[keyof typeof REQUEST_METHODS]
 
 /**
  * @description: 全局状态数据流

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:22:36
+ * @LastEditTime: 2023-09-13 09:58:28
  */
 
 // 引入第三方库
@@ -15,7 +15,7 @@ import type { FC } from 'react';
 
 import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
 import { formatPathName, renderFormTitle } from '@/utils'
-import { ROUTES } from '@/utils/enums'
+import { REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/internationalization' // 公共 interface
 
 // 引入业务组件
@@ -54,7 +54,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 		params = omit(params, ['children'])
 		// 执行数据库操作
 		await (params.id ? updateInternational : createInternational)(params).then((res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg);
 				// 刷新表格
 				reloadTable()

@@ -17,6 +17,7 @@ import {
   Put,
   Param,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -34,6 +35,7 @@ import {
   ResponseAnnouncementDto,
   SaveAnnouncementDto,
   CreateAnnouncementDto,
+  UpdatePinnedDto,
 } from './dto';
 import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 
@@ -121,6 +123,25 @@ export class AnnouncementController {
   ): Promise<ResponseModel<ResData | number>> {
     const response = await this.announcementService.deleteAnnouncement(
       announcement_id,
+    );
+    return response;
+  }
+
+  /**
+   * @description: 更新是否置顶状态
+   * @author: 白雾茫茫丶
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/:announcement_id')
+  @ApiOkResponse({ type: UpdateResponseDto })
+  @ApiOperation({ summary: '更新是否置顶状态' })
+  async updatePinned(
+    @Param('announcement_id') announcement_id: string,
+    @Body() { pinned }: UpdatePinnedDto,
+  ): Promise<ResponseModel<ResData>> {
+    const response = await this.announcementService.updatePinned(
+      announcement_id,
+      pinned,
     );
     return response;
   }

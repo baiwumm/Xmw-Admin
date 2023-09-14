@@ -15,7 +15,7 @@ const baseURL = ROUTES.JOBSMANAGEMENT
 /**
  * @description: 获取岗位管理列表
  * @param {SearchParams} options
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export async function getJobsList(options?: SearchParams) {
   return httpRequest.get<API.JOBSMANAGEMENT[]>(`${baseURL}`, options);
@@ -24,7 +24,7 @@ export async function getJobsList(options?: SearchParams) {
 /**
  * @description: 创建岗位数据
  * @param {CreateJobsParams} options
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export async function createJobs(options: CreateJobsParams) {
   return httpRequest.post<API.JOBSMANAGEMENT>(`${baseURL}`, options);
@@ -33,7 +33,7 @@ export async function createJobs(options: CreateJobsParams) {
 /**
  * @description: 更新岗位数据
  * @param {API.JOBSMANAGEMENT} options
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 
 export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT) {
@@ -43,7 +43,7 @@ export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT) {
 /**
  * @description: 删除岗位数据
  * @param {string} jobs_id
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export async function delJobs(jobs_id: string) {
   return httpRequest.delete<number>(`${baseURL}/${jobs_id}`);

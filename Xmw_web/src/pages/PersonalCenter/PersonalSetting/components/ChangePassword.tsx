@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-12 16:10:13
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:03:43
+ * @LastEditTime: 2023-09-13 09:53:06
  */
 import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
 import { useIntl, useModel } from '@umijs/max'
@@ -16,10 +16,9 @@ import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { updateUser } from '@/services/system/user-management'
 import { encryptionAesPsd, formatPerfix, logoutToLogin, removeLocalStorageItem, waitTime } from '@/utils'
-import { INTERNATION, LOCAL_STORAGE, ROUTES } from '@/utils/enums'
-import type { InitialStateTypes } from '@/utils/types'
+import { INTERNATION, LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
 
-type passwordProps = {
+type PasswordParams = {
   originalPassword: string;
   password: string;
   confirmPassword: string;
@@ -34,14 +33,13 @@ const ChangePassword: FC = () => {
 
   /**
  * @description: 退出登录，并且将当前的 url 保存
- * @return {*}
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
   const { run: loginOut } = useRequest(Logout, {
     manual: true,
     onSuccess: async (res) => {
-      if (res.code === 200) {
-        setInitialState((s: InitialStateTypes) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
+      if (res.code === REQUEST_CODE.SUCCESS) {
+        setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
         removeLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN);
         removeLocalStorageItem(LOCAL_STORAGE.USER_INFO);
         // 退出登录返回登录页
@@ -54,12 +52,12 @@ const ChangePassword: FC = () => {
   /**
  * @description: 更新用户密码
  * @return {*}
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
   const { run: runUpdateUser } = useRequest(updateUser, {
     manual: true,
     onSuccess: async (res) => {
-      if (res.code === 200) {
+      if (res.code === REQUEST_CODE.SUCCESS) {
         // 更新密码成功后退出登录返回到登录页面
         loginOut()
         // 销毁对话框
@@ -70,7 +68,7 @@ const ChangePassword: FC = () => {
   )
 
   // 表单提交
-  const handlerSubmit = (values: passwordProps) => {
+  const handlerSubmit = (values: PasswordParams) => {
     // 判断原密码是否正确
     if (encryptionAesPsd(values.originalPassword) !== initialState?.CurrentUser?.password) {
       message.error(formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.change-password.error` }))

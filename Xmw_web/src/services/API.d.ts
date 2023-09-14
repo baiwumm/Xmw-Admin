@@ -3,56 +3,61 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-23 10:23:23
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 15:17:25
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-13 09:12:47
  */
 declare namespace API {
-  import type { OrgTypeProps } from '@/pages/Administrative/Organization/utils/interface'
+  import { LANGS, RequestMethods } from '@/utils/types'
+  import { AnnouncementType } from '@/utils/types/administrative/announcement'
+  import type { OrgTypes } from '@/utils/types/administrative/organization'
+
+  type TIMES = {
+    created_time: Date; // 创建时间
+    updated_time: Date; // 最后一次更新时间
+  }
+
+  /**
+ * @description: 国际化多语言层级对象
+ * @author: 白雾茫茫丶
+ */
+  type LOCALESLANGAll = Record<LANGS, string>
+
   /**
    * @description: 智能行政-组织管理
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   type ORGANIZATION = {
     org_id: string; // 组织id
     org_name: string; // 组织名称
     org_code: string; // 组织编码
-    org_type: OrgTypeProps; // 组织类型
+    org_type: OrgTypes; // 组织类型
     org_logo: string; // 组织 logo
     describe: string; // 组织描述
     parent_id: string; // 父级id
     status: number; // 组织状态
     sort: number; // 排序
-    created_time: Date; // 创建时间
-    updated_time: Date; // 最后一次更新时间
     leader: string; // 岗位负责人
     founder: string; // 创建人
     children?: ORGANIZATION[];
-  };
+  } & TIMES;
 
   /**
    * @description: 智能行政-岗位管理
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   type JOBSMANAGEMENT = {
     jobs_id: string; // 岗位id
     jobs_name: string; // 岗位名称
-    org_id: string; // 所属组织
     describe: string; // 岗位描述
     parent_id: string; // 父级id
-    created_time: Date; // 创建时间
-    updated_time: Date; // 最后一次更新时间
     leader: string; // 岗位负责人
     founder: string; // 创建人
-    org_name: string; // 组织名称
     sort: number; // 排序
     children?: JOBSMANAGEMENT[];
-  };
+  } & Pick<ORGANIZATION, 'org_id' | 'org_name' | 'org_logo'> & TIMES;
 
   /**
    * @description: 智能行政-活动公告
-   * @return {*}
    * @author: 白雾茫茫丶
    */
   type ANNOUNCEMENT = {
@@ -62,18 +67,15 @@ declare namespace API {
     avatar_url: string; // 作者头像
     title: string; // 标题
     content: string; // 正文内容
-    type: string; // 类型
+    type: AnnouncementType; // 类型
     status: number; // 状态
     pinned: number; // 是否置顶
     readCounts: number; // 阅读次数
-    created_time: Date; // 创建时间
-    updated_time: Date; // 最后一次更新时间
-  }
+  } & TIMES
 
   /**
    * @description: 系统设置-菜单管理
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   type MENUMANAGEMENT = {
     menu_id: string; // 菜单id
@@ -102,20 +104,13 @@ declare namespace API {
     founder?: string; // 创建人
     sort: number; // 排序
     status: number; // 菜单状态
-    created_time: Date; // 创建时间
-    updated_time: Date; // 最后一次更新时间
-    'zh-CN': string;
-    'en-US': string;
-    'ja-JP': string;
-    'zh-TW': string;
     routes?: MENUMANAGEMENT[];
     [key: string]: string
-  };
+  } & TIMES & LOCALESLANGAll;
 
   /**
    * @description: 系统设置-用户管理
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   type USERMANAGEMENT = {
     user_id: string; // 用户id
@@ -147,14 +142,11 @@ declare namespace API {
     login_num: number; // 登录次数
     login_last_ip: string; // 最后一次登录ip
     login_last_time: Date; // 最后一次登录时间
-    created_time: Date; // 创建时间
-    updated_time: Date; // 最后一次更新时间
-  };
+  } & TIMES;
 
   /**
    * @description: 系统设置-角色管理
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   type ROLEMENU = {
     menu_id: string;
@@ -169,30 +161,24 @@ declare namespace API {
     status: number;
     describe: string;
     menu_permission: ROLEMENU[];
-    created_time: Date;
-    updated_time: Date;
-  };
+  } & TIMES;
+
   /**
    * @description: 系统设置-国际化
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
-  type LOCALESLANG = 'zh-CN' | 'en-US' | 'ja-JP' | 'zh-TW'
-  type INTERNATIONALIZATION<T = string> = { [key in LOCALESLANG]: T } & {
+  type INTERNATIONALIZATION = LOCALESLANGAll & {
     id: string;
     name: string;
     parent_id: string;
-    created_time: Date;
-    updated_time: Date;
     founder: string;
     sort: number; // 排序
     children?: INTERNATIONALIZATION[];
-  };
+  } & TIMES;
 
   /**
  * @description: 系统设置-操作日志
- * @return {*}
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
   export type OPERATIONLOG = {
     log_id: string; // id
@@ -201,19 +187,8 @@ declare namespace API {
     ip: string; // ip
     path: string; // 前端路由
     user_agent: string; // 代理
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE'; // 请求方式
+    method: RequestMethods; // 请求方式
     params: Record<string, any>; // 请求参数
     api_url: string; // 请求地址
-    created_time?: Date; // 创建时间
-    updated_time?: Date; // 最后一次更新时间
-  };
-
-  /**
- * @description: 国际化多语言层级对象
- * @return {*}
- * @author: 白雾茫茫丶丶
- */
-  type LOCALESLANGAll = Pick<INTERNATIONALIZATION<ResData>, LOCALESLANG> & {
-    [key: string]: string
-  }
+  } & TIMES;
 }

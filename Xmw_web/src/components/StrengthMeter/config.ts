@@ -1,6 +1,5 @@
 /**
  * @description: 密码强度配置项
- * @return {*}
  * @Author: 白雾茫茫丶
  */
 export const strengthMeterOptions: Record<string, string> = {
@@ -10,6 +9,3 @@ export const strengthMeterOptions: Record<string, string> = {
   'strong': '#1bbf1b',
   'very-strong': '#008000',
 }
-
-// 统一国际化前缀
-export const formatPerfix: string = 'pages.system.user-management'

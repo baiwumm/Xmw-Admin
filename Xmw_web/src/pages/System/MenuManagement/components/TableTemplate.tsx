@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:22:31
+ * @LastEditTime: 2023-09-13 10:52:58
  */
 // 引入第三方库
 import {
@@ -34,13 +34,34 @@ import { getInternationalList } from '@/services/system/internationalization' //
 // 引入业务组件
 import { delMenu, getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { columnScrollX, formatPathName, formatPerfix, renderColumnsStateMap } from '@/utils'
-import { FLAG_OPTS } from '@/utils/const'
-import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
+import { FLAG_OPTS, LAYOUT_TYPE_OPTS, MENU_TYPE_OPTS, NAV_THEME_OPTS, randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import type { SearchParams } from '@/utils/types/system/menu-management'
 
-import { LAYOUT_OPTS, MENU_CFG, MENU_TYPE_OPTS, NAV_THEME_OPTS } from '../utils/config'
 import FormTemplate from './FormTemplate' // 表单组件
+
+/**
+ * @description: 默认不显示的 column 项
+ * @author: 白雾茫茫丶
+ */
+const MENU_CFG = [
+	'redirect',
+	'navTheme',
+	'headerTheme',
+	'layout',
+	'hideChildrenInMenu',
+	'hideInMenu',
+	'hideInBreadcrumb',
+	'headerRender',
+	'headerRender',
+	'footerRender',
+	'menuRender',
+	'menuHeaderRender',
+	'flatMenu',
+	'fixedHeader',
+	'fixSiderbar',
+]
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
@@ -77,7 +98,7 @@ const TableTemplate: FC = () => {
 	 * @description: 删除菜单数据
 	 * @param {string} menu_id
 	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const handlerDelete = (menu_id: string): void => {
 		Modal.confirm({
@@ -85,7 +106,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delMenu(menu_id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -108,7 +129,7 @@ const TableTemplate: FC = () => {
 	}
 	/**
 * @description: proTable columns 配置项
-* @author: 白雾茫茫丶丶
+* @author: 白雾茫茫丶
 */
 	const columns: ProColumns<API.MENUMANAGEMENT>[] = [
 		/* 菜单名称 */
@@ -209,8 +230,8 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
-				1: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
+				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 		},
 		/* 排序 */
@@ -221,7 +242,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 100,
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		/* 菜单主题 */
 		{
@@ -251,7 +272,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, LAYOUT_OPTS, 'layout'),
+			render: (_, record) => renderColumns(record, LAYOUT_TYPE_OPTS, 'layout'),
 		},
 		/* 隐藏子路由 */
 		{
@@ -410,7 +431,7 @@ const TableTemplate: FC = () => {
 	// 获取当前菜单数据
 	useRequest(async () => await getInternationalList({ isMenu: true }), {
 		onSuccess: (res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				setInternationalData(res.data)
 			}
 		},
@@ -427,9 +448,9 @@ const TableTemplate: FC = () => {
 					const response = await getMenuList(params).then((res) => {
 						setTreeData(res.data)
 						return {
-							data: res.data,
+							data: get(res, 'data', []),
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
+							success: res.code === REQUEST_CODE.SUCCESS,
 						}
 					})
 					return Promise.resolve(response)

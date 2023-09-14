@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:33:42
+ * @LastEditTime: 2023-09-14 16:00:13
  */
 import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useEventListener, useInterval, useMount } from 'ahooks'
@@ -12,7 +12,7 @@ import { Avatar, Button, Col, Form, Input, message, Modal, Row, Typography } fro
 import type { FC } from 'react'
 
 import { encryptionAesPsd, getLocalStorageItem, setLocalStorageItem } from '@/utils'
-import { LOCAL_STORAGE } from '@/utils/enums'
+import { INTERNATION, LOCAL_STORAGE } from '@/utils/enums'
 import { LockSleepTypes } from '@/utils/types'
 
 const { Title } = Typography;
@@ -23,8 +23,6 @@ const timeOut = 60 * 60 * 1000
 const LockSleep: FC = () => {
   const { formatMessage } = useIntl();
   const { initialState } = useModel('@@initialState');
-  // 统一国际化前缀
-  const formatPerfix: string = 'components.RightContent.LockSleep'
   // 弹窗显示
   const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 表单实例
@@ -48,7 +46,7 @@ const LockSleep: FC = () => {
         setFalse()
         setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, isSleep: false })
       } else {
-        message.error(formatMessage({ id: `${formatPerfix}.password.error` }))
+        message.error(formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password.error` }))
       }
     })
   };
@@ -77,11 +75,15 @@ const LockSleep: FC = () => {
   })
   return (
     <Modal
-      title={formatMessage({ id: `${formatPerfix}.title` })}
+      title={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.title` })}
       open={openModal}
       maskClosable={false}
       closable={false}
-      footer={<Button type="primary" onClick={hanlderSubmit}>{formatMessage({ id: 'global.button.confirm' })}</Button>}
+      footer={
+        <Button type="primary" onClick={hanlderSubmit}>
+          {formatMessage({ id: INTERNATION.BUTTON_CONFIRM })}
+        </Button>
+      }
     >
       <Row justify="center" style={{ flexDirection: 'column', textAlign: 'center' }}>
         <Col>
@@ -97,10 +99,10 @@ const LockSleep: FC = () => {
           <Form form={form} style={{ textAlign: 'left' }}>
             <Form.Item
               name="password"
-              label={formatMessage({ id: `${formatPerfix}.password` })}
+              label={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password` })}
               rules={[{ required: true }]}
             >
-              <Input.Password placeholder={formatMessage({ id: `${formatPerfix}.password.placeholder` })} />
+              <Input.Password placeholder={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password.placeholder` })} />
             </Form.Item>
           </Form>
         </Col>

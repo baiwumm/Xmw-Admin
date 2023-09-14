@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:31:57
+ * @LastEditTime: 2023-09-12 16:58:28
  */
 import type { ProColumns } from '@ant-design/pro-components';
 import { getLocale, history, useIntl } from '@umijs/max';
@@ -231,12 +231,6 @@ export const isHttpLink = (link: string): boolean => {
 }
 
 /**
- * @description: Tag 标签颜色
- * @author: 白雾茫茫丶
- */
-export const TagColors = ['magenta', 'volcano', 'cyan', 'blue']
-
-/**
  * @description: 渲染标题
  * @author: 白雾茫茫丶
  */
@@ -255,7 +249,7 @@ export const renderFormTitle = <T extends Record<string, any>>
 
 /**
  * @description: 默认不显示的 column 项
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export const renderColumnsStateMap = (MENU_CFG: string[] = []) => {
   const result: Record<string, { show: boolean }> = {}

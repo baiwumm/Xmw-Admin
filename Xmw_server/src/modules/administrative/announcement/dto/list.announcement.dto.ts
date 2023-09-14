@@ -27,6 +27,14 @@ export class ListAnnouncementDto {
 
   @ApiProperty({
     type: Number,
+    description: '状态',
+    default: 1,
+    required: false,
+  })
+  status?: number;
+
+  @ApiProperty({
+    type: Number,
     description: '是否置顶',
     default: 1,
     required: false,

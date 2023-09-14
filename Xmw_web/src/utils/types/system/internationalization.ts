@@ -13,7 +13,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: 头部搜索表单 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = {
   name?: string; // 国际化字段
@@ -24,7 +24,7 @@ export type SearchParams = {
 
 /**
  * @description: 新增国际化字段 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type CreateInternationalParams = {
   parent_id?: string; // 父级id

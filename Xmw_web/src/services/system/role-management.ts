@@ -8,7 +8,7 @@
  */
 import { ROUTES } from '@/utils/enums'
 import type { PageResponse } from '@/utils/types'
-import type { RoleStatusProps, SearchParams } from '@/utils/types/system/role-management'
+import type { RoleStatusParams, SearchParams } from '@/utils/types/system/role-management'
 import { httpRequest } from '@/utils/umiRequest'
 
 const baseURL = ROUTES.ROLEMANAGEMENT
@@ -56,6 +56,6 @@ export async function delRole(role_id: string) {
  * @param {Data} options
  * @Author: 白雾茫茫丶
  */
-export async function setRoleStatus({ role_id, status }: RoleStatusProps) {
+export async function setRoleStatus({ role_id, status }: RoleStatusParams) {
   return httpRequest.patch<number[]>(`${baseURL}/${role_id}`, { status });
 }

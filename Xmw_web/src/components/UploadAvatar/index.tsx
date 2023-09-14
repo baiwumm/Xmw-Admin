@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 14:44:15
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-01 10:56:36
+ * @LastEditTime: 2023-09-11 09:49:19
  */
 import { UserOutlined } from '@ant-design/icons';
 import { useIntl } from '@umijs/max'
@@ -14,8 +14,8 @@ import ImgCrop from 'antd-img-crop';
 import { get, last } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
 
-import { LOCAL_STORAGE } from '@/utils/enums'
 import { getLocalStorageItem } from '@/utils'
+import { LOCAL_STORAGE } from '@/utils/enums'
 
 interface IProps {
 	value?: string;
@@ -35,7 +35,7 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	 * @description: 限制用户上传的图片格式和大小
 	 * @param {RcFile} file
 	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const beforeUpload = (file: RcFile): boolean => {
 		// 限制图片类型
@@ -55,7 +55,7 @@ const UploadAvatar: FC<IProps> = ({ value, onChange }) => {
 	/**
 	 * @description: 上传文件改变时的回调
 	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const onChangeUpload: UploadProps['onChange'] = ({ fileList }): void => {
 		const path = get(last(fileList), 'response.data.path')

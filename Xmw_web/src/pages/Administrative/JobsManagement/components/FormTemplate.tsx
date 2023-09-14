@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 09:44:30
+ * @LastEditTime: 2023-09-13 09:28:29
  */
 
 // 引入第三方库
@@ -15,7 +15,7 @@ import type { FC } from 'react';
 
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { formatPathName, renderFormTitle } from '@/utils'
-import { ROUTES } from '@/utils/enums'
+import { REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/administrative/jobs-management' // 公共 interface
 
 // 引入业务组件
@@ -55,7 +55,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 		// 删除 children 属性
 		params = omit(params, ['children'])
 		await (params.jobs_id ? updateJobs : createJobs)(params).then((res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg);
 				// 刷新表格
 				reloadTable()

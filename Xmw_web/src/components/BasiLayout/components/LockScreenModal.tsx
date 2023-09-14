@@ -3,26 +3,30 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-11 11:18:51
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-11 18:04:10
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-14 15:53:55
  */
 import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useLocalStorageState, useMount } from 'ahooks'
 import { Avatar, Col, Form, Input, Modal, Row, Typography } from 'antd'
-import React, { FC, useImperativeHandle } from 'react'
+import { FC } from 'react'
 
 import { encryptionAesPsd } from '@/utils'
+import { INTERNATION } from '@/utils/enums'
 
 import LockScreen from './LockScreen' // 锁屏弹窗
 
 const { Title } = Typography;
 
-const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) => {
+type LockScreenModalProps = {
+  open: boolean;
+  setOpenFalse: () => void;
+}
+
+const LockScreenModal: FC<LockScreenModalProps> = ({ open = false, setOpenFalse }) => {
   const { formatMessage } = useIntl();
   // 获取全局状态
   const { initialState } = useModel('@@initialState');
-  // 弹窗显示
-  const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 是否显示锁屏页面
   const [openLockPage, { setTrue: setLockPageTrue, setFalse: setLockPageFalse }] = useBoolean(false);
   // 表单实例
@@ -36,16 +40,11 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
     form.validateFields().then((values: { password: string }) => {
       // 将锁屏密码保存到 localstorage
       setLockPassword(encryptionAesPsd(values.password))
-      setFalse()
+      setOpenFalse()
       // 弹窗锁屏页面
       setLockPageTrue()
     })
   }
-
-  // 将方法暴露给父组件使用
-  useImperativeHandle(cRef, () => ({
-    setTrue,
-  }));
 
   // 如果有锁屏密码，则表示已锁屏
   useMount(() => {
@@ -57,9 +56,9 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
   return (
     <>
       <Modal
-        title={formatMessage({ id: 'components.RightContent.LockScreen' })}
-        open={openModal}
-        onCancel={setFalse}
+        title={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen` })}
+        open={open}
+        onCancel={setOpenFalse}
         onOk={hanlderSubmit}
       >
         <Row justify="center" style={{ flexDirection: 'column', textAlign: 'center' }}>
@@ -76,14 +75,11 @@ const LockScreenModal: FC<{ cRef: React.MutableRefObject<any> }> = ({ cRef }) =>
             <Form form={form} style={{ textAlign: 'left' }}>
               <Form.Item
                 name="password"
-                label={formatMessage({ id: 'components.RightContent.LockScreen.password' })}
+                label={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen.password` })}
                 rules={[{ required: true, min: 6, max: 12 }]}
               >
                 <Input.Password
-                  placeholder={`
-                  ${formatMessage({ id: 'global.form.placeholder' })}
-                  ${formatMessage({ id: 'components.RightContent.LockScreen.password' })}`
-                  }
+                  placeholder={`${formatMessage({ id: INTERNATION.PLACEHOLDER })}${formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen.password` })}`}
                 />
               </Form.Item>
             </Form>

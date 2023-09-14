@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:41:15
+ * @LastEditTime: 2023-09-13 10:22:44
  */
 // 引入第三方库
 import {
@@ -20,11 +20,10 @@ import { keys } from 'lodash-es';
 import type { FC } from 'react';
 
 import { formatPerfix } from '@/utils'
-import { STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { MENU_TYPE_OPTS, STATUS_OPTS } from '@/utils/const'
+import { INTERNATION, MENU_TYPE, ROUTES, STATUS } from '@/utils/enums'
 import type { FormItemProps } from '@/utils/types/system/menu-management';
 
-import { MENU_TYPE_OPTS } from '../utils/config';
 import MenuFormRender from './MenuFormRender';
 
 const { Title } = Typography;
@@ -108,13 +107,13 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 	);
 	return (
 		<>
-			{/* 组织类型 */}
+			{/* 菜单类型 */}
 			<ProFormRadio.Group
 				name="menu_type"
 				colProps={{ span: 10 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menu_type` })}
 				radioType="button"
-				initialValue={'dir'}
+				initialValue={MENU_TYPE.DIR}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -146,8 +145,8 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 				}}
 			/>
 			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}>
-				<Title level={4} style={{ marginBottom: '-14px' }}>
-					基本信息
+				<Title level={4} style={{ marginBottom: 0 }}>
+					{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.basic-info` })}
 				</Title>
 			</Divider>
 			{/* 路由名称 */}
@@ -184,7 +183,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			</ProFormDependency>
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {
-					return menu_type !== 'button' ? unButtonRender : null;
+					return menu_type !== MENU_TYPE.BUTTON ? unButtonRender : null;
 				}}
 			</ProFormDependency>
 
@@ -218,7 +217,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormRadio.Group
 				name="status"
 				colProps={{ span: 8 }}
-				initialValue={1}
+				initialValue={STATUS.NORMAL}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -227,7 +226,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			/>
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {
-					return menu_type === 'menu' ? <MenuFormRender /> : null;
+					return menu_type === MENU_TYPE.MENU ? <MenuFormRender /> : null;
 				}}
 			</ProFormDependency>
 		</>

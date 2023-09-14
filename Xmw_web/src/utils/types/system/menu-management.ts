@@ -1,5 +1,7 @@
+import { MENU_TYPE } from '@/utils/enums'
+
 // 菜单类型
-export type MenuTypeProps = 'dir' | 'menu' | 'button'
+export type MenuTypes = (typeof MENU_TYPE)[keyof typeof MENU_TYPE]
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -16,7 +18,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: FormItem Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type FormItemProps = {
   treeData: API.MENUMANAGEMENT[]; // 菜单树形数据
@@ -26,7 +28,7 @@ export type FormItemProps = {
 
 /**
  * @description: 头部搜索表单 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = {
   menu_type?: string; // 菜单类型

@@ -4,27 +4,28 @@ import { Divider, Typography } from 'antd' // antd 组件库
 import type { FC } from 'react'
 
 import { formatPerfix } from '@/utils'
-import { FLAG_OPTS } from '@/utils/const'
-import { ROUTES } from '@/utils/enums'
+import { FLAG_OPTS, LAYOUT_TYPE_OPTS, NAV_THEME_OPTS, TARGET_TYPE_OPTS } from '@/utils/const'
+import { FLAG, LAYOUT_TYPE, NAV_THEME, ROUTES, TARGET_TYPE } from '@/utils/enums'
 
-import { LAYOUT_OPTS, NAV_THEME_OPTS, TARGET_OPTS } from '../utils/config'
 const { Title } = Typography;
 
 const MenuFormRender: FC = () => {
 	const { formatMessage } = useIntl();
 	return (
 		<>
-			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}>
-				<Title level={4} style={{ marginBottom: '-14px' }}>路由配置</Title>
+			<Divider orientation="left" style={{ marginTop: 0, marginBottom: 24 }}>
+				<Title level={4} style={{ marginBottom: 0 }}>
+					{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.route-config` })}
+				</Title>
 			</Divider>
 			{/* 显示layout布局 */}
 			<ProFormSelect
 				name="layout"
 				colProps={{ span: 12 }}
-				initialValue={'side'}
+				initialValue={LAYOUT_TYPE.SIDE}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.layout` })}
 				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.layout.tooltip` })}
-				options={LAYOUT_OPTS}
+				options={LAYOUT_TYPE_OPTS}
 				fieldProps={{
 					allowClear: false,
 				}}
@@ -33,7 +34,7 @@ const MenuFormRender: FC = () => {
 			<ProFormSelect
 				name="navTheme"
 				colProps={{ span: 12 }}
-				initialValue={'light'}
+				initialValue={NAV_THEME.LIGHT}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.navTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{
@@ -55,10 +56,10 @@ const MenuFormRender: FC = () => {
 			<ProFormSelect
 				name="target"
 				colProps={{ span: 12 }}
-				initialValue={'_blank'}
+				initialValue={TARGET_TYPE.BLANK}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.target` })}
 				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.target.tooltip` })}
-				options={TARGET_OPTS.map((item) => ({ value: item, label: item }))}
+				options={TARGET_TYPE_OPTS}
 				fieldProps={{
 					allowClear: false,
 				}}
@@ -69,7 +70,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideChildrenInMenu` })}
 				radioType="button"
-				initialValue={0}
+				initialValue={FLAG.NO}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -81,7 +82,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInMenu` })}
 				radioType="button"
-				initialValue={0}
+				initialValue={FLAG.NO}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -93,7 +94,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInBreadcrumb` })}
 				radioType="button"
-				initialValue={0}
+				initialValue={FLAG.NO}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -105,7 +106,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.headerRender` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -117,7 +118,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.footerRender` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -129,7 +130,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuRender` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -141,7 +142,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuHeaderRender` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -153,7 +154,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.flatMenu` })}
 				radioType="button"
-				initialValue={0}
+				initialValue={FLAG.NO}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -165,7 +166,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixedHeader` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -177,7 +178,7 @@ const MenuFormRender: FC = () => {
 				colProps={{ span: 8 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixSiderbar` })}
 				radioType="button"
-				initialValue={1}
+				initialValue={FLAG.YES}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-29 10:03:35
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:26:41
+ * @LastEditTime: 2023-09-12 17:21:35
  */
 import {
   ProFormRadio,
@@ -16,9 +16,9 @@ import { Col, Form, Row } from 'antd';
 import { FC } from 'react'
 
 import QuillEditor from '@/components/QuillEditor'
-import { FLAG_OPTS, STATUS_OPTS } from '@/utils/const'
-
-import { AnnouncementTypeEnum, formatPerfix } from '../utils/config'
+import { formatPerfix } from '@/utils'
+import { AnnouncementTypeEnum, FLAG_OPTS, STATUS_OPTS } from '@/utils/const'
+import { ANNOUNCEMENT_TYPE, FLAG, INTERNATION, ROUTES, STATUS } from '@/utils/enums'
 
 const FormTemplateItem: FC = () => {
   const { formatMessage } = useIntl();
@@ -26,17 +26,17 @@ const FormTemplateItem: FC = () => {
     <>
       <ProFormText
         name="title"
-        label={formatMessage({ id: `${formatPerfix()}.title` })}
-        placeholder={formatMessage({ id: 'global.form.placeholder' }) +
-          formatMessage({ id: `${formatPerfix()}.title` })}
+        label={formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.title` })}
+        placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+          formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.title` })}
         fieldProps={{
           showCount: true,
           maxLength: 100,
         }}
         rules={[
           {
-            required: true, message: formatMessage({ id: 'global.form.placeholder' }) +
-              formatMessage({ id: `${formatPerfix()}.title` }),
+            required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
+              formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.title` }),
           },
         ]}
       />
@@ -44,8 +44,8 @@ const FormTemplateItem: FC = () => {
       <ProFormSegmented
         colProps={{ span: 10 }}
         name="type"
-        label={formatMessage({ id: `${formatPerfix()}.type` })}
-        initialValue={'1'}
+        label={formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.type` })}
+        initialValue={ANNOUNCEMENT_TYPE.BULLET}
         valueEnum={AnnouncementTypeEnum}
         rules={[{ required: true }]}
       />
@@ -53,12 +53,12 @@ const FormTemplateItem: FC = () => {
       <ProFormRadio.Group
         name="pinned"
         colProps={{ span: 7 }}
-        initialValue={0}
+        initialValue={FLAG.NO}
         radioType="button"
         fieldProps={{
           buttonStyle: 'solid',
         }}
-        label={formatMessage({ id: `${formatPerfix()}.pinned` })}
+        label={formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.pinned` })}
         options={FLAG_OPTS}
         rules={[{ required: true }]}
       />
@@ -66,24 +66,24 @@ const FormTemplateItem: FC = () => {
       <ProFormRadio.Group
         name="status"
         colProps={{ span: 7 }}
-        initialValue={1}
+        initialValue={STATUS.NORMAL}
         fieldProps={{
           buttonStyle: 'solid',
         }}
-        label={formatMessage({ id: 'global.status' })}
+        label={formatMessage({ id: INTERNATION.STATUS })}
         options={STATUS_OPTS}
         rules={[{ required: true }]}
       />
       <Row style={{ width: '100%' }}>
         <Col span={24}>
           {/* 内容 */}
-          {/* <Form.Item
+          <Form.Item
             name="content"
-            label={formatMessage({ id: `${formatPerfix()}.content` })}
+            label={formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.content` })}
             rules={[{ required: true }]}
           >
             <QuillEditor />
-          </Form.Item> */}
+          </Form.Item>
         </Col>
       </Row>
     </>

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:19:05
+ * @LastEditTime: 2023-09-13 17:30:04
  */
 // 引入第三方库
 import { ClockCircleOutlined, FontSizeOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -20,7 +20,8 @@ import { FC, useRef, useState } from 'react';
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { delInternational, getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
-import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
+import { randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import type { SearchParams } from '@/utils/types/system/internationalization'
 
@@ -51,7 +52,7 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 删除国际化数据
 	 * @param {string} id
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const handlerDelete = (id: string): void => {
 		Modal.confirm({
@@ -59,7 +60,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delInternational(id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -71,7 +72,7 @@ const TableTemplate: FC = () => {
 
 	/**
 	* @description: proTable columns 配置项
-	* @author: 白雾茫茫丶丶
+	* @author: 白雾茫茫丶
 	*/
 	const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
 		{
@@ -122,7 +123,7 @@ const TableTemplate: FC = () => {
 			sorter: true,
 			width: 100,
 			align: 'center',
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
@@ -189,11 +190,12 @@ const TableTemplate: FC = () => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getInternationalList(params).then((res) => {
-						setTreeData(res.data)
+						const data = get(res, 'data', [])
+						setTreeData(data)
 						return {
-							data: res.data,
+							data,
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
+							success: res.code === REQUEST_CODE.SUCCESS,
 						}
 					})
 					return Promise.resolve(response)

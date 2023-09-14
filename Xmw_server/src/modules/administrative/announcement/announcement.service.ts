@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-30 09:22:45
+ * @LastEditTime: 2023-09-12 15:59:06
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -40,11 +40,12 @@ export class AnnouncementService {
     announcementInfo: ListAnnouncementDto,
   ): Promise<PageResModel<XmwAnnouncement[]>> {
     // 解构参数
-    const { title, type, pinned, pageSize, current } = announcementInfo;
+    const { title, type, status, pinned, pageSize, current } = announcementInfo;
     // 拼接查询参数
     const where: WhereOptions = {};
     if (title) where.title = { [Op.substring]: title };
     if (type) where.type = { [Op.eq]: type };
+    if (status) where.status = { [Op.eq]: status };
     if (pinned) where.pinned = { [Op.eq]: pinned };
     // 分页查询数据
     const { count, rows } = await this.announcementModel.findAndCountAll({
@@ -63,7 +64,10 @@ export class AnnouncementService {
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,
-      order: [['created_time', 'desc']], // 排序规则,
+      order: [
+        ['pinned', 'desc'],
+        ['created_time', 'desc'],
+      ], // 排序规则,
     });
     return { list: rows, total: count };
   }
@@ -126,6 +130,29 @@ export class AnnouncementService {
     // 保存操作日志
     await this.operationLogsService.saveLogs(
       `删除活动公告：${currentInfo.title}`,
+    );
+    return responseMessage(result);
+  }
+
+  /**
+   * @description: 更新是否置顶
+   * @author: 白雾茫茫丶
+   */
+  async updatePinned(
+    announcement_id: string,
+    pinned: number,
+  ): Promise<ResponseModel<ResData | number[]>> {
+    // 执行 update 更新 xmw_role 状态
+    const result = await this.announcementModel.update(
+      { pinned },
+      { where: { announcement_id } },
+    );
+    // 保存操作日志
+    // 根据主键查找出当前数据
+    const currentInfo = await this.announcementModel.findByPk(announcement_id);
+    await this.operationLogsService.saveLogs(
+      `更新【${currentInfo.title}】是否置顶状态：${{ 0: '否', 1: '是' }[pinned]
+      }`,
     );
     return responseMessage(result);
   }

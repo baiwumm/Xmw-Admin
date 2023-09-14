@@ -58,3 +58,16 @@ export class SaveAnnouncementDto {
   })
   pinned?: number;
 }
+
+/**
+ * @description: 更新是否置顶 Dto
+ * @author: Cyan
+ */
+export class UpdatePinnedDto {
+  @ApiProperty({
+    type: Number,
+    description: '是否置顶',
+    default: 1,
+  })
+  pinned: number;
+}

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:20:52
+ * @LastEditTime: 2023-09-13 18:07:46
  */
 // 引入第三方库
 import {
@@ -32,7 +32,8 @@ import { getRoleList } from '@/services/system/role-management' // 角色管理�
 // 引入业务组件
 import { delUser, getUserList, setUserStatus } from '@/services/system/user-management' // 用户管理接口
 import { columnScrollX, formatPathName, formatPerfix, renderColumnsStateMap } from '@/utils'
-import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
+import { randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, SEX, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import type { SearchParams } from '@/utils/types/system/user-management'
 
@@ -81,7 +82,7 @@ const TableTemplate: FC = () => {
 	 * @description: 删除用户数据
 	 * @param {string} user_id
 	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const handlerDelete = (user_id: string): void => {
 		Modal.confirm({
@@ -89,7 +90,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delUser(user_id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -102,7 +103,10 @@ const TableTemplate: FC = () => {
 
 	// 设置用户状态
 	const changeUserStatus = async ({ user_id, status }: API.USERMANAGEMENT) => {
-		await setUserStatus({ user_id, status: status === 0 ? 1 : 0 }).then((result) => {
+		await setUserStatus({
+			user_id,
+			status: status === STATUS.DISABLE ? STATUS.NORMAL : STATUS.DISABLE,
+		}).then((result) => {
 			message.success(result.msg)
 			reloadTable()
 		}).finally(() => {
@@ -113,7 +117,7 @@ const TableTemplate: FC = () => {
 	// 渲染设置角色状态
 	const renderRoleStatus = (record: API.USERMANAGEMENT) => (
 		<Popconfirm
-			title="确认执行此操作吗?"
+			title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
 			open={userId === record.user_id && userLoading}
 			onConfirm={() => changeUserStatus(record)}
 			onCancel={() => setUserLoadingFalse()}
@@ -121,7 +125,7 @@ const TableTemplate: FC = () => {
 		><Switch
 				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
 				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-				checked={record.status === 1}
+				checked={record.status === STATUS.NORMAL}
 				loading={userId === record.user_id && userLoading}
 				onChange={() => { setUserLoadingTrue(); setUserId(record.user_id) }}
 			/>
@@ -130,7 +134,7 @@ const TableTemplate: FC = () => {
 	/**
 * @description: proTable columns 配置项
 * @return {*}
-* @author: 白雾茫茫丶丶
+* @author: 白雾茫茫丶
 */
 	const columns: ProColumns<API.USERMANAGEMENT>[] = [
 		{
@@ -183,17 +187,17 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: {
+				[SEX.FEMALE]: {
 					text: formatMessage({
 						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.female`,
 					}), status: 'Default',
 				},
-				1: {
+				[SEX.MALE]: {
 					text: formatMessage({
 						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.male`,
 					}), status: 'Processing',
 				},
-				2: {
+				[SEX.PRIVACY]: {
 					text: formatMessage({
 						id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.sex.secret`,
 					}), status: 'Processing',
@@ -203,9 +207,9 @@ const TableTemplate: FC = () => {
 				const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff' }
 				const styles = { fontSize: 20 }
 				return {
-					0: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
-					1: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
-					2: <UnlockOutlined style={styles} className={PrimaryColor} />,
+					[SEX.FEMALE]: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
+					[SEX.MALE]: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
+					[SEX.PRIVACY]: <UnlockOutlined style={styles} className={PrimaryColor} />,
 				}[record.sex]
 			},
 		},
@@ -221,7 +225,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'role_name',
 			hideInSearch: true,
 			ellipsis: true,
-			width: 100,
+			width: 120,
 			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
@@ -283,8 +287,8 @@ const TableTemplate: FC = () => {
 			filters: true,
 			onFilter: true,
 			valueEnum: {
-				0: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
-				1: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
+				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 			width: 80,
 			render: (_, record) => renderRoleStatus(record),
@@ -296,7 +300,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 80,
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
@@ -346,13 +350,12 @@ const TableTemplate: FC = () => {
 
 	/**
 	 * @description: 获取角色列表
-	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	useRequest(async (params) => await getRoleList(params), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 		onSuccess: (res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				setRoleData(res.data.list)
 			}
 		},
@@ -361,12 +364,11 @@ const TableTemplate: FC = () => {
 
 	/**
 	 * @description: 获取岗位列表
-	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	useRequest(async () => await getJobsList(), {
 		onSuccess: (res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				setJobsData(res.data)
 			}
 		},
@@ -374,12 +376,11 @@ const TableTemplate: FC = () => {
 
 	/**
 	 * @description: 获取组织列表
-	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	useRequest(async () => await getOrganizationList(), {
 		onSuccess: (res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				setOrganizationData(res.data)
 			}
 		},
@@ -395,10 +396,10 @@ const TableTemplate: FC = () => {
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getUserList(params).then((res) => {
 						return {
-							data: res.data.list,
+							data: get(res, 'data.list', []),
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-							total: res.data.total,
+							success: res.code === REQUEST_CODE.SUCCESS,
+							total: get(res, 'data.total', 0),
 						}
 					})
 					return Promise.resolve(response)

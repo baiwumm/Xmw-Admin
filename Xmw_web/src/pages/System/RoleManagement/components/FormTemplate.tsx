@@ -15,7 +15,7 @@ import type { FC } from 'react';
 
 import { createRole, updateRole } from '@/services/system/role-management' // 角色管理接口
 import { formatPathName, renderFormTitle } from '@/utils'
-import { ROUTES } from '@/utils/enums'
+import { REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/role-management' // 公共 interface
 
 // 引入业务组件
@@ -41,7 +41,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, 
 		// 提交数据
 		const params = { ...formData, ...values }
 		await (params.role_id ? updateRole : createRole)(params).then((res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg);
 				// 刷新表格
 				reloadTable()

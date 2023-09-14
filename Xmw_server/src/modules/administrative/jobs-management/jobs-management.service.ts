@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:37:21
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-12 13:46:17
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -43,7 +43,7 @@ export class JobsManagementService {
     // 查询数据
     const sqlData = await this.jobsModel.findAll({
       attributes: {
-        include: ['o.org_name'],
+        include: ['o.org_name', 'o.org_logo'],
       },
       // 联表查询
       include: [

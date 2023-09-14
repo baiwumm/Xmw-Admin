@@ -20,7 +20,7 @@ import { getOrganizationList } from '@/services/administrative/organization' // 
 import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
 import { formatPerfix, waitTime } from '@/utils'
-import { ROUTES } from '@/utils/enums'
+import { REQUEST_CODE, ROUTES } from '@/utils/enums'
 
 const BasicSetting: FC = () => {
   const { formatMessage } = useIntl();
@@ -35,13 +35,12 @@ const BasicSetting: FC = () => {
 
   /**
    * @description: 获取角色列表
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   useRequest(async (params) => await getRoleList(params), {
     defaultParams: [{ current: 1, pageSize: 9999 }],
     onSuccess: (res) => {
-      if (res.code === 200) {
+      if (res.code === REQUEST_CODE.SUCCESS) {
         setRoleData(res.data.list)
       }
     },
@@ -50,12 +49,11 @@ const BasicSetting: FC = () => {
 
   /**
    * @description: 获取岗位列表
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   useRequest(async () => await getJobsList(), {
     onSuccess: (res) => {
-      if (res.code === 200) {
+      if (res.code === REQUEST_CODE.SUCCESS) {
         setJobsData(res.data)
       }
     },
@@ -63,12 +61,11 @@ const BasicSetting: FC = () => {
 
   /**
    * @description: 获取组织列表
-   * @return {*}
-   * @author: 白雾茫茫丶丶
+   * @author: 白雾茫茫丶
    */
   useRequest(async () => await getOrganizationList(), {
     onSuccess: (res) => {
-      if (res.code === 200) {
+      if (res.code === REQUEST_CODE.SUCCESS) {
         setOrganizationData(res.data)
       }
     },
@@ -76,16 +73,17 @@ const BasicSetting: FC = () => {
 
   /**
  * @description: 更新用户信息
- * @return {*}
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
   const { run: runUpdateUser } = useRequest(updateUser, {
     manual: true,
     onSuccess: async (res, params) => {
-      if (res.code === 200) {
+      if (res.code === REQUEST_CODE.SUCCESS) {
         message.success(res.msg)
         // 更新全局状态
-        setInitialState({ ...initialState, CurrentUser: { ...initialState?.CurrentUser, ...params[0] } })
+        if (initialState?.CurrentUser) {
+          setInitialState({ ...initialState, CurrentUser: { ...initialState.CurrentUser, ...params[0] } })
+        }
       }
     },
   },

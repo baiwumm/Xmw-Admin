@@ -1,5 +1,7 @@
+import { ORG_TYPE } from '@/utils/enums'
+
 // 组织类型
-export type OrgTypes = 'group' | 'company' | 'unit' | 'department'
+export type OrgTypes = (typeof ORG_TYPE)[keyof typeof ORG_TYPE]
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -16,7 +18,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: FormTemplateItem Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type FormTemplateItemProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
@@ -26,7 +28,7 @@ export type FormTemplateItemProps = {
 
 /**
  * @description: 头部搜索表单 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = {
   org_name?: string; // 组织名称
@@ -38,7 +40,7 @@ export type SearchParams = {
 
 /**
  * @description: 新增组织 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type CreateOrgParams = {
   parent_id?: string; // 父级id

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:25:40
+ * @LastEditTime: 2023-09-13 18:17:33
  */
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
@@ -13,7 +13,8 @@ import { Input, InputRef, message, Tag, Tooltip } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react'
 
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
-import type { Response } from '@/utils/types'
+import { randomTagColor } from '@/utils/const'
+import { REQUEST_CODE } from '@/utils/enums'
 
 type IProps = {
 	value?: string[]
@@ -41,13 +42,12 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 
 	/**
  * @description: 更新用户信息
- * @return {*}
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
-	const { run: runUpdateUser } = useRequest<Response<number[]>, Partial<API.USERMANAGEMENT>[]>(updateUser, {
+	const { run: runUpdateUser } = useRequest(updateUser, {
 		manual: true,
-		onSuccess: async (res: Response<number[]>, params: Partial<API.USERMANAGEMENT>[]) => {
-			if (res.code === 200) {
+		onSuccess: async (res, params) => {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg)
 				// 更新全局状态
 				if (params[0]?.tags && initialState?.CurrentUser?.user_id) {
@@ -128,24 +128,6 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 		setInputValue('');
 	};
 
-	// 多彩 tags
-	const randomColor = () => {
-		const colors = [
-			'magenta',
-			'red',
-			'volcano',
-			'orange',
-			'gold',
-			'lime',
-			'green',
-			'cyan',
-			'blue',
-			'geekblue',
-			'purple',
-		]
-		return colors[Math.floor(Math.random() * colors.length)]
-	}
-
 	return (
 		<>
 			{/* 遍历显示 tags */}
@@ -179,7 +161,7 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 							setEditInputValue(tag);
 							e.preventDefault();
 						}}
-						color={randomColor()}
+						color={randomTagColor()}
 						style={{ marginTop: 5 }}
 					>
 						{isLongTag ? `${tag.slice(0, 6)}...` : tag}

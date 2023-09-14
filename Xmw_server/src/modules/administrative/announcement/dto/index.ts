@@ -11,11 +11,12 @@ import {
   ResponseAnnouncementDto,
   CreateAnnouncementDto,
 } from './response.announcement.dto'; // 查询列表返回响应体 Dto
-import { SaveAnnouncementDto } from './save.announcement.dto'; // 保存活动公告数据 DTO
+import { SaveAnnouncementDto, UpdatePinnedDto } from './save.announcement.dto'; // 保存活动公告数据 DTO
 
 export {
   ListAnnouncementDto,
   ResponseAnnouncementDto,
   SaveAnnouncementDto,
   CreateAnnouncementDto,
+  UpdatePinnedDto,
 };

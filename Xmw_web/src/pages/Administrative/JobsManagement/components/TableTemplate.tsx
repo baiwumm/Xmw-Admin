@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:46:36
+ * @LastEditTime: 2023-09-13 09:26:35
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -12,7 +12,7 @@ import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-c
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Access, useAccess, useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
-import { Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
+import { Avatar, Button, message, Modal, Space, Tag } from 'antd' // antd 组件库
 import dayjs from 'dayjs'
 import { get } from 'lodash-es'
 import React, { FC, useRef, useState } from 'react';
@@ -23,7 +23,8 @@ import { getOrganizationList } from '@/services/administrative/organization' // 
 // 引入业务组件
 import { getUserList } from '@/services/system/user-management' // 用户管理接口
 import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
-import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
+import { randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import { PageResponse, PaginationParams } from '@/utils/types'
 import type { SearchParams } from '@/utils/types/administrative/jobs-management'
@@ -77,7 +78,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delJobs(jobs_id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -120,7 +121,15 @@ const TableTemplate: FC = () => {
 			},
 			width: 120,
 			align: 'center',
-			render: (_, record) => <Tag className={PrimaryColor}>{record.org_name}</Tag>,
+			render: (_, record) => (
+				<Space>
+					{
+						record.org_logo ? <Avatar src={record.org_logo}></Avatar> :
+							<IconFont type="icon-organization" className={PrimaryColor} />
+					}
+					<Tag color="geekblue">{record.org_name}</Tag>
+				</Space>
+			),
 		},
 		{
 			title: formatMessage({ id: INTERNATION.SORT }),
@@ -130,7 +139,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			sorter: true,
 			align: 'center',
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
@@ -203,11 +212,12 @@ const TableTemplate: FC = () => {
 					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getJobsList(params).then((res) => {
-						setTreeData(res.data)
+						const data = get(res, 'data', [])
+						setTreeData(data)
 						return {
-							data: res.data,
+							data,
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
+							success: res.code === REQUEST_CODE.SUCCESS,
 						}
 					})
 					return Promise.resolve(response)

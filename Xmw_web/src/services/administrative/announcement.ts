@@ -4,12 +4,14 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:32:45
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:38:43
+ * @LastEditTime: 2023-09-12 15:55:21
  */
-import { request } from '@umijs/max';
+import { ROUTES } from '@/utils/enums'
+import type { PageResponse } from '@/utils/types'
+import type { CreateAnnouncementProps, PinnedParams, TableSearchProps } from '@/utils/types/administrative/announcement'
+import { httpRequest } from '@/utils/umiRequest'
 
-import type { CreateAnnouncementProps, TableSearchProps } from '@/pages/Administrative/Announcement/utils/interface'
-import type { PageResponse, Response } from '@/utils/types'
+const baseURL = ROUTES.ANNOUNCEMENT
 
 /**
  * @description: 获取活动公告列表
@@ -17,10 +19,7 @@ import type { PageResponse, Response } from '@/utils/types'
  * @author: 白雾茫茫丶
  */
 export async function getAnnouncementList(options?: TableSearchProps) {
-  return request<Response<PageResponse<API.ANNOUNCEMENT>>>('/api/administrative/announcement', {
-    method: 'GET',
-    params: options || {},
-  });
+  return httpRequest.get<PageResponse<API.ANNOUNCEMENT>>(`${baseURL}`, options);
 }
 
 /**
@@ -29,10 +28,7 @@ export async function getAnnouncementList(options?: TableSearchProps) {
  * @author: 白雾茫茫丶
  */
 export async function createAnnouncement(options: CreateAnnouncementProps) {
-  return request<Response<API.ANNOUNCEMENT>>('/api/administrative/announcement', {
-    method: 'POST',
-    data: options || {},
-  });
+  return httpRequest.post<API.ANNOUNCEMENT>(`${baseURL}`, options);
 }
 
 /**
@@ -42,10 +38,7 @@ export async function createAnnouncement(options: CreateAnnouncementProps) {
  * @author: 白雾茫茫丶
  */
 export async function updateAnnouncement({ announcement_id, ...options }: API.ANNOUNCEMENT) {
-  return request<Response<number[]>>(`/api/administrative/announcement/${announcement_id}`, {
-    method: 'PUT',
-    data: options || {},
-  });
+  return httpRequest.put<number[]>(`${baseURL}/${announcement_id}`, options);
 }
 
 /**
@@ -54,7 +47,14 @@ export async function updateAnnouncement({ announcement_id, ...options }: API.AN
  * @author: 白雾茫茫丶
  */
 export async function delAnnouncement(announcement_id: string) {
-  return request<Response<number>>(`/api/administrative/announcement/${announcement_id}`, {
-    method: 'DELETE',
-  });
+  return httpRequest.delete<number>(`${baseURL}/${announcement_id}`);
+}
+
+/**
+ * @description: 设置是否置顶状态
+ * @param {Data} options
+ * @Author: 白雾茫茫丶
+ */
+export async function setPinned({ announcement_id, pinned }: PinnedParams) {
+  return httpRequest.patch<number[]>(`${baseURL}/${announcement_id}`, { pinned });
 }

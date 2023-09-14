@@ -8,7 +8,7 @@
 
 /**
  * @description: FormTemplate Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
@@ -23,7 +23,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: FormTemplateItem Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type FormTemplateItemProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
@@ -34,7 +34,7 @@ export type FormTemplateItemProps = {
 
 /**
  * @description: 头部搜索表单 Params 
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = {
   jobs_id?: string; // 岗位id
@@ -45,7 +45,7 @@ export type SearchParams = {
 
 /**
  * @description: 新增岗位 Params 
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type CreateJobsParams = {
   parent_id?: string; // 父级id

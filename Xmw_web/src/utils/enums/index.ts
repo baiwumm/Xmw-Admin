@@ -1,4 +1,24 @@
 /**
+ * @description: 请求状态码
+ * @author: 白雾茫茫丶
+ */
+export enum REQUEST_CODE {
+  SUCCESS = 200, // 请求成功
+}
+
+/**
+ * @description: 请求方式
+ * @author: 白雾茫茫丶
+ */
+export enum REQUEST_METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH'
+}
+
+/**
  * @description: 存储在 localstorage 的 key
  * @author: 白雾茫茫丶
  */
@@ -16,6 +36,7 @@ export enum LOCAL_STORAGE {
 export enum ROUTES {
   LOGIN = '/user/login', // 登录页
   WORKBENCH = '/dashboard/work-bench', // 指示面板-工作台
+  ANNOUNCEMENT = '/administrative/announcement', // 智能行政-活动公告
   ORGANIZATION = '/administrative/organization', // 智能行政-组织管理
   JOBSMANAGEMENT = '/administrative/jobs-management', // 智能行政-岗位管理
   PERSONALINFOMATION = '/personal-center/personal-information', // 个人中心-个人信息
@@ -51,7 +72,11 @@ export enum INTERNATION {
   BUTTON_SUBMIT = 'global.button.submit', // 提交
   BUTTON_MODIFY = 'global.button.modify', // 修改
   BUTTON_CONFIRM = 'global.button.confirm', // 确认
-  WARM_TIPS = 'global.warm-tips' // 温馨提示
+  WARM_TIPS = 'global.warm-tips', // 温馨提示
+  FLAG_YES = 'global.flag.yes', // 是
+  FLAG_NO = 'global.flag.no', // 否
+  POPCONFIRM_TITLE = 'global.popconfirm.title', // 确认执行此操作吗？
+  BASICLAYOUT = 'components.BasicLayout', // 布局组件
 }
 
 /**
@@ -79,8 +104,8 @@ export enum STATUS {
  * @author: 白雾茫茫丶
  */
 export enum FLAG {
-  YES, // 是
   NO, // 否
+  YES, // 是
 }
 
 /**
@@ -88,6 +113,69 @@ export enum FLAG {
  * @author: 白雾茫茫丶
  */
 export enum SEX {
-  FEMALE, // 女
-  MALE, // 男
+  FEMALE = '0', // 女
+  MALE = '1', // 男
+  PRIVACY = '2', // 隐私
+}
+
+/**
+ * @description: 消息类型
+ * @author: 白雾茫茫丶
+ */
+export enum ANNOUNCEMENT_TYPE {
+  BULLET = '1', // 公告
+  ACTIVITY = '2', // 活动
+  MSG = '3', // 消息
+  NOTICE = '4', // 通知
+}
+
+/**
+ * @description: 组织类型
+ * @author: 白雾茫茫丶
+ */
+export enum ORG_TYPE {
+  GROUP = 'group', // 集团
+  COMPANY = 'company', // 公司
+  UNIT = 'unit', // 单位
+  DEPARTMENT = 'department', // 部门
+}
+
+/**
+ * @description: 菜单类型
+ * @author: 白雾茫茫丶
+ */
+export enum MENU_TYPE {
+  DIR = 'dir', // 目录
+  MENU = 'menu', // 菜单
+  BUTTON = 'button', // 按钮
+}
+
+/**
+ * @description: 窗口打开方式
+ * @author: 白雾茫茫丶
+ */
+export enum TARGET_TYPE {
+  BLANK = '_blank',
+  SELF = '_self',
+  PARENT = '_parent',
+  TOP = '_top'
+}
+
+/**
+ * @description: 导航菜单的位置,side 为正常模式，top菜单显示在顶部，mix 两种兼有
+ * @author: 白雾茫茫丶
+ */
+export enum LAYOUT_TYPE {
+  SIDE = 'side', // 侧边菜单
+  TOP = 'top', // 顶部菜单
+  MIX = 'mix', // 混合菜单
+}
+
+/**
+ * @description: 主题风格
+ * @author: 白雾茫茫丶
+ */
+export enum NAV_THEME {
+  DARK = 'dark', // 暗黑风格
+  LIGHT = 'light', // 亮色风格
 }

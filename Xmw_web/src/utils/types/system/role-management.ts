@@ -13,7 +13,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: 头部搜索表单 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = PaginationParams & {
   role_name?: string; // 角色名称
@@ -25,9 +25,9 @@ export type SearchParams = PaginationParams & {
 
 /**
  * @description: 设置角色状态 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
-export type RoleStatusProps = {
+export type RoleStatusParams = {
   role_id: string;
   status: number;
 }

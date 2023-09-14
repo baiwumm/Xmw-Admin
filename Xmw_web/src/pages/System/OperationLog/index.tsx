@@ -4,32 +4,28 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:25:38
+ * @LastEditTime: 2023-09-13 17:27:27
  */
 import { ClockCircleOutlined } from '@ant-design/icons' // antd 图标库
 import { PageContainer, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
 import { useIntl } from '@umijs/max'
 import { Space, Tag } from 'antd'
 import dayjs from 'dayjs'
+import { get } from 'lodash-es'
 import type { FC } from 'react';
 
 import { getOperationLogList } from '@/services/system/operation-log'
 import { columnScrollX, formatPerfix } from '@/utils'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { MethodsTagColor } from '@/utils/const'
+import { INTERNATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { RequestMethods } from '@/utils/types'
 import type { SearchParams } from '@/utils/types/system/operation-log'
 
 const OperationLog: FC = () => {
 	const { formatMessage } = useIntl();
-	// 请求方式 Tag Color 隐射
-	const tagColorMap = {
-		GET: 'green',
-		POST: 'orange',
-		PUT: 'blue',
-		DELETE: 'red',
-	}
 	/**
 	* @description: proTable columns 配置项
-	* @author: 白雾茫茫丶丶
+	* @author: 白雾茫茫丶
 	*/
 	const columns: ProColumns<API.OPERATIONLOG>[] = [
 		{
@@ -87,7 +83,10 @@ const OperationLog: FC = () => {
 			width: 100,
 			hideInSearch: true,
 			align: 'center',
-			render: (_, record) => <Tag color={tagColorMap[record.method]}>{record.method}</Tag>,
+			render: (_, record) => {
+				const method: RequestMethods = record.method;
+				return <Tag color={MethodsTagColor[method]}>{method}</Tag>
+			},
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.params` }),
@@ -144,10 +143,10 @@ const OperationLog: FC = () => {
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getOperationLogList(params).then((res) => {
 						return {
-							data: res.data.list,
+							data: get(res, 'data.list', []),
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-							total: res.data.total,
+							success: res.code === REQUEST_CODE.SUCCESS,
+							total: get(res, 'data.total', 0),
 						}
 					})
 					return Promise.resolve(response)

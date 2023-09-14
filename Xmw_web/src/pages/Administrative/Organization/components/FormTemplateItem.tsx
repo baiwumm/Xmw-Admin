@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:49:23
+ * @LastEditTime: 2023-09-13 09:24:27
  */
 // 引入第三方库
 import {
@@ -22,12 +22,9 @@ import type { FC } from 'react';
 
 import UploadImage from '@/components/UploadImage'
 import { formatPerfix } from '@/utils'
-import { STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { ORG_TYPE_OPTS, STATUS_OPTS } from '@/utils/const'
+import { INTERNATION, ORG_TYPE, ROUTES, STATUS } from '@/utils/enums'
 import type { FormTemplateItemProps } from '@/utils/types/administrative/organization'
-
-// 引入配置项
-import { ORG_TYPE_OPTS } from '../utils/config' // 组织类型配置项
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, userList }) => {
 	const { formatMessage } = useIntl();
@@ -107,7 +104,7 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 				colProps={{ span: 14 }}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_type` })}
 				radioType="button"
-				initialValue={'company'}
+				initialValue={ORG_TYPE.GROUP}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -139,16 +136,12 @@ const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, parent_id, user
 					listType: 'picture-card',
 				}}
 				value={org_logo}
-				rules={[{
-					required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER_UPLOAD }) +
-						formatMessage({ id: `${formatPerfix(ROUTES.ORGANIZATION)}.org_logo` }),
-				}]}
 			/>
 			{/* 状态 */}
 			<ProFormRadio.Group
 				name="status"
 				colProps={{ span: 8 }}
-				initialValue={1}
+				initialValue={STATUS.NORMAL}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}

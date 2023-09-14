@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-04 16:27:16
+ * @LastEditTime: 2023-09-13 17:57:34
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -21,9 +21,10 @@ import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { getMenuList } from '@/services/system/menu-management' // 菜单管理接口
 import { delRole, getRoleList, setRoleStatus } from '@/services/system/role-management' // 角色管理接口
 import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
-import { INTERNATION, OPERATION, ROUTES } from '@/utils/enums'
+import { randomTagColor } from '@/utils/const'
+import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import type { RoleStatusProps, SearchParams } from '@/utils/types/system/role-management'
+import type { RoleStatusParams, SearchParams } from '@/utils/types/system/role-management'
 
 import FormTemplate from './FormTemplate' // 表单组件
 
@@ -57,8 +58,7 @@ const TableTemplate: FC = () => {
 	/**
 	 * @description: 删除角色数据
 	 * @param {string} role_id
-	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const handlerDelete = (role_id: string): void => {
 		Modal.confirm({
@@ -66,7 +66,7 @@ const TableTemplate: FC = () => {
 			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
 			onOk: async () => {
 				await delRole(role_id).then((res) => {
-					if (res.code === 200) {
+					if (res.code === REQUEST_CODE.SUCCESS) {
 						message.success(res.msg)
 						// 刷新表格
 						reloadTable()
@@ -74,12 +74,14 @@ const TableTemplate: FC = () => {
 				})
 			},
 		})
-
 	}
 
 	// 设置角色状态
-	const changeRoleStatus = async ({ role_id, status }: RoleStatusProps) => {
-		await setRoleStatus({ role_id, status: status === 0 ? 1 : 0 }).then((result) => {
+	const changeRoleStatus = async ({ role_id, status }: RoleStatusParams) => {
+		await setRoleStatus({
+			role_id,
+			status: status === STATUS.DISABLE ? STATUS.NORMAL : STATUS.DISABLE,
+		}).then((result) => {
 			message.success(result.msg)
 			reloadTable()
 		}).finally(() => {
@@ -90,7 +92,7 @@ const TableTemplate: FC = () => {
 	// 渲染设置角色状态
 	const renderRoleStatus = (record: API.ROLEMANAGEMENT) => (
 		<Popconfirm
-			title="确认执行此操作吗?"
+			title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
 			open={roleId === record.role_id && roleLoading}
 			onConfirm={() => changeRoleStatus(record)}
 			onCancel={() => setRoleLoadingFalse()}
@@ -98,7 +100,7 @@ const TableTemplate: FC = () => {
 		><Switch
 				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
 				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-				checked={record.status === 1}
+				checked={record.status === STATUS.NORMAL}
 				loading={roleId === record.role_id && roleLoading}
 				onChange={() => { setRoleLoadingTrue(); setRoleId(record.role_id) }}
 			/>
@@ -107,14 +109,14 @@ const TableTemplate: FC = () => {
 	/**
 * @description: proTable columns 配置项
 * @return {*}
-* @author: 白雾茫茫丶丶
+* @author: 白雾茫茫丶
 */
 	const columns: ProColumns<API.ROLEMANAGEMENT>[] = [
 		{
 			title: formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` }),
 			dataIndex: 'role_name',
 			ellipsis: true,
-			width: 140,
+			width: 160,
 			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
@@ -136,8 +138,8 @@ const TableTemplate: FC = () => {
 			onFilter: true,
 			width: 100,
 			valueEnum: {
-				0: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
-				1: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
+				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
+				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
 			},
 			render: (_, record) => renderRoleStatus(record),
 		},
@@ -148,7 +150,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 80,
-			render: (text) => <Tag color="purple">{text}</Tag>,
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
 			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
@@ -221,10 +223,10 @@ const TableTemplate: FC = () => {
 					// 如果需要转化参数可以在这里进行修改
 					const response = await getRoleList(params).then((res) => {
 						return {
-							data: res.data.list,
+							data: get(res, 'data.list', []),
 							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === 200,
-							total: res.data.total,
+							success: res.code === REQUEST_CODE.SUCCESS,
+							total: get(res, 'data.total', 0),
 						}
 					})
 					return Promise.resolve(response)

@@ -17,7 +17,7 @@ import { FC, useEffect, useRef } from 'react';
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { createUser, updateUser } from '@/services/system/user-management' // 用户管理接口
 import { decryptionAesPsd, encryptionAesPsd, formatPathName, formatPerfix, renderFormTitle } from '@/utils'
-import { ROUTES } from '@/utils/enums'
+import { REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/user-management'
 
 // 引入业务组件
@@ -48,7 +48,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 		// 删除参数多余的属性
 		params = omit(params, ['confirmPassword'])
 		await (params.user_id ? updateUser : createUser)(params).then((res) => {
-			if (res.code === 200) {
+			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg);
 				reloadTable()
 				setModalVisibleFalse()
@@ -59,7 +59,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	/**
 	 * @description: 分步组件对应的组件
 	 * @return {*}
-	 * @author: 白雾茫茫丶丶
+	 * @author: 白雾茫茫丶
 	 */
 	const StepComponents = [
 		// 个人信息

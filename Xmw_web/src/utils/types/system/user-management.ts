@@ -15,7 +15,7 @@ export type FormTemplateProps = {
 
 /**
  * @description: UserInformation Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type UserInformationProps = {
   roleData: API.ROLEMANAGEMENT[];
@@ -27,7 +27,7 @@ export type UserInformationProps = {
 
 /**
  * @description: 头部搜索表单 Params
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type SearchParams = PaginationParams & {
   user_name?: string; // 用户名称
@@ -39,7 +39,7 @@ export type SearchParams = PaginationParams & {
 
 /**
  * @description: 设置用户状态 Props
- * @author: 白雾茫茫丶丶
+ * @author: 白雾茫茫丶
  */
 export type UserStatusProps = {
   user_id: string;

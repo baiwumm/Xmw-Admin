@@ -1,6 +1,7 @@
+import { ANNOUNCEMENT_TYPE } from '@/utils/enums'
+
 /**
   * @description: 头部搜索表单 Props
-  * @return {*}
   * @author: 白雾茫茫丶
   */
 export type TableSearchProps = {
@@ -11,7 +12,6 @@ export type TableSearchProps = {
 
 /**
  * @description: 创建新闻公告 Props
- * @return {*}
  * @author: 白雾茫茫丶
  */
 export type CreateAnnouncementProps = {
@@ -25,7 +25,6 @@ export type CreateAnnouncementProps = {
 
 /**
  * @description: FormTemplate Props
- * @return {*}
  * @author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
@@ -34,3 +33,15 @@ export type FormTemplateProps = {
   open: boolean;
   setOpenModalFalse: () => void
 }
+
+/**
+ * @description: 设置置顶状态 Params
+ * @author: 白雾茫茫丶
+ */
+export type PinnedParams = Pick<CreateAnnouncementProps, 'announcement_id' | 'pinned'>
+
+/**
+ * @description: 公告类型
+ * @author: 白雾茫茫丶
+ */
+export type AnnouncementType = (typeof ANNOUNCEMENT_TYPE)[keyof typeof ANNOUNCEMENT_TYPE]

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:15:45
+ * @LastEditTime: 2023-09-13 18:09:00
  */
 // 引入第三方库
 import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-components'; // antd 高级组件
@@ -13,7 +13,7 @@ import type { FC } from 'react';
 
 import { formatPerfix } from '@/utils'
 import { SEX_OPTS, STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { INTERNATION, ROUTES, SEX, STATUS } from '@/utils/enums'
 
 const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = false }) => {
 	const { formatMessage } = useIntl();
@@ -109,7 +109,7 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 			<ProFormRadio.Group
 				name="sex"
 				colProps={{ span: 12 }}
-				initialValue={'1'}
+				initialValue={SEX.MALE}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
@@ -172,7 +172,7 @@ const PersonalInformation: FC<{ disabledField?: boolean }> = ({ disabledField = 
 			<ProFormRadio.Group
 				name="status"
 				colProps={{ span: 12 }}
-				initialValue={1}
+				initialValue={STATUS.NORMAL}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
