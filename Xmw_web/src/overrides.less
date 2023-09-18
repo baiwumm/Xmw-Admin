@@ -1,0 +1,49 @@
+.ant-layout {
+  min-height: 100vh;
+}
+.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
+  left: unset;
+}
+.ant-menu-item .anticon +span{
+  margin-inline-start:0;
+}
+.ant-pro-page-container{
+  .ant-page-header{
+    padding-inline:20px;
+    padding-block:0;
+  }
+  .ant-pro-page-container-children-container{
+    padding-inline: 20px;
+    padding-block: 12px;
+  }
+}
+
+.ant-menu .ant-menu-item{
+  display: flex;
+  align-items: center;
+}
+.ant-menu-light .ant-menu-item-selected{
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.ant-pro-setting-drawer-handle{
+  z-index: 99;
+}
+
+
+@media (max-width: 768px) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}

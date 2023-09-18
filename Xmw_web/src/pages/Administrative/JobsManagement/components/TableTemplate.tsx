@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 09:26:35
+ * @LastEditTime: 2023-09-15 14:05:34
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -26,8 +26,8 @@ import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
 import { randomTagColor } from '@/utils/const'
 import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import { PageResponse, PaginationParams } from '@/utils/types'
 import type { SearchParams } from '@/utils/types/administrative/jobs-management'
+import type { SearchParams as UserSearchParams } from '@/utils/types/system/user-management'
 
 import FormTemplate from './FormTemplate' // 表单组件
 
@@ -40,12 +40,12 @@ const TableTemplate: FC = () => {
 		scriptUrl: process.env.ICONFONT_URL,
 	});
 	// 获取组织树形数据
-	const { data: orgTree } = useRequest<API.ORGANIZATION[], Record<string, any>[]>(
-		async () => get(await getOrganizationList(), 'data', []),
-	);
+	const { data: orgTree } = useRequest<API.ORGANIZATION[], unknown[]>(
+		async () => get(await getOrganizationList(), 'data', []));
+
 	// 获取用户列表
-	const { data: userList } = useRequest<PageResponse<API.USERMANAGEMENT>, PaginationParams[]>(
-		async (params) => get(await getUserList(params), 'data', []), {
+	const { data: userList } = useRequest(
+		async (params: UserSearchParams) => get(await getUserList(params), 'data', []), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
 	// 获取表格实例
@@ -150,7 +150,7 @@ const TableTemplate: FC = () => {
 			width: 160,
 			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

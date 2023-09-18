@@ -72,7 +72,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, formData, menuData, 
 			onVisibleChange={(visiable) => {
 				if (visiable && formData) {
 					// menu_permission的值需要单独回显
-					const roleMenus = formData.menu_permission.map((role: API.ROLEMENU) => role.menu_id)
+					const roleMenus = formData.menu_permission.map((role: API.PERMISSION) => role.menu_id)
 					form.setFieldsValue(omit(formData, 'menu_permission'));
 					form.setFieldValue('menu_permission', roleMenus)
 				}

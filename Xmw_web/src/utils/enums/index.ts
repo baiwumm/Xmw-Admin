@@ -77,6 +77,7 @@ export enum INTERNATION {
   FLAG_NO = 'global.flag.no', // 否
   POPCONFIRM_TITLE = 'global.popconfirm.title', // 确认执行此操作吗？
   BASICLAYOUT = 'components.BasicLayout', // 布局组件
+  UPLOADIMAGE = 'components.UploadImage'
 }
 
 /**
@@ -88,6 +89,15 @@ export enum OPERATION {
   EDIT = 'edit', // 编辑
   DELETE = 'delete', // 删除
   ADDCHILD = 'add-child', // 添加子级
+}
+
+/**
+ * @description: 登录类型
+ * @author: 白雾茫茫丶
+ */
+export enum LOGIN_TYPE {
+  MOBILE = 'mobile', // 手机登录
+  ACCOUNT = 'account', // 账号登录
 }
 
 /**
@@ -178,4 +188,15 @@ export enum LAYOUT_TYPE {
 export enum NAV_THEME {
   DARK = 'dark', // 暗黑风格
   LIGHT = 'light', // 亮色风格
+}
+
+/**
+ * @description: 国际化语言
+ * @author: 白雾茫茫丶
+ */
+export enum LANGS {
+  CN = 'zh-CN', // 中文
+  US = 'en-US', // 英文
+  JP = 'ja-JP', // 日文
+  TW = 'zh-TW', // 繁体中文
 }

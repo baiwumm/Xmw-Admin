@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 18:07:46
+ * @LastEditTime: 2023-09-14 17:00:47
  */
 // 引入第三方库
 import {
@@ -148,6 +148,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'user_name',
 			ellipsis: true,
 			width: 100,
+			align: 'center',
 			render: (text) => <Space>
 				<Tag
 					icon={<UserOutlined className={PrimaryColor} />} >
@@ -160,6 +161,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			ellipsis: true,
+			align: 'center',
 			width: 80,
 		},
 		{
@@ -167,6 +169,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'en_name',
 			hideInSearch: true,
 			ellipsis: true,
+			align: 'center',
 			width: 80,
 		},
 		{
@@ -218,6 +221,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'work_no',
 			hideInSearch: true,
 			ellipsis: true,
+			align: 'center',
 			width: 80,
 		},
 		{
@@ -226,6 +230,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-role-management" className={PrimaryColor} />} >
@@ -239,6 +244,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 100,
+			align: 'center',
 			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-organization" className={PrimaryColor} />} >
@@ -252,6 +258,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 100,
+			align: 'center',
 			render: (text) => <Space>
 				<Tag
 					icon={<IconFont type="icon-jobs-management" className={PrimaryColor} />} >
@@ -264,6 +271,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'age',
 			hideInSearch: true,
 			ellipsis: true,
+			align: 'center',
 			width: 60,
 		},
 		{
@@ -272,6 +280,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			width: 100,
 			ellipsis: true,
+			align: 'center',
 		},
 		{
 			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.email` }),
@@ -279,6 +288,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 		},
 		/* 状态 */
 		{
@@ -286,6 +296,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'status',
 			filters: true,
 			onFilter: true,
+			align: 'center',
 			valueEnum: {
 				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
 				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
@@ -300,6 +311,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 80,
+			align: 'center',
 			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
@@ -308,9 +320,10 @@ const TableTemplate: FC = () => {
 			valueType: 'dateTime',
 			hideInSearch: true,
 			sorter: true,
-			width: 120,
+			width: 160,
+			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

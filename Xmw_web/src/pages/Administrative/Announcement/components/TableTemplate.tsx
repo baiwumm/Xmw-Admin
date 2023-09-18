@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 14:45:45
+ * @LastEditTime: 2023-09-15 14:19:04
  */
 import { ClockCircleOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
 import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
@@ -20,7 +20,7 @@ import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
 import { AnnouncementTypeEnum, randomTagColor } from '@/utils/const'
 import { FLAG, INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import { AnnouncementType, PinnedParams, TableSearchProps } from '@/utils/types/administrative/announcement'
+import type { AnnouncementType, PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
 
 import FormTemplate from './FormTemplate'
 
@@ -168,7 +168,7 @@ const TableTemplate: FC = () => {
       align: 'center',
       width: 160,
       render: (text) => (
-        <Space>
+        <Space size="small">
           <ClockCircleOutlined /><span>{text}</span>
         </Space>
       ),
@@ -195,11 +195,11 @@ const TableTemplate: FC = () => {
   ]
   return (
     <>
-      <ProTable<API.ANNOUNCEMENT, TableSearchProps>
+      <ProTable<API.ANNOUNCEMENT, SearchParams>
         actionRef={tableRef}
         columns={columns}
         rowKey="announcement_id"
-        request={async (params: TableSearchProps): Promise<RequestData<API.ANNOUNCEMENT>> => {
+        request={async (params: SearchParams): Promise<RequestData<API.ANNOUNCEMENT>> => {
           // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
           // 如果需要转化参数可以在这里进行修改
           const response = await getAnnouncementList(params).then((res) => {

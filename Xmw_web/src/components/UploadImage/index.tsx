@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 13:49:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-01 10:57:40
+ * @LastEditTime: 2023-09-15 17:29:49
  */
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -13,29 +13,32 @@ import {
   ProFormUploadDragger,
   ProFormUploadDraggerProps,
 } from '@ant-design/pro-components';
+import { useIntl } from '@umijs/max'
 import { useBoolean } from 'ahooks'
-import { Space, Spin, Typography, Upload } from 'antd'
-import type { UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
+import { message, Space, Spin, Typography, Upload } from 'antd'
+import type { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
 import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { get, isEmpty } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
 
-import { LOCAL_STORAGE } from '@/utils/enums'
-import { getLocalStorageItem, isHttpLink } from '@/utils'
+import { formatPerfix, getLocalStorageItem, isHttpLink } from '@/utils'
+import { INTERNATION, LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 
 const { Text } = Typography;
 
-type IProps = {
+type UploadImageProps = {
   value?: string;
   onChange?: (url?: string) => void;
   type?: 'upload' | 'dragger';
+  maxSize?: number;
   imgCropProps?: ImgCropProps;
 } & (ProFormUploadButtonProps | ProFormUploadDraggerProps)
 
-const UploadImage: FC<IProps> = ({
+const UploadImage: FC<UploadImageProps> = ({
   value,
   onChange,
   type = 'upload',
+  maxSize = 5, // 图片大小，默认5m
   fieldProps,
   imgCropProps = {
     rotationSlider: true,
@@ -44,6 +47,8 @@ const UploadImage: FC<IProps> = ({
   },
   ...uploadProps
 }) => {
+  // 多语言函数
+  const { formatMessage } = useIntl();
   // 获取 Token
   const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
   // 上传图片loading
@@ -71,6 +76,30 @@ const UploadImage: FC<IProps> = ({
     setFileList(fileList)
   };
 
+  /**
+   * @description: 限制用户上传的图片格式和大小
+   * @param {RcFile} file
+   * @author: 白雾茫茫丶
+   */
+  const beforeUpload = (file: RcFile) => {
+    // 获取限制的图片类型，默认全部
+    const accept = get(fieldProps, 'accept', 'image/*')
+    // 判断类型是否正确
+    const isFileType = accept.includes(file.type)
+    // 图片大小限制
+    const isLtSize = file.size / 1024 / 1024 < maxSize;
+    if (!isFileType) {
+      message.error(formatMessage({ id: `${INTERNATION.UPLOADIMAGE}.accept` }, { type: accept }))
+      return Upload.LIST_IGNORE
+    }
+    if (!isLtSize) {
+      message.error(formatMessage({ id: `${INTERNATION.UPLOADIMAGE}.maxSize` }, { size: maxSize }));
+      return Upload.LIST_IGNORE
+    }
+
+    return isFileType && isLtSize;
+  }
+
   // 上传组件公共的 props
   const commonProps = {
     ...uploadProps,
@@ -80,31 +109,14 @@ const UploadImage: FC<IProps> = ({
       action: '/api/upload/single-file',
       // 请求头添加token
       headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+      // 上传前校验
+      beforeUpload,
       // 上传图片回调
       onChange: onChangeUpload,
       // 文件列表
       fileList,
     },
   }
-  /**
-   * @description: 限制用户上传的图片格式和大小
-   * @param {RcFile} file
-   * @author: 白雾茫茫丶
-   */
-  // const beforeUpload = (file: RcFile): boolean => {
-  // 	// 限制图片类型
-  // 	const isFileType = ['image/jpeg', 'image/png', 'image/gif'].includes(file.type)
-  // 	if (!isFileType) {
-  // 		message.error(formatMessage({ id: `${formatPerfix}.file-type` }))
-  // 	}
-  // 	// 大小限制2MB
-  // 	const isLt2M = file.size / 1024 / 1024 < 2;
-  // 	if (!isLt2M) {
-  // 		message.error(formatMessage({ id: `${formatPerfix}.file-siz-limit` }));
-  // 	}
-
-  // 	return isFileType && isLt2M;
-  // }
 
   /**
    * @description: 上传用户头像
@@ -117,7 +129,7 @@ const UploadImage: FC<IProps> = ({
           {
             uploadLoading ? <Spin /> : <>
               <PlusOutlined />
-              <Text>上传头像</Text>
+              <Text>{formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.set-avatar` })}</Text>
             </>
           }
         </Space>

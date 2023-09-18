@@ -4,7 +4,7 @@
  * @Author: Cyan
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-31 17:02:21
+ * @LastEditTime: 2023-09-15 10:38:44
  */
 import {
   PrimaryKey,
@@ -16,7 +16,6 @@ import {
   Length,
   IsUUID,
   IsIn,
-  IsUrl,
 } from 'sequelize-typescript';
 import type { OrgAttributes } from '@/attributes/administrative';
 
@@ -58,7 +57,6 @@ export class XmwOrganization
   org_type: string;
 
   //组织 logo
-  @IsUrl
   @Column({ type: DataType.STRING(200), comment: '组织logo' })
   org_logo?: string;
 

@@ -1,27 +1,18 @@
 import { ANNOUNCEMENT_TYPE } from '@/utils/enums'
-
-/**
-  * @description: 头部搜索表单 Props
-  * @author: 白雾茫茫丶
-  */
-export type TableSearchProps = {
-  title?: string; // 标题
-  type?: string; // 类型
-  pinned?: number; // 是否置顶
-}
+import { EnumValues } from '@/utils/types'
 
 /**
  * @description: 创建新闻公告 Props
  * @author: 白雾茫茫丶
  */
-export type CreateAnnouncementProps = {
-  announcement_id?: string; // id 主键
-  title: string; // 标题
-  content: string; // 正文内容
-  type: string; // 类型
-  status: number; // 状态
-  pinned: number; // 是否置顶
-}
+export type CreateAnnouncementProps = Pick<
+  API.ANNOUNCEMENT, 'announcement_id' | 'title' | 'content' | 'type' | 'status' | 'pinned'>
+
+/**
+  * @description: 头部搜索表单 Props
+  * @author: 白雾茫茫丶
+  */
+export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pinned'>>
 
 /**
  * @description: FormTemplate Props
@@ -38,10 +29,10 @@ export type FormTemplateProps = {
  * @description: 设置置顶状态 Params
  * @author: 白雾茫茫丶
  */
-export type PinnedParams = Pick<CreateAnnouncementProps, 'announcement_id' | 'pinned'>
+export type PinnedParams = Pick<API.ANNOUNCEMENT, 'announcement_id' | 'pinned'>
 
 /**
  * @description: 公告类型
  * @author: 白雾茫茫丶
  */
-export type AnnouncementType = (typeof ANNOUNCEMENT_TYPE)[keyof typeof ANNOUNCEMENT_TYPE]
+export type AnnouncementType = EnumValues<typeof ANNOUNCEMENT_TYPE>

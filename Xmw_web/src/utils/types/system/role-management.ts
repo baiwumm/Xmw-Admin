@@ -1,4 +1,4 @@
-import type { PaginationParams } from '@/utils/types'
+import type { PaginationParams, SearchTimes } from '@/utils/types'
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -15,19 +15,11 @@ export type FormTemplateProps = {
  * @description: 头部搜索表单 Params
  * @author: 白雾茫茫丶
  */
-export type SearchParams = PaginationParams & {
-  role_name?: string; // 角色名称
-  role_code?: string; // 角色编码
-  status?: string; // 角色状态
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
+export type SearchParams = PaginationParams &
+  SearchTimes & Pick<API.ROLEMANAGEMENT, 'role_name' | 'role_code' | 'status'>
 
 /**
  * @description: 设置角色状态 Params
  * @author: 白雾茫茫丶
  */
-export type RoleStatusParams = {
-  role_id: string;
-  status: number;
-}
+export type RoleStatusParams = Pick<API.ROLEMANAGEMENT, 'role_id' | 'status'>

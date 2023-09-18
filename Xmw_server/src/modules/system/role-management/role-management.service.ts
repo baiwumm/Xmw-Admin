@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-28 17:39:28
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:34:39
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-15 14:30:47
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -75,7 +75,6 @@ export class RoleManagementService {
         {
           model: XmwPermission,
           as: 'menu_permission',
-          attributes: ['role_id', 'menu_id'],
         },
       ],
       offset: (Number(current) - 1) * pageSize,

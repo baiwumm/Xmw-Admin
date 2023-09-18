@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:15:19
+ * @LastEditTime: 2023-09-15 16:12:21
  */
 
 // 引入第三方库
@@ -21,7 +21,7 @@ import React, { FC, useState } from 'react'; // react
 import Footer from '@/components/Footer'; // 全局页脚
 import { Login } from '@/services/logic/login' // 登录相关接口
 import { encryptionAesPsd, formatPerfix, setLocalStorageItem, timeFix, waitTime } from '@/utils'
-import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import { LOCAL_STORAGE, LOGIN_TYPE, ROUTES } from '@/utils/enums'
 import { initAllRequest } from '@/utils/initRequest'
 import type { LoginTypes } from '@/utils/types'
 import type { LoginParams, LoginType } from '@/utils/types/login'
@@ -40,7 +40,7 @@ const LoginPage: FC = () => {
   // 初始化状态
   const { initialState, setInitialState } = useModel('@@initialState');
   // 用户登录类型
-  const [loginType, setLoginType] = useState<LoginType>('account');
+  const [loginType, setLoginType] = useState<LoginType>(LOGIN_TYPE.ACCOUNT);
   /**
    * @description: 用户登录接口
    * @Author: 白雾茫茫丶
@@ -95,11 +95,11 @@ const LoginPage: FC = () => {
     async (values: LoginParams): Promise<void> => {
       try {
         // 如果是账号密码登录，密码加密提交
-        if (loginType === 'account' && values.password) {
+        if (loginType === LOGIN_TYPE.ACCOUNT && values.password) {
           values.password = encryptionAesPsd(values.password)
         }
         // 如果是手机登录
-        if (loginType === 'mobile' && values.captcha !== '1234') {
+        if (loginType === LOGIN_TYPE.MOBILE && values.captcha !== '1234') {
           message.error(formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha.failure` }))
           return
         }
@@ -121,12 +121,12 @@ const LoginPage: FC = () => {
   const TbasItems: TabsProps['items'] = [
     {
       label: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account` }),
-      key: 'account',
+      key: LOGIN_TYPE.ACCOUNT,
       children: <Account />,
     },
     {
       label: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile` }),
-      key: 'mobile',
+      key: LOGIN_TYPE.MOBILE,
       children: <Mobile />,
     },
   ]
@@ -146,7 +146,7 @@ const LoginPage: FC = () => {
           {/* 登录表单 */}
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
-            title="Xmw Admin"
+            title={initialState?.Settings?.title}
             subTitle={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.subtitle` })}
             onFinish={async (values) => {
               await waitTime(500)

@@ -1,7 +1,30 @@
-import { MENU_TYPE } from '@/utils/enums'
+import { LAYOUT_TYPE, MENU_TYPE, NAV_THEME, TARGET_TYPE } from '@/utils/enums'
+import type { EnumValues, SearchTimes } from '@/utils/types'
 
-// 菜单类型
-export type MenuTypes = (typeof MENU_TYPE)[keyof typeof MENU_TYPE]
+/**
+ * @description: 菜单类型
+ * @author: 白雾茫茫丶
+ */
+export type MenuTypes = EnumValues<typeof MENU_TYPE>
+
+/**
+ * @description: 窗口打开方式
+ * @author: 白雾茫茫丶
+ */
+export type TargetTypes = EnumValues<typeof TARGET_TYPE>
+
+/**
+ * @description: 导航菜单的位置,side 为正常模式，top菜单显示在顶部，mix 两种兼有
+ * @author: 白雾茫茫丶
+ */
+export type LayoutTypes = EnumValues<typeof LAYOUT_TYPE>
+
+/**
+ * @description: 主题风格
+ * @author: 白雾茫茫丶
+ */
+export type NavTheme = EnumValues<typeof NAV_THEME>
+
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -31,9 +54,5 @@ export type FormItemProps = {
  * @author: 白雾茫茫丶
  */
 export type SearchParams = {
-  menu_type?: string; // 菜单类型
   isPremission?: boolean; // 是否是角色权限
-  status?: string; // 菜单状态
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
+} & SearchTimes & Partial<Pick<API.MENUMANAGEMENT, 'menu_type' | 'status'>>

@@ -160,7 +160,7 @@ const TableTemplate: FC = () => {
 			sorter: true,
 			width: 160,
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

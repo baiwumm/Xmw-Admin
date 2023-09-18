@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/utils/types'
+import { PaginationParams, SearchTimes } from '@/utils/types'
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -29,19 +29,10 @@ export type UserInformationProps = {
  * @description: 头部搜索表单 Params
  * @author: 白雾茫茫丶
  */
-export type SearchParams = PaginationParams & {
-  user_name?: string; // 用户名称
-  sex?: string; // 用户性别
-  status?: string; // 用户状态
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
+export type SearchParams = PaginationParams & SearchTimes & Pick<API.USERMANAGEMENT, 'user_name' | 'sex' | 'status'>
 
 /**
  * @description: 设置用户状态 Props
  * @author: 白雾茫茫丶
  */
-export type UserStatusProps = {
-  user_id: string;
-  status: number;
-}
+export type UserStatusProps = Pick<API.USERMANAGEMENT, 'user_id' | 'status'>

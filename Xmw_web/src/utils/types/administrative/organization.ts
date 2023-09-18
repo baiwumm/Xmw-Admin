@@ -1,7 +1,26 @@
 import { ORG_TYPE } from '@/utils/enums'
+import { EnumValues, SearchTimes } from '@/utils/types'
 
 // 组织类型
-export type OrgTypes = (typeof ORG_TYPE)[keyof typeof ORG_TYPE]
+export type OrgTypes = EnumValues<typeof ORG_TYPE>
+
+/**
+ * @description: 新增组织 Params
+ * @author: 白雾茫茫丶
+ */
+export type CreateOrgParams = Pick<
+  API.ORGANIZATION,
+  'parent_id' |
+  'org_name' |
+  'org_code' |
+  'org_type' |
+  'org_logo' |
+  'leader' |
+  'status' |
+  'sort' |
+  'describe'
+>
+
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -30,24 +49,6 @@ export type FormTemplateItemProps = {
  * @description: 头部搜索表单 Params
  * @author: 白雾茫茫丶
  */
-export type SearchParams = {
-  org_name?: string; // 组织名称
-  org_code?: string; // 组织编码
-  org_type?: string; // 组织类型
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
-
-/**
- * @description: 新增组织 Params
- * @author: 白雾茫茫丶
- */
-export type CreateOrgParams = {
-  parent_id?: string; // 父级id
-  org_name: string; // 组织名称
-  org_type: string; // 组织编码
-  org_logo: string; // 组织logo
-  status: number; // 组织状态
-  sort: number; // 排序
-  describe: string; // 组织描述
-}
+export type SearchParams = Partial<
+  Pick<API.ORGANIZATION, 'org_name' | 'org_code' | 'org_type' | 'status'>>
+  & SearchTimes

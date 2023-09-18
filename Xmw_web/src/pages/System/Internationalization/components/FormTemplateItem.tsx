@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-04 13:56:27
+ * @LastEditTime: 2023-09-15 15:31:13
  */
 // 引入第三方库
 import { ProFormDigit, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components'; // antd 高级组件
@@ -13,7 +13,7 @@ import { TreeSelect } from 'antd' // antd 组件库
 import type { FC } from 'react';
 
 import { formatPerfix } from '@/utils'
-import { INTERNATION, ROUTES } from '@/utils/enums'
+import { INTERNATION, LANGS, ROUTES } from '@/utils/enums'
 import { FormTemplateProps } from '@/utils/types/system/internationalization'
 
 const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = ({ treeData, parent_id }) => {
@@ -60,11 +60,11 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			/>
 			{/* 中文 */}
 			<ProFormText
-				name="zh-CN"
+				name={LANGS.CN}
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.CN}` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.CN}` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -72,11 +72,11 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			/>
 			{/* 英文 */}
 			<ProFormText
-				name="en-US"
+				name={LANGS.US}
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.US}` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.US}` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -84,11 +84,11 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			/>
 			{/* 日文 */}
 			<ProFormText
-				name="ja-JP"
+				name={LANGS.JP}
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.JP}` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.JP}` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,
@@ -96,11 +96,11 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'parent_id'>> = 
 			/>
 			{/* 繁体中文 */}
 			<ProFormText
-				name="zh-TW"
+				name={LANGS.TW}
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` })}
+				label={formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.TW}` })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` })}
+					formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.TW}` })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 200,

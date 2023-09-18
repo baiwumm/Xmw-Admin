@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 10:52:58
+ * @LastEditTime: 2023-09-15 15:51:38
  */
 // 引入第三方库
 import {
@@ -37,6 +37,7 @@ import { columnScrollX, formatPathName, formatPerfix, renderColumnsStateMap } fr
 import { FLAG_OPTS, LAYOUT_TYPE_OPTS, MENU_TYPE_OPTS, NAV_THEME_OPTS, randomTagColor } from '@/utils/const'
 import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
+import type { Langs } from '@/utils/types'
 import type { SearchParams } from '@/utils/types/system/menu-management'
 
 import FormTemplate from './FormTemplate' // 表单组件
@@ -47,9 +48,6 @@ import FormTemplate from './FormTemplate' // 表单组件
  */
 const MENU_CFG = [
 	'redirect',
-	'navTheme',
-	'headerTheme',
-	'layout',
 	'hideChildrenInMenu',
 	'hideInMenu',
 	'hideInBreadcrumb',
@@ -71,6 +69,8 @@ const TableTemplate: FC = () => {
 	const IconFont = createFromIconfontCN({
 		scriptUrl: process.env.ICONFONT_URL,
 	});
+	// 获取当前语言
+	const locale: Langs = getLocale()
 	// 获取表格实例
 	const tableRef = useRef<ActionType>();
 	// 获取树形数据传递给modalForm
@@ -121,8 +121,8 @@ const TableTemplate: FC = () => {
 	const renderColumns = (
 		record: API.MENUMANAGEMENT,
 		opts: LabeledValue[],
-		field: string,
-		color = 'cyan'): React.ReactNode => {
+		field: keyof API.MENUMANAGEMENT,
+		color = randomTagColor()): React.ReactNode => {
 		const value = record[field]
 		const renderItem = find(opts, { value })
 		return <Tag color={color}>{renderItem?.label || '-'}</Tag>
@@ -135,7 +135,7 @@ const TableTemplate: FC = () => {
 		/* 菜单名称 */
 		{
 			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
-			dataIndex: 'xmw_internationalization.zh-CN',
+			dataIndex: locale,
 			ellipsis: true,
 			hideInSearch: true,
 			valueType: 'treeSelect',
@@ -157,10 +157,10 @@ const TableTemplate: FC = () => {
 						{
 							record.icon ?
 								<Tag icon={<IconFont type={record.icon} className={PrimaryColor} />}>
-									{record[getLocale()]}
+									{record[locale]}
 								</Tag>
 								:
-								<Tag>{record[getLocale()]}</Tag>
+								<Tag>{record[locale]}</Tag>
 						}
 
 					</Space>
@@ -176,8 +176,7 @@ const TableTemplate: FC = () => {
 			onFilter: true,
 			valueEnum: MENU_TYPE_OPTS,
 			render: (_, record) => {
-				const menu_type = record.menu_type as keyof typeof MENU_TYPE_OPTS
-				return <Tag color={MENU_TYPE_OPTS[menu_type].color}>{MENU_TYPE_OPTS[menu_type].text}</Tag>
+				return <Tag color={randomTagColor()}>{MENU_TYPE_OPTS[record.menu_type].text}</Tag>
 			},
 		},
 		/* 路由地址 */
@@ -186,6 +185,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'path',
 			width: 120,
 			ellipsis: true,
+			align: 'center',
 			hideInSearch: true,
 		},
 		/* 重定向 */
@@ -194,6 +194,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'redirect',
 			ellipsis: true,
 			width: 120,
+			align: 'center',
 			hideInSearch: true,
 		},
 		/* 组件路径 */
@@ -202,6 +203,7 @@ const TableTemplate: FC = () => {
 			dataIndex: 'component',
 			width: 120,
 			ellipsis: true,
+			align: 'center',
 			hideInSearch: true,
 		},
 		/* 权限标识 */
@@ -220,7 +222,8 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 			hideInSearch: true,
 			width: 250,
-			render: (text) => <Tag color="volcano">{text}</Tag>,
+			align: 'center',
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		/* 状态 */
 		{
@@ -229,6 +232,7 @@ const TableTemplate: FC = () => {
 			width: 100,
 			filters: true,
 			onFilter: true,
+			align: 'center',
 			valueEnum: {
 				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
 				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
@@ -242,6 +246,7 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 100,
+			align: 'center',
 			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		/* 菜单主题 */
@@ -382,8 +387,9 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 			sorter: true,
 			width: 160,
+			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

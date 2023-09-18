@@ -8,17 +8,17 @@
  */
 import { ROUTES } from '@/utils/enums'
 import type { PageResponse } from '@/utils/types'
-import type { CreateAnnouncementProps, PinnedParams, TableSearchProps } from '@/utils/types/administrative/announcement'
+import type { CreateAnnouncementProps, PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
 import { httpRequest } from '@/utils/umiRequest'
 
 const baseURL = ROUTES.ANNOUNCEMENT
 
 /**
  * @description: 获取活动公告列表
- * @param {TableSearchProps} options
+ * @param {SearchParams} options
  * @author: 白雾茫茫丶
  */
-export async function getAnnouncementList(options?: TableSearchProps) {
+export async function getAnnouncementList(options?: SearchParams) {
   return httpRequest.get<PageResponse<API.ANNOUNCEMENT>>(`${baseURL}`, options);
 }
 

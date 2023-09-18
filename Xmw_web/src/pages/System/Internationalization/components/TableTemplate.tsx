@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 17:30:04
+ * @LastEditTime: 2023-09-15 15:29:39
  */
 // 引入第三方库
 import { ClockCircleOutlined, FontSizeOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -21,7 +21,7 @@ import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import { delInternational, getInternationalList } from '@/services/system/internationalization' // 国际化接口
 import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
 import { randomTagColor } from '@/utils/const'
-import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { INTERNATION, LANGS, OPERATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import type { SearchParams } from '@/utils/types/system/internationalization'
 
@@ -84,32 +84,32 @@ const TableTemplate: FC = () => {
 			render: (text) => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-CN` }),
-			dataIndex: 'zh-CN',
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.CN}` }),
+			dataIndex: LANGS.CN,
 			ellipsis: true,
 			width: 120,
 			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.en-US` }),
-			dataIndex: 'en-US',
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.US}` }),
+			dataIndex: LANGS.US,
 			ellipsis: true,
 			width: 120,
 			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.ja-JP` }),
-			dataIndex: 'ja-JP',
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.JP}` }),
+			dataIndex: LANGS.JP,
 			ellipsis: true,
 			width: 120,
 			align: 'center',
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.zh-TW` }),
-			dataIndex: 'zh-TW',
+			title: formatMessage({ id: `${formatPerfix(ROUTES.INTERNATIONALIZATION)}.${LANGS.TW}` }),
+			dataIndex: LANGS.TW,
 			ellipsis: true,
 			width: 120,
 			align: 'center',
@@ -134,7 +134,7 @@ const TableTemplate: FC = () => {
 			width: 160,
 			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

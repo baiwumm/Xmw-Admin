@@ -3,8 +3,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-24 08:58:15
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-04 14:00:46
+ * @LastEditTime: 2023-09-15 10:52:01
  */
+import { SearchTimes } from '@/utils/types'
+
+/**
+ * @description: 新增岗位 Params 
+ * @author: 白雾茫茫丶
+ */
+export type CreateJobsParams = Pick<
+  API.JOBSMANAGEMENT, 'parent_id' | 'jobs_name' | 'org_id' | 'leader' | 'sort' | 'describe'>
 
 /**
  * @description: FormTemplate Props
@@ -36,21 +44,4 @@ export type FormTemplateItemProps = {
  * @description: 头部搜索表单 Params 
  * @author: 白雾茫茫丶
  */
-export type SearchParams = {
-  jobs_id?: string; // 岗位id
-  org_id?: string; // 所属组织
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
-
-/**
- * @description: 新增岗位 Params 
- * @author: 白雾茫茫丶
- */
-export type CreateJobsParams = {
-  parent_id?: string; // 父级id
-  jobs_name: string; // 岗位名称
-  org_id: string; // 所属组织
-  sort: number; // 排序
-  describe: string; // 岗位描述
-}
+export type SearchParams = Partial<Pick<API.JOBSMANAGEMENT, 'jobs_id' | 'org_id'>> & SearchTimes

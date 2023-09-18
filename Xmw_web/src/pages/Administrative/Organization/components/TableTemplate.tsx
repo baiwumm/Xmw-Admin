@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 18:22:00
+ * @LastEditTime: 2023-09-15 14:00:32
  */
 // 引入第三方库
 import { ClockCircleOutlined, createFromIconfontCN, PlusOutlined } from '@ant-design/icons' // antd 图标库
@@ -25,7 +25,6 @@ import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
 import { ORG_TYPE_OPTS, randomTagColor } from '@/utils/const'
 import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import { PageResponse, PaginationParams } from '@/utils/types'
 import type { OrgTypes, SearchParams } from '@/utils/types/administrative/organization'
 
 import FormTemplate from './FormTemplate' // 表单组件
@@ -57,8 +56,7 @@ const TableTemplate: FC = () => {
 		tableRef?.current?.reload()
 	}
 	// 获取用户列表
-	const { data: userList } = useRequest<PageResponse<API.USERMANAGEMENT>, PaginationParams[]>(
-		async (params) => get(await getUserList(params), 'data', []), {
+	const { data: userList } = useRequest(async (params) => get(await getUserList(params), 'data', []), {
 		defaultParams: [{ current: 1, pageSize: 9999 }],
 	});
 	// 删除列表
@@ -161,7 +159,7 @@ const TableTemplate: FC = () => {
 			width: 160,
 			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

@@ -4,21 +4,18 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-06 10:12:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 16:48:07
+ * @LastEditTime: 2023-09-15 10:43:33
  */
 import 'nprogress/nprogress.css';
 
-import { AxiosRequestConfig, history, request, RequestConfig, RequestError, RequestOptions } from '@umijs/max';
+import { AxiosRequestConfig, request, RequestConfig, RequestError, RequestOptions } from '@umijs/max';
 import { message, Modal } from 'antd'
 import { debounce } from 'lodash-es'; // lodash 工具函数
 import Nprogress from 'nprogress';
 
 import { getLocalStorageItem, logoutToLogin } from '@/utils' // 全局工具函数
-import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import { LOCAL_STORAGE } from '@/utils/enums'
 import { Response } from '@/utils/types'
-
-// 获取 ACCESS_TOKEN
-const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
 
 /**
  * @description: 防抖函数统一处理异常错误
@@ -50,7 +47,7 @@ const umiRequest: RequestConfig = {
     // 错误接收及处理
     errorHandler: (error: RequestError, opts: RequestOptions) => {
       // 获取报错的响应和请求信息
-      const { response, resquest } = error;
+      const { response, resquest } = error as any;
       // 配置 skipErrorHandler 会跳过默认的错误处理，用于项目中部分特殊的接口
       if (opts?.skipErrorHandler) throw error;
       // Axios 的错误
@@ -88,6 +85,8 @@ const umiRequest: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
+      // 获取 ACCESS_TOKEN
+      const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
       // 判断是否登录存在token，有就请求头携带token
       if (ACCESS_TOKEN && config?.headers) {
         config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`
@@ -120,10 +119,6 @@ const umiRequest: RequestConfig = {
             logoutToLogin()
             Modal.destroyAll();
             break;
-        }
-        // 判断在登录页是否登录，登录则进入主页
-        if (location.pathname === ROUTES.LOGIN && ACCESS_TOKEN) {
-          history.push('/')
         }
         // 进度条结束
         Nprogress.done();

@@ -114,7 +114,7 @@ const OperationLog: FC = () => {
 			width: 160,
 			align: 'center',
 			render: (text) => (
-				<Space>
+				<Space size="small">
 					<ClockCircleOutlined /><span>{text}</span>
 				</Space>
 			),

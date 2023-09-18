@@ -13,7 +13,7 @@ import { FC } from 'react'
 import { createAnnouncement, updateAnnouncement } from '@/services/administrative/announcement'
 import { formatPathName, renderFormTitle } from '@/utils'
 import { REQUEST_CODE, ROUTES } from '@/utils/enums'
-import { FormTemplateProps } from '@/utils/types/administrative/announcement'
+import type { FormTemplateProps } from '@/utils/types/administrative/announcement'
 
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 

@@ -1,7 +1,6 @@
 
 import { ROUTES } from '@/utils/enums'
-import type { PageResponse } from '@/utils/types'
-import type { SearchParams } from '@/utils/types/system/operation-log'
+import type { PageResponse, SearchTimes } from '@/utils/types'
 import { httpRequest } from '@/utils/umiRequest'
 
 const baseURL = ROUTES.OPERATIONLOG
@@ -11,6 +10,6 @@ const baseURL = ROUTES.OPERATIONLOG
  * @param {SearchParams} options
  * @Author: 白雾茫茫丶
  */
-export async function getOperationLogList(options?: SearchParams) {
+export async function getOperationLogList(options?: SearchTimes) {
   return httpRequest.get<PageResponse<API.OPERATIONLOG>>(`${baseURL}`, options);
 }

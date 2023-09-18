@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 10:22:44
+ * @LastEditTime: 2023-09-15 15:53:35
  */
 // 引入第三方库
 import {
@@ -21,7 +21,7 @@ import type { FC } from 'react';
 
 import { formatPerfix } from '@/utils'
 import { MENU_TYPE_OPTS, STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, MENU_TYPE, ROUTES, STATUS } from '@/utils/enums'
+import { INTERNATION, LANGS, MENU_TYPE, ROUTES, STATUS } from '@/utils/enums'
 import type { FormItemProps } from '@/utils/types/system/menu-management';
 
 import MenuFormRender from './MenuFormRender';
@@ -134,7 +134,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 					disabled: !!parent_id,
 					defaultValue: parent_id || null,
 					fieldNames: {
-						label: 'zh-CN',
+						label: LANGS.CN,
 						value: 'menu_id',
 					},
 					treeDefaultExpandAll: true,
@@ -158,7 +158,7 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 				fieldProps={{
 					treeData: internationalData,
 					fieldNames: {
-						label: 'zh-CN',
+						label: LANGS.CN,
 						value: 'id',
 					},
 					treeDefaultExpandAll: true,

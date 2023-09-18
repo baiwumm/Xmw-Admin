@@ -1,3 +1,5 @@
+import type { SearchTimes } from '@/utils/types'
+
 /**
  * @description: FormTemplate Props
  * @Author: 白雾茫茫丶
@@ -15,23 +17,13 @@ export type FormTemplateProps = {
  * @description: 头部搜索表单 Params
  * @author: 白雾茫茫丶
  */
-export type SearchParams = {
-  name?: string; // 国际化字段
+export type SearchParams = SearchTimes & Partial<Pick<API.INTERNATIONALIZATION, 'name'> & {
   isMenu?: boolean; // 是否是菜单数据
-  start_time?: string; // 开始日期
-  end_time?: string; // 结束日期
-}
+}>
 
 /**
  * @description: 新增国际化字段 Params
  * @author: 白雾茫茫丶
  */
-export type CreateInternationalParams = {
-  parent_id?: string; // 父级id
-  name: string; // 国际化字段
-  'zh-CN'?: string; // 中文
-  'en-US'?: string; // 英文
-  'ja-JP'?: string; // 日文
-  'zh-TW'?: string; // 繁体中文
-  sort: number; // 排序
-}
+export type CreateInternationalParams = Pick<API.INTERNATIONALIZATION, 'parent_id' | 'name' | 'sort'>
+  & Partial<API.LOCALESLANGAll>
