@@ -7,8 +7,6 @@ import type { SearchTimes } from '@/utils/types'
 export type FormTemplateProps = {
   treeData: API.INTERNATIONALIZATION[]; // 国际化树形数据
   reloadTable: () => void; // 刷新表格
-  formData?: API.INTERNATIONALIZATION; // 表单数据
-  parent_id?: string; // 父级id
   open: boolean;
   setOpenDrawerFalse: () => void
 };

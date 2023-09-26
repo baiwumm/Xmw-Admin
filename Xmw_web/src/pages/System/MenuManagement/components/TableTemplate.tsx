@@ -4,39 +4,31 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 15:51:38
+ * @LastEditTime: 2023-09-26 16:06:51
  */
-// 引入第三方库
-import {
-	ClockCircleOutlined,
-	createFromIconfontCN,
-	InfoCircleOutlined,
-	PlusOutlined,
-} from '@ant-design/icons' // antd 图标库
-import {
-	ActionType,
-	ColumnsState,
-	ProColumns,
-	ProTable,
-	RequestData,
-} from '@ant-design/pro-components' // antd 高级组件
+import { ActionType, ColumnsState, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { Access, getLocale, useAccess, useIntl } from '@umijs/max'
+import { getLocale, useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
-import { Button, message, Modal, Space, Tag, Tooltip } from 'antd' // antd 组件库
-import type { LabeledValue } from 'antd/es/select/index';
-import dayjs from 'dayjs'
-import { find, get } from 'lodash-es'
+import { Form, Space, Tag } from 'antd'
+import { drop, find, get, map, mapValues } from 'lodash-es'
 import React, { FC, useRef, useState } from 'react';
 
-import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
-import { getInternationalList } from '@/services/system/internationalization' // 国际化接口
-// 引入业务组件
-import { delMenu, getMenuList } from '@/services/system/menu-management' // 菜单管理接口
-import { columnScrollX, formatPathName, formatPerfix, renderColumnsStateMap } from '@/utils'
-import { FLAG_OPTS, LAYOUT_TYPE_OPTS, MENU_TYPE_OPTS, NAV_THEME_OPTS, randomTagColor } from '@/utils/const'
-import { INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
-import permissions from '@/utils/permission'
+import DropdownMenu from '@/components/DropdownMenu'
+import {
+	columnScrollX,
+	CreateButton,
+	createTimeColumn,
+	createTimeInSearch,
+	flagColumn,
+	operationColumn,
+	sortColumn,
+	statusColumn,
+} from '@/components/TableColumns'
+import { delMenu, getMenuList } from '@/services/system/menu-management'
+import { formatPerfix, formatResponse, renderColumnsStateMap, randomTagColor } from '@/utils'
+import { IconFont, LAYOUT_TYPE_OPTS, MenuTypeEnum, NAV_THEME_OPTS } from '@/utils/const'
+import { ROUTES } from '@/utils/enums'
 import type { Langs } from '@/utils/types'
 import type { SearchParams } from '@/utils/types/system/menu-management'
 
@@ -52,7 +44,6 @@ const MENU_CFG = [
 	'hideInMenu',
 	'hideInBreadcrumb',
 	'headerRender',
-	'headerRender',
 	'footerRender',
 	'menuRender',
 	'menuHeaderRender',
@@ -63,24 +54,12 @@ const MENU_CFG = [
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
-	// 权限定义集合
-	const access = useAccess();
-	// 使用 iconfont.cn 资源
-	const IconFont = createFromIconfontCN({
-		scriptUrl: process.env.ICONFONT_URL,
-	});
+	// 表单实例
+	const [form] = Form.useForm<API.JOBSMANAGEMENT>();
 	// 获取当前语言
 	const locale: Langs = getLocale()
 	// 获取表格实例
 	const tableRef = useRef<ActionType>();
-	// 获取树形数据传递给modalForm
-	const [treeData, setTreeData] = useState<API.MENUMANAGEMENT[]>([])
-	// 获取树形数据传递给modalForm
-	const [internationalData, setInternationalData] = useState<API.INTERNATIONALIZATION[]>([])
-	// 当前行数据
-	const [currentRecord, setCurrentRecord] = useState<API.MENUMANAGEMENT>()
-	// 判断是否是添加子级
-	const [parent_id, set_parent_id] = useState<string>('')
 	// 受控的表格设置栏
 	const [columnsStateMap, setColumnsStateMap] =
 		useState<Record<string, ColumnsState>>(renderColumnsStateMap(MENU_CFG));
@@ -94,39 +73,16 @@ const TableTemplate: FC = () => {
 	function reloadTable() {
 		tableRef?.current?.reload()
 	}
+
 	/**
-	 * @description: 删除菜单数据
-	 * @param {string} menu_id
-	 * @return {*}
+	 * @description: 获取菜单列表
 	 * @author: 白雾茫茫丶
 	 */
-	const handlerDelete = (menu_id: string): void => {
-		Modal.confirm({
-			title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
-			content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
-			onOk: async () => {
-				await delMenu(menu_id).then((res) => {
-					if (res.code === REQUEST_CODE.SUCCESS) {
-						message.success(res.msg)
-						// 刷新表格
-						reloadTable()
-					}
-				})
-			},
-		})
+	const { data: menuTree, runAsync: fetchMenuList } = useRequest(
+		async (params) => formatResponse(await getMenuList(params)), {
+		manual: true,
+	})
 
-	}
-
-	// 渲染 columns 函数
-	const renderColumns = (
-		record: API.MENUMANAGEMENT,
-		opts: LabeledValue[],
-		field: keyof API.MENUMANAGEMENT,
-		color = randomTagColor()): React.ReactNode => {
-		const value = record[field]
-		const renderItem = find(opts, { value })
-		return <Tag color={color}>{renderItem?.label || '-'}</Tag>
-	}
 	/**
 * @description: proTable columns 配置项
 * @author: 白雾茫茫丶
@@ -134,25 +90,14 @@ const TableTemplate: FC = () => {
 	const columns: ProColumns<API.MENUMANAGEMENT>[] = [
 		/* 菜单名称 */
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'name') }),
 			dataIndex: locale,
 			ellipsis: true,
 			hideInSearch: true,
-			valueType: 'treeSelect',
-			width: 140,
 			fixed: 'left',
-			fieldProps: {
-				allowClear: true,
-				fieldNames: {
-					label: 'zh-CN',
-					value: 'id',
-				},
-				options: internationalData,
-				placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }),
-			},
 			render: (_, record) => {
 				return record.redirect ?
-					<Tag>{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.redirect` })}</Tag> :
+					<Tag>{formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'redirect') })}</Tag> :
 					<Space>
 						{
 							record.icon ?
@@ -168,16 +113,23 @@ const TableTemplate: FC = () => {
 		},
 		/* 菜单类型 */
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menu_type` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'menu_type') }),
 			dataIndex: 'menu_type',
 			width: 120,
 			align: 'center',
 			filters: true,
 			onFilter: true,
-			valueEnum: MENU_TYPE_OPTS,
-			render: (_, record) => {
-				return <Tag color={randomTagColor()}>{MENU_TYPE_OPTS[record.menu_type].text}</Tag>
-			},
+			valueEnum: mapValues(MenuTypeEnum, (item: string) =>
+				formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, `menu_type.${item}`) })),
+			render: (_, record) => (
+				<Tag
+					color={randomTagColor()}>
+					{formatMessage({
+						id:
+							formatPerfix(ROUTES.MENUMANAGEMENT, `menu_type.${MenuTypeEnum[record.menu_type]}`),
+					})}
+				</Tag>
+			),
 		},
 		/* 路由地址 */
 		{
@@ -208,260 +160,68 @@ const TableTemplate: FC = () => {
 		},
 		/* 权限标识 */
 		{
-			title: (
-				<>
-					{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission` })}
-					<Tooltip
-						placement="top"
-						title={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission.tooltip` })}>
-						<InfoCircleOutlined style={{ marginInlineStart: 10 }} />
-					</Tooltip>
-				</>
-			),
+			title: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission') }),
 			dataIndex: 'permission',
 			ellipsis: true,
+			tip: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission.tooltip') }),
 			hideInSearch: true,
 			width: 250,
 			align: 'center',
 			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		/* 状态 */
-		{
-			title: formatMessage({ id: INTERNATION.STATUS }),
-			dataIndex: 'status',
-			width: 100,
-			filters: true,
-			onFilter: true,
-			align: 'center',
-			valueEnum: {
-				[STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
-				[STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
-			},
-		},
+		statusColumn,
 		/* 排序 */
-		{
-			title: formatMessage({ id: INTERNATION.SORT }),
-			dataIndex: 'sort',
-			ellipsis: true,
-			hideInSearch: true,
-			sorter: true,
-			width: 100,
-			align: 'center',
-			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
-		},
-		/* 菜单主题 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.navTheme` }),
-			dataIndex: 'navTheme',
+		sortColumn,
+		/* 显示 layout 布局、菜单主题、顶部菜单主题 */
+		...map(['navTheme', 'headerTheme', 'layout'], (field: keyof API.MENUMANAGEMENT): ProColumns => ({
+			title: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, field) }),
+			dataIndex: field,
 			ellipsis: true,
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
-			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'navTheme'),
-		},
-		/* 顶部菜单主题 */
+			render: (_, record: API.MENUMANAGEMENT) => <Tag color={randomTagColor()}>
+				{get(
+					find(field === 'layout' ? LAYOUT_TYPE_OPTS : NAV_THEME_OPTS, { value: record[field] })
+					, 'label', '--')}
+			</Tag>,
+		})),
+		/* 路由配置 */
+		...map(drop(MENU_CFG), (fidle: string) => flagColumn(fidle)),
+		// 创建时间
+		createTimeColumn,
+		/* 创建时间-搜索 */
+		createTimeInSearch,
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.headerTheme` }),
-			dataIndex: 'headerTheme',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, NAV_THEME_OPTS, 'headerTheme'),
-		},
-		/* 显示layout布局 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.layout` }),
-			dataIndex: 'layout',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, LAYOUT_TYPE_OPTS, 'layout'),
-		},
-		/* 隐藏子路由 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideChildrenInMenu` }),
-			dataIndex: 'hideChildrenInMenu',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'hideChildrenInMenu'),
-		},
-		/* 隐藏菜单 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInMenu` }),
-			dataIndex: 'hideInMenu',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'hideInMenu'),
-		},
-		/* 显示在面包屑中 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.hideInBreadcrumb` }),
-			dataIndex: 'hideInBreadcrumb',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'hideInBreadcrumb'),
-		},
-		/* 显示顶栏 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.headerRender` }),
-			dataIndex: 'headerRender',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'headerRender'),
-		},
-		/* 显示页脚 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.footerRender` }),
-			dataIndex: 'footerRender',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'footerRender'),
-		},
-		/* 显示菜单 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuRender` }),
-			dataIndex: 'menuRender',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'menuRender'),
-		},
-		/* 显示菜单顶栏 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menuHeaderRender` }),
-			dataIndex: 'menuHeaderRender',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'menuHeaderRender'),
-		},
-		/* 子项往上提 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.flatMenu` }),
-			dataIndex: 'flatMenu',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'flatMenu'),
-		},
-		/* 固定顶栏 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixedHeader` }),
-			dataIndex: 'fixedHeader',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'fixedHeader'),
-		},
-		/* 固定菜单 */
-		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.fixSiderbar` }),
-			dataIndex: 'fixSiderbar',
-			ellipsis: true,
-			hideInSearch: true,
-			width: 100,
-			align: 'center',
-			render: (_, record) => renderColumns(record, FLAG_OPTS, 'fixSiderbar'),
-		},
-		/* 创建时间 */
-		{
-			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
-			dataIndex: 'created_time',
-			valueType: 'dateTime',
-			hideInSearch: true,
-			sorter: true,
-			width: 160,
-			align: 'center',
-			render: (text) => (
-				<Space size="small">
-					<ClockCircleOutlined /><span>{text}</span>
-				</Space>
-			),
-		},
-		{
-			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
-			dataIndex: 'created_time',
-			valueType: 'dateRange',
-			hideInTable: true,
-			search: {
-				transform: (value) => {
-					return {
-						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
-					};
-				},
-			},
-		},
-		{
-			title: formatMessage({ id: INTERNATION.OPERATION }),
-			valueType: 'option',
-			width: 80,
-			align: 'center',
-			fixed: 'right',
-			render: (_, record) => [
+			...operationColumn,
+			render: (_, record) => (
 				<DropdownMenu
-					formatPerfix={formatPathName(ROUTES.MENUMANAGEMENT)}
+					pathName={ROUTES.MENUMANAGEMENT}
 					addChildCallback={() => {
-						setCurrentRecord(undefined);
-						set_parent_id(record?.menu_id);
+						form.setFieldValue('parent_id', record.menu_id);
 						setOpenDrawerTrue()
 					}}
 					editCallback={() => {
-						set_parent_id('');
-						setCurrentRecord(record);
+						form.setFieldsValue(record);
 						setOpenDrawerTrue()
 					}}
-					deleteCallback={() => handlerDelete(record.menu_id)}
-					key="dropdownMenu"
-				/>,
-			],
+					deleteParams={{
+						request: delMenu,
+						id: record.menu_id,
+					}}
+					reloadTable={reloadTable}
+				/>
+			),
 		},
 	]
-
-	// 获取当前菜单数据
-	useRequest(async () => await getInternationalList({ isMenu: true }), {
-		onSuccess: (res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				setInternationalData(res.data)
-			}
-		},
-	})
 
 	return (
 		<>
 			<ProTable<API.MENUMANAGEMENT, SearchParams>
 				actionRef={tableRef}
 				columns={columns}
-				request={async (params: SearchParams): Promise<RequestData<API.MENUMANAGEMENT>> => {
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getMenuList(params).then((res) => {
-						setTreeData(res.data)
-						return {
-							data: get(res, 'data', []),
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === REQUEST_CODE.SUCCESS,
-						}
-					})
-					return Promise.resolve(response)
-				}
-				}
+				request={async (params: SearchParams) => fetchMenuList(params)}
 				rowKey="menu_id"
 				pagination={false}
 				columnsState={{
@@ -470,35 +230,23 @@ const TableTemplate: FC = () => {
 				}}
 				// 工具栏
 				toolBarRender={() => [
-					<Access
-						accessible={access.operationPermission(
-							get(permissions, `${formatPathName(ROUTES.MENUMANAGEMENT)}.${OPERATION.ADD}`, ''),
-						)}
-						fallback={null}
-						key="plus">
-						<Button
-							type="primary" onClick={() => {
-								set_parent_id('');
-								setCurrentRecord(undefined);
-								setOpenDrawerTrue()
-							}}>
-							<PlusOutlined />
-							{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT, true)}.${OPERATION.ADD}` })}
-						</Button>
-					</Access>,
+					// 新增按钮
+					<CreateButton
+						key="create"
+						pathName={ROUTES.MENUMANAGEMENT}
+						callback={() => setOpenDrawerTrue()} />,
 				]}
 				scroll={{ x: columnScrollX(columns) }}
 			/>
 			{/* 抽屉表单 */}
-			<FormTemplate
-				treeData={treeData}
-				reloadTable={reloadTable}
-				internationalData={internationalData}
-				parent_id={parent_id}
-				formData={currentRecord}
-				open={openDrawer}
-				setOpenDrawerFalse={setOpenDrawerFalse}
-			/>
+			<Form form={form}>
+				<FormTemplate
+					treeData={get(menuTree, 'data', [])}
+					reloadTable={reloadTable}
+					open={openDrawer}
+					setOpenDrawerFalse={setOpenDrawerFalse}
+				/>
+			</Form>
 		</>
 	)
 }

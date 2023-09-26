@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-10-15 22:06:24
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:29:05
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-25 17:49:04
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -22,7 +22,7 @@ import {
   responseMessage,
 } from '@/utils'; // 全局工具函数
 import { ListInternationalDto, SaveInternationalDto } from './dto';
-
+import { omitBy, isUndefined } from 'lodash';
 @Injectable()
 export class InternationalService {
   constructor(
@@ -143,8 +143,9 @@ export class InternationalService {
       return responseMessage({}, '父级不能和自己相同!', -1);
     }
     // 相同层级名称不能相同
+    const existWhere = { name, id: { [Op.ne]: id }, parent_id };
     const exist = await this.internationaModel.findOne({
-      where: { name, parent_id, id: { [Op.ne]: id } },
+      where: omitBy(existWhere, isUndefined),
     });
     // 如果有结果，则证明已存在
     if (exist) {

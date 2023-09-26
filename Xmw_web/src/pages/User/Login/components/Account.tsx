@@ -6,8 +6,8 @@
  * @LastEditors: 白雾茫茫丶
  * @LastEditTime: 2023-09-01 14:04:49
  */
-import { LockOutlined, UserOutlined } from '@ant-design/icons'; // antd 图标
-import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { ProFormText } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks';
 import { Col, Form, Input, Row, Spin } from 'antd'
@@ -31,11 +31,11 @@ const Account: FC = () => {
 					size: 'large',
 					prefix: <UserOutlined className={'prefixIcon'} />,
 				}}
-				placeholder={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.user_name.placeholder` })}
+				placeholder={formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.account.user_name.placeholder') })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.user_name.required` }),
+						message: formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.account.user_name.required') }),
 					},
 				]}
 				initialValue="admin"
@@ -47,11 +47,11 @@ const Account: FC = () => {
 					prefix: <LockOutlined className={'prefixIcon'} />,
 					visibilityToggle: false,
 				}}
-				placeholder={formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.password.placeholder` })}
+				placeholder={formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.account.password.placeholder') })}
 				rules={[
 					{
 						required: true,
-						message: formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.account.password.required` }),
+						message: formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.account.password.required') }),
 					},
 				]}
 				initialValue="abc123456"
@@ -65,14 +65,14 @@ const Account: FC = () => {
 							rules={[{
 								required: true,
 								message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-									formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` }),
+									formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.mobile.captcha') }),
 							}]}
 						>
 							<Input
 								size="large"
 								placeholder={
 									formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-									formatMessage({ id: `${formatPerfix(ROUTES.LOGIN)}.type.mobile.captcha` })}
+									formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'type.mobile.captcha') })}
 							/>
 						</Form.Item>
 					</Col>

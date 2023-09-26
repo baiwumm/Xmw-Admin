@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 16:00:27
+ * @LastEditTime: 2023-09-26 09:06:45
  */
 
 import type { Flag, Langs, RequestMethods, Status, TableTimes } from '@/utils/types'
 import type { AnnouncementType } from '@/utils/types/administrative/announcement'
 import type { OrgTypes } from '@/utils/types/administrative/organization'
-import type { LayoutTypes, MenuTypes, NavTheme, TargetTypes } from '@/utils/types/system/menu-management'
+import type { LayoutTypes, MenuTheme, MenuTypes, TargetTypes } from '@/utils/types/system/menu-management'
 
 declare global {
   namespace API {
@@ -71,8 +71,8 @@ declare global {
       target?: TargetTypes; // 当path是一个url，点击新窗口打开
       permission?: string; // 菜单标识(页面按钮权限控制)
       layout?: LayoutTypes; // 是否显示layout布局
-      navTheme?: NavTheme; // 导航菜单的主题
-      headerTheme?: string; // 顶部导航的主题，mix 模式生效
+      navTheme?: MenuTheme; // 导航菜单的主题
+      headerTheme?: MenuTheme; // 顶部导航的主题，mix 模式生效
       hideChildrenInMenu: Flag; // 是否隐藏子路由
       hideInMenu: Flag; // 是否隐藏菜单，包括子路由
       hideInBreadcrumb: Flag; // 是否在面包屑中隐藏
@@ -87,6 +87,7 @@ declare global {
       sort: number; // 排序
       status: Status; // 菜单状态
       routes?: MENUMANAGEMENT[];
+      children?: MENUMANAGEMENT[];
     } & TableTimes & LOCALESLANGAll;
 
     /**

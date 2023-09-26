@@ -4,46 +4,54 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 17:27:27
+ * @LastEditTime: 2023-09-22 14:24:45
  */
-import { ClockCircleOutlined } from '@ant-design/icons' // antd 图标库
-import { PageContainer, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
+import { PageContainer, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max'
-import { Space, Tag } from 'antd'
-import dayjs from 'dayjs'
-import { get } from 'lodash-es'
+import { useRequest } from 'ahooks'
+import { Tag } from 'antd'
 import type { FC } from 'react';
 
+import { columnScrollX, createTimeColumn, createTimeInSearch } from '@/components/TableColumns'
 import { getOperationLogList } from '@/services/system/operation-log'
-import { columnScrollX, formatPerfix } from '@/utils'
-import { MethodsTagColor } from '@/utils/const'
-import { INTERNATION, REQUEST_CODE, ROUTES } from '@/utils/enums'
-import { RequestMethods } from '@/utils/types'
-import type { SearchParams } from '@/utils/types/system/operation-log'
+import { formatPerfix, formatResponse, randomTagColor } from '@/utils'
+import { ROUTES } from '@/utils/enums'
+import type { SearchTimes } from '@/utils/types'
 
 const OperationLog: FC = () => {
 	const { formatMessage } = useIntl();
+
+	/**
+	 * @description: 获取操作日志列表
+	 * @author: 白雾茫茫丶
+	 */
+	const { runAsync: fetchOperationLogList } = useRequest(
+		async (params) => formatResponse(await getOperationLogList(params)), {
+		manual: true,
+	},
+	)
+
 	/**
 	* @description: proTable columns 配置项
 	* @author: 白雾茫茫丶
 	*/
 	const columns: ProColumns<API.OPERATIONLOG>[] = [
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.user_name` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.USERMANAGEMENT, 'user_name') }),
 			dataIndex: 'user_name',
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.cn_name` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.USERMANAGEMENT, 'cn_name') }),
 			dataIndex: 'cn_name',
 			hideInSearch: true,
 			width: 100,
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.content` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'content') }),
 			dataIndex: 'content',
 			ellipsis: true,
 			width: 100,
@@ -51,14 +59,14 @@ const OperationLog: FC = () => {
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.ip` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'ip') }),
 			dataIndex: 'ip',
 			width: 100,
 			hideInSearch: true,
 			align: 'center',
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.path` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'path') }),
 			dataIndex: 'path',
 			hideInSearch: true,
 			ellipsis: true,
@@ -70,7 +78,7 @@ const OperationLog: FC = () => {
 			},
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.api_url` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'api_url') }),
 			dataIndex: 'api_url',
 			ellipsis: true,
 			width: 100,
@@ -78,18 +86,15 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.method` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'method') }),
 			dataIndex: 'method',
 			width: 100,
 			hideInSearch: true,
 			align: 'center',
-			render: (_, record) => {
-				const method: RequestMethods = record.method;
-				return <Tag color={MethodsTagColor[method]}>{method}</Tag>
-			},
+			render: (text) => <Tag color={randomTagColor()}>{text}</Tag>,
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.params` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'params') }),
 			dataIndex: 'params',
 			hideInSearch: true,
 			ellipsis: true,
@@ -98,60 +103,23 @@ const OperationLog: FC = () => {
 			render: (_, record) => JSON.stringify(record.params),
 		},
 		{
-			title: formatMessage({ id: `${formatPerfix(ROUTES.OPERATIONLOG)}.user_agent` }),
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'user_agent') }),
 			dataIndex: 'user_agent',
 			hideInSearch: true,
 			width: 200,
 			align: 'center',
 			ellipsis: true,
 		},
-		{
-			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
-			dataIndex: 'created_time',
-			valueType: 'dateTime',
-			hideInSearch: true,
-			sorter: true,
-			width: 160,
-			align: 'center',
-			render: (text) => (
-				<Space size="small">
-					<ClockCircleOutlined /><span>{text}</span>
-				</Space>
-			),
-		},
-		{
-			title: formatMessage({ id: INTERNATION.CREATED_TIME }),
-			dataIndex: 'created_time',
-			valueType: 'dateRange',
-			hideInTable: true,
-			search: {
-				transform: (value) => {
-					return {
-						start_time: dayjs(value[0]._d).format('YYYY-MM-DD 00:00:00'),
-						end_time: dayjs(value[1]._d).format('YYYY-MM-DD 23:59:59'),
-					};
-				},
-			},
-		},
+		/* 创建时间 */
+		createTimeColumn,
+		/* 创建时间-搜索 */
+		createTimeInSearch,
 	]
 	return (
 		<PageContainer header={{ title: null }}>
-			<ProTable<API.OPERATIONLOG, SearchParams>
+			<ProTable<API.OPERATIONLOG, SearchTimes>
 				columns={columns}
-				request={async (params: SearchParams): Promise<RequestData<API.OPERATIONLOG>> => {
-					// 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-					// 如果需要转化参数可以在这里进行修改
-					const response = await getOperationLogList(params).then((res) => {
-						return {
-							data: get(res, 'data.list', []),
-							// success 请返回 true，不然 table 会停止解析数据，即使有数据
-							success: res.code === REQUEST_CODE.SUCCESS,
-							total: get(res, 'data.total', 0),
-						}
-					})
-					return Promise.resolve(response)
-				}
-				}
+				request={async (params: SearchTimes) => fetchOperationLogList(params)}
 				rowKey="log_id"
 				pagination={{ pageSize: 10 }}
 				scroll={{ x: columnScrollX(columns) }}

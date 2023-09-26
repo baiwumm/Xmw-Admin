@@ -15,10 +15,10 @@ export default defineConfig({
   keepalive: [/./],
   tabsLayout: {
     // 是否使用自定义的 tabs 组件，需要搭配运行时配置 getCustomTabs 使用
-    // hasCustomTabs: true,
+    hasCustomTabs: true,
     // 是否开启右侧的 tabs 管理器，可以实现“关闭左侧”，“关闭右侧”，“关闭其他”和“刷新”等功能。
     hasDropdown: true,
-    hasFixedHeader: true,
+    hasFixedHeader: false,
   },
   /**
    * @name 开启 hash 模式

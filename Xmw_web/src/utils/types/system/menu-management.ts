@@ -1,4 +1,4 @@
-import { LAYOUT_TYPE, MENU_TYPE, NAV_THEME, TARGET_TYPE } from '@/utils/enums'
+import { LAYOUT_TYPE, MENU_THEME, MENU_TYPE, TARGET_TYPE } from '@/utils/enums'
 import type { EnumValues, SearchTimes } from '@/utils/types'
 
 /**
@@ -23,7 +23,7 @@ export type LayoutTypes = EnumValues<typeof LAYOUT_TYPE>
  * @description: 主题风格
  * @author: 白雾茫茫丶
  */
-export type NavTheme = EnumValues<typeof NAV_THEME>
+export type MenuTheme = EnumValues<typeof MENU_THEME>
 
 /**
  * @description: FormTemplate Props
@@ -32,22 +32,15 @@ export type NavTheme = EnumValues<typeof NAV_THEME>
 export type FormTemplateProps = {
   treeData: API.MENUMANAGEMENT[]; // 菜单树形数据
   reloadTable: () => void; // 刷新表格
-  formData?: API.MENUMANAGEMENT; // 表单数据
-  parent_id?: string; // 父级id
-  internationalData: API.INTERNATIONALIZATION[]; // 国际化字段树形数据
   open: boolean;
-  setOpenDrawerFalse: () => void
+  setOpenDrawerFalse: () => void;
 };
 
 /**
  * @description: FormItem Props
  * @author: 白雾茫茫丶
  */
-export type FormItemProps = {
-  treeData: API.MENUMANAGEMENT[]; // 菜单树形数据
-  parent_id?: string; // 父级id
-  internationalData: API.INTERNATIONALIZATION[]; // 国际化字段树形数据
-};
+export type FormItemProps = Pick<FormTemplateProps, 'treeData'>
 
 /**
  * @description: 头部搜索表单 Params

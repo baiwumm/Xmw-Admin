@@ -27,22 +27,9 @@ export type CreateOrgParams = Pick<
  */
 export type FormTemplateProps = {
   treeData: API.ORGANIZATION[], // 组织树形数据
-  userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void, // 刷新表格
-  formData?: API.ORGANIZATION,
-  parent_id?: string;
   open: boolean;
   setOpenDrawerFalse: () => void
-}
-
-/**
- * @description: FormTemplateItem Props
- * @author: 白雾茫茫丶
- */
-export type FormTemplateItemProps = {
-  treeData: API.ORGANIZATION[], // 组织树形数据
-  userList: API.USERMANAGEMENT[]; // 用户列表
-  parent_id?: string
 }
 
 /**

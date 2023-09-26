@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-13 17:33:55
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:06:06
+ * @LastEditTime: 2023-09-21 17:58:06
  */
 import { ProList } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
@@ -71,14 +71,14 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
           title: {
             dataIndex: 'name',
             render: (text) => <Text strong>
-              {formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${text}` })}
+              {formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, `security-setting.${text}`) })}
             </Text>,
           },
           description: {
             dataIndex: 'desc',
             render: (text, record, index) => index > 0 ?
               <Text type="secondary">
-                {formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${record.name}.tip` })}：
+                {formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, `security-setting.${record.name}.tip`) })}：
                 {text}
               </Text> : null,
           },
@@ -93,7 +93,7 @@ const SecuritySetting: FC<{ setActiveKey: React.Dispatch<React.SetStateAction<st
                 </Button> :
                 <Tag key="edit" color="success">
                   {formatMessage({
-                    id: `${formatPerfix(ROUTES.PERSONALSETTING)}.security-setting.${row.name}.certified`,
+                    id: formatPerfix(ROUTES.PERSONALSETTING, `security-setting.${row.name}.certified`),
                   })}
                 </Tag>,
             ],

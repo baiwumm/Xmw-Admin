@@ -4,22 +4,21 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-06 10:12:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 10:43:33
+ * @LastEditTime: 2023-09-26 10:08:21
  */
 import 'nprogress/nprogress.css';
 
 import { AxiosRequestConfig, request, RequestConfig, RequestError, RequestOptions } from '@umijs/max';
 import { message, Modal } from 'antd'
-import { debounce } from 'lodash-es'; // lodash 工具函数
+import { debounce, eq } from 'lodash-es'; // lodash 工具函数
 import Nprogress from 'nprogress';
 
 import { getLocalStorageItem, logoutToLogin } from '@/utils' // 全局工具函数
-import { LOCAL_STORAGE } from '@/utils/enums'
+import { LOCAL_STORAGE, REQUEST_CODE } from '@/utils/enums'
 import { Response } from '@/utils/types'
 
 /**
  * @description: 防抖函数统一处理异常错误
- * @param {*} debounce
  * @Author: 白雾茫茫丶
  */
 const debounceError = debounce((content: string, duration = 3) => {
@@ -39,9 +38,8 @@ const umiRequest: RequestConfig = {
     // 错误抛出
     errorThrower: (res: Response) => {
       const { code, msg } = res;
-      if (code !== 200) {
-        const error: any = new Error(msg);
-        throw error; // 抛出自制的错误
+      if (!eq(code, REQUEST_CODE.SUCCESS)) {
+        throw new Error(msg); // 抛出自制的错误
       }
     },
     // 错误接收及处理
@@ -56,7 +54,7 @@ const umiRequest: RequestConfig = {
         const { data } = response
         switch (data.code) {
           // token令牌校验，如果出现这个返回码则退出登录到登录页面
-          case 401:
+          case REQUEST_CODE.UNAUTHORIZED:
             // 这里加一个防抖
             Modal.success({
               title: '登录已失效,请重新登录!',
@@ -106,15 +104,15 @@ const umiRequest: RequestConfig = {
         // 根据返回状态码，统一处理，需要前端和后端沟通确认
         switch (data.code) {
           // 成功发起请求并成功处理，一般用于数据库字段校验
-          case -1:
+          case REQUEST_CODE.NOSUCCESS:
             debounceError(JSON.stringify(data.msg));
             break;
           // 成功发起请求，但是内部处理出现错误
-          case 400:
+          case REQUEST_CODE.BADREQUEST:
             debounceError(JSON.stringify(data.msg));
             break;
           // 登录信息失效
-          case 401:
+          case REQUEST_CODE.UNAUTHORIZED:
             // 退出登录返回到登录页
             logoutToLogin()
             Modal.destroyAll();

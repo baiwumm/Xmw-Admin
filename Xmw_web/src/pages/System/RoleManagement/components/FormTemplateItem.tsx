@@ -4,35 +4,38 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 18:02:19
+ * @LastEditTime: 2023-09-22 14:43:45
  */
-// 引入第三方库
-import {
-	ProFormDigit,
-	ProFormRadio,
-	ProFormText,
-	ProFormTextArea,
-	ProFormTreeSelect,
-} from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
-import { TreeSelect } from 'antd' // antd 组件库
+import { useRequest } from 'ahooks'
+import { TreeSelect } from 'antd'
+import { get } from 'lodash-es'
 import type { FC } from 'react';
 
+import { ProFormDescribe, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
+import { getMenuList } from '@/services/system/menu-management'
 import { formatPerfix } from '@/utils'
-import { STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, ROUTES, STATUS } from '@/utils/enums'
+import { INTERNATION, ROUTES } from '@/utils/enums'
 
-const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) => {
+const FormTemplateItem: FC = () => {
 	const { formatMessage } = useIntl();
+	/**
+	 * @description: 获取当前菜单数据
+	 * @author: 白雾茫茫丶
+	 */
+	const { data: menuData } = useRequest(async (params) => get(await getMenuList(params), 'data', []), {
+		defaultParams: [{ isPremission: true }],
+	})
 	return (
 		<>
 			{/* 角色名称 */}
 			<ProFormText
 				name="role_name"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_name') })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })}
+					formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_name') })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
@@ -43,12 +46,10 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 						validator: (_, value) => {
 							if (!value) {
 								return Promise.reject(new Error(formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-									formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name` })))
+									formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_name') })))
 							} else if (value.length < 2) {
 								return Promise.reject(new Error(
-									formatMessage({
-										id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_name.validator`,
-									})))
+									formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_name.validator') })))
 							}
 							return Promise.resolve()
 						},
@@ -59,22 +60,19 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 			<ProFormText
 				name="role_code"
 				colProps={{ span: 24 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_code') })}
 				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` })}
+					formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'role_code') })}
 				fieldProps={{
 					showCount: true,
 					maxLength: 32,
 				}}
-				rules={[{
-					required: true, message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.role_code` }),
-				}]}
+				rules={[{ required: true }]}
 			/>
 			{/* 菜单权限 */}
 			<ProFormTreeSelect
 				name="menu_permission"
-				label={formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'menu_permission') })}
 				colProps={{ span: 24 }}
 				fieldProps={{
 					treeData: menuData,
@@ -87,53 +85,20 @@ const FormTemplateItem: FC<{ menuData: API.MENUMANAGEMENT[] }> = ({ menuData }) 
 					treeCheckable: true,
 					showCheckedStrategy: TreeSelect.SHOW_ALL,
 					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` }),
+						formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'menu_permission') }),
 				}}
 				rules={[{
 					required: true,
 					message: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: `${formatPerfix(ROUTES.ROLEMANAGEMENT)}.menu_permission` }),
+						formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'menu_permission') }),
 				}]}
 			/>
 			{/* 排序 */}
-			<ProFormDigit
-				label={formatMessage({ id: INTERNATION.SORT })}
-				name="sort"
-				colProps={{ span: 24 }}
-				min={1}
-				max={99}
-				initialValue={1}
-				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
-				fieldProps={{ precision: 0 }}
-			/>
+			<ProFormSort />
 			{/* 状态 */}
-			<ProFormRadio.Group
-				name="status"
-				colProps={{ span: 8 }}
-				initialValue={STATUS.NORMAL}
-				fieldProps={{
-					buttonStyle: 'solid',
-				}}
-				label={formatMessage({ id: INTERNATION.STATUS })}
-				options={STATUS_OPTS}
-			/>
+			<ProFormStatus />
 			{/* 描述 */}
-			<ProFormTextArea
-				name="describe"
-				label={formatMessage({ id: INTERNATION.DESCRIBE })}
-				placeholder={formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: INTERNATION.DESCRIBE })}
-				colProps={{ span: 24 }}
-				fieldProps={{
-					showCount: true,
-					maxLength: 200,
-				}}
-				rules={[{
-					required: true,
-					message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-						formatMessage({ id: INTERNATION.DESCRIBE }),
-				}]}
-			/>
+			<ProFormDescribe />
 		</>
 	)
 }

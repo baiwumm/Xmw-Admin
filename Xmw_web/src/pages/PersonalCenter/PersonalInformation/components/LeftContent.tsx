@@ -3,29 +3,17 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-17 10:02:38
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-21 14:25:44
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-26 16:32:13
  */
-import { createFromIconfontCN } from '@ant-design/icons' // antd 图标库
 import { useModel } from '@umijs/max'
 import { Avatar, Col, Divider, Space, Typography } from 'antd'
 import type { FC } from 'react'
-
+import { forEach } from 'lodash-es'
 import FigureLabels from '@/components/FigureLabels' // 标签
-import cascaderOptions from '@/utils/const/pca-code.json' // 省市区级联数据
-
+import { IconFont } from '@/utils/const'
+import { codeToText } from "element-china-area-data";
 const { Title, Paragraph } = Typography;
-
-type AreaProps = {
-  code: string;
-  name: string;
-  children?: {
-    code: string;
-    name: string;
-  }[]
-}
-
-
 
 const LeftContent: FC = () => {
   // 获取全局状态
@@ -41,32 +29,16 @@ const LeftContent: FC = () => {
     tags,
     city,
   } = initialState?.CurrentUser || {}
-  // 使用 iconfont.cn 资源
-  const IconFont = createFromIconfontCN({
-    scriptUrl: process.env.ICONFONT_URL,
-  });
-
   // 渲染图标
   const renderIcon = (type: string) => {
     return <IconFont type={type} style={{ fontSize: 18, marginRight: 10, verticalAlign: '-5px' }} />
   }
-
   // 获取省市区名称
   const getAreaName = () => {
-    let index = 0
     let result: string = ''
-    function loopArea(tree: AreaProps[]) {
-      tree.forEach((node) => {
-        if (node.code === city?.[index] && index < city.length) {
-          index++
-          result += node.name
-          if (node.children) {
-            loopArea(node.children)
-          }
-        }
-      })
-    }
-    loopArea(cascaderOptions)
+    forEach(city, (code: string) => {
+      result += codeToText[code]
+    })
     return result
   }
   return (

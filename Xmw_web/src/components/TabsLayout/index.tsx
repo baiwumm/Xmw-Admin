@@ -3,25 +3,14 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-10 16:21:55
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-26 14:31:27
  */
-import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
-import { useIntl } from '@umijs/max';
-import { message, Tabs, TabsProps } from 'antd';
+import { FormattedMessage, useIntl } from '@umijs/max';
+import { message, Space, Tabs, TabsProps } from 'antd';
 import { findIndex, isString, last } from 'lodash-es'
 
-type IProps = {
-  isKeep: boolean;
-  keepElements: React.MutableRefObject<any>;
-  navigate: (targetKey: string) => void;
-  dropByCacheKey: (targetKey: string) => void;
-  activeKey: string;
-  dropLeftTabs: (path: string) => void,
-  dropRightTabs: (path: string) => void,
-  dropOtherTabs: (path: string) => void,
-  refreshTab: (path: string) => void
-}
+import { IconFont } from '@/utils/const'
 
 export const TabsLayout = () => {
   return ({
@@ -30,24 +19,20 @@ export const TabsLayout = () => {
     navigate,
     dropByCacheKey,
     activeKey,
-  }: IProps) => {
+  }: any) => {
+    // 国际化工具
     const { formatMessage } = useIntl();
-    // 使用 iconfont.cn 资源
-    const IconFont = createFromIconfontCN({
-      scriptUrl: process.env.ICONFONT_URL,
-    });
     // Tabs 配置项
     const tabsItems: TabsProps['items'] = Object.entries(keepElements.current).map(
-      ([pathname, element]: any) => {
-        const menuIcon = `icon-${last(pathname.split('/'))}`
+      ([pathname]) => {
         return {
           key: pathname,
-          label:
-            <span>
-              {element.icon || <IconFont type={menuIcon} />}
-              {formatMessage({ id: `menu${pathname.replaceAll('/', '.')}` })}
-            </span>
-          ,
+          label: (
+            <Space size={0}>
+              <IconFont type={`icon-${last(pathname.split('/'))}`} />
+              <FormattedMessage id={`menu${pathname.replaceAll('/', '.')}`} />
+            </Space>
+          ),
         }
       },
     );
@@ -60,7 +45,7 @@ export const TabsLayout = () => {
           }}
           activeKey={activeKey}
           type="editable-card"
-          onEdit={(targetKey: React.MouseEvent | React.KeyboardEvent | string) => {
+          onEdit={(targetKey) => {
             // 如果只有一个 tabs ，不能关闭
             if (tabsItems.length <= 1) {
               message.info(formatMessage({ id: 'tabs.close' }))

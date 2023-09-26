@@ -4,9 +4,9 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-12 15:19:34
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:51:51
+ * @LastEditTime: 2023-09-21 17:50:27
  */
-import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+import { PageContainer } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max'
 import { Card, Tabs } from 'antd';
 import { FC, useState } from 'react'
@@ -31,17 +31,17 @@ const PersonalSetting: FC = () => {
   //  Tabs 配置项
   const tabsItems = [
     {
-      label: formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.${TABSKEY.BASIC}` }),
+      label: formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, TABSKEY.BASIC) }),
       key: TABSKEY.BASIC,
       children: <BasicSetting />,
     },
     {
-      label: formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.${TABSKEY.SECURITY}` }),
+      label: formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, TABSKEY.SECURITY) }),
       key: TABSKEY.SECURITY,
       children: <SecuritySetting setActiveKey={setActiveKey} />,
     },
     {
-      label: formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.${TABSKEY.PASSWORD}` }),
+      label: formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, TABSKEY.PASSWORD) }),
       key: TABSKEY.PASSWORD,
       children: <ChangePassword />,
     },

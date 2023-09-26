@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-07 15:05:34
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 15:44:13
+ * @LastEditTime: 2023-09-26 10:40:02
  */
 import { addLocale, history } from '@umijs/max';
 
@@ -18,7 +18,7 @@ import type { InitialStateTypes } from '@/utils/types'
  * @description: 获取多语言层级对象
  * @Author: 白雾茫茫丶
  */
-export const initLocalesLang = async (): Promise<Record<string, any>> => {
+export const initLocalesLang = async (): Promise<API.LOCALESLANGAll> => {
   const res = await getAllLocalesLang()
   if (res.code === 200) {
     Object.keys(res.data).forEach((lang) => {

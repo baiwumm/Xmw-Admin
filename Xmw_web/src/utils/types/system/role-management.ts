@@ -4,9 +4,7 @@ import type { PaginationParams, SearchTimes } from '@/utils/types'
  * @Author: 白雾茫茫丶
  */
 export type FormTemplateProps = {
-  menuData: API.MENUMANAGEMENT[];
   reloadTable: () => void; // 刷新表格
-  formData?: API.ROLEMANAGEMENT;
   open: boolean;
   setOpenDrawerFalse: () => void
 };
@@ -16,7 +14,7 @@ export type FormTemplateProps = {
  * @author: 白雾茫茫丶
  */
 export type SearchParams = PaginationParams &
-  SearchTimes & Pick<API.ROLEMANAGEMENT, 'role_name' | 'role_code' | 'status'>
+  SearchTimes & Partial<Pick<API.ROLEMANAGEMENT, 'role_name' | 'role_code' | 'status'>>
 
 /**
  * @description: 设置角色状态 Params

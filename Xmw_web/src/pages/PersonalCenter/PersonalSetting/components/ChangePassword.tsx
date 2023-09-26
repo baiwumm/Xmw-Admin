@@ -4,9 +4,9 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-12 16:10:13
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 09:53:06
+ * @LastEditTime: 2023-09-21 17:56:47
  */
-import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormText } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import { Button, Form, message, Modal } from 'antd'
@@ -15,7 +15,7 @@ import type { FC } from 'react'
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { updateUser } from '@/services/system/user-management'
-import { encryptionAesPsd, formatPerfix, logoutToLogin, removeLocalStorageItem, waitTime } from '@/utils'
+import { encryptionAesPsd, formatPerfix, logoutToLogin, removeLocalStorageItem } from '@/utils'
 import { INTERNATION, LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
 
 type PasswordParams = {
@@ -51,7 +51,6 @@ const ChangePassword: FC = () => {
 
   /**
  * @description: 更新用户密码
- * @return {*}
  * @author: 白雾茫茫丶
  */
   const { run: runUpdateUser } = useRequest(updateUser, {
@@ -71,14 +70,13 @@ const ChangePassword: FC = () => {
   const handlerSubmit = (values: PasswordParams) => {
     // 判断原密码是否正确
     if (encryptionAesPsd(values.originalPassword) !== initialState?.CurrentUser?.password) {
-      message.error(formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.change-password.error` }))
+      message.error(formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, 'change-password.error') }))
     } else {
       Modal.confirm({
         title: formatMessage({ id: INTERNATION.WARM_TIPS }),
-        content: formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.change-password.tip` }),
+        content: formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, 'change-password.tip') }),
         onOk: async () => {
           const user_id = initialState?.CurrentUser?.user_id
-          await waitTime(500)
           if (user_id) {
             runUpdateUser({ password: encryptionAesPsd(values.password), user_id })
           }
@@ -90,13 +88,13 @@ const ChangePassword: FC = () => {
     <Form form={form} style={{ width: 500 }} labelCol={{ span: 4 }} onFinish={handlerSubmit}>
       {/* 原密码 */}
       <ProFormText.Password
-        label={formatMessage({ id: `${formatPerfix(ROUTES.PERSONALSETTING)}.change-password.original-password` })}
+        label={formatMessage({ id: formatPerfix(ROUTES.PERSONALSETTING, 'change-password.original-password') })}
         name="originalPassword"
         rules={[
           {
             required: true, min: 6, max: 12,
             message: formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-              formatMessage({ id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.password.rules` }),
+              formatMessage({ id: formatPerfix(ROUTES.USERMANAGEMENT, 'password.rules') }),
           },
         ]}
       />

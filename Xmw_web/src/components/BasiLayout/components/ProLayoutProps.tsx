@@ -4,15 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 15:16:33
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 15:16:46
+ * @LastEditTime: 2023-09-26 14:32:49
  */
-import { createFromIconfontCN } from '@ant-design/icons';
 import { HeaderProps } from '@ant-design/pro-components'
 
-/* 使用 iconfont.cn 资源 */
-const IconFont = createFromIconfontCN({
-  scriptUrl: process.env.ICONFONT_URL,
-});
+import { IconFont } from '@/utils/const'
+
 /* 跨站点导航列表 */
 export const appList: HeaderProps['appList'] = [
   {

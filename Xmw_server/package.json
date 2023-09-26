@@ -1,8 +1,8 @@
 {
-  "name": "xmw_sequelize",
+  "name": "xmww-admin",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "baiwumm",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

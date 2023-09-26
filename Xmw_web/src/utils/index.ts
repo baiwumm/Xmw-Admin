@@ -4,16 +4,33 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-12 16:58:28
+ * @LastEditTime: 2023-09-26 16:05:51
  */
-import type { ProColumns } from '@ant-design/pro-components';
-import { getLocale, history, useIntl } from '@umijs/max';
+import type { ColumnsState, RequestData } from '@ant-design/pro-components';
+import { history } from '@umijs/max';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { compact, join, reduce, toNumber } from 'lodash-es';
+import { compact, eq, get, join, sample, startsWith } from 'lodash-es';
 import { stringify } from 'querystring';
 
-import { LOCAL_STORAGE, OPERATION, ROUTES } from '@/utils/enums'
-import type { LockSleepTypes } from '@/utils/types'
+import { LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import type { LockSleepTypes, PageResponse, Response } from '@/utils/types'
+
+/**
+ * @description: 格式化请求数据
+ * @author: 白雾茫茫丶
+ */
+export const formatResponse = <T extends any[]>(
+  response: Response<T> |
+    Response<PageResponse<T[number]>>): RequestData<T[number]> => {
+  // 解构响应值
+  const { code, data } = response
+  return {
+    data: get(data, 'list') || get(response, 'data') || [],
+    // success 请返回 true，不然 table 会停止解析数据，即使有数据
+    success: eq(code, REQUEST_CODE.SUCCESS),
+    total: get(data, 'total', 0),
+  }
+}
 
 /**
  * @description: 将 pathname 转成国际化对应的 key，如：/administrative/jobs-management => administrative.jobs-management
@@ -28,8 +45,10 @@ export const formatPathName = (pathname: string): string => {
  * @param {boolean} isMenu
  * @Author: 白雾茫茫丶
  */
-export const formatPerfix = (route: string, isMenu = false): string => {
-  return `${isMenu ? 'menu' : 'pages'}.${formatPathName(route)}`
+export const formatPerfix = (route: string, suffix = '', isMenu = false): string => {
+  // 国际化字符串
+  const field = `${isMenu ? 'menu' : 'pages'}.${formatPathName(route)}${suffix ? '.' + suffix : ''}`
+  return startsWith(route, 'global') ? route : field
 }
 
 /**
@@ -65,9 +84,13 @@ export const removeLocalStorageItem = (key: string) => {
   localStorage.removeItem(key);
 }
 
-
+/**
+ * @description: AES/DES密钥
+ * @author: 白雾茫茫丶
+ */
 const CRYPTO_KEY = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); // 十六位十六进制数作为密钥
 const CRYPTO_IV = CryptoJS.enc.Utf8.parse('ABCDEF0123456789'); // 十六位十六进制数作为密钥偏移量
+
 /**
  * @description: AES/DES加密
  * @param {string} password
@@ -97,15 +120,6 @@ export const decryptionAesPsd = (password: string): string => {
 };
 
 /**
- * @description: 计算表格滚动长度
- * @Author: 白雾茫茫丶
- */
-export const columnScrollX = (columns: ProColumns[]): number => reduce(
-  columns,
-  (sum: number, record: ProColumns) => sum + (toNumber(record.width) || 100),
-  0)
-
-/**
  * @description: 退出登录返回到登录页
  * @Author: 白雾茫茫丶
  */
@@ -132,41 +146,6 @@ export const logoutToLogin = () => {
 }
 
 /**
- * @description: 获取菜单权限集合，用于做菜单鉴权
- * @param {API} routeTree
- * @Author: 白雾茫茫丶
- */
-export const collectionRouteName = (routeTree: API.MENUMANAGEMENT[] | undefined): string[] => {
-  if (!routeTree) return []
-  const result: string[] = []
-  function loopMenu(treeNode: API.MENUMANAGEMENT[]) {
-    treeNode.forEach((route) => {
-      if (route.name) {
-        result.push(route.name)
-      }
-      if (route.routes) {
-        loopMenu(route.routes)
-      }
-    })
-  }
-  loopMenu(routeTree)
-  return result
-}
-
-/**
- * @description: 延迟提交，优化用户体验
- * @param {number} time
- * @Author: 白雾茫茫丶
- */
-export const waitTime = (time: number = 100): Promise<boolean> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
-
-/**
  * @description: 获取当前时间
  * @Author: 白雾茫茫丶
  */
@@ -178,40 +157,11 @@ export const timeFix = (): string => {
 
 /**
  * @description: 随机欢迎语
- * @return {*}
  * @Author: 白雾茫茫丶
  */
 export const welcomeWords = (): string => {
-  const arr = ['休息一会儿吧', '准备吃什么呢?', '要不要打一把 LOL', '我猜你可能累了', '认真工作吧', '今天又是充满活力的一天']
-  const index = Math.floor(Math.random() * arr.length)
-  return arr[index]
-}
-
-/** 通过某个节点的值，获取对应节点的完整信息
- * @description: 
- * @param {*} tree: 树结构数组
- * @param {*} value: 对应的值
- * @param {*} field: 对应的字段
- * @param {*} children: 子级字段
- * @Author: 白雾茫茫丶
- */
-export function getItemByIdInTree<T>(
-  tree: T[],
-  value: string,
-  field: string,
-  children = 'children'): T | undefined {
-  for (let i = 0; i < tree.length; i++) {
-    const treeNode = tree[i]
-    if (treeNode[field] === value) {
-      return treeNode
-    } else if (treeNode[children]) {
-      const reuslt: T | undefined = getItemByIdInTree(treeNode[children], value, field, children)
-      if (reuslt) {
-        return reuslt
-      }
-    }
-  }
-  return undefined
+  const words = ['休息一会儿吧', '准备吃什么呢?', '要不要打一把 LOL', '我猜你可能累了', '认真工作吧', '今天又是充满活力的一天']
+  return sample(words)
 }
 
 /**
@@ -231,32 +181,24 @@ export const isHttpLink = (link: string): boolean => {
 }
 
 /**
- * @description: 渲染标题
- * @author: 白雾茫茫丶
- */
-export const renderFormTitle = <T extends Record<string, any>>
-  (record: T | undefined, formatPerfix: string, id: string, name: string, isMenu = false) => {
-  // 国际化工具
-  const { formatMessage } = useIntl();
-  const result = record?.[id]
-    ? `${formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` }) +
-    formatMessage({ id: `pages.${formatPerfix}.title` })
-    }：${isMenu ? record[getLocale()] : record[name]}`
-    : formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADD}` }) +
-    formatMessage({ id: `pages.${formatPerfix}.title` });
-  return result
-}
-
-/**
  * @description: 默认不显示的 column 项
  * @author: 白雾茫茫丶
  */
 export const renderColumnsStateMap = (MENU_CFG: string[] = []) => {
-  const result: Record<string, { show: boolean }> = {}
+  const result: Record<string, ColumnsState> = {}
   MENU_CFG.forEach((ele) => {
     result[ele] = {
       show: false,
     }
   })
   return result
+}
+
+/**
+ * @description: Tag 标签随机颜色
+ * @author: 白雾茫茫丶
+ */
+export const randomTagColor = () => {
+  const colors = ['magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple']
+  return sample(colors)
 }

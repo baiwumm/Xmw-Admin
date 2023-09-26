@@ -6,7 +6,7 @@
  * @LastEditors: 白雾茫茫丶
  * @LastEditTime: 2023-09-14 09:40:25
  */
-import { ProFormText } from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormText } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { Col, Form, Progress, Row } from 'antd';
 import { keys, values } from 'lodash-es'

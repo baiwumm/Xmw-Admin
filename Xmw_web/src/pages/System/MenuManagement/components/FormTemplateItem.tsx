@@ -4,32 +4,39 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 14:05:54
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 15:53:35
+ * @LastEditTime: 2023-09-26 09:14:04
  */
-// 引入第三方库
-import {
-	ProFormDependency,
-	ProFormDigit,
-	ProFormRadio,
-	ProFormText,
-	ProFormTreeSelect,
-} from '@ant-design/pro-components'; // antd 高级组件
-import { useIntl } from '@umijs/max';
-import { Divider, TreeSelect, Typography } from 'antd'; // antd 组件库
-import { keys } from 'lodash-es';
+import { ProFormDependency, ProFormRadio, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
+import { getLocale, useIntl } from '@umijs/max';
+import { useRequest } from 'ahooks'
+import { Divider, Form, TreeSelect, Typography } from 'antd';
+import { get, keys } from 'lodash-es';
 import type { FC } from 'react';
 
+import { ProFormParent, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
+import { getInternationalList } from '@/services/system/internationalization'
 import { formatPerfix } from '@/utils'
-import { MENU_TYPE_OPTS, STATUS_OPTS } from '@/utils/const'
-import { INTERNATION, LANGS, MENU_TYPE, ROUTES, STATUS } from '@/utils/enums'
+import { MenuTypeEnum } from '@/utils/const'
+import { INTERNATION, MENU_TYPE, ROUTES } from '@/utils/enums'
 import type { FormItemProps } from '@/utils/types/system/menu-management';
 
 import MenuFormRender from './MenuFormRender';
 
 const { Title } = Typography;
 
-const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationalData }) => {
+const FormTemplateItem: FC<FormItemProps> = ({ treeData }) => {
 	const { formatMessage } = useIntl();
+	// 获取上下文表单实例
+	const form = Form.useFormInstance()
+	// 判断是否是添加子级，有 parent_id 并且其它字段没值
+	const { parent_id, name } = form.getFieldsValue(true)
+	/**
+	 * @description: 获取国际化列表
+	 * @author: 白雾茫茫丶
+	 */
+	const { data: internationalData } = useRequest(
+		async () => get(await getInternationalList({ isMenu: true }), 'data', []))
+
 	// 是按钮就显示
 	const isMenuRender = (
 		<>
@@ -37,29 +44,23 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="component"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.component` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'component') })}
 				placeholder={
 					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.component` })
+					formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'component') })
 				}
-				fieldProps={{
-					showCount: true,
-					maxLength: 200,
-				}}
+				fieldProps={{ showCount: true, maxLength: 200 }}
 			/>
 			{/* 重定向 */}
 			<ProFormText
 				name="redirect"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.redirect` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'redirect') })}
 				placeholder={
 					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.redirect` })
+					formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'redirect') })
 				}
-				fieldProps={{
-					showCount: true,
-					maxLength: 100,
-				}}
+				fieldProps={{ showCount: true, maxLength: 100 }}
 			/>
 		</>
 	);
@@ -70,38 +71,25 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="path"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'path') })}
 				placeholder={
 					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` })
+					formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'path') })
 				}
-				fieldProps={{
-					showCount: true,
-					maxLength: 100,
-				}}
-				rules={[
-					{
-						required: true,
-						message:
-							formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-							formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.path` }),
-					},
-				]}
+				fieldProps={{ showCount: true, maxLength: 100 }}
+				rules={[{ required: true }]}
 			/>
 			{/* 图标 */}
 			<ProFormText
 				name="icon"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'icon') })}
 				placeholder={
 					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon` })
+					formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'icon') })
 				}
-				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.icon.tooltip` })}
-				fieldProps={{
-					showCount: true,
-					maxLength: 50,
-				}}
+				tooltip={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'icon.tooltip') })}
+				fieldProps={{ showCount: true, maxLength: 50 }}
 			/>
 		</>
 	);
@@ -111,74 +99,58 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormRadio.Group
 				name="menu_type"
 				colProps={{ span: 10 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.menu_type` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'menu_type') })}
 				radioType="button"
 				initialValue={MENU_TYPE.DIR}
 				fieldProps={{
 					buttonStyle: 'solid',
 				}}
-				options={keys(MENU_TYPE_OPTS).map((type: string) => ({
+				options={keys(MenuTypeEnum).map((type: string) => ({
 					value: type,
-					label: MENU_TYPE_OPTS[type as keyof typeof MENU_TYPE_OPTS].text,
+					label: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, `menu_type.${type}`) }),
 				}))}
 			/>
 			{/* 父级 */}
-			<ProFormTreeSelect
-				name="parent_id"
-				label={formatMessage({ id: INTERNATION.PARENT_ID })}
+			<ProFormParent
 				colProps={{ span: 14 }}
-				tooltip={formatMessage({ id: INTERNATION.PARENT_ID_TIP })}
 				fieldProps={{
 					treeData,
-					allowClear: true,
-					disabled: !!parent_id,
-					defaultValue: parent_id || null,
+					disabled: parent_id && !name,
+					treeNodeFilterProp: getLocale(),
 					fieldNames: {
-						label: LANGS.CN,
+						label: getLocale(),
 						value: 'menu_id',
 					},
-					treeDefaultExpandAll: true,
-					showCheckedStrategy: TreeSelect.SHOW_PARENT,
-					placeholder:
-						formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: INTERNATION.PARENT_ID }),
 				}}
 			/>
 			<Divider orientation="left" style={{ marginTop: 0, marginBottom: '24px' }}>
 				<Title level={4} style={{ marginBottom: 0 }}>
-					{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.basic-info` })}
+					{formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'basic-info') })}
 				</Title>
 			</Divider>
 			{/* 路由名称 */}
 			<ProFormTreeSelect
 				name="name"
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'name') })}
 				colProps={{ span: 12 }}
-				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name.tooltip` })}
+				tooltip={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'name.tooltip') })}
 				fieldProps={{
 					treeData: internationalData,
 					fieldNames: {
-						label: LANGS.CN,
+						label: getLocale(),
 						value: 'id',
 					},
 					treeDefaultExpandAll: true,
 					showCheckedStrategy: TreeSelect.SHOW_PARENT,
 					placeholder:
 						formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-						formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
+						formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'name') }),
 				}}
-				rules={[
-					{
-						required: true,
-						message:
-							formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) +
-							formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.name` }),
-					},
-				]}
+				rules={[{ required: true }]}
 			/>
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {
-					return menu_type === 'menu' ? isMenuRender : null;
+					return menu_type === MENU_TYPE.MENU ? isMenuRender : null;
 				}}
 			</ProFormDependency>
 			<ProFormDependency name={['menu_type']}>
@@ -191,39 +163,18 @@ const FormTemplateItem: FC<FormItemProps> = ({ treeData, parent_id, internationa
 			<ProFormText
 				name="permission"
 				colProps={{ span: 12 }}
-				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission` })}
+				label={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission') })}
 				placeholder={
 					formatMessage({ id: INTERNATION.PLACEHOLDER }) +
-					formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission` })
+					formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission') })
 				}
-				tooltip={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.permission.tooltip` })}
-				fieldProps={{
-					showCount: true,
-					maxLength: 100,
-				}}
+				tooltip={formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission.tooltip') })}
+				fieldProps={{ showCount: true, maxLength: 100 }}
 			/>
 			{/* 排序 */}
-			<ProFormDigit
-				label={formatMessage({ id: INTERNATION.SORT })}
-				name="sort"
-				colProps={{ span: 8 }}
-				min={1}
-				max={99}
-				initialValue={1}
-				tooltip={formatMessage({ id: INTERNATION.SORT_TIP })}
-				fieldProps={{ precision: 0 }}
-			/>
+			<ProFormSort colProps={{ span: 8 }} />
 			{/* 状态 */}
-			<ProFormRadio.Group
-				name="status"
-				colProps={{ span: 8 }}
-				initialValue={STATUS.NORMAL}
-				fieldProps={{
-					buttonStyle: 'solid',
-				}}
-				label={formatMessage({ id: INTERNATION.STATUS })}
-				options={STATUS_OPTS}
-			/>
+			<ProFormStatus colProps={{ span: 8 }} />
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {
 					return menu_type === MENU_TYPE.MENU ? <MenuFormRender /> : null;

@@ -4,9 +4,8 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-22 14:13:55
+ * @LastEditTime: 2023-09-26 14:34:36
  */
-import { createFromIconfontCN } from '@ant-design/icons'; // antd 图标
 import { CheckCard, PageContainer } from '@ant-design/pro-components';
 import { useModel } from '@umijs/max';
 import { useRequest } from 'ahooks'
@@ -14,6 +13,8 @@ import { Avatar, Card, Col, List, Row, Space, Tag, Timeline, Tooltip, Typography
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { FC } from 'react';
+
+import { IconFont } from '@/utils/const'
 
 import RenderContent from './components/RenderContent' // 顶部布局
 import StatisticChart from './components/StatisticChart' // 指标卡片
@@ -24,11 +25,6 @@ const { Paragraph, Text, Title, Link } = Typography;
 const Workbench: FC = () => {
   dayjs.extend(relativeTime);
   const { initialState } = useModel('@@initialState');
-  // 使用 iconfont.cn 资源
-  const IconFont = createFromIconfontCN({
-    scriptUrl: process.env.ICONFONT_URL,
-  });
-
   // 请求项目 commit 日志
   const { data: commitList, loading: commitLoading } = useRequest(
     async () => {

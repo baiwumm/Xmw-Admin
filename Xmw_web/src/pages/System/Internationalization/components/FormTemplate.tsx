@@ -4,19 +4,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 09:58:28
+ * @LastEditTime: 2023-09-22 09:34:40
  */
-
-// 引入第三方库
-import { ModalForm } from '@ant-design/pro-components'; // 高级组件
-import { Form, message } from 'antd'; // antd 组件库
-import { omit } from 'lodash-es'
+import { ModalForm } from '@ant-design/pro-components';
+import { Form, message } from 'antd';
 import type { FC } from 'react';
 
-import { createInternational, updateInternational } from '@/services/system/internationalization' // 国际化接口
-import { formatPathName, renderFormTitle } from '@/utils'
+import { renderFormTitle } from '@/components/TableColumns'
+import { createInternational, updateInternational } from '@/services/system/internationalization'
 import { REQUEST_CODE, ROUTES } from '@/utils/enums'
-import type { FormTemplateProps } from '@/utils/types/system/internationalization' // 公共 interface
+import type { FormTemplateProps } from '@/utils/types/system/internationalization'
 
 // 引入业务组件
 import FormTemplateItem from './FormTemplateItem' // 表单组件 
@@ -24,16 +21,15 @@ import FormTemplateItem from './FormTemplateItem' // 表单组件
 const FormTemplate: FC<FormTemplateProps> = ({
 	treeData,
 	reloadTable,
-	formData,
-	parent_id,
 	open,
 	setOpenDrawerFalse,
 }) => {
-	// 初始化表单
-	const [form] = Form.useForm<API.INTERNATIONALIZATION>();
+	// 上下文表单实例
+	const form = Form.useFormInstance()
+	// 获取表单全部字段
+	const { id, name } = form.getFieldsValue(true)
 	// 渲染标题
-	const formTitle = renderFormTitle<API.INTERNATIONALIZATION>(formData,
-		formatPathName(ROUTES.INTERNATIONALIZATION), 'id', 'name')
+	const formTitle = renderFormTitle(ROUTES.INTERNATIONALIZATION, id, name)
 
 	// 关闭抽屉浮层
 	const handlerClose = () => {
@@ -44,16 +40,9 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	}
 
 	// 提交表单
-	const handlerSubmit = async (values: API.INTERNATIONALIZATION): Promise<void> => {
-		// 提交数据
-		let params = { ...formData, ...values }
-		if (parent_id) {
-			params.parent_id = parent_id
-		}
-		// 删除 多余的 属性
-		params = omit(params, ['children'])
+	const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
 		// 执行数据库操作
-		await (params.id ? updateInternational : createInternational)(params).then((res) => {
+		await (id ? updateInternational : createInternational)({ ...values, id }).then((res) => {
 			if (res.code === REQUEST_CODE.SUCCESS) {
 				message.success(res.msg);
 				// 刷新表格
@@ -72,25 +61,14 @@ const FormTemplate: FC<FormTemplateProps> = ({
 			open={open}
 			autoFocusFirstInput
 			modalProps={{
-				destroyOnClose: true,
 				maskClosable: false,
 				onCancel: () => handlerClose(),
 			}}
 			// 提交数据时，禁用取消按钮的超时时间（毫秒）。
 			submitTimeout={2000}
-			onFinish={async (values) => {
-				// 提交数据
-				const isSuccess = await handlerSubmit(values)
-				// 返回true关闭弹框，否则不关闭
-				return isSuccess
-			}}
-			onVisibleChange={(visiable) => {
-				if (visiable && formData) {
-					form.setFieldsValue(formData);
-				}
-			}}
+			onFinish={handlerSubmit}
 		>
-			<FormTemplateItem treeData={treeData} parent_id={parent_id} />
+			<FormTemplateItem treeData={treeData} />
 		</ModalForm>
 	);
 };

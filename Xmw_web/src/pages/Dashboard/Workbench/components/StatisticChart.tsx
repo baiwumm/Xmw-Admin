@@ -7,7 +7,7 @@
  * @LastEditTime: 2023-08-08 15:20:05
  */
 import { StatisticCard } from '@ant-design/pro-components';
-import { Col, Divider, Row, Space } from 'antd'; // antd 组件
+import { Col, Divider, Row, Space } from 'antd';
 import type { FC } from 'react';
 
 import BulletChart from './BulletChart' // 进度图

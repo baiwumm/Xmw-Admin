@@ -4,34 +4,38 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 14:19:04
+ * @LastEditTime: 2023-09-22 14:24:29
  */
-import { ClockCircleOutlined, PlusOutlined } from '@ant-design/icons' // antd 图标库
-import { ActionType, ProColumns, ProTable, RequestData } from '@ant-design/pro-components' // antd 高级组件
-import { Access, useAccess, useIntl } from '@umijs/max'
-import { useBoolean } from 'ahooks'
-import { Avatar, Button, message, Modal, Popconfirm, Space, Switch, Tag, Typography } from 'antd'
-import { get } from 'lodash-es'
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
+import { useIntl } from '@umijs/max'
+import { useBoolean, useRequest } from 'ahooks'
+import { Avatar, Form, message, Popconfirm, Space, Switch, Tag, Typography } from 'antd'
+import { mapValues } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
+import {
+  columnScrollX,
+  CreateButton,
+  createTimeColumn,
+  operationColumn,
+  statusColumn,
+} from '@/components/TableColumns'
 import { delAnnouncement, getAnnouncementList, setPinned } from '@/services/administrative/announcement'
-import { columnScrollX, formatPathName, formatPerfix } from '@/utils'
-import { AnnouncementTypeEnum, randomTagColor } from '@/utils/const'
-import { FLAG, INTERNATION, OPERATION, REQUEST_CODE, ROUTES, STATUS } from '@/utils/enums'
-import permissions from '@/utils/permission'
-import type { AnnouncementType, PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
+import { formatPerfix, formatResponse, randomTagColor } from '@/utils'
+import { AnnouncementTypeEnum } from '@/utils/const'
+import { FLAG, INTERNATION, ROUTES } from '@/utils/enums'
+import type { PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
 
 import FormTemplate from './FormTemplate'
 
 const { Text } = Typography;
 
 const TableTemplate: FC = () => {
+  // 国际化工具
   const { formatMessage } = useIntl();
-  // 权限定义集合
-  const access = useAccess();
-  // 当前行数据
-  const [currentRecord, setCurrentRecord] = useState<API.ANNOUNCEMENT>()
+  // 表单实例
+  const [form] = Form.useForm<API.ANNOUNCEMENT>();
   // 是否显示 Modal
   const [openModal, { setTrue: setOpenModalTrue, setFalse: setOpenModalFalse }] = useBoolean(false)
   const [pinnedLoading, { setTrue: setPinnedLoadingTrue, setFalse: setPinnedLoadingFalse }] = useBoolean(false);
@@ -44,25 +48,14 @@ const TableTemplate: FC = () => {
   }
 
   /**
-   * @description: 删除活动公告
-   * @param {string} announcement_id
+   * @description: 获取活动公告列表
    * @author: 白雾茫茫丶
    */
-  const handlerDelete = (announcement_id: string): void => {
-    Modal.confirm({
-      title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
-      content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
-      onOk: async () => {
-        await delAnnouncement(announcement_id).then((res) => {
-          if (res.code === REQUEST_CODE.SUCCESS) {
-            message.success(res.msg)
-            // 刷新表格
-            reloadTable()
-          }
-        })
-      },
-    })
-  }
+  const { runAsync: fetchAnnouncementList } = useRequest(
+    async (params) => formatResponse(await getAnnouncementList(params)), {
+    manual: true,
+  },
+  )
 
   // 设置角色状态
   const changePinned = async ({ announcement_id, pinned }: PinnedParams) => {
@@ -101,7 +94,7 @@ const TableTemplate: FC = () => {
    */
   const columns: ProColumns<API.ANNOUNCEMENT>[] = [
     {
-      title: formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.author` }),
+      title: formatMessage({ id: formatPerfix(ROUTES['ANNOUNCEMENT'], 'author') }),
       dataIndex: 'author',
       ellipsis: true,
       width: 120,
@@ -115,82 +108,63 @@ const TableTemplate: FC = () => {
       ),
     },
     {
-      title: formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.title` }),
+      title: formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, 'title') }),
       dataIndex: 'title',
       ellipsis: true,
       align: 'center',
       width: 260,
     },
     {
-      title: formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.type` }),
+      title: formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, 'type') }),
       dataIndex: 'type',
       filters: true,
       onFilter: true,
       width: 100,
       align: 'center',
-      valueEnum: AnnouncementTypeEnum,
+      valueEnum: mapValues(AnnouncementTypeEnum, (item: string) =>
+        formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${item}`) })),
       render: (_, record) => {
-        const type: AnnouncementType = record.type
-        return <Tag color={randomTagColor()}>{AnnouncementTypeEnum[type]}</Tag>
+        return <Tag color={randomTagColor()}>
+          {
+            formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${AnnouncementTypeEnum[record.type]}`) })
+          }
+        </Tag>
       },
     },
+    /* 状态 */
+    statusColumn,
     {
-      title: formatMessage({ id: INTERNATION.STATUS }),
-      dataIndex: 'status',
-      width: 100,
-      filters: true,
-      onFilter: true,
-      align: 'center',
-      valueEnum: {
-        [STATUS.DISABLE]: { text: formatMessage({ id: INTERNATION.STATUS_DISABLE }), status: 'Default' },
-        [STATUS.NORMAL]: { text: formatMessage({ id: INTERNATION.STATUS_NORMAL }), status: 'Processing' },
-      },
-    },
-    {
-      title: formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT)}.pinned` }),
+      title: formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, 'pinned') }),
       dataIndex: 'pinned',
       filters: true,
       onFilter: true,
       width: 160,
       align: 'center',
       valueEnum: {
-        [FLAG.NO]: { text: formatMessage({ id: INTERNATION.FLAG_NO }), status: 'Default' },
-        [FLAG.YES]: { text: formatMessage({ id: INTERNATION.FLAG_YES }), status: 'Processing' },
+        [FLAG.NO]: { text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_NO) }), status: 'Default' },
+        [FLAG.YES]: { text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_YES) }), status: 'Processing' },
       },
       render: (_, record) => renderPinned(record),
     },
+    /* 创建时间 */
+    createTimeColumn,
+    /* 操作项 */
     {
-      title: formatMessage({ id: INTERNATION.CREATED_TIME }),
-      dataIndex: 'created_time',
-      valueType: 'dateTime',
-      hideInSearch: true,
-      sorter: true,
-      align: 'center',
-      width: 160,
-      render: (text) => (
-        <Space size="small">
-          <ClockCircleOutlined /><span>{text}</span>
-        </Space>
-      ),
-    },
-    {
-      title: formatMessage({ id: INTERNATION.OPERATION }),
-      valueType: 'option',
-      width: 80,
-      align: 'center',
-      fixed: 'right',
-      key: 'option',
-      render: (_, record) => [
+      ...operationColumn,
+      render: (_, record) => (
         <DropdownMenu
-          formatPerfix={formatPathName(ROUTES.ROLEMANAGEMENT)}
+          pathName={ROUTES.ANNOUNCEMENT}
           editCallback={() => {
-            setCurrentRecord(record);
-            setOpenModalTrue()
+            form.setFieldsValue(record);
+            setOpenModalTrue();
           }}
-          deleteCallback={() => handlerDelete(record.announcement_id)}
-          key="dropdownMenu"
-        />,
-      ],
+          deleteParams={{
+            request: delAnnouncement,
+            id: record.announcement_id,
+          }}
+          reloadTable={reloadTable}
+        />
+      ),
     },
   ]
   return (
@@ -199,44 +173,22 @@ const TableTemplate: FC = () => {
         actionRef={tableRef}
         columns={columns}
         rowKey="announcement_id"
-        request={async (params: SearchParams): Promise<RequestData<API.ANNOUNCEMENT>> => {
-          // 这里需要返回一个 Promise,在返回之前你可以进行数据转化
-          // 如果需要转化参数可以在这里进行修改
-          const response = await getAnnouncementList(params).then((res) => {
-            return {
-              data: get(res, 'data.list', []),
-              // success 请返回 true，不然 table 会停止解析数据，即使有数据
-              success: res.code === REQUEST_CODE.SUCCESS,
-              total: get(res, 'data.total', 0),
-            }
-          })
-          return Promise.resolve(response)
-        }
+        request={async (params: SearchParams) => fetchAnnouncementList(params)
         }
         // 工具栏
         toolBarRender={() => [
-          <Access
-            accessible={access.operationPermission(
-              get(permissions, `${formatPathName(ROUTES.ANNOUNCEMENT)}.${OPERATION.ADD}`, ''),
-            )}
-            fallback={null}
-            key="plus"
-          >
-            <Button type="primary" onClick={() => { setCurrentRecord(undefined); setOpenModalTrue() }}>
-              <PlusOutlined />
-              {formatMessage({ id: `${formatPerfix(ROUTES.ANNOUNCEMENT, true)}.${OPERATION.ADD}` })}
-            </Button>
-          </Access>,
+          // 新增按钮
+          <CreateButton
+            key="create"
+            pathName={ROUTES.ANNOUNCEMENT}
+            callback={() => setOpenModalTrue()} />,
         ]}
         scroll={{ x: columnScrollX(columns) }}
       />
       {/* 抽屉表单 */}
-      <FormTemplate
-        reloadTable={reloadTable}
-        formData={currentRecord}
-        open={openModal}
-        setOpenModalFalse={setOpenModalFalse}
-      />
+      <Form form={form}>
+        <FormTemplate reloadTable={reloadTable} open={openModal} setOpenModalFalse={setOpenModalFalse} />
+      </Form>
     </>
   )
 }

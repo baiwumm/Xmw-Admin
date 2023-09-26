@@ -1,11 +1,11 @@
-import { ProFormRadio, ProFormSelect } from '@ant-design/pro-components'; // antd 高级组件
+import { ProFormRadio, ProFormSelect } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
-import { Divider, Typography } from 'antd' // antd 组件库
+import { Divider, Typography } from 'antd'
 import type { FC } from 'react'
 
 import { formatPerfix } from '@/utils'
 import { FLAG_OPTS, LAYOUT_TYPE_OPTS, NAV_THEME_OPTS, TARGET_TYPE_OPTS } from '@/utils/const'
-import { FLAG, LAYOUT_TYPE, NAV_THEME, ROUTES, TARGET_TYPE } from '@/utils/enums'
+import { FLAG, LAYOUT_TYPE, MENU_THEME, ROUTES, TARGET_TYPE } from '@/utils/enums'
 
 const { Title } = Typography;
 
@@ -34,7 +34,7 @@ const MenuFormRender: FC = () => {
 			<ProFormSelect
 				name="navTheme"
 				colProps={{ span: 12 }}
-				initialValue={NAV_THEME.LIGHT}
+				initialValue={MENU_THEME.LIGHT}
 				label={formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.navTheme` })}
 				options={NAV_THEME_OPTS}
 				fieldProps={{

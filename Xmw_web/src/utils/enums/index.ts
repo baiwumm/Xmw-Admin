@@ -3,7 +3,12 @@
  * @author: 白雾茫茫丶
  */
 export enum REQUEST_CODE {
-  SUCCESS = 200, // 请求成功
+  NOSUCCESS = -1, // 表示请求成功，但操作未成功
+  SUCCESS = 200, // 表示请求成功
+  BADREQUEST = 400, // 表示客户端发送的请求有错误
+  UNAUTHORIZED = 401, // 表示客户端未提供身份验证凭据或身份验证凭据不正确
+  NOTFOUND = 404, // 表示服务器无法找到请求的资源
+  INTERNALSERVERERROR = 500, // 表示服务器内部错误
 }
 
 /**
@@ -133,10 +138,10 @@ export enum SEX {
  * @author: 白雾茫茫丶
  */
 export enum ANNOUNCEMENT_TYPE {
-  BULLET = '1', // 公告
+  ANNOUNCEMENT = '1', // 公告
   ACTIVITY = '2', // 活动
-  MSG = '3', // 消息
-  NOTICE = '4', // 通知
+  MESSAGE = '3', // 消息
+  NOTIFICATION = '4', // 通知
 }
 
 /**
@@ -185,7 +190,7 @@ export enum LAYOUT_TYPE {
  * @description: 主题风格
  * @author: 白雾茫茫丶
  */
-export enum NAV_THEME {
+export enum MENU_THEME {
   DARK = 'dark', // 暗黑风格
   LIGHT = 'light', // 亮色风格
 }

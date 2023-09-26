@@ -4,22 +4,17 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 17:27:40
+ * @LastEditTime: 2023-09-26 10:41:07
  */
 
 import { Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
+import { eq } from 'lodash-es'
 
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
 import { TabsLayout } from '@/components/TabsLayout' // 多标签页配置
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils' // 全局工具函数
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
-import {
-  fetchPermissions,
-  fetchRouteMenu,
-  fetchUserInfo,
-  initAllRequest,
-  initLocalesLang,
-} from '@/utils/initRequest' // 初始化共用接口请求
+import { initAllRequest, initLocalesLang } from '@/utils/initRequest' // 初始化共用接口请求
 import { InitialStateTypes } from '@/utils/types'
 import umiRequest from '@/utils/umiRequest'; // umi-request 请求封装
 
@@ -38,15 +33,12 @@ export async function getInitialState(): Promise<InitialStateTypes> {
   // 初始化数据
   const initialState: InitialStateTypes = {
     Locales,
-    fetchUserInfo,
-    fetchPermissions,
-    fetchRouteMenu,
     Settings: Layout_Settings,
     Collapsed: false,
     PageLoading: true,
   }
   // 如果不是登录页面，执行
-  if (window.location.pathname !== ROUTES.LOGIN) {
+  if (!eq(location.pathname, ROUTES.LOGIN)) {
     // 获取用户信息和权限
     const userInfoAndAccess = await initAllRequest()
     return { ...initialState, ...userInfoAndAccess };

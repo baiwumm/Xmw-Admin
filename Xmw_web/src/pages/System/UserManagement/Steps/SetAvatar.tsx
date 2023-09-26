@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 15:46:56
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-30 16:18:24
+ * @LastEditTime: 2023-09-22 14:51:44
  */
 import { useIntl } from '@umijs/max'
-import { Form, Row } from 'antd' // antd 组件库
+import { Form, Row } from 'antd'
 import type { FC } from 'react'
 
 import UploadImage from '@/components/UploadImage' // 上传头像组件
@@ -24,7 +24,7 @@ const SetAvatar: FC = () => {
 					{
 						required: true,
 						message: formatMessage({
-							id: `${formatPerfix(ROUTES.USERMANAGEMENT)}.steps-form.set-avatar.message`,
+							id: formatPerfix(ROUTES.USERMANAGEMENT, 'steps-form.set-avatar.message'),
 						}),
 					},
 				]}

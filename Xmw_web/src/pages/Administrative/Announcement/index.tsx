@@ -6,11 +6,9 @@
  * @LastEditors: 白雾茫茫丶
  * @LastEditTime: 2023-08-25 17:27:08
  */
-// 引入第三方库
-import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+import { PageContainer } from '@ant-design/pro-components'
 import type { FC } from 'react';
 
-// 引入业务工具类
 import TableTemplate from './components/TableTemplate'
 
 const Announcement: FC = () => {

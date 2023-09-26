@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 13:49:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 17:29:49
+ * @LastEditTime: 2023-09-20 14:24:58
  */
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -152,6 +152,9 @@ const UploadImage: FC<UploadImageProps> = ({
   useEffect(() => {
     if (value && isHttpLink(value)) {
       setFileList([{ url: value, uid: '-1', name: '' }])
+    }
+    if (!value) {
+      setFileList([])
     }
   }, [value])
   return (

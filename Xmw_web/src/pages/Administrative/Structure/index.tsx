@@ -7,7 +7,7 @@
  * @LastEditTime: 2023-07-10 14:54:44
  */
 import { NodeData, OrganizationGraph } from '@ant-design/charts';
-import { PageContainer } from '@ant-design/pro-components' // antd 高级组件
+import { PageContainer } from '@ant-design/pro-components'
 import { useRequest } from 'ahooks'
 import { Card } from 'antd'
 import { get } from 'lodash-es'

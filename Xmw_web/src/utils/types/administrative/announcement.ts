@@ -20,7 +20,6 @@ export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pi
  */
 export type FormTemplateProps = {
   reloadTable: () => void; // 刷新表格
-  formData?: API.ANNOUNCEMENT;
   open: boolean;
   setOpenModalFalse: () => void
 }

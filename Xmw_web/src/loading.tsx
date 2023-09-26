@@ -4,15 +4,15 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-24 09:05:47
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-24 17:24:19
+ * @LastEditTime: 2023-09-26 15:27:20
  */
 import { Spin } from 'antd'
 import { FC } from 'react'
 
 const ComponentLoading: FC = () => {
   return (
-    <div style={{ textAlign: 'center', padding: 50 }}>
-      <Spin size="large" />
+    <div style={{ textAlign: 'center', paddingTop: 30, overflow: 'hidden' }}>
+      <Spin />
     </div>
   )
 }

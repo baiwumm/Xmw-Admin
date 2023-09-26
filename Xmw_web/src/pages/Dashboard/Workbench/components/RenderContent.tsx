@@ -7,7 +7,7 @@
  * @LastEditTime: 2023-08-08 15:01:35
  */
 import { useModel } from '@umijs/max'
-import { Avatar, Card, Col, Row, Space, Statistic, Typography } from 'antd'; // antd 组件
+import { Avatar, Card, Col, Row, Space, Statistic, Typography } from 'antd';
 import { FC } from 'react'
 
 import { timeFix, welcomeWords } from '@/utils'

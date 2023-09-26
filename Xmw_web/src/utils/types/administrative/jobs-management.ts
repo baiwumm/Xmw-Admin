@@ -21,9 +21,7 @@ export type CreateJobsParams = Pick<
 export type FormTemplateProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
   orgTree: API.ORGANIZATION[]; // 组织树形数据
-  userList: API.USERMANAGEMENT[]; // 用户列表
   reloadTable: () => void; // 表格刷新
-  formData?: API.JOBSMANAGEMENT; // 表单数据
   parent_id?: string; // 父级id
   open: boolean;
   setOpenDrawerFalse: () => void
@@ -36,8 +34,6 @@ export type FormTemplateProps = {
 export type FormTemplateItemProps = {
   treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
   orgTree: API.ORGANIZATION[]; // 组织树形数据
-  userList: API.USERMANAGEMENT[]; // 用户列表
-  parent_id?: string; // 父级id
 };
 
 /**

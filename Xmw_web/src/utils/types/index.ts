@@ -4,17 +4,23 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-31 08:56:55
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 15:21:06
+ * @LastEditTime: 2023-09-26 10:35:30
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
-import { FLAG, LANGS, REQUEST_METHODS, STATUS } from '@/utils/enums'
+import { FLAG, LANGS, LOCAL_STORAGE, REQUEST_METHODS, ROUTES, STATUS } from '@/utils/enums'
+
+/**
+ * @description: 获取枚举的所有 key
+ * @author: 白雾茫茫丶
+ */
+export type EnumKeys<T> = keyof T;
 
 /**
  * @description: 获取枚举的所有可能值
  * @author: 白雾茫茫丶
  */
-export type EnumValues<T> = T[keyof T];
+export type EnumValues<T> = T[EnumKeys<T>];
 
 /**
  * @description: 创建和更新时间
@@ -80,9 +86,6 @@ export type InitialStateTypes = {
   Permissions?: string[];
   RouteMenu?: API.MENUMANAGEMENT[];
   Collapsed?: boolean;
-  fetchUserInfo?: () => Promise<API.USERMANAGEMENT | undefined>;
-  fetchPermissions?: () => Promise<string[] | undefined>;
-  fetchRouteMenu?: () => Promise<API.MENUMANAGEMENT[] | undefined>;
   PageLoading?: boolean;
 }
 
@@ -91,9 +94,9 @@ export type InitialStateTypes = {
  * @author: 白雾茫茫丶
  */
 export type AppLocalCacheTypes = {
-  USER_INFO?: API.USERMANAGEMENT;
-  LAYOUT?: Partial<LayoutSettings>;
-  ACCESS_TOKEN?: string;
+  [LOCAL_STORAGE.USER_INFO]?: API.USERMANAGEMENT;
+  [LOCAL_STORAGE.LAYOUT]?: Partial<LayoutSettings>;
+  [LOCAL_STORAGE.ACCESS_TOKEN]?: string;
 }
 
 /**
@@ -115,16 +118,6 @@ export type LockSleepTypes = {
 }
 
 /**
- * @description: 表格下拉菜单
- * @author: 白雾茫茫丶
- */
-export type DropdownMenuTypes = {
-  name: React.ReactNode;
-  key: string;
-  show?: number;
-}
-
-/**
  * @description: 语言类型
  * @author: 白雾茫茫丶
  */
@@ -141,3 +134,9 @@ export type Status = EnumValues<typeof STATUS>
  * @author: 白雾茫茫丶
  */
 export type Flag = EnumValues<typeof FLAG>
+
+/**
+ * @description: 路由集合
+ * @author: 白雾茫茫丶
+ */
+export type PathNames = EnumValues<typeof ROUTES>

@@ -6,7 +6,7 @@
  * @LastEditors: 白雾茫茫丶
  * @LastEditTime: 2023-09-14 15:52:50
  */
-import { createFromIconfontCN, LockOutlined, PoweroffOutlined } from '@ant-design/icons';
+import { LockOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { HeaderProps } from '@ant-design/pro-components'
 import { history, useIntl, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
@@ -14,7 +14,8 @@ import { Dropdown, MenuProps, Modal } from 'antd'
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 import { Logout } from '@/services/logic/login'
-import { logoutToLogin, removeLocalStorageItem, waitTime } from '@/utils'
+import { logoutToLogin, removeLocalStorageItem } from '@/utils'
+import { IconFont } from '@/utils/const'
 import { INTERNATION, LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
 
 export default function AvatarProps(openLockScreen: () => void): HeaderProps['avatarProps'] {
@@ -22,10 +23,6 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
   const { formatMessage } = useIntl();
   // 获取全局状态
   const { initialState, setInitialState } = useModel('@@initialState');
-  // 使用 iconfont.cn 资源
-  const IconFont = createFromIconfontCN({
-    scriptUrl: process.env.ICONFONT_URL,
-  });
   /**
 * @description: 退出登录，并且将当前的 url 保存
 * @author: 白雾茫茫丶
@@ -51,7 +48,6 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
       title: formatMessage({ id: INTERNATION.WARM_TIPS }),
       content: formatMessage({ id: 'pages.logout.tip' }),
       onOk: async () => {
-        await waitTime(500)
         loginOut()
       },
     })

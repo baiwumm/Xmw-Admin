@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-13 18:17:33
+ * @LastEditTime: 2023-09-26 16:06:07
  */
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
@@ -13,7 +13,7 @@ import { Input, InputRef, message, Tag, Tooltip } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react'
 
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
-import { randomTagColor } from '@/utils/const'
+import { randomTagColor } from '@/utils'
 import { REQUEST_CODE } from '@/utils/enums'
 
 type IProps = {
