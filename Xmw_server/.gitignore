@@ -2,7 +2,6 @@
 /dist
 /dist.*
 /node_modules
-/upload
 pnpm-lock.yaml
 *.bat
 
