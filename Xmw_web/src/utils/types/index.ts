@@ -86,7 +86,6 @@ export type InitialStateTypes = {
   Permissions?: string[];
   RouteMenu?: API.MENUMANAGEMENT[];
   Collapsed?: boolean;
-  PageLoading?: boolean;
 }
 
 /**

@@ -2,8 +2,9 @@
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
 
-import type { InitialStateTypes } from '@/utils/types'
 import { forEach } from 'lodash-es'
+
+import type { InitialStateTypes } from '@/utils/types'
 
 export default function access(initialState: InitialStateTypes | undefined) {
   // 获取按钮权限集合

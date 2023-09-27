@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 14:36:29
+ * @LastEditTime: 2023-09-27 15:54:05
  */
 
 import { LoginForm } from '@ant-design/pro-components';
@@ -13,16 +13,14 @@ import { useDebounceFn, useRequest } from 'ahooks';
 import { Col, message, notification, Row, Tabs, TabsProps, Typography } from 'antd'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { get, isEmpty } from 'lodash-es'
+import { eq } from 'lodash-es'
 import React, { FC, useState } from 'react';
 
 import Footer from '@/components/Footer'; // 全局页脚
 import { Login } from '@/services/logic/login' // 登录相关接口
 import { encryptionAesPsd, formatPerfix, setLocalStorageItem, timeFix } from '@/utils'
 import { IconFont } from '@/utils/const'
-import { LOCAL_STORAGE, LOGIN_TYPE, ROUTES } from '@/utils/enums'
-import { initAllRequest } from '@/utils/initRequest'
-import type { LoginTypes } from '@/utils/types'
+import { LOCAL_STORAGE, LOGIN_TYPE, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { LoginParams, LoginType } from '@/utils/types/login'
 
 import Account from './components/Account' // 账户密码登录
@@ -33,33 +31,31 @@ const LoginPage: FC = () => {
   dayjs.extend(relativeTime);
   const { formatMessage } = useIntl();
   // 初始化状态
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { initialState, refresh } = useModel('@@initialState');
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>(LOGIN_TYPE.ACCOUNT);
   /**
    * @description: 用户登录接口
    * @Author: 白雾茫茫丶
    */
-  const { run: runLogin } = useRequest<LoginTypes, LoginParams[]>(
-    async (params) => get(await Login(params), 'data', {}),
+  const { run: runLogin } = useRequest(async (params) => await Login(params),
     {
       manual: true,
-      onSuccess: async (res) => {
-        if (!isEmpty(res)) {
-          const { access_token, login_last_time } = res
+      onSuccess: async ({ code, data }) => {
+        if (eq(code, REQUEST_CODE.SUCCESS)) {
+          // 获取登录 token
+          const { access_token, login_last_time } = data
           // 将 token 保存到localstorage
           setLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN, access_token)
-          // 获取用户信息和权限
-          const userInfoAndAccess = await initAllRequest()
-          if (!isEmpty(userInfoAndAccess)) {
-            await setInitialState((s) => ({ ...s, ...userInfoAndAccess }));
+          // 重新执行 getInitialState 方法，并获取新的全局初始状态
+          await refresh().then(() => {
             setTimeout(() => {
               const urlParams = new URL(window.location.href).searchParams;
               // 路由跳转
               history.push(urlParams.get('redirect') || '/');
               // 欢迎语
               notification.success({
-                message: `${timeFix()}，${userInfoAndAccess?.CurrentUser?.cn_name} 💕`,
+                message: `${timeFix()} 💕`,
                 description: login_last_time ?
                   <span>
                     {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
@@ -74,8 +70,8 @@ const LoginPage: FC = () => {
                     type="icon-huanyingye"
                     style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
               })
-            }, 0)
-          }
+            }, 100)
+          })
         }
       },
     },

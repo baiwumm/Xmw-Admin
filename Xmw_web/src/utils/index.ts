@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 16:05:51
+ * @LastEditTime: 2023-09-27 15:45:56
  */
 import type { ColumnsState, RequestData } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -14,6 +14,7 @@ import { stringify } from 'querystring';
 
 import { LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
 import type { LockSleepTypes, PageResponse, Response } from '@/utils/types'
+
 
 /**
  * @description: 格式化请求数据
@@ -130,6 +131,8 @@ export const logoutToLogin = () => {
   const urlParams = new URL(window.location.href).searchParams;
   /** 此方法会跳转到 redirect 参数所在的位置 */
   const redirect = urlParams.get('redirect');
+  // 移除 token
+  removeLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN)
   // 取消睡眠弹窗
   if (LOCK_SLEEP) {
     setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, isSleep: false })

@@ -126,7 +126,7 @@ export class XmwUser
   status: number;
 
   //用户令牌
-  @Column({ type: DataType.STRING(200), comment: 'token' })
+  @Column({ type: DataType.BLOB, comment: 'token' })
   token?: string;
 
   //座右铭

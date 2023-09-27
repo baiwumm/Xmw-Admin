@@ -4,18 +4,19 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 14:53:15
+ * @LastEditTime: 2023-09-27 16:13:39
  */
-import { SettingDrawer, Settings as LayoutSettings, ProConfigProvider } from '@ant-design/pro-components';
+import { ProConfigProvider, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
 import { useBoolean } from 'ahooks'
 import { ConfigProvider, Space, Typography } from 'antd'
-import { isEmpty, last } from 'lodash-es'
+import { eq, last, toString } from 'lodash-es'
 
 import Footer from '@/components/Footer'; // 全局底部版权组件
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
 import { IconFont } from '@/utils/const'
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 
 import { actionsRender, appList, avatarProps, LockScreenModal, LockSleep } from './components'
 
@@ -24,6 +25,8 @@ const { Paragraph } = Typography;
 export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState }: InitDataType) => {
 	/* 获取 LAYOUT 的值 */
 	const LAYOUT = getLocalStorageItem<LayoutSettings>(LOCAL_STORAGE.LAYOUT)
+	// 获取 ACCESS_TOKEN
+	const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
 	/* 是否显示锁屏弹窗 */
 	const [openLockModal, { setTrue: setLockModalTrue, setFalse: setLockModalFalse }] = useBoolean(false)
 
@@ -42,9 +45,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 		footerRender: () => <Footer />,
 		/* 页面切换时触发 */
 		onPageChange: (location) => {
-			const pathname = location?.pathname || ''
 			// 如果没有登录，重定向到 login
-			if (isEmpty(initialState?.CurrentUser) && pathname !== ROUTES.LOGIN) {
+			if (!ACCESS_TOKEN && !eq(location?.pathname, ROUTES.LOGIN)) {
 				history.push(ROUTES.LOGIN);
 			}
 		},
@@ -66,36 +68,33 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 		menuItemRender: (menuItemProps, defaultDom) => {
 			const renderMenuDom = () => {
 				return (
-					<>
+					<Space>
 						{/* 分组布局不用渲染图标，避免重复 */}
 						{!(LAYOUT?.siderMenuType === 'group') &&
 							menuItemProps.pro_layout_parentKeys?.length &&
-							<IconFont type={menuItemProps.icon} style={{ marginRight: 10 }} />}
+							<IconFont type={toString(menuItemProps.icon)} />}
 						<Paragraph
 							ellipsis={{ rows: 1, tooltip: defaultDom }}
 							style={{ marginBottom: 0 }}>
 							{defaultDom}
 						</Paragraph>
-					</>
+					</Space>
 				)
 			}
 			return (
 				/* 渲染二级菜单图标 */
 				menuItemProps.isUrl ?
-					<a
-						href={menuItemProps.path}
-						target="_blank"
-						style={{ display: 'flex', alignItems: 'center' }}>
+					<a href={menuItemProps.path} target="_blank">
 						{renderMenuDom()}
 					</a> :
-					<Link to={menuItemProps.path || '/'} style={{ display: 'flex', alignItems: 'center' }}>
+					<Link to={menuItemProps.path || '/'} >
 						{renderMenuDom()}
 					</Link>
 			);
 		},
 		// 菜单的折叠收起事件
 		onCollapse: (collapsed) => {
-			setInitialState((preInitialState) => ({ ...preInitialState, Collapsed: collapsed }));
+			setInitialState((s: InitialStateTypes) => ({ ...s, Collapsed: collapsed }));
 		},
 		// 跨站点导航列表
 		appList,
@@ -114,10 +113,10 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 						<SettingDrawer
 							disableUrlParams
 							enableDarkTheme
-							settings={LAYOUT}
+							settings={LAYOUT || {}}
 							onSettingChange={(Settings: LayoutSettings) => {
 								setLocalStorageItem(LOCAL_STORAGE.LAYOUT, { ...initialState?.Settings, ...Settings })
-								setInitialState((preInitialState) => ({ ...preInitialState, Settings }));
+								setInitialState((s: InitialStateTypes) => ({ ...s, Settings }));
 							}}
 						/>
 					</ProConfigProvider>
