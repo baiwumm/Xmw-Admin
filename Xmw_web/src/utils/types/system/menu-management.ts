@@ -37,12 +37,6 @@ export type FormTemplateProps = {
 };
 
 /**
- * @description: FormItem Props
- * @author: 白雾茫茫丶
- */
-export type FormItemProps = Pick<FormTemplateProps, 'treeData'>
-
-/**
  * @description: 头部搜索表单 Params
  * @author: 白雾茫茫丶
  */

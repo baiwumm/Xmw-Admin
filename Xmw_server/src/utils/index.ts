@@ -1,44 +1,36 @@
 /*
  * @Description: 全局工具函数
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 10:50:33
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-05 10:08:27
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 16:39:48
  */
 import * as fs from 'fs';
+
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
-import { ResponseModel } from '@/global/interface';
-import { RES_MSG, RES_CODE } from '@/global/enum';
+import { REQUEST_CODE, REQUEST_MSG } from '@/utils/enums';
+import type { Response } from '@/utils/types';
 
 /**
  * @description: 统一返回体
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
-export const responseMessage = (
-  data = {},
-  msg: string = RES_MSG.SUCCESS,
-  code: number = RES_CODE.SUCCESS,
-): ResponseModel<any> => {
+export const responseMessage = <T = any>(
+  data,
+  msg: string = REQUEST_MSG.SUCCESS,
+  code: number = REQUEST_CODE.SUCCESS,
+): Response<T> => {
   return { data, msg, code };
 };
 
 /**
- * @description: 多语言配置项
- * @return {*}
- * @author: Cyan
- */
-export const LOCALES_LANG = ['zh-CN', 'en-US', 'ja-JP', 'zh-TW'];
-
-/**
- * @description:
+ * @description: 将数组转成树形数据
  * @param {any} resource: 源数据
  * @param {string} id
  * @param {string} parentId
  * @param {string} children
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export function initializeTree<T>(
   resource: T[],
@@ -66,8 +58,7 @@ export function initializeTree<T>(
  * @param {LangModel} resource
  * @param {string} lang
  * @param {string} name
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export const initializeLang = (
   resource: XmwInternational[],
@@ -104,8 +95,7 @@ export const initializeLang = (
 /**
  * @description: 生成文件上传文件夹
  * @param {string} filePath
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export const checkDirAndCreate = (filePath: string): void => {
   const pathArr = filePath.split('/');

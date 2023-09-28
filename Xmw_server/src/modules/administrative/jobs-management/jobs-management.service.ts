@@ -1,20 +1,22 @@
 /*
  * @Description: JobsManagement Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-12 13:46:17
+ * @LastEditTime: 2023-09-28 15:40:24
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
+
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
+import type { Response, SessionTypes } from '@/utils/types';
+
 import { ListJobsManagementDto, SaveJobsManagementDto } from './dto';
 
 @Injectable()
@@ -28,10 +30,11 @@ export class JobsManagementService {
 
   /**
    * @description: 获取国际化列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async getJobsList(jobsInfo: ListJobsManagementDto): Promise<XmwJobs[]> {
+  async getJobsList(
+    jobsInfo: ListJobsManagementDto,
+  ): Promise<Response<XmwJobs[]>> {
     // 解构参数
     const { jobs_name, org_id, start_time, end_time } = jobsInfo;
     // 拼接查询参数
@@ -62,18 +65,17 @@ export class JobsManagementService {
     });
     // 将数据转成树形结构
     const result = initializeTree(sqlData, 'jobs_id', 'parent_id', 'children');
-    return result;
+    return responseMessage(result);
   }
 
   /**
    * @description: 创建岗位数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async createJobs(
     jobsInfo: SaveJobsManagementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveJobsManagementDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveJobsManagementDto>> {
     // 解构参数
     const { jobs_name } = jobsInfo;
     // 组织名称不能相同
@@ -96,13 +98,12 @@ export class JobsManagementService {
 
   /**
    * @description: 更新岗位数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateJobs(
     jobs_id: string,
     jobsInfo: SaveJobsManagementDto,
-  ): Promise<ResponseModel<ResData | number[]>> {
+  ): Promise<Response<number[]>> {
     // 解构参数
     const { jobs_name, parent_id } = jobsInfo;
     // 判断 parent_id 是否和 id相同
@@ -137,10 +138,9 @@ export class JobsManagementService {
 
   /**
    * @description: 删除岗位数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async deleteJobs(jobs_id: string): Promise<ResponseModel<ResData | number>> {
+  async deleteJobs(jobs_id: string): Promise<Response<number>> {
     // 判断当前数据是否有子级，如果有数据的parent_id是id，则存在子级
     const exist = await this.jobsModel.findOne({
       where: { parent_id: jobs_id },

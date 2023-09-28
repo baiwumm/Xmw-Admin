@@ -1,20 +1,21 @@
 /*
  * @Description: 请求参数校验
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 22:07:40
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 17:02:58
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:21:58
  */
 import {
   ArgumentMetadata,
+  BadRequestException,
   Injectable,
   PipeTransform,
-  BadRequestException,
 } from '@nestjs/common';
-import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { Logger } from '../utils/log4js';
+import { validate } from 'class-validator';
+
+import { Logger } from '@/utils/log4js';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {

@@ -18,7 +18,7 @@ import { formatPathName, formatPerfix, getLocalStorageItem, randomTagColor } fro
 import { FLAG_OPTS } from '@/utils/const'
 import { INTERNATION, LOCAL_STORAGE, OPERATION, ROUTES, STATUS } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import { PathNames } from '@/utils/types'
+import type { PathNames } from '@/utils/types'
 
 import defaultSettings from '../../../config/defaultSettings';
 

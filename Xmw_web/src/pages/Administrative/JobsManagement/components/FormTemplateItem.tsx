@@ -14,9 +14,9 @@ import type { FC } from 'react';
 import { ProFormDescribe, ProFormLeader, ProFormParent, ProFormSort } from '@/components/CommonProForm'
 import { formatPerfix } from '@/utils'
 import { INTERNATION, ROUTES } from '@/utils/enums'
-import type { FormTemplateItemProps } from '@/utils/types/administrative/jobs-management'
+import type { FormTemplateProps } from '@/utils/types/administrative/jobs-management'
 
-const FormTemplateItem: FC<FormTemplateItemProps> = ({ treeData, orgTree }) => {
+const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData' | 'orgTree'>> = ({ treeData, orgTree }) => {
 	const { formatMessage } = useIntl();
 	// 获取上下文表单实例
 	const form = Form.useFormInstance()

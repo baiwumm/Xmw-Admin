@@ -1,49 +1,44 @@
 /*
  * @Description: UserManagement Controller
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-09 17:43:51
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:17:53
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:10:38
  */
 import {
-  Controller,
-  Get,
-  Query,
-  Post,
   Body,
-  Put,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   Patch,
+  Post,
+  Put,
+  Query,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserManagementService } from './user-management.service'; // UserManagement Service
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
-  ApiOperation,
   ApiOkResponse,
+  ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import {
-  ResData,
-  ResponseModel,
-  PageResModel,
-  SessionModel,
-} from '@/global/interface'; // TS类型注解
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
-import {
-  ListUserManagementDto,
-  SaveUserManagementDto,
-  ResponseUserManagementDto,
   CreateUserManagementDto,
+  ListUserManagementDto,
+  ResponseUserManagementDto,
+  SaveUserManagementDto,
   UpdateUserStatusDto,
 } from './dto';
-import { responseMessage } from '@/utils'; // 全局工具函数
+import { UserManagementService } from './user-management.service'; // UserManagement Service
 
 /* swagger 文档 */
 @ApiTags('系统设置-用户管理')
@@ -59,24 +54,20 @@ export class UserManagementController {
 
   /**
    * @description: 获取用户管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseUserManagementDto })
   @ApiOperation({ summary: '获取用户管理列表' })
-  async getUserList(
-    @Query() userInfo: ListUserManagementDto,
-  ): Promise<ResponseModel<PageResModel<XmwUser[]>>> {
+  async getUserList(@Query() userInfo: ListUserManagementDto) {
     const response = await this.userManagementService.getUserList(userInfo);
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建用户数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -84,8 +75,8 @@ export class UserManagementController {
   @ApiOperation({ summary: '创建用户数据' })
   async createUser(
     @Body() userInfo: SaveUserManagementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.userManagementService.createUser(
       userInfo,
       session,
@@ -95,8 +86,7 @@ export class UserManagementController {
 
   /**
    * @description: 更新用户数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:user_id')
@@ -105,8 +95,8 @@ export class UserManagementController {
   async updateUser(
     @Param('user_id') user_id: string,
     @Body() userInfo: SaveUserManagementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.userManagementService.updateUser(
       user_id,
       userInfo,
@@ -117,24 +107,20 @@ export class UserManagementController {
 
   /**
    * @description: 删除用户数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:user_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除用户数据' })
-  async deleteUser(
-    @Param('user_id') user_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteUser(@Param('user_id') user_id: string) {
     const response = await this.userManagementService.deleteUser(user_id);
     return response;
   }
 
   /**
    * @description: 更新用户状态
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Patch('/:user_id')
@@ -143,7 +129,7 @@ export class UserManagementController {
   async updateUserStatus(
     @Param('user_id') user_id: string,
     @Body() { status }: UpdateUserStatusDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.userManagementService.updateUserStatus(
       user_id,
       status,

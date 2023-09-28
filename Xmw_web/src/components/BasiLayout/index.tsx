@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-27 16:13:39
+ * @LastEditTime: 2023-09-28 11:28:51
  */
 import { ProConfigProvider, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
 import { useBoolean } from 'ahooks'
-import { ConfigProvider, Space, Typography } from 'antd'
+import { App, ConfigProvider, Space, Typography } from 'antd'
 import { eq, last, toString } from 'lodash-es'
 
 import Footer from '@/components/Footer'; // 全局底部版权组件
@@ -104,11 +104,13 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 				<>
 					<ProConfigProvider>
 						<ConfigProvider>
-							{children}
-							{/* 锁屏弹窗 */}
-							<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
-							{/* 睡眠弹窗 */}
-							<LockSleep />
+							<App>
+								{children}
+								{/* 锁屏弹窗 */}
+								<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
+								{/* 睡眠弹窗 */}
+								<LockSleep />
+							</App>
 						</ConfigProvider>
 						<SettingDrawer
 							disableUrlParams

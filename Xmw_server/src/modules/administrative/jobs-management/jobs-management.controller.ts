@@ -1,41 +1,42 @@
 /*
  * @Description: JobsManagement Controller
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:12:19
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:41:59
  */
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
   Query,
-  Body,
-  Param,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import {
+  CreateJobsDto,
   ListJobsManagementDto,
   ResponseJobsDto,
   SaveJobsManagementDto,
-  CreateJobsDto,
 } from './dto';
-import { responseMessage } from '@/utils';
+import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 
 /* swagger 文档 */
 @ApiTags('智能行政-岗位管理')
@@ -51,24 +52,20 @@ export class JobsManagementController {
 
   /**
    * @description: 获取岗位管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseJobsDto })
   @ApiOperation({ summary: '获取岗位管理列表' })
-  async getJobsList(
-    @Query() jobsInfo: ListJobsManagementDto,
-  ): Promise<ResponseModel> {
+  async getJobsList(@Query() jobsInfo: ListJobsManagementDto) {
     const response = await this.jobsManagementService.getJobsList(jobsInfo);
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建岗位数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -76,8 +73,8 @@ export class JobsManagementController {
   @ApiOperation({ summary: '创建岗位数据' })
   async createJobs(
     @Body() jobsInfo: SaveJobsManagementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.jobsManagementService.createJobs(
       jobsInfo,
       session,
@@ -87,8 +84,7 @@ export class JobsManagementController {
 
   /**
    * @description: 更新岗位数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:jobs_id')
@@ -97,7 +93,7 @@ export class JobsManagementController {
   async updateJobs(
     @Param('jobs_id') jobs_id: string,
     @Body() jobsInfo: SaveJobsManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.jobsManagementService.updateJobs(
       jobs_id,
       jobsInfo,
@@ -108,15 +104,13 @@ export class JobsManagementController {
   /**
    * @description: 删除岗位数据
    * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:jobs_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除岗位数据' })
-  async deleteJobs(
-    @Param('jobs_id') jobs_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteJobs(@Param('jobs_id') jobs_id: string) {
     const response = await this.jobsManagementService.deleteJobs(jobs_id);
     return response;
   }

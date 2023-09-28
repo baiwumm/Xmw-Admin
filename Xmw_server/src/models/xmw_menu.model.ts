@@ -1,31 +1,37 @@
 /*
  * @Description: XmwMenu Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 10:13:54
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-08 09:50:04
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:23:20
  */
 import {
-  PrimaryKey,
+  BelongsTo,
   Column,
-  Model,
-  Table,
   DataType,
   ForeignKey,
-  BelongsTo,
-  IsUUID,
   IsIn,
+  IsUUID,
+  Model,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import type { MenuAttributes } from '@/attributes/system';
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
 
+import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import type {
+  Layouts,
+  MenuTheme,
+  MenuTypes,
+  Status,
+  TargetTypes,
+} from '@/utils/types';
+import type { MenuAttributes } from '@/utils/types/system';
 @Table({ tableName: 'xmw_menu', underscored: false })
 export class XmwMenu
   extends Model<MenuAttributes, MenuAttributes>
-  implements MenuAttributes
-{
+  implements MenuAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({
@@ -57,7 +63,7 @@ export class XmwMenu
     allowNull: false,
     comment: '菜单类型（dir:目录，menu:菜单,button:按钮）',
   })
-  menu_type: string;
+  menu_type: MenuTypes;
 
   //路由url
   @Column({ type: DataType.STRING(100), comment: '路由url' })
@@ -90,7 +96,7 @@ export class XmwMenu
     values: ['_blank', '_self', '_parent', '_top'],
     comment: '当path是一个url，点击新窗口打开',
   })
-  target?: string;
+  target?: TargetTypes;
 
   //菜单标识(页面按钮权限控制)
   @Column({ type: DataType.STRING(100), comment: '菜单标识(页面按钮权限控制)' })
@@ -106,7 +112,7 @@ export class XmwMenu
     values: ['side', 'top', 'mix'],
     comment: '是否显示layout布局（side:侧边菜单，top:顶部菜单,mix:混合菜单）',
   })
-  layout?: string;
+  layout?: Layouts;
 
   //导航菜单的主题
   @IsIn({
@@ -118,7 +124,7 @@ export class XmwMenu
     values: ['dark', 'light'],
     comment: '导航菜单的主题（dark:暗黑风格，light:亮色风格）',
   })
-  navTheme?: string;
+  navTheme?: MenuTheme;
 
   //顶部导航的主题，mix 模式生效
   @IsIn({
@@ -130,7 +136,7 @@ export class XmwMenu
     values: ['dark', 'light'],
     comment: '顶部导航的主题，mix 模式生效（dark:暗黑风格，light:亮色风格）',
   })
-  headerTheme?: string;
+  headerTheme?: MenuTheme;
 
   //是否隐藏子路由
   @Column({
@@ -260,7 +266,7 @@ export class XmwMenu
     defaultValue: 1,
     comment: '菜单状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: Status;
 
   @BelongsTo(() => XmwInternational, { as: 'i' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   interInfo: XmwInternational;

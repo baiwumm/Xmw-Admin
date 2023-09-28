@@ -4,16 +4,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:41:00
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-25 17:18:53
+ * @LastEditTime: 2023-09-28 15:25:26
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
-import { PageResModel } from '@/global/interface';
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
+import type { PageResponse } from '@/utils/types';
 
 /**
  * @description: 活动公告列表响应体结构 Dto
- * @return {*}
  * @author: 白雾茫茫丶
  */
 export class ResponseAnnouncementDto extends ResponseDto {
@@ -37,7 +37,7 @@ export class ResponseAnnouncementDto extends ResponseDto {
       total: 1,
     },
   })
-  data: PageResModel<XmwAnnouncement[]>;
+  data: PageResponse<XmwAnnouncement>;
 }
 
 /**

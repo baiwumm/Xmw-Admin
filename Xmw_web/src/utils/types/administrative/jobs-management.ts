@@ -5,7 +5,7 @@
  * @LastEditors: 白雾茫茫丶
  * @LastEditTime: 2023-09-15 10:52:01
  */
-import { SearchTimes } from '@/utils/types'
+import type { SearchTimes } from '@/utils/types'
 
 /**
  * @description: 新增岗位 Params 
@@ -25,15 +25,6 @@ export type FormTemplateProps = {
   parent_id?: string; // 父级id
   open: boolean;
   setOpenDrawerFalse: () => void
-};
-
-/**
- * @description: FormTemplateItem Props
- * @author: 白雾茫茫丶
- */
-export type FormTemplateItemProps = {
-  treeData: API.JOBSMANAGEMENT[]; // 岗位树形数据
-  orgTree: API.ORGANIZATION[]; // 组织树形数据
 };
 
 /**

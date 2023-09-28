@@ -1,41 +1,42 @@
 /*
  * @Description:
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 10:37:28
  * @LastEditors: Cyan
  * @LastEditTime: 2023-01-17 14:16:24
  */
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
   Query,
-  Body,
-  Param,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { MenuManagementService } from './menu-management.service'; // MenuManagement Service
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import {
-  ListMenuManagementDto,
-  SaveMenuManagementDto,
-  ResponseMenuManagementDto,
   CreateMenuManagementDto,
+  ListMenuManagementDto,
+  ResponseMenuManagementDto,
+  SaveMenuManagementDto,
 } from './dto';
-import { responseMessage } from '@/utils'; // 全局工具函数
+import { MenuManagementService } from './menu-management.service'; // MenuManagement Service
 
 /* swagger 文档 */
 @ApiTags('系统设置-菜单管理')
@@ -51,24 +52,20 @@ export class MenuManagementController {
 
   /**
    * @description: 获取菜单管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseMenuManagementDto })
   @ApiOperation({ summary: '获取菜单管理列表' })
-  async getMenuList(
-    @Query() menuInfo: ListMenuManagementDto,
-  ): Promise<ResponseModel> {
+  async getMenuList(@Query() menuInfo: ListMenuManagementDto) {
     const response = await this.menuManagementService.getMenuList(menuInfo);
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -76,8 +73,8 @@ export class MenuManagementController {
   @ApiOperation({ summary: '创建菜单数据' })
   async createMenu(
     @Body() menuInfo: SaveMenuManagementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.menuManagementService.createMenu(
       menuInfo,
       session,
@@ -87,8 +84,7 @@ export class MenuManagementController {
 
   /**
    * @description: 更新菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:menu_id')
@@ -97,7 +93,7 @@ export class MenuManagementController {
   async updateJobs(
     @Param('menu_id') menu_id: string,
     @Body() menuInfo: SaveMenuManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.menuManagementService.updateMenu(
       menu_id,
       menuInfo,
@@ -107,16 +103,13 @@ export class MenuManagementController {
 
   /**
    * @description: 删除菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:menu_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除菜单数据' })
-  async deleteMenu(
-    @Param('menu_id') menu_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteMenu(@Param('menu_id') menu_id: string) {
     const response = await this.menuManagementService.deleteMenu(menu_id);
     return response;
   }

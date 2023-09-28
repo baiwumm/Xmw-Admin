@@ -1,49 +1,44 @@
 /*
  * @Description: RoleManagement Controller
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:39:08
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:17:05
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:01:39
  */
 import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Query,
   Body,
+  Controller,
+  Delete,
+  Get,
   Param,
   Patch,
+  Post,
+  Put,
+  Query,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RoleManagementService } from './role-management.service'; // RoleManagement Service
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import {
-  ResData,
-  ResponseModel,
-  PageResModel,
-  SessionModel,
-} from '@/global/interface'; // TS类型注解
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
-import {
-  ResponseRoleManagementDto,
+  CreateRoleManagementDto,
   ListRoleManagementDto,
+  ResponseRoleManagementDto,
   SaveRoleManagementDto,
   UpdateRoleStatusDto,
-  CreateRoleManagementDto,
 } from './dto';
-import { responseMessage } from '@/utils'; // 全局工具函数
+import { RoleManagementService } from './role-management.service'; // RoleManagement Service
 
 /* swagger 文档 */
 @ApiTags('系统设置-角色管理')
@@ -59,24 +54,20 @@ export class RoleManagementController {
 
   /**
    * @description: 获取角色管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseRoleManagementDto })
   @ApiOperation({ summary: '获取角色管理列表' })
-  async getRoleList(
-    @Query() roleInfo: ListRoleManagementDto,
-  ): Promise<ResponseModel<PageResModel<XmwRole[]>>> {
+  async getRoleList(@Query() roleInfo: ListRoleManagementDto) {
     const response = await this.roleManagementService.getRoleList(roleInfo);
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -84,8 +75,8 @@ export class RoleManagementController {
   @ApiOperation({ summary: '创建角色数据' })
   async createRole(
     @Body() roleInfo: SaveRoleManagementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.roleManagementService.createRole(
       roleInfo,
       session,
@@ -95,8 +86,7 @@ export class RoleManagementController {
 
   /**
    * @description: 更新角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:role_id')
@@ -105,7 +95,7 @@ export class RoleManagementController {
   async updateRole(
     @Param('role_id') role_id: string,
     @Body() roleInfo: SaveRoleManagementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.roleManagementService.updateRole(
       role_id,
       roleInfo,
@@ -115,24 +105,20 @@ export class RoleManagementController {
 
   /**
    * @description: 删除角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:role_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除角色数据' })
-  async deleteRole(
-    @Param('role_id') role_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteRole(@Param('role_id') role_id: string) {
     const response = await this.roleManagementService.deleteRole(role_id);
     return response;
   }
 
   /**
    * @description: 更新角色状态
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Patch('/:role_id')
@@ -141,7 +127,7 @@ export class RoleManagementController {
   async updateRoleStatus(
     @Param('role_id') role_id: string,
     @Body() { status }: UpdateRoleStatusDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.roleManagementService.updateRoleStatus(
       role_id,
       status,

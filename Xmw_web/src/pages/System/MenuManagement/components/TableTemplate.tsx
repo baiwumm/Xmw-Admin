@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 16:06:51
+ * @LastEditTime: 2023-09-28 17:42:57
  */
 import { ActionType, ColumnsState, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -26,7 +26,7 @@ import {
 	statusColumn,
 } from '@/components/TableColumns'
 import { delMenu, getMenuList } from '@/services/system/menu-management'
-import { formatPerfix, formatResponse, renderColumnsStateMap, randomTagColor } from '@/utils'
+import { formatPerfix, formatResponse, randomTagColor, renderColumnsStateMap } from '@/utils'
 import { IconFont, LAYOUT_TYPE_OPTS, MenuTypeEnum, NAV_THEME_OPTS } from '@/utils/const'
 import { ROUTES } from '@/utils/enums'
 import type { Langs } from '@/utils/types'

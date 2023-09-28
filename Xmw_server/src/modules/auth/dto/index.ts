@@ -1,20 +1,20 @@
 /*
  * @Description: 登录鉴权 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-25 10:34:23
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-09 11:18:11
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:50:52
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 
 /**
  * @description: 登录参数
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class LoginParamsDto {
   @ApiProperty({
@@ -59,8 +59,7 @@ export class LoginParamsDto {
 
 /**
  * @description: 登录成功返回体
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class LoginResponseDto extends ResponseDto {
   @ApiProperty({
@@ -69,15 +68,15 @@ export class LoginResponseDto extends ResponseDto {
     default: {
       asccess_token:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJtZWl4aSIsInVzZXJfaWQiOiJtZWl4aSIsImlhdCI6MTY2OTg2MTE1NX0.vxcgFW2F5L7D-bKjwbuBMLYq1kyDZ8FYWzWdWUU2WC4',
+      login_last_time: '2023-09-28 15:50:37',
     },
   })
-  data: { asccess_token: string };
+  data: { asccess_token: string; login_last_time: string };
 }
 
 /**
  * @description: 用户信息返回体
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class UserInfoResponseDto extends ResponseDto {
   @ApiProperty({
@@ -122,8 +121,7 @@ export class UserInfoResponseDto extends ResponseDto {
 
 /**
  * @description: 用户按钮权限 dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class PermissionResponseDto extends ResponseDto {
   @ApiProperty({
@@ -169,8 +167,7 @@ export class PermissionResponseDto extends ResponseDto {
 
 /**
  * @description: 用户动态菜单 dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class RoutesMenuResponseDto extends ResponseDto {
   @ApiProperty({
@@ -240,8 +237,7 @@ export class RoutesMenuResponseDto extends ResponseDto {
 
 /**
  * @description: 图形验证码
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class VerifyCodeResponseDto extends ResponseDto {
   @ApiProperty({

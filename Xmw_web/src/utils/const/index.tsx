@@ -14,7 +14,7 @@ import jajp from 'antd/es/locale/ja_JP';
 import zhcn from 'antd/es/locale/zh_CN';
 import zhtw from 'antd/es/locale/zh_TW';
 import { LabeledValue } from 'antd/es/select'
-import { keys, sample, toLower } from 'lodash-es'
+import { keys, toLower } from 'lodash-es'
 
 import { formatPerfix } from '@/utils'
 import {

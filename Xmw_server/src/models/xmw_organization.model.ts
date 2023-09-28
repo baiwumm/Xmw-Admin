@@ -1,23 +1,25 @@
 /*
  * @Description: xmw_organization Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 11:06:36
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 10:38:44
+ * @LastEditTime: 2023-09-28 17:24:46
  */
 import {
-  PrimaryKey,
   Column,
-  Model,
-  Table,
   DataType,
-  NotEmpty,
-  Length,
-  IsUUID,
   IsIn,
+  IsUUID,
+  Length,
+  Model,
+  NotEmpty,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import type { OrgAttributes } from '@/attributes/administrative';
+
+import type { OrgTypes, Status } from '@/utils/types';
+import type { OrgAttributes } from '@/utils/types/administrative';
 
 @Table({ tableName: 'xmw_organization' })
 export class XmwOrganization
@@ -54,7 +56,7 @@ export class XmwOrganization
     allowNull: false,
     comment: '组织类型（group:集团,company:公司,unit:单位,department:部门）',
   })
-  org_type: string;
+  org_type: OrgTypes;
 
   //组织 logo
   @Column({ type: DataType.STRING(200), comment: '组织logo' })
@@ -81,7 +83,7 @@ export class XmwOrganization
 
   //排序
   @Column({ type: DataType.INTEGER, allowNull: false, comment: '排序' })
-  sort: number;
+  sort: Status;
 
   //组织状态
   @IsIn({
@@ -94,5 +96,5 @@ export class XmwOrganization
     defaultValue: 1,
     comment: '组织状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: Status;
 }

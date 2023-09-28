@@ -4,14 +4,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:17:52
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-25 16:47:22
+ * @LastEditTime: 2023-09-28 15:36:12
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { AnnouncementService } from './announcement.service'; // Announcement Service
-import { AnnouncementController } from './announcement.controller'; // Announcement Controller
+
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
 import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+
+import { AnnouncementController } from './announcement.controller'; // Announcement Controller
+import { AnnouncementService } from './announcement.service'; // Announcement Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用

@@ -1,31 +1,31 @@
 /*
  * @Description: XmwJobs Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 10:57:24
  * @LastEditors: Cyan
  * @LastEditTime: 2022-12-01 17:19:53
  */
 import {
-  PrimaryKey,
+  BelongsTo,
   Column,
-  Model,
-  Table,
   DataType,
   ForeignKey,
-  BelongsTo,
-  NotEmpty,
-  Length,
   IsUUID,
+  Length,
+  Model,
+  NotEmpty,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
+
 import { XmwOrganization } from '@/models/xmw_organization.model';
-import type { JobsAttributes } from '@/attributes/administrative';
+import type { JobsAttributes } from '@/utils/types/administrative';
 
 @Table({ tableName: 'xmw_jobs' })
 export class XmwJobs
   extends Model<JobsAttributes, JobsAttributes>
-  implements JobsAttributes
-{
+  implements JobsAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({

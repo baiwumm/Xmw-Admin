@@ -1,17 +1,19 @@
 /*
  * @Description: UserManagement Module
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-09 17:44:10
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:32:46
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:10:49
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { UserManagementService } from './user-management.service'; // UserManagement Service
-import { UserManagementController } from './user-management.controller'; // UserManagement Controller
+
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+
+import { UserManagementController } from './user-management.controller'; // UserManagement Controller
+import { UserManagementService } from './user-management.service'; // UserManagement Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用

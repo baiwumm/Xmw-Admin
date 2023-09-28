@@ -1,13 +1,14 @@
 /*
  * @Description: RedisCache Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-28 14:15:23
  * @LastEditors: Cyan
  * @LastEditTime: 2022-12-02 15:27:44
  */
 import { Injectable } from '@nestjs/common';
 import RedisC, { Redis } from 'ioredis';
+
 import RedisConfig from '@/config/redis'; // redis配置
 
 @Injectable()
@@ -24,8 +25,7 @@ export class RedisCacheService {
    * @param {string} key
    * @param {string} value
    * @param {number} seconds: 过期时间
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async cacheSet(key: string, value: string, seconds?: number): Promise<void> {
     value = JSON.stringify(value);
@@ -39,8 +39,7 @@ export class RedisCacheService {
   /**
    * @description: 获取 redis 缓存
    * @param {string} key
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async cacheGet(key: string): Promise<any> {
     return this.redisClient.get(key);
@@ -49,8 +48,7 @@ export class RedisCacheService {
   /**
    * @description: 删除 redis 缓存
    * @param {string} key
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async cacheDel(key: string): Promise<void> {
     await this.redisClient.del(key);
@@ -58,8 +56,7 @@ export class RedisCacheService {
 
   /**
    * @description: 清空 redis 缓存
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async cacheFlushall(): Promise<void> {
     await this.redisClient.flushall();

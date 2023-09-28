@@ -1,29 +1,29 @@
 /*
  * @Description: XmwPermission Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:23:20
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-09 16:55:47
  */
 import {
-  PrimaryKey,
+  BelongsTo,
   Column,
-  Model,
-  Table,
   DataType,
   ForeignKey,
-  BelongsTo,
   IsUUID,
+  Model,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import type { PermissionAttributes } from '@/attributes/system';
+
 import { XmwRole } from '@/models/xmw_role.model';
+import type { PermissionAttributes } from '@/utils/types/system';
 
 @Table({ tableName: 'xmw_permission' })
 export class XmwPermission
   extends Model<PermissionAttributes, PermissionAttributes>
-  implements PermissionAttributes
-{
+  implements PermissionAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({

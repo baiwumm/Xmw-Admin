@@ -1,10 +1,11 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+
+import App_configuration from '@/config/configuration'; // 全局配置
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-import App_configuration from '@/config/configuration'; // 全局配置
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -26,8 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @description: 调用守卫验证 token
    * @param {Request} req
    * @param {any} payload
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async validate(req: Request, payload: XmwUser): Promise<XmwUser> {
     // 获取当前 token

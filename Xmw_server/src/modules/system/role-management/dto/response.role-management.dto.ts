@@ -1,20 +1,20 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 17:19:57
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 11:25:54
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 16:58:06
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
-import { PageResModel } from '@/global/interface';
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+import type { PageResponse } from '@/utils/types';
 
 /**
  * @description: 角色管理列表响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseRoleManagementDto extends ResponseDto {
   @ApiProperty({
@@ -60,13 +60,13 @@ export class ResponseRoleManagementDto extends ResponseDto {
       total: 1,
     },
   })
-  data: PageResModel<XmwRole[]>;
+  data: PageResponse<XmwRole>;
 }
 
 /**
  * @description: 创建角色数据 Dto
  * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateRoleManagementDto extends ResponseDto {
   @ApiProperty({
@@ -83,5 +83,5 @@ export class CreateRoleManagementDto extends ResponseDto {
       updated_time: '2022-11-09T06:45:01.108Z',
     },
   })
-  data: PageResModel<XmwRole>;
+  data: PageResponse<XmwRole>;
 }

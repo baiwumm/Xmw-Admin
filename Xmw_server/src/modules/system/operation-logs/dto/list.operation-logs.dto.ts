@@ -1,7 +1,7 @@
 /*
  * @Description: 查询操作日志列表参数 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-03-17 15:50:23
  * @LastEditors: Cyan
  * @LastEditTime: 2023-03-17 15:50:42

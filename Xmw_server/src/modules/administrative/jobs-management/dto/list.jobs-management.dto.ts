@@ -1,7 +1,7 @@
 /*
  * @Description: 查询岗位管理列表参数 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
  * @LastEditTime: 2022-10-20 15:30:39

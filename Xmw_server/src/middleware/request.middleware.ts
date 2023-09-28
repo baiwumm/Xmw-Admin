@@ -1,12 +1,12 @@
 /*
  * @Description: 全局请求拦截中间件
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-04-13 20:28:08
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-11 11:09:14
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:22:29
  */
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 export function requestMiddleware(
   req: Request,
   res: Response,

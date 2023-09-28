@@ -1,17 +1,18 @@
 /*
  * @Description: 保存角色数据 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 18:06:14
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-09 14:10:09
  */
 import { ApiProperty } from '@nestjs/swagger';
 
+import type { Status } from '@/utils/types';
+
 /**
  * @description: 保存角色数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class SaveRoleManagementDto {
   @ApiProperty({
@@ -47,7 +48,7 @@ export class SaveRoleManagementDto {
     description: '角色状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 
   @ApiProperty({
     type: String,
@@ -59,8 +60,7 @@ export class SaveRoleManagementDto {
 
 /**
  * @description: 更新角色状态 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class UpdateRoleStatusDto {
   @ApiProperty({
@@ -68,5 +68,5 @@ export class UpdateRoleStatusDto {
     description: '角色状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 }

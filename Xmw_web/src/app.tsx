@@ -18,7 +18,7 @@ import { getAllLocalesLang } from '@/services/system/internationalization'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils' // 全局工具函数
 import { ANTD_LANGS } from '@/utils/const'
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
-import { InitialStateTypes, Langs } from '@/utils/types'
+import type { InitialStateTypes, Langs } from '@/utils/types'
 import umiRequest from '@/utils/umiRequest'; // umi-request 请求封装
 
 import defaultSettings from '../config/defaultSettings'; // 全局默认配置

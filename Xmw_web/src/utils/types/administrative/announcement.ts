@@ -1,5 +1,5 @@
 import { ANNOUNCEMENT_TYPE } from '@/utils/enums'
-import { EnumValues } from '@/utils/types'
+import type { EnumValues } from '@/utils/types'
 
 /**
  * @description: 创建新闻公告 Props
@@ -35,3 +35,13 @@ export type PinnedParams = Pick<API.ANNOUNCEMENT, 'announcement_id' | 'pinned'>
  * @author: 白雾茫茫丶
  */
 export type AnnouncementType = EnumValues<typeof ANNOUNCEMENT_TYPE>
+
+/**
+ * @description: 公告详情
+ * @author: 白雾茫茫丶
+ */
+export type DetailDrawerProps = {
+  data?: API.ANNOUNCEMENT;
+  open: boolean;
+  onCalcel: () => void;
+}

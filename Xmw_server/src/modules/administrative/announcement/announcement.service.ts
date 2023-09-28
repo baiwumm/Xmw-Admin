@@ -4,23 +4,20 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-12 15:59:06
+ * @LastEditTime: 2023-09-28 15:36:18
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
+
+import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import {
-  ResData,
-  ResponseModel,
-  SessionModel,
-  PageResModel,
-} from '@/global/interface'; // interface
-import { ListAnnouncementDto, SaveAnnouncementDto } from './dto';
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
+import type { Flag, PageResponse, Response, SessionTypes } from '@/utils/types';
+
+import { ListAnnouncementDto, SaveAnnouncementDto } from './dto';
 
 @Injectable()
 export class AnnouncementService {
@@ -33,12 +30,11 @@ export class AnnouncementService {
 
   /**
    * @description: 获取活动公告列表
-   * @return {*}
    * @author: 白雾茫茫丶
    */
   async getAnnouncementList(
     announcementInfo: ListAnnouncementDto,
-  ): Promise<PageResModel<XmwAnnouncement[]>> {
+  ): Promise<Response<PageResponse<XmwAnnouncement>>> {
     // 解构参数
     const { title, type, status, pinned, pageSize, current } = announcementInfo;
     // 拼接查询参数
@@ -69,18 +65,17 @@ export class AnnouncementService {
         ['created_time', 'desc'],
       ], // 排序规则,
     });
-    return { list: rows, total: count };
+    return responseMessage({ list: rows, total: count });
   }
 
   /**
    * @description: 创建活动公告
-   * @return {*}
    * @author: 白雾茫茫丶
    */
   async createAnnouncement(
     announcementInfo: SaveAnnouncementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveAnnouncementDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveAnnouncementDto>> {
     // 如果通过则执行 sql insert 语句
     const result = await this.announcementModel.create({
       ...announcementInfo,
@@ -95,13 +90,12 @@ export class AnnouncementService {
 
   /**
    * @description: 编辑活动公告
-   * @return {*}
    * @author: 白雾茫茫丶
    */
   async updateAnnouncement(
     announcement_id: string,
     announcementInfo: SaveAnnouncementDto,
-  ): Promise<ResponseModel<ResData | SaveAnnouncementDto>> {
+  ): Promise<Response<SaveAnnouncementDto>> {
     // 如果通过则执行 sql update 语句
     const result = await this.announcementModel.update(announcementInfo, {
       where: { announcement_id },
@@ -115,12 +109,9 @@ export class AnnouncementService {
 
   /**
    * @description: 删除活动公告
-   * @return {*}
    * @author: 白雾茫茫丶
    */
-  async deleteAnnouncement(
-    announcement_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteAnnouncement(announcement_id: string): Promise<Response<number>> {
     // 根据主键查找出当前数据
     const currentInfo = await this.announcementModel.findByPk(announcement_id);
     // 如果通过则执行 sql delete 语句
@@ -140,8 +131,8 @@ export class AnnouncementService {
    */
   async updatePinned(
     announcement_id: string,
-    pinned: number,
-  ): Promise<ResponseModel<ResData | number[]>> {
+    pinned: Flag,
+  ): Promise<Response<number[]>> {
     // 执行 update 更新 xmw_role 状态
     const result = await this.announcementModel.update(
       { pinned },

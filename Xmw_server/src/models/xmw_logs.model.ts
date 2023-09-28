@@ -1,16 +1,18 @@
 import {
-  PrimaryKey,
-  Column,
-  Model,
-  Table,
-  DataType,
-  IsUUID,
-  IsIP,
   BelongsTo,
+  Column,
+  DataType,
   ForeignKey,
+  IsIP,
+  IsUUID,
+  Model,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
+
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import type { LogsAttributes } from '@/attributes/system';
+import type { RequestMethods } from '@/utils/types';
+import type { LogsAttributes } from '@/utils/types/system';
 
 @Table({ tableName: 'xmw_logs' })
 export class XmwLogs
@@ -55,7 +57,7 @@ export class XmwLogs
 
   // 请求方式
   @Column({ type: DataType.STRING(20), allowNull: false, comment: '请求方式' })
-  method: string;
+  method: RequestMethods | string;
 
   // 请求地址
   @Column({ type: DataType.STRING(100), allowNull: false, comment: '请求地址' })

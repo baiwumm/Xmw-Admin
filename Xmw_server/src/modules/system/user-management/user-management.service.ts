@@ -1,28 +1,30 @@
 /*
  * @Description: UserManagement Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-09 17:44:15
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:35:36
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:26:29
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { XmwRole } from '@/models/xmw_role.model';
-import { XmwOrganization } from '@/models/xmw_organization.model';
+
 import { XmwJobs } from '@/models/xmw_jobs.model';
-import {
-  ResData,
-  PageResModel,
-  ResponseModel,
-  SessionModel,
-} from '@/global/interface'; // interface
-import { ListUserManagementDto, SaveUserManagementDto } from './dto';
+import { XmwOrganization } from '@/models/xmw_organization.model';
+import { XmwRole } from '@/models/xmw_role.model';
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
+import type {
+  PageResponse,
+  Response,
+  SessionTypes,
+  Status,
+} from '@/utils/types';
+
+import { ListUserManagementDto, SaveUserManagementDto } from './dto';
 
 @Injectable()
 export class UserManagementService {
@@ -35,12 +37,11 @@ export class UserManagementService {
 
   /**
    * @description: 获取用户管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async getUserList(
     userInfo: ListUserManagementDto,
-  ): Promise<PageResModel<XmwUser[]>> {
+  ): Promise<Response<PageResponse<XmwUser>>> {
     // 解构参数
     const { user_name, sex, status, start_time, end_time, pageSize, current } =
       userInfo;
@@ -81,18 +82,17 @@ export class UserManagementService {
       order: [['sort', 'desc']], // 排序规则,
       distinct: true,
     });
-    return { list: rows, total: count };
+    return responseMessage({ list: rows, total: count });
   }
 
   /**
    * @description: 创建用户数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async createUser(
     userInfo: SaveUserManagementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveUserManagementDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveUserManagementDto>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
     // 用户名称和用户工号、手机号码不能相同
@@ -116,14 +116,13 @@ export class UserManagementService {
 
   /**
    * @description: 更新用户数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateUser(
     user_id: string,
     userInfo: SaveUserManagementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | number[]>> {
+    session: SessionTypes,
+  ): Promise<Response<number[]>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
     if (user_name && work_no && phone) {
@@ -158,10 +157,9 @@ export class UserManagementService {
 
   /**
    * @description: 删除角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async deleteUser(user_id: string): Promise<ResponseModel<ResData | number>> {
+  async deleteUser(user_id: string): Promise<Response<number>> {
     // 超级管理员不能删除，即 admin 用户
     const exist = await this.userModel.findOne({
       where: { user_name: 'admin', user_id },
@@ -183,13 +181,12 @@ export class UserManagementService {
 
   /**
    * @description: 更新用户状态
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateUserStatus(
     user_id: string,
-    status: number,
-  ): Promise<ResponseModel<ResData | number[]>> {
+    status: Status,
+  ): Promise<Response<number[]>> {
     // 执行 update 更新 xmw_role 状态
     const result = await this.userModel.update(
       { status },

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-25 09:27:29
+ * @LastEditTime: 2023-09-27 18:17:43
  */
 import { StepsForm } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
@@ -102,6 +102,7 @@ const FormTemplate: FC<FormTemplateProps> = ({
 						open={modalVisible}
 						footer={submitter}
 						maskClosable={false}
+						forceRender
 					>
 						{dom}
 					</Modal>

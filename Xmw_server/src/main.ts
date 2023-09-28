@@ -1,27 +1,29 @@
 /*
  * @Description: 应用程序的入口文件，它使用核心函数 NestFactory 来创建 Nest 应用程序的实例。
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-12 17:06:37
- * @LastEditors: Cyan
- * @LastEditTime: 2023-07-26 17:27:41
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:34:36
  */
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // swagger 接口文档
 import * as express from 'express';
 import * as session from 'express-session';
 import { join } from 'path';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'; // swagger 接口文档
+
+import { HttpReqTransformInterceptor } from '@/interceptor/http-req.interceptor'; // 全局响应拦截器
+import { requestMiddleware } from '@/middleware/request.middleware'; // 全局请求拦截中间件
+import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
+import { Logger } from '@/utils/log4js';
+import type { Response } from '@/utils/types';
+
 import { AppModule } from './app.module';
+import App_configuration from './config/configuration'; // 全局配置
 import { AllExceptionsFilter } from './filter/any-exception.filter'; // http 异常过滤器
 import { HttpExceptionFilter } from './filter/http-exception.filter'; // 任意异常捕获
-import { HttpReqTransformInterceptor } from '@/interceptor/http-req.interceptor'; // 全局响应拦截器
 import { TransformInterceptor } from './interceptor/transform.interceptor'; // 全局拦截器，用来收集日志
-import App_configuration from './config/configuration'; // 全局配置
 import { logger } from './middleware/logger.middleware'; // 日志收集中间件
-import { Logger } from '@/utils/log4js';
-import { ResponseModel } from '@/global/interface'; // 返回体结构
-import { ValidationPipe } from '@/pipe/validation.pipe'; // 参数校验
-import { requestMiddleware } from '@/middleware/request.middleware'; // 全局请求拦截中间件
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,7 +38,7 @@ async function bootstrap() {
   // 配置 session
   app.use(
     session({
-      secret: 'Cyan', // 签名
+      secret: 'baiwumm', // 签名
       resave: false, // 强制保存 sseion 即使它并没有变化，默认为true
       saveUninitialized: false, // 强制将未初始化的 session 存储
     }),
@@ -53,7 +55,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter()); // 全局统一异常返回体
 
   // 全局响应拦截器，格式化返回体
-  app.useGlobalInterceptors(new HttpReqTransformInterceptor<ResponseModel>());
+  app.useGlobalInterceptors(new HttpReqTransformInterceptor<Response>());
   app.useGlobalInterceptors(new TransformInterceptor()); // 全局拦截器，用来收集日志
 
   // 配置文件访问  文件夹为静态目录，以达到可直接访问下面文件的目的

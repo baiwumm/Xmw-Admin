@@ -1,28 +1,30 @@
 /*
  * @Description: 应用程序的根模块(Module)
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-24 13:12:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-25 16:48:22
+ * @LastEditTime: 2023-09-28 15:23:57
  */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+
+import { AnnouncementModule } from '@/modules/administrative/announcement/announcement.module'; // 智能行政-活动公告
+import { JobsManagementModule } from '@/modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
+import { OrganizationModule } from '@/modules/administrative/organization/organization.module'; // 智能行政-组织管理
+import { AuthModule } from '@/modules/auth/auth.module'; // 用户鉴权
+import { FilesModule } from '@/modules/files/files.module'; // 文件上传
+import { RedisCacheModule } from '@/modules/redis-cache/redis-cache.module'; // redis 缓存
+import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
+import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
+import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
+import { UserManagementModule } from '@/modules/system/user-management/user-management.module'; // 系统设置-用户管理
+
 import App_globalConfig from './config/configuration'; // 全局配置
 import DatabaseConfig from './config/database'; // 数据库配置
 import RedisConfig from './config/redis'; // redis配置
-import { UserManagementModule } from '@/modules/system/user-management/user-management.module'; // 系统设置-用户管理
-import { MenuManagementModule } from '@/modules/system/menu-management/menu-management.module'; // 系统设置-菜单管理
-import { RoleManagementModule } from '@/modules/system/role-management/role-management.module'; // 系统设置-角色管理
-import { InternationalModule } from '@/modules/system/international/international.module'; // 系统设置-国际化
-import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
-import { JobsManagementModule } from '@/modules/administrative/jobs-management/jobs-management.module'; // 智能行政-岗位管理
-import { OrganizationModule } from '@/modules/administrative/organization/organization.module'; // 智能行政-组织管理
-import { AnnouncementModule } from '@/modules/administrative/announcement/announcement.module'; // 智能行政-活动公告
-import { FilesModule } from '@/modules/files/files.module'; // 文件上传
-import { AuthModule } from '@/modules/auth/auth.module'; // 用户鉴权
-import { RedisCacheModule } from '@/modules/redis-cache/redis-cache.module'; // redis 缓存
 
 @Module({
   imports: [

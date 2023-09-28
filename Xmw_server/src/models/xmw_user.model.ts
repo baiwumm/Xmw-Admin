@@ -1,27 +1,29 @@
 import {
-  PrimaryKey,
+  BelongsTo,
   Column,
-  Model,
-  Table,
   DataType,
-  NotEmpty,
+  ForeignKey,
+  Is,
+  IsDate,
+  IsEmail,
+  IsIn,
+  IsIP,
+  IsUrl,
+  IsUUID,
   Length,
   Max,
   Min,
-  IsEmail,
-  IsUUID,
-  Is,
-  IsUrl,
-  IsIn,
-  IsIP,
-  IsDate,
-  ForeignKey,
-  BelongsTo,
+  Model,
+  NotEmpty,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import type { UserAttributes } from '@/attributes/system';
-import { XmwRole } from '@/models/xmw_role.model';
-import { XmwOrganization } from '@/models/xmw_organization.model';
+
 import { XmwJobs } from '@/models/xmw_jobs.model';
+import { XmwOrganization } from '@/models/xmw_organization.model';
+import { XmwRole } from '@/models/xmw_role.model';
+import type { Sex, Status } from '@/utils/types';
+import type { UserAttributes } from '@/utils/types/system';
 
 @Table({ tableName: 'xmw_user' })
 export class XmwUser
@@ -106,7 +108,7 @@ export class XmwUser
     allowNull: false,
     comment: '用户性别(0:女,1:男,2:隐私)',
   })
-  sex: string;
+  sex: Sex;
 
   //排序
   @Column({ type: DataType.INTEGER, allowNull: false, comment: '排序' })
@@ -123,7 +125,7 @@ export class XmwUser
     defaultValue: 1,
     comment: '用户状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: Status;
 
   //用户令牌
   @Column({ type: DataType.BLOB, comment: 'token' })

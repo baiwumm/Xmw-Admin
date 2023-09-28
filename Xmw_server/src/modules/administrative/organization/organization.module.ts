@@ -1,17 +1,19 @@
 /*
  * @Description: Organization Module
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-12 11:10:28
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:46:01
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { OrganizationService } from './organization.service'; // Organization Service
-import { OrganizationController } from './organization.controller'; // Organization Controller
+
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+
+import { OrganizationController } from './organization.controller'; // Organization Controller
+import { OrganizationService } from './organization.service'; // Organization Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用
@@ -23,4 +25,4 @@ import { OperationLogsModule } from '@/modules/system/operation-logs/operation-l
   // 如果你这个模块中的provider 要在别的模块中使用 你必须要在这里声明 导出这些provider
   exports: [OrganizationService],
 })
-export class OrganizationModule {}
+export class OrganizationModule { }

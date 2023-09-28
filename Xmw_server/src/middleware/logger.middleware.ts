@@ -1,14 +1,15 @@
 /*
  * @Description: 日志收集管理中间件
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-17 08:54:02
- * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 10:44:07
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:22:15
  */
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { Logger } from '../utils/log4js';
+import { NextFunction, Request, Response } from 'express';
+
+import { Logger } from '@/utils/log4js';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

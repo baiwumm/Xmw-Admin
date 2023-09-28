@@ -1,20 +1,20 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-10 14:30:15
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-30 10:49:50
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:06:05
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
-import { PageResModel } from '@/global/interface';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import type { PageResponse } from '@/utils/types';
 
 /**
  * @description: 用户管理列表响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseUserManagementDto extends ResponseDto {
   @ApiProperty({
@@ -57,13 +57,12 @@ export class ResponseUserManagementDto extends ResponseDto {
       total: 1,
     },
   })
-  data: PageResModel<XmwUser[]>;
+  data: PageResponse<XmwUser>;
 }
 
 /**
  * @description: 创建用户数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateUserManagementDto extends ResponseDto {
   @ApiProperty({
@@ -93,5 +92,5 @@ export class CreateUserManagementDto extends ResponseDto {
       created_time: '2022-11-10T06:28:13.581Z',
     },
   })
-  data: PageResModel<XmwUser>;
+  data: PageResponse<XmwUser>;
 }

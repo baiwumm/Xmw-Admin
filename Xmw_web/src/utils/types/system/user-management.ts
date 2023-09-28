@@ -1,7 +1,7 @@
 import { FormInstance } from '@ant-design/pro-components'
 import { MutableRefObject } from 'react'
 
-import { PaginationParams, SearchTimes } from '@/utils/types'
+import type { PaginationParams, SearchTimes } from '@/utils/types'
 
 /**
  * @description: FormTemplate Props

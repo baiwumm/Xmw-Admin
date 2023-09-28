@@ -1,17 +1,18 @@
 /*
  * @Description: 保存用户数据 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-10 11:30:40
- * @LastEditors: Cyan
- * @LastEditTime: 2023-08-08 09:14:49
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:06:18
  */
 import { ApiProperty } from '@nestjs/swagger';
 
+import type { Sex, Status } from '@/utils/types';
+
 /**
  * @description: 保存用户数据
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class SaveUserManagementDto {
   @ApiProperty({
@@ -48,7 +49,7 @@ export class SaveUserManagementDto {
     description: '性别',
     default: '1',
   })
-  sex: string;
+  sex: Sex;
 
   @ApiProperty({
     type: Number,
@@ -84,7 +85,7 @@ export class SaveUserManagementDto {
     description: '用户状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 
   @ApiProperty({
     type: String,
@@ -157,8 +158,7 @@ export class SaveUserManagementDto {
 
 /**
  * @description: 更新用户状态 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class UpdateUserStatusDto {
   @ApiProperty({
@@ -166,5 +166,5 @@ export class UpdateUserStatusDto {
     description: '用户状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 }

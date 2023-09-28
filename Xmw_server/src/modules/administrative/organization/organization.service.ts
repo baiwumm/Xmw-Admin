@@ -1,19 +1,21 @@
 /*
  * @Description: Organization Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-20 16:42:35
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 15:36:08
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:46:19
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
+
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
+import type { Response, SessionTypes } from '@/utils/types';
+
 import { ListOrganizationDto, SaveOrganizationDto } from './dto';
 
 @Injectable()
@@ -27,12 +29,11 @@ export class OrganizationService {
 
   /**
    * @description: 获取组织管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async getOrganizationList(
     organizationInfo: ListOrganizationDto,
-  ): Promise<XmwOrganization[]> {
+  ): Promise<Response<XmwOrganization[]>> {
     // 解构参数
     const { org_name, org_code, org_type, status, start_time, end_time } =
       organizationInfo;
@@ -54,18 +55,17 @@ export class OrganizationService {
     });
     // 将数据转成树形结构
     const result = initializeTree(sqlData, 'org_id', 'parent_id', 'children');
-    return result;
+    return responseMessage(result);
   }
 
   /**
    * @description: 创建组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async createOrganization(
     organizationInfo: SaveOrganizationDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveOrganizationDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveOrganizationDto>> {
     // 解构参数
     const { org_name, org_code } = organizationInfo;
     // 组织名称不能相同
@@ -88,13 +88,12 @@ export class OrganizationService {
 
   /**
    * @description: 更新组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateOrganization(
     org_id: string,
     organizationInfo: SaveOrganizationDto,
-  ): Promise<ResponseModel<ResData | number[]>> {
+  ): Promise<Response<number[]>> {
     // 解构参数
     const { org_name, org_code, parent_id } = organizationInfo;
     // 判断 parent_id 是否和 id相同
@@ -132,12 +131,9 @@ export class OrganizationService {
 
   /**
    * @description: 删除组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async deleteOrganization(
-    org_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteOrganization(org_id: string): Promise<Response<number>> {
     // 判断当前数据是否有子级，如果有数据的parent_id是id，则存在子级
     const exist = await this.organizationModel.findOne({
       where: { parent_id: org_id },

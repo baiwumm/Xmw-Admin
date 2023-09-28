@@ -1,12 +1,14 @@
 /*
  * @Description: 查询角色管理列表参数 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:47:10
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:42:56
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 16:57:17
  */
 import { ApiProperty } from '@nestjs/swagger';
+
+import type { Status } from '@/utils/types';
 
 export class ListRoleManagementDto {
   @ApiProperty({
@@ -31,7 +33,7 @@ export class ListRoleManagementDto {
     default: 1,
     required: false,
   })
-  status?: number;
+  status?: Status;
 
   @ApiProperty({
     type: Number,

@@ -1,5 +1,5 @@
 import { ORG_TYPE } from '@/utils/enums'
-import { EnumValues, SearchTimes } from '@/utils/types'
+import type { EnumValues, SearchTimes } from '@/utils/types'
 
 // 组织类型
 export type OrgTypes = EnumValues<typeof ORG_TYPE>

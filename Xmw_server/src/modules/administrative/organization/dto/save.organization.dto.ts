@@ -1,17 +1,18 @@
 /*
  * @Description: 保存组织数据 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 17:14:38
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 09:52:00
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:12:42
  */
 import { ApiProperty } from '@nestjs/swagger';
 
+import type { OrgTypes, Status } from '@/utils/types';
+
 /**
  * @description: 保存组织数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class SaveOrganizationDto {
   @ApiProperty({
@@ -41,14 +42,14 @@ export class SaveOrganizationDto {
     description: '组织类型',
     default: 'company',
   })
-  org_type: string;
+  org_type: OrgTypes;
 
   @ApiProperty({
     type: Number,
     description: '组织状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 
   @ApiProperty({
     type: Number,

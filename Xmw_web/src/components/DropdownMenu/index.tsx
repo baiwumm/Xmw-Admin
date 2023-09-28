@@ -15,7 +15,7 @@ import { FC } from 'react'
 import { formatPathName } from '@/utils'
 import { INTERNATION, OPERATION, REQUEST_CODE } from '@/utils/enums'
 import permissions from '@/utils/permission'
-import { PathNames, Response } from '@/utils/types'
+import type { PathNames, Response } from '@/utils/types'
 
 type DeleteParams = {
   request: (id: string) => Promise<Response>; // 删除接口 

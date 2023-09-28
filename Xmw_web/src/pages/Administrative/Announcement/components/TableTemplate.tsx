@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 14:24:29
+ * @LastEditTime: 2023-09-28 10:01:50
  */
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max'
@@ -27,9 +27,10 @@ import { AnnouncementTypeEnum } from '@/utils/const'
 import { FLAG, INTERNATION, ROUTES } from '@/utils/enums'
 import type { PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
 
+import DetailDrawer from './DetailDrawer'
 import FormTemplate from './FormTemplate'
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const TableTemplate: FC = () => {
   // 国际化工具
@@ -38,7 +39,13 @@ const TableTemplate: FC = () => {
   const [form] = Form.useForm<API.ANNOUNCEMENT>();
   // 是否显示 Modal
   const [openModal, { setTrue: setOpenModalTrue, setFalse: setOpenModalFalse }] = useBoolean(false)
+  // 是否显示 Drawer
+  const [openDrawer, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
+  // 保存当前数据
+  const [currentRecord, setCurrentRecord] = useState<API.ANNOUNCEMENT>()
+  // 切换状态 loading
   const [pinnedLoading, { setTrue: setPinnedLoadingTrue, setFalse: setPinnedLoadingFalse }] = useBoolean(false);
+  // 保存当前公告 id
   const [announcementId, setAnnouncementId] = useState<string>('')
   // 获取表格实例
   const tableRef = useRef<ActionType>();
@@ -89,6 +96,15 @@ const TableTemplate: FC = () => {
   );
 
   /**
+   * @description: 退出详情
+   * @author: 白雾茫茫丶
+   */
+  const handlerCancel = () => {
+    setCurrentRecord(undefined);
+    setOpenDrawerFalse();
+  }
+
+  /**
    * @description: 表格配置项
    * @author: 白雾茫茫丶
    */
@@ -113,6 +129,10 @@ const TableTemplate: FC = () => {
       ellipsis: true,
       align: 'center',
       width: 260,
+      render: (_, record) => <Link onClick={() => {
+        setCurrentRecord(record);
+        setOpenDrawerTrue();
+      }}>{record.title}</Link>,
     },
     {
       title: formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, 'type') }),
@@ -189,6 +209,8 @@ const TableTemplate: FC = () => {
       <Form form={form}>
         <FormTemplate reloadTable={reloadTable} open={openModal} setOpenModalFalse={setOpenModalFalse} />
       </Form>
+      {/* 公告详情 */}
+      <DetailDrawer data={currentRecord} open={openDrawer} onCalcel={handlerCancel} />
     </>
   )
 }

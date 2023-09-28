@@ -1,43 +1,44 @@
 /*
  * @Description: Auth Controller
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-25 14:30:19
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:14:22
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:53:56
  */
 import {
-  Controller,
-  Post,
   Body,
-  Session,
+  Controller,
   Get,
-  UseGuards,
+  Post,
   Res,
+  Session,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
-import { AuthService } from './auth.service'; // Auth Service
-import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
+import * as svgCaptcha from 'svg-captcha';
+
 import { ResponseDto } from '@/dto/response.dto';
+import { responseMessage } from '@/utils';
+import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
+import type { SessionTypes } from '@/utils/types';
+
+import { AuthService } from './auth.service'; // Auth Service
 import {
   LoginParamsDto,
   LoginResponseDto,
-  UserInfoResponseDto,
   PermissionResponseDto,
   RoutesMenuResponseDto,
+  UserInfoResponseDto,
   VerifyCodeResponseDto,
 } from './dto';
-import { responseMessage } from '@/utils';
-import * as svgCaptcha from 'svg-captcha';
 
 @ApiTags('用户登录模块')
 @ApiHeader({
@@ -52,8 +53,7 @@ export class AuthController {
 
   /**
    * @description: 用户登录
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @Post('/login')
   @ApiOkResponse({ type: LoginResponseDto })
@@ -61,8 +61,8 @@ export class AuthController {
   async login(
     @Body() loginParams: LoginParamsDto,
     @IpAddress() clinetIp: string,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.authService.loginSingToken(
       loginParams,
       clinetIp,
@@ -73,79 +73,63 @@ export class AuthController {
 
   /**
    * @description: 用户退出登录
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post('/logout')
   @ApiOkResponse({ type: ResponseDto })
   @ApiOperation({ summary: '退出登录' })
-  async logout(
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+  async logout(@Session() session: SessionTypes) {
     const response = await this.authService.logout(session);
     return response;
   }
 
   /**
    * @description: 获取当前用户信息
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('/user-info')
   @ApiOkResponse({ type: UserInfoResponseDto })
   @ApiOperation({ summary: '获取当前用户信息' })
-  async getCurrentUserInfo(
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+  async getCurrentUserInfo(@Session() session: SessionTypes) {
     return responseMessage(session.currentUserInfo);
   }
 
   /**
    * @description: 获取用户按钮权限
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('/permissions')
   @ApiOkResponse({ type: PermissionResponseDto })
   @ApiOperation({ summary: '获取用户按钮权限' })
-  async getPermissions(
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<string[]>> {
+  async getPermissions(@Session() session: SessionTypes) {
     const response = await this.authService.getPermissions(session);
     return response;
   }
 
   /**
    * @description: 获取用户权限菜单
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get('/routes-menu')
   @ApiOkResponse({ type: RoutesMenuResponseDto })
   @ApiOperation({ summary: '获取用户权限菜单' })
-  async getRoutesMenus(
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<XmwMenu[]>> {
+  async getRoutesMenus(@Session() session: SessionTypes) {
     const response = await this.authService.getRoutesMenus(session);
     return response;
   }
 
   /**
    * @description: 获取图形验证码
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @Get('verify-code') //当请求该接口时，返回一张随机图片验证码
   @ApiOkResponse({ type: VerifyCodeResponseDto })
   @ApiOperation({ summary: '获取图形验证码' })
-  async getCaptcha(
-    @Session() session: SessionModel,
-    @Res() res,
-  ): Promise<void> {
+  async getCaptcha(@Session() session: SessionTypes, @Res() res) {
     const captcha = svgCaptcha.createMathExpr({
       //可配置返回的图片信息
       size: 4, // 验证码长度

@@ -1,14 +1,15 @@
 /*
  * @Description: RedisCache Module
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-28 14:16:33
  * @LastEditors: Cyan
  * @LastEditTime: 2022-12-02 15:17:41
  */
 import { Module } from '@nestjs/common';
-import { RedisCacheService } from './redis-cache.service'; // RedisCache Service
+
 import { RedisCacheController } from './redis-cache.controller'; // RedisCache Controller
+import { RedisCacheService } from './redis-cache.service'; // RedisCache Service
 
 @Module({
   imports: [],
@@ -17,4 +18,4 @@ import { RedisCacheController } from './redis-cache.controller'; // RedisCache C
   providers: [RedisCacheService],
   exports: [RedisCacheService],
 })
-export class RedisCacheModule {}
+export class RedisCacheModule { }

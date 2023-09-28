@@ -1,19 +1,19 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
  * @LastEditTime: 2022-12-01 17:20:22
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
 
 /**
  * @description: 组织管理列表响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseOrganizationDto extends ResponseDto {
   @ApiProperty({
@@ -44,8 +44,7 @@ export class ResponseOrganizationDto extends ResponseDto {
 
 /**
  * @description: 创建组织数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateOrganizationDto extends ResponseDto {
   @ApiProperty({

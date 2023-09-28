@@ -1,32 +1,32 @@
 /*
  * @Description: XmwRole Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 16:33:09
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 15:10:45
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:25:09
  */
 import {
-  PrimaryKey,
   Column,
-  Model,
-  Table,
   DataType,
   ForeignKey,
   HasMany,
-  NotEmpty,
-  Length,
-  IsUUID,
   IsIn,
+  IsUUID,
+  Length,
+  Model,
+  NotEmpty,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import type { RoleAttributes } from '@/attributes/system';
-import { XmwPermission } from '@/models/xmw_permission.model';
 
+import { XmwPermission } from '@/models/xmw_permission.model';
+import type { Status } from '@/utils/types';
+import type { RoleAttributes } from '@/utils/types/system';
 @Table({ tableName: 'xmw_role' })
 export class XmwRole
   extends Model<RoleAttributes, RoleAttributes>
-  implements RoleAttributes
-{
+  implements RoleAttributes {
   @IsUUID(4)
   @PrimaryKey
   @ForeignKey(() => XmwPermission)
@@ -72,7 +72,7 @@ export class XmwRole
     defaultValue: 1,
     comment: '角色状态（0:禁用，1：正常）',
   })
-  status: number;
+  status: Status;
 
   @HasMany(() => XmwPermission, { as: 'menu_permission' })
   menu_permission: XmwPermission[];

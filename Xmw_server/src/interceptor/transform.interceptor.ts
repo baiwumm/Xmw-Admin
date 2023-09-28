@@ -1,10 +1,10 @@
 /*
  * @Description: 全局 拦截器 用来收集日志
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 22:04:12
- * @LastEditors: Cyan
- * @LastEditTime: 2022-10-18 10:41:04
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:23:36
  */
 import {
   CallHandler,
@@ -14,7 +14,8 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Logger } from '../utils/log4js';
+
+import { Logger } from '@/utils/log4js';
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {

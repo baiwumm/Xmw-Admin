@@ -15,8 +15,8 @@ import type { FC } from 'react';
 import { ProFormParent, ProFormSort } from '@/components/CommonProForm'
 import { formatPerfix } from '@/utils'
 import { INTERNATION, LANGS, ROUTES } from '@/utils/enums'
-import { EnumKeys } from '@/utils/types'
-import { FormTemplateProps } from '@/utils/types/system/internationalization'
+import type { EnumKeys } from '@/utils/types'
+import type { FormTemplateProps } from '@/utils/types/system/internationalization'
 
 const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData }) => {
 	const { formatMessage } = useIntl();

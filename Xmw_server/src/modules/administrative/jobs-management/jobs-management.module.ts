@@ -1,17 +1,19 @@
 /*
  * @Description: JobsManagement Module
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:04:14
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:43:37
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
-import { JobsManagementController } from './jobs-management.controller'; // JobsManagement Controller
+
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+
+import { JobsManagementController } from './jobs-management.controller'; // JobsManagement Controller
+import { JobsManagementService } from './jobs-management.service'; // JobsManagement Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用

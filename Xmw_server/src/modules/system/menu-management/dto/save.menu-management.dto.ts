@@ -1,17 +1,25 @@
 /*
  * @Description: 保存菜单数据 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 14:49:01
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-09 14:40:22
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 16:35:34
  */
 import { ApiProperty } from '@nestjs/swagger';
 
+import type {
+  Flag,
+  Layouts,
+  MenuTheme,
+  MenuTypes,
+  Status,
+  TargetTypes,
+} from '@/utils/types';
+
 /**
  * @description: 保存菜单数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class SaveMenuManagementDto {
   @ApiProperty({
@@ -19,7 +27,7 @@ export class SaveMenuManagementDto {
     description: '菜单类型',
     default: 'menu',
   })
-  menu_type: string;
+  menu_type: MenuTypes;
 
   @ApiProperty({
     type: String,
@@ -91,7 +99,7 @@ export class SaveMenuManagementDto {
     default: 'side',
     required: false,
   })
-  layout?: string;
+  layout?: Layouts;
 
   @ApiProperty({
     type: String,
@@ -99,7 +107,7 @@ export class SaveMenuManagementDto {
     default: 'light',
     required: false,
   })
-  navTheme?: string;
+  navTheme?: MenuTheme;
 
   @ApiProperty({
     type: String,
@@ -107,7 +115,7 @@ export class SaveMenuManagementDto {
     default: 'light',
     required: false,
   })
-  headerTheme?: string;
+  headerTheme?: MenuTheme;
 
   @ApiProperty({
     type: String,
@@ -115,7 +123,7 @@ export class SaveMenuManagementDto {
     default: '_blank',
     required: false,
   })
-  target?: string;
+  target?: TargetTypes;
 
   @ApiProperty({
     type: Number,
@@ -123,7 +131,7 @@ export class SaveMenuManagementDto {
     default: 0,
     required: false,
   })
-  hideChildrenInMenu?: number;
+  hideChildrenInMenu?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -131,7 +139,7 @@ export class SaveMenuManagementDto {
     default: 0,
     required: false,
   })
-  hideInMenu?: number;
+  hideInMenu?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -139,7 +147,7 @@ export class SaveMenuManagementDto {
     default: 0,
     required: false,
   })
-  hideInBreadcrumb?: number;
+  hideInBreadcrumb?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -147,7 +155,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  headerRender?: number;
+  headerRender?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -155,7 +163,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  footerRender?: number;
+  footerRender?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -163,7 +171,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  menuRender?: number;
+  menuRender?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -171,7 +179,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  menuHeaderRender?: number;
+  menuHeaderRender?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -179,7 +187,7 @@ export class SaveMenuManagementDto {
     default: 0,
     required: false,
   })
-  flatMenu?: number;
+  flatMenu?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -187,7 +195,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  fixedHeader?: number;
+  fixedHeader?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -195,7 +203,7 @@ export class SaveMenuManagementDto {
     default: 1,
     required: false,
   })
-  fixSiderbar?: number;
+  fixSiderbar?: Flag;
 
   @ApiProperty({
     type: Number,
@@ -209,5 +217,5 @@ export class SaveMenuManagementDto {
     description: '菜单状态',
     default: 1,
   })
-  status: number;
+  status: Status;
 }

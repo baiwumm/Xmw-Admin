@@ -1,19 +1,19 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-21 10:59:21
- * @LastEditors: Cyan
- * @LastEditTime: 2022-12-01 17:20:14
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:37:34
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 
 /**
  * @description: 岗位管理列表响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseJobsDto extends ResponseDto {
   @ApiProperty({
@@ -41,8 +41,7 @@ export class ResponseJobsDto extends ResponseDto {
 
 /**
  * @description: 创建岗位数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateJobsDto extends ResponseDto {
   @ApiProperty({

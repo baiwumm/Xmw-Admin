@@ -1,18 +1,18 @@
 /*
  * @Description: 响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 17:23:03
- * @LastEditors: Cyan
- * @LastEditTime: 2022-11-28 10:34:22
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:20:12
  */
 import { ApiProperty } from '@nestjs/swagger';
-import { ResData, PageResModel } from '@/global/interface';
+
+import type { PageResponse } from '@/utils/types';
 
 /**
  * @description: 统一响应体 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseDto {
   @ApiProperty({
@@ -20,7 +20,7 @@ export class ResponseDto {
     description: '响应体',
     default: {},
   })
-  data: ResData;
+  data: any;
 
   @ApiProperty({
     type: String,
@@ -39,8 +39,7 @@ export class ResponseDto {
 
 /**
  * @description: 更新数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class UpdateResponseDto extends ResponseDto {
   @ApiProperty({
@@ -48,13 +47,12 @@ export class UpdateResponseDto extends ResponseDto {
     description: '响应体',
     default: [1],
   })
-  data: PageResModel<number[]>;
+  data: PageResponse<number[]>;
 }
 
 /**
  * @description: 删除数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class DeleteResponseDto extends ResponseDto {
   @ApiProperty({
@@ -62,5 +60,5 @@ export class DeleteResponseDto extends ResponseDto {
     description: '响应体',
     default: 1,
   })
-  data: PageResModel<number>;
+  data: PageResponse<number>;
 }

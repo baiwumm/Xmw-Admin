@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 09:06:45
+ * @LastEditTime: 2023-09-28 15:05:39
  */
 
-import type { Flag, Langs, RequestMethods, Status, TableTimes } from '@/utils/types'
+import type { CommonTypes, Flag, Langs, RequestMethods, TableTimes } from '@/utils/types'
 import type { AnnouncementType } from '@/utils/types/administrative/announcement'
 import type { OrgTypes } from '@/utils/types/administrative/organization'
 import type { LayoutTypes, MenuTheme, MenuTypes, TargetTypes } from '@/utils/types/system/menu-management'
@@ -31,14 +31,8 @@ declare global {
       org_code: string; // 组织编码
       org_type: OrgTypes; // 组织类型
       org_logo?: string; // 组织 logo
-      describe: string; // 组织描述
-      parent_id?: string; // 父级id
-      status: Status; // 组织状态
-      sort: number; // 排序
-      leader: string; // 岗位负责人
-      founder: string; // 创建人
       children?: ORGANIZATION[];
-    } & TableTimes
+    } & TableTimes & CommonTypes
 
     /**
      * @description: 智能行政-岗位管理
@@ -47,13 +41,9 @@ declare global {
     type JOBSMANAGEMENT = TableTimes & {
       jobs_id: string; // 岗位id
       jobs_name: string; // 岗位名称
-      describe: string; // 岗位描述
-      parent_id?: string; // 父级id
-      leader: string; // 岗位负责人
-      founder: string; // 创建人
-      sort: number; // 排序
       children?: JOBSMANAGEMENT[];
-    } & Pick<ORGANIZATION, 'org_id' | 'org_name' | 'org_logo'>;
+    } & Pick<ORGANIZATION, 'org_id' | 'org_name' | 'org_logo'>
+      & Omit<CommonTypes, 'status'>;
 
     /**
     * @description: 系统设置-菜单管理
@@ -67,7 +57,6 @@ declare global {
       icon?: string; // 菜单图标
       component?: string; // 菜单对应的文件路径
       redirect?: string; // 路由重定向地址
-      parent_id?: string; // 父级id
       target?: TargetTypes; // 当path是一个url，点击新窗口打开
       permission?: string; // 菜单标识(页面按钮权限控制)
       layout?: LayoutTypes; // 是否显示layout布局
@@ -83,12 +72,9 @@ declare global {
       flatMenu: Flag; // 子项往上提，只是不展示父菜单
       fixedHeader: Flag; // 固定顶栏
       fixSiderbar: Flag; // 固定菜单
-      founder?: string; // 创建人
-      sort: number; // 排序
-      status: Status; // 菜单状态
       routes?: MENUMANAGEMENT[];
       children?: MENUMANAGEMENT[];
-    } & TableTimes & LOCALESLANGAll;
+    } & TableTimes & LOCALESLANGAll & Omit<CommonTypes, 'leader' | 'describe'>;
 
     /**
     * @description: 权限菜单
@@ -107,12 +93,8 @@ declare global {
       role_id: string; // 角色id
       role_name: string; // 角色名称
       role_code: string; // 角色编码
-      sort: number; // 排序
-      founder: string; // 创建人
-      status: Status; // 角色状态
-      describe: string; // 角色描述
       menu_permission: PERMISSION[]; // 菜单权限
-    } & TableTimes;
+    } & TableTimes & Omit<CommonTypes, 'parent_id' | 'leader'>;
 
     /**
      * @description: 系统设置-用户管理
@@ -131,20 +113,18 @@ declare global {
       phone: string; // 电话号码
       avatar_url: string; // 头像地址
       sex: string; // 用户性别
-      sort: number; // 排序
-      status: Status; // 用户状态
       token: string; // 用户令牌
       motto: string; // 座右铭
       tags: string[]; // 人物标签
       city: string[]; // 所属城市
       address: string; // 详细地址
-      founder: string; // 创建人
       login_num: number; // 登录次数
       login_last_ip: string; // 最后一次登录ip
       login_last_time: Date; // 最后一次登录时间
     } & Pick<ORGANIZATION, 'org_id' | 'org_name'>
       & Pick<JOBSMANAGEMENT, 'jobs_id' | 'jobs_name'>
-      & Pick<ROLEMANAGEMENT, 'role_id' | 'role_name'>;
+      & Pick<ROLEMANAGEMENT, 'role_id' | 'role_name'>
+      & Pick<CommonTypes, 'sort' | 'founder' | 'status'>;
 
     /**
      * @description: 智能行政-活动公告
@@ -155,10 +135,9 @@ declare global {
       title: string; // 标题
       content: string; // 正文内容
       type: AnnouncementType; // 类型
-      status: Status; // 状态
       pinned: Flag; // 是否置顶
       readCounts: number; // 阅读次数
-    } & Pick<USERMANAGEMENT, 'user_id' | 'avatar_url' | 'cn_name'>
+    } & Pick<USERMANAGEMENT, 'user_id' | 'avatar_url' | 'cn_name'> & Pick<CommonTypes, 'status'>
 
     /**
      * @description: 系统设置-国际化
@@ -167,11 +146,8 @@ declare global {
     type INTERNATIONALIZATION = TableTimes & {
       id: string;
       name: string;
-      parent_id?: string;
-      founder: string;
-      sort: number; // 排序
       children?: INTERNATIONALIZATION[];
-    } & LOCALESLANGAll;
+    } & LOCALESLANGAll & Pick<CommonTypes, 'parent_id' | 'founder' | 'sort'>;
 
     /**
    * @description: 系统设置-操作日志

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-31 08:56:55
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 10:35:30
+ * @LastEditTime: 2023-09-28 14:47:23
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
@@ -21,6 +21,25 @@ export type EnumKeys<T> = keyof T;
  * @author: 白雾茫茫丶
  */
 export type EnumValues<T> = T[EnumKeys<T>];
+
+/**
+ * @description: 状态
+ * @author: 白雾茫茫丶
+ */
+export type Status = EnumValues<typeof STATUS>
+
+/**
+ * @description: 公共的类型
+ * @author: 白雾茫茫丶
+ */
+export type CommonTypes = {
+  parent_id?: string; // 父级id
+  status: Status; // 组织状态
+  sort: number; // 排序
+  leader: string; // 岗位负责人
+  founder: string; // 创建人
+  describe: string; // 描述
+}
 
 /**
  * @description: 创建和更新时间
@@ -121,12 +140,6 @@ export type LockSleepTypes = {
  * @author: 白雾茫茫丶
  */
 export type Langs = EnumValues<typeof LANGS>
-
-/**
- * @description: 状态
- * @author: 白雾茫茫丶
- */
-export type Status = EnumValues<typeof STATUS>
 
 /**
  * @description: 是否

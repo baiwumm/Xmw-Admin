@@ -1,22 +1,24 @@
 /*
  * @Description: MenuManagement Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 10:37:42
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-28 17:32:37
+ * @LastEditTime: 2023-09-28 16:37:29
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
+import { Sequelize } from 'sequelize-typescript';
+
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // interface
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
+import type { Response, SessionTypes } from '@/utils/types';
+
 import { ListMenuManagementDto, SaveMenuManagementDto } from './dto';
 
 @Injectable()
@@ -33,10 +35,11 @@ export class MenuManagementService {
 
   /**
    * @description: 获取菜单列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async getMenuList(menuInfo: ListMenuManagementDto): Promise<XmwMenu[]> {
+  async getMenuList(
+    menuInfo: ListMenuManagementDto,
+  ): Promise<Response<XmwMenu[]>> {
     // 解构参数
     const { menu_type, status, isPremission, start_time, end_time } = menuInfo;
     // 拼接查询参数
@@ -83,18 +86,17 @@ export class MenuManagementService {
     });
     // 将数据转成树形结构
     const result = initializeTree(sqlData, 'menu_id', 'parent_id', 'children');
-    return result;
+    return responseMessage(result);
   }
 
   /**
    * @description: 创建菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async createMenu(
     menuInfo: SaveMenuManagementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveMenuManagementDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveMenuManagementDto>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
 
@@ -138,13 +140,12 @@ export class MenuManagementService {
 
   /**
    * @description: 更新菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateMenu(
     menu_id: string,
     menuInfo: SaveMenuManagementDto,
-  ): Promise<ResponseModel<ResData | number[]>> {
+  ): Promise<Response<number[]>> {
     // 解构参数
     const { menu_type, parent_id, permission } = menuInfo;
     // 判断 parent_id 是否和 id相同
@@ -197,10 +198,9 @@ export class MenuManagementService {
 
   /**
    * @description: 删除菜单数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async deleteMenu(menu_id: string): Promise<ResponseModel<ResData | number>> {
+  async deleteMenu(menu_id: string): Promise<Response<number>> {
     // 判断当前数据是否有子级，如果有数据的parent_id是id，则存在子级
     const exist = await this.menuModel.findOne({
       where: { parent_id: menu_id },

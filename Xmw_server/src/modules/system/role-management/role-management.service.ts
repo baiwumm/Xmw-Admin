@@ -1,27 +1,29 @@
 /*
  * @Description: RoleManagement Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-15 14:30:47
+ * @LastEditTime: 2023-09-28 17:26:15
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import {
-  ResData,
-  ResponseModel,
-  PageResModel,
-  SessionModel,
-} from '@/global/interface'; // interface
-import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+import { Sequelize } from 'sequelize-typescript';
+
 import { XmwPermission } from '@/models/xmw_permission.model';
-import { ListRoleManagementDto, SaveRoleManagementDto } from './dto';
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
+import type {
+  PageResponse,
+  Response,
+  SessionTypes,
+  Status,
+} from '@/utils/types';
+
+import { ListRoleManagementDto, SaveRoleManagementDto } from './dto';
 
 type permissionModel = {
   role_id: string;
@@ -44,12 +46,11 @@ export class RoleManagementService {
 
   /**
    * @description: 获取角色管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async getRoleList(
     roleInfo: ListRoleManagementDto,
-  ): Promise<PageResModel<XmwRole[]>> {
+  ): Promise<Response<PageResponse<XmwRole>>> {
     // 解构参数
     const {
       role_name,
@@ -85,18 +86,17 @@ export class RoleManagementService {
         ['created_time', 'desc'],
       ], // 排序规则,
     });
-    return { list, total: count };
+    return responseMessage({ list, total: count });
   }
 
   /**
    * @description: 创建角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async createRole(
     { menu_permission, ...roleInfo }: SaveRoleManagementDto,
-    session: SessionModel,
-  ): Promise<ResponseModel<ResData | SaveRoleManagementDto>> {
+    session: SessionTypes,
+  ): Promise<Response<SaveRoleManagementDto>> {
     // 解构参数
     const { role_name, role_code } = roleInfo;
     // 角色名称和角色编码不能相同
@@ -137,13 +137,12 @@ export class RoleManagementService {
 
   /**
    * @description: 更新角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateRole(
     role_id: string,
     { menu_permission, ...roleInfo }: SaveRoleManagementDto,
-  ): Promise<ResponseModel<ResData | number[]>> {
+  ): Promise<Response<number[]>> {
     // 解构参数
     const { role_name, role_code } = roleInfo;
     // 角色名称和角色编码不能相同
@@ -196,10 +195,9 @@ export class RoleManagementService {
 
   /**
    * @description: 删除角色数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async deleteRole(role_id: string): Promise<ResponseModel<ResData | number>> {
+  async deleteRole(role_id: string): Promise<Response<number>> {
     // 开始一个事务并将其保存到变量中
     const t = await this.sequelize.transaction();
     try {
@@ -231,13 +229,12 @@ export class RoleManagementService {
 
   /**
    * @description: 更新角色状态
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async updateRoleStatus(
     role_id: string,
-    status: number,
-  ): Promise<ResponseModel<ResData | number[]>> {
+    status: Status,
+  ): Promise<Response<number[]>> {
     // 执行 update 更新 xmw_role 状态
     const result = await this.roleModel.update(
       { status },

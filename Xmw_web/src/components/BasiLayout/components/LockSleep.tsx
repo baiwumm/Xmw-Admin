@@ -13,7 +13,7 @@ import type { FC } from 'react'
 
 import { encryptionAesPsd, getLocalStorageItem, setLocalStorageItem } from '@/utils'
 import { INTERNATION, LOCAL_STORAGE } from '@/utils/enums'
-import { LockSleepTypes } from '@/utils/types'
+import type { LockSleepTypes } from '@/utils/types'
 
 const { Title } = Typography;
 
@@ -32,6 +32,9 @@ const LockSleep: FC = () => {
   // 判断用户未操作时间是否拆过设定值
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
+    console.log('currentTime', currentTime)
+    console.log('last_time', LOCK_SLEEP?.last_time)
+    console.log('timeOut', timeOut)
     // 判断是否超时
     if (LOCK_SLEEP && currentTime - LOCK_SLEEP.last_time > timeOut) {
       setTrue()
@@ -102,7 +105,8 @@ const LockSleep: FC = () => {
               label={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password` })}
               rules={[{ required: true }]}
             >
-              <Input.Password placeholder={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password.placeholder` })} />
+              <Input.Password
+                placeholder={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockSleep.password.placeholder` })} />
             </Form.Item>
           </Form>
         </Col>

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-06 10:12:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 10:08:21
+ * @LastEditTime: 2023-09-28 17:44:45
  */
 import 'nprogress/nprogress.css';
 
@@ -15,7 +15,7 @@ import Nprogress from 'nprogress';
 
 import { getLocalStorageItem, logoutToLogin } from '@/utils' // 全局工具函数
 import { LOCAL_STORAGE, REQUEST_CODE } from '@/utils/enums'
-import { Response } from '@/utils/types'
+import type { Response } from '@/utils/types'
 
 /**
  * @description: 防抖函数统一处理异常错误

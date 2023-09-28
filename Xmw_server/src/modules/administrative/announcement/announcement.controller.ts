@@ -4,40 +4,41 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-25 17:19:30
+ * @LastEditTime: 2023-09-28 16:47:01
  */
 import {
-  Controller,
-  Get,
-  Query,
-  UseGuards,
-  Post,
   Body,
-  Session,
-  Put,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   Patch,
+  Post,
+  Put,
+  Query,
+  Session,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import { AnnouncementService } from './announcement.service'; // Announcement Service
-import { ResponseModel, SessionModel, ResData } from '@/global/interface'; // TS类型注解
-import { responseMessage } from '@/utils';
 import {
+  CreateAnnouncementDto,
   ListAnnouncementDto,
   ResponseAnnouncementDto,
   SaveAnnouncementDto,
-  CreateAnnouncementDto,
   UpdatePinnedDto,
 } from './dto';
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 
 /* swagger 文档 */
 @ApiTags('智能行政-活动公告')
@@ -53,26 +54,22 @@ export class AnnouncementController {
 
   /**
    * @description: 获取活动公告列表
-   * @return {*}
    * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseAnnouncementDto })
   @ApiOperation({ summary: '获取活动公告列表' })
-  async getOrganizationList(
-    @Query() announcementInfo: ListAnnouncementDto,
-  ): Promise<ResponseModel> {
+  async getAnnouncementList(@Query() announcementInfo: ListAnnouncementDto) {
     const response = await this.announcementService.getAnnouncementList(
       announcementInfo,
     );
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建活动公告
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -80,8 +77,8 @@ export class AnnouncementController {
   @ApiOperation({ summary: '创建活动公告' })
   async createAnnouncement(
     @Body() announcementInfo: SaveAnnouncementDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.announcementService.createAnnouncement(
       announcementInfo,
       session,
@@ -91,17 +88,16 @@ export class AnnouncementController {
 
   /**
    * @description: 更新活动公告
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:announcement_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新活动公告' })
-  async updateInternational(
+  async updateAnnouncement(
     @Param('announcement_id') announcement_id: string,
     @Body() announcementInfo: SaveAnnouncementDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.announcementService.updateAnnouncement(
       announcement_id,
       announcementInfo,
@@ -111,16 +107,13 @@ export class AnnouncementController {
 
   /**
    * @description: 删除活动公告
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:announcement_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除活动公告' })
-  async deleteInternational(
-    @Param('announcement_id') announcement_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteAnnouncement(@Param('announcement_id') announcement_id: string) {
     const response = await this.announcementService.deleteAnnouncement(
       announcement_id,
     );
@@ -138,7 +131,7 @@ export class AnnouncementController {
   async updatePinned(
     @Param('announcement_id') announcement_id: string,
     @Body() { pinned }: UpdatePinnedDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.announcementService.updatePinned(
       announcement_id,
       pinned,

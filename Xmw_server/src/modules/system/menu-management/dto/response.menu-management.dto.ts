@@ -1,19 +1,19 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 16:05:18
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-30 10:17:31
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 
 /**
  * @description: 菜单列表 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseMenuManagementDto extends ResponseDto {
   @ApiProperty({
@@ -64,8 +64,7 @@ export class ResponseMenuManagementDto extends ResponseDto {
 
 /**
  * @description: 创建菜单数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateMenuManagementDto extends ResponseDto {
   @ApiProperty({

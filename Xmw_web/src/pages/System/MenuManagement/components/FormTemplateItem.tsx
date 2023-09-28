@@ -18,13 +18,13 @@ import { getInternationalList } from '@/services/system/internationalization'
 import { formatPerfix } from '@/utils'
 import { MenuTypeEnum } from '@/utils/const'
 import { INTERNATION, MENU_TYPE, ROUTES } from '@/utils/enums'
-import type { FormItemProps } from '@/utils/types/system/menu-management';
+import type { FormTemplateProps } from '@/utils/types/system/menu-management';
 
 import MenuFormRender from './MenuFormRender';
 
 const { Title } = Typography;
 
-const FormTemplateItem: FC<FormItemProps> = ({ treeData }) => {
+const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData }) => {
 	const { formatMessage } = useIntl();
 	// 获取上下文表单实例
 	const form = Form.useFormInstance()

@@ -1,19 +1,19 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 17:19:57
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-30 10:50:02
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 
 /**
  * @description: 国际化列表响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseInternationalDto extends ResponseDto {
   @ApiProperty({
@@ -42,8 +42,7 @@ export class ResponseInternationalDto extends ResponseDto {
 
 /**
  * @description: 多语言响应体结构 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class ResponseLangDto extends ResponseDto {
   @ApiProperty({
@@ -61,8 +60,7 @@ export class ResponseLangDto extends ResponseDto {
 
 /**
  * @description: 创建国际化数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class CreateInternationalDto extends ResponseDto {
   @ApiProperty({

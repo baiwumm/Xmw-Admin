@@ -1,18 +1,20 @@
 /*
  * @Description: RoleManagement Module
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:28:08
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:02:08
  */
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { RoleManagementService } from './role-management.service'; // RoleManagement Service
-import { RoleManagementController } from './role-management.controller'; // RoleManagement Controller
-import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+
 import { XmwPermission } from '@/models/xmw_permission.model'; // xmw_permission 实体
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
+
+import { RoleManagementController } from './role-management.controller'; // RoleManagement Controller
+import { RoleManagementService } from './role-management.service'; // RoleManagement Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用

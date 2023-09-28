@@ -1,7 +1,7 @@
 /*
  * @Description: 日志收集和记录
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 20:50:59
  * @LastEditors: Cyan
  * @LastEditTime: 2022-10-17 15:50:13

@@ -1,7 +1,7 @@
 /*
  * @Description: 保存岗位数据 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-21 11:02:49
  * @LastEditors: Cyan
  * @LastEditTime: 2022-10-31 14:47:28
@@ -10,8 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 /**
  * @description: 保存岗位数据 Dto
- * @return {*}
- * @author: Cyan
+ * @author: 白雾茫茫丶
  */
 export class SaveJobsManagementDto {
   @ApiProperty({

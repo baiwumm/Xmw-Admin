@@ -1,15 +1,16 @@
 /*
  * @Description: 查询列表返回响应体 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2023-03-17 16:09:30
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 16:10:04
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 16:49:32
  */
 import { ApiProperty } from '@nestjs/swagger';
+
 import { ResponseDto } from '@/dto/response.dto';
-import { PageResModel } from '@/global/interface';
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
+import type { PageResponse } from '@/utils/types';
 
 export class ResponseOperationLogsDto extends ResponseDto {
   @ApiProperty({
@@ -41,5 +42,5 @@ export class ResponseOperationLogsDto extends ResponseDto {
       total: 1,
     },
   })
-  data: PageResModel<XmwLogs[]>;
+  data: PageResponse<XmwLogs>;
 }

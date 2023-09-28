@@ -1,7 +1,7 @@
 /*
  * @Description: 捕获所有异常
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 21:16:30
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-28 09:20:31

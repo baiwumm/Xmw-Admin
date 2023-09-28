@@ -1,12 +1,14 @@
 /*
  * @Description: 查询菜单管理列表参数 Dto
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 11:33:13
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-09 09:44:29
  */
 import { ApiProperty } from '@nestjs/swagger';
+
+import type { MenuTypes, Status } from '@/utils/types';
 
 export class ListMenuManagementDto {
   @ApiProperty({
@@ -15,7 +17,7 @@ export class ListMenuManagementDto {
     default: 'menu',
     required: false,
   })
-  menu_type?: string;
+  menu_type?: MenuTypes;
 
   @ApiProperty({
     type: Number,
@@ -23,7 +25,7 @@ export class ListMenuManagementDto {
     default: 1,
     required: false,
   })
-  status?: number;
+  status?: Status;
 
   @ApiProperty({
     type: Boolean,

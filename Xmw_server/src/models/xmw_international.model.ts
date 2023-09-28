@@ -1,30 +1,30 @@
 /*
  * @Description: XmwInternational Entity
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 22:35:00
  * @LastEditors: Cyan
  * @LastEditTime: 2022-11-30 10:51:14
  */
 import {
-  PrimaryKey,
-  Column,
-  Model,
-  Table,
-  DataType,
-  NotEmpty,
-  IsUUID,
-  ForeignKey,
   BelongsTo,
+  Column,
+  DataType,
+  ForeignKey,
+  IsUUID,
+  Model,
+  NotEmpty,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
+
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import type { InternationalAttributes } from '@/attributes/system';
+import type { InternationalAttributes } from '@/utils/types/system';
 
 @Table({ tableName: 'xmw_international', underscored: false })
 export class XmwInternational
   extends Model<InternationalAttributes, InternationalAttributes>
-  implements InternationalAttributes
-{
+  implements InternationalAttributes {
   @IsUUID(4)
   @PrimaryKey
   @Column({

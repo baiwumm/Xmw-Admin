@@ -1,16 +1,18 @@
 import {
-  PrimaryKey,
+  BelongsTo,
   Column,
-  Model,
-  Table,
   DataType,
-  IsUUID,
   ForeignKey,
   IsIn,
-  BelongsTo,
+  IsUUID,
+  Model,
+  PrimaryKey,
+  Table,
 } from 'sequelize-typescript';
-import { AnnouncementAttributes } from '@/attributes/administrative';
+
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import type { AnnouncementTypes, Status } from '@/utils/types';
+import { AnnouncementAttributes } from '@/utils/types/administrative';
 
 @Table({ tableName: 'xmw_announcement' })
 export class XmwAnnouncement
@@ -55,7 +57,7 @@ export class XmwAnnouncement
     allowNull: false,
     comment: '类型(1:公告,2:活动,3:消息,4:通知)',
   })
-  type: string;
+  type: AnnouncementTypes;
 
   // 状态
   @IsIn({
@@ -68,7 +70,7 @@ export class XmwAnnouncement
     defaultValue: 1,
     comment: '状态（0:禁用，1：开启）',
   })
-  status: number;
+  status: Status;
 
   // 是否置顶
   @IsIn({

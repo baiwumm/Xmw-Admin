@@ -1,27 +1,30 @@
 /*
  * @Description: OperationLogs Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-20 14:16:21
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 17:41:04
  */
-import { Injectable, Scope, Inject } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { InjectModel } from '@nestjs/sequelize';
+import { Request } from 'express';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
-import { InjectModel } from '@nestjs/sequelize';
+
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
-import { Request } from 'express';
-import { SessionModel, PageResModel } from '@/global/interface'; // interface
-import { ListOperationLogsDto } from './dto';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import type { LogsAttributes } from '@/attributes/system';
+import { responseMessage } from '@/utils'; // 全局工具函数
+import type { PageResponse, Response, SessionTypes } from '@/utils/types';
+import type { LogsAttributes } from '@/utils/types/system';
+
+import { ListOperationLogsDto } from './dto';
 @Injectable({ scope: Scope.REQUEST })
 export class OperationLogsService {
   constructor(
     @Inject(REQUEST)
-    private readonly request: Request & { session: SessionModel },
+    private readonly request: Request & { session: SessionTypes },
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwLogs)
     private readonly logsModel: typeof XmwLogs,
@@ -29,10 +32,9 @@ export class OperationLogsService {
 
   /**
    * @description: 保存操作日志
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async saveLogs(content: string): Promise<void> {
+  async saveLogs(content: string) {
     const { url, method, headers, ip, body } = this.request;
     const logData: LogsAttributes = {
       user_id: this.request.session.currentUserInfo.user_id,
@@ -50,12 +52,11 @@ export class OperationLogsService {
 
   /**
    * @description: 获取操作日志列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async getLogsList(
     logsInfo: ListOperationLogsDto,
-  ): Promise<PageResModel<XmwLogs[]>> {
+  ): Promise<Response<PageResponse<XmwLogs>>> {
     // 解构参数
     const { start_time, end_time, pageSize, current } = logsInfo;
     // 拼接查询参数
@@ -81,6 +82,6 @@ export class OperationLogsService {
       where,
       order: [['created_time', 'desc']], // 排序规则,
     });
-    return { list: rows, total: count };
+    return responseMessage({ list: rows, total: count });
   }
 }

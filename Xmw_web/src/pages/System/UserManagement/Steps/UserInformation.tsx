@@ -15,9 +15,10 @@ import {
 import { useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import { Form, TreeSelect } from 'antd'
+import { regionData } from 'element-china-area-data'
 import { get, map } from 'lodash-es'
 import type { FC } from 'react';
-import { regionData } from 'element-china-area-data'
+
 import FigureLabels from '@/components/FigureLabels'
 import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
 import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口

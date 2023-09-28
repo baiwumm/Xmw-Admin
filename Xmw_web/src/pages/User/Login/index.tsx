@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-27 15:54:05
+ * @LastEditTime: 2023-09-27 16:58:23
  */
 
 import { LoginForm } from '@ant-design/pro-components';
@@ -31,14 +31,14 @@ const LoginPage: FC = () => {
   dayjs.extend(relativeTime);
   const { formatMessage } = useIntl();
   // 初始化状态
-  const { initialState, refresh } = useModel('@@initialState');
+  const { initialState, refresh, loading: initialStateLoading } = useModel('@@initialState');
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>(LOGIN_TYPE.ACCOUNT);
   /**
    * @description: 用户登录接口
    * @Author: 白雾茫茫丶
    */
-  const { run: runLogin } = useRequest(async (params) => await Login(params),
+  const { run: runLogin, loading: loginLoading } = useRequest(async (params) => await Login(params),
     {
       manual: true,
       onSuccess: async ({ code, data }) => {
@@ -49,28 +49,26 @@ const LoginPage: FC = () => {
           setLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN, access_token)
           // 重新执行 getInitialState 方法，并获取新的全局初始状态
           await refresh().then(() => {
-            setTimeout(() => {
-              const urlParams = new URL(window.location.href).searchParams;
-              // 路由跳转
-              history.push(urlParams.get('redirect') || '/');
-              // 欢迎语
-              notification.success({
-                message: `${timeFix()} 💕`,
-                description: login_last_time ?
-                  <span>
-                    {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
-                    <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
-                  </span>
-                  :
-                  <Typography.Text strong>
-                    {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.first-login') })}
-                  </Typography.Text>,
-                icon:
-                  <IconFont
-                    type="icon-huanyingye"
-                    style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
-              })
-            }, 100)
+            const urlParams = new URL(window.location.href).searchParams;
+            // 路由跳转
+            history.push(urlParams.get('redirect') || '/');
+            // 欢迎语
+            notification.success({
+              message: `${timeFix()} 💕`,
+              description: login_last_time ?
+                <span>
+                  {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
+                  <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
+                </span>
+                :
+                <Typography.Text strong>
+                  {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.first-login') })}
+                </Typography.Text>,
+              icon:
+                <IconFont
+                  type="icon-huanyingye"
+                  style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
+            })
           })
         }
       },
@@ -139,6 +137,11 @@ const LoginPage: FC = () => {
             logo={<img alt="logo" src="/logo.svg" />}
             title={initialState?.Settings?.title}
             subTitle={formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'subtitle') })}
+            submitter={{
+              submitButtonProps: {
+                loading: loginLoading || initialStateLoading,
+              },
+            }}
             onFinish={async (values) => {
               await handleSubmit(values as LoginParams);
             }}

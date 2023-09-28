@@ -1,32 +1,34 @@
 /*
  * @Description: Auth Service
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-11-25 14:29:53
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 16:18:26
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-09-28 15:52:25
  */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
-import { Sequelize } from 'sequelize-typescript';
-import type { WhereOptions } from 'sequelize/types';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
-import RedisConfig from '@/config/redis'; // redis配置
-import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
-import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
-import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
-import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
-import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
-import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-import { LoginParamsDto } from './dto';
-import { ResponseModel, SessionModel } from '@/global/interface'; // interface
-import { initializeTree, responseMessage } from '@/utils';
 import * as moment from 'moment'; // 时间插件 moment
+import { Op } from 'sequelize';
+import type { WhereOptions } from 'sequelize/types';
+import { Sequelize } from 'sequelize-typescript';
 
-type responseResult = ResponseModel<Record<string, any>>;
+import RedisConfig from '@/config/redis'; // redis配置
+import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
+import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
+import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
+import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
+import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
+import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
+import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
+import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
+import { initializeTree, responseMessage } from '@/utils';
+import type { Response, SessionTypes } from '@/utils/types';
+
+import { LoginParamsDto } from './dto';
+
+type responseResult = Response<Record<string, any>>;
 
 @Injectable()
 export class AuthService {
@@ -44,13 +46,12 @@ export class AuthService {
 
   /**
    * @description: 用户登录
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async loginSingToken(
     loginParams: LoginParamsDto,
     clinetIp: string,
-    session: SessionModel,
+    session: SessionTypes,
   ): Promise<responseResult> {
     // 登录参数校验结果
     const authResult: responseResult = await this.validateUser(
@@ -138,12 +139,11 @@ export class AuthService {
   /**
    * @description: 校验用户信息
    * @param {LoginParamsDto} loginParams
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   async validateUser(
     loginParams: LoginParamsDto,
-    session: SessionModel,
+    session: SessionTypes,
   ): Promise<responseResult> {
     // 解构参数
     const { type, user_name, password, phone, verifyCode } = loginParams;
@@ -182,10 +182,9 @@ export class AuthService {
 
   /**
    * @description: 用户退出当前登录
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async logout(session: SessionModel): Promise<responseResult> {
+  async logout(session: SessionTypes): Promise<responseResult> {
     const { currentUserInfo } = session;
     if (currentUserInfo) {
       const { user_id, user_name } = currentUserInfo;
@@ -207,12 +206,9 @@ export class AuthService {
 
   /**
    * @description: 获取用户按钮权限
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async getPermissions(
-    session: SessionModel,
-  ): Promise<ResponseModel<string[]>> {
+  async getPermissions(session: SessionTypes): Promise<Response<string[]>> {
     // 获取当前用户 id
     const { currentUserInfo } = session;
     if (currentUserInfo?.user_id) {
@@ -236,12 +232,9 @@ export class AuthService {
 
   /**
    * @description: 获取用户权限菜单
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
-  async getRoutesMenus(
-    session: SessionModel,
-  ): Promise<ResponseModel<XmwMenu[]>> {
+  async getRoutesMenus(session: SessionTypes): Promise<Response<XmwMenu[]>> {
     // 获取当前用户 id
     const { currentUserInfo } = session;
     if (currentUserInfo?.user_id) {

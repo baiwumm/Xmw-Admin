@@ -1,41 +1,42 @@
 /*
  * @Description: Organization Controller
  * @Version: 2.0
- * @Author: Cyan
+ * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: Cyan
  * @LastEditTime: 2023-01-17 14:10:05
  */
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
   Query,
-  Body,
-  Param,
   Session,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { OrganizationService } from './organization.service'; // Organization Service
 import {
   ApiBearerAuth,
-  ApiTags,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-import { ResData, ResponseModel, SessionModel } from '@/global/interface'; // TS类型注解
-import { UpdateResponseDto, DeleteResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+
+import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import type { SessionTypes } from '@/utils/types';
+
 import {
+  CreateOrganizationDto,
   ListOrganizationDto,
   ResponseOrganizationDto,
   SaveOrganizationDto,
-  CreateOrganizationDto,
 } from './dto';
-import { responseMessage } from '@/utils';
+import { OrganizationService } from './organization.service'; // Organization Service
 
 /* swagger 文档 */
 @ApiTags('智能行政-组织管理')
@@ -51,26 +52,22 @@ export class OrganizationController {
 
   /**
    * @description: 获取组织管理列表
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseOrganizationDto })
   @ApiOperation({ summary: '获取组织管理列表' })
-  async getOrganizationList(
-    @Query() organizationInfo: ListOrganizationDto,
-  ): Promise<ResponseModel> {
+  async getOrganizationList(@Query() organizationInfo: ListOrganizationDto) {
     const response = await this.organizationService.getOrganizationList(
       organizationInfo,
     );
-    return responseMessage(response);
+    return response;
   }
 
   /**
    * @description: 创建组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -78,8 +75,8 @@ export class OrganizationController {
   @ApiOperation({ summary: '创建组织数据' })
   async createOrganization(
     @Body() organizationInfo: SaveOrganizationDto,
-    @Session() session: SessionModel,
-  ): Promise<ResponseModel<ResData>> {
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.organizationService.createOrganization(
       organizationInfo,
       session,
@@ -89,8 +86,7 @@ export class OrganizationController {
 
   /**
    * @description: 更新组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Put('/:org_id')
@@ -99,7 +95,7 @@ export class OrganizationController {
   async updateOrganization(
     @Param('org_id') org_id: string,
     @Body() organizationInfo: SaveOrganizationDto,
-  ): Promise<ResponseModel<ResData>> {
+  ) {
     const response = await this.organizationService.updateOrganization(
       org_id,
       organizationInfo,
@@ -109,16 +105,13 @@ export class OrganizationController {
 
   /**
    * @description: 删除组织数据
-   * @return {*}
-   * @author: Cyan
+   * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
   @Delete('/:org_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除组织数据' })
-  async deleteOrganization(
-    @Param('org_id') org_id: string,
-  ): Promise<ResponseModel<ResData | number>> {
+  async deleteOrganization(@Param('org_id') org_id: string) {
     const response = await this.organizationService.deleteOrganization(org_id);
     return response;
   }

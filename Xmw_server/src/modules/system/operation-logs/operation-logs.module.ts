@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { OperationLogsService } from './operation-logs.service'; // OperationLogs Service
-import { OperationLogsController } from './operation-logs.controller'; // OperationLogs Controller
+
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
+
+import { OperationLogsController } from './operation-logs.controller'; // OperationLogs Controller
+import { OperationLogsService } from './operation-logs.service'; // OperationLogs Service
 
 @Module({
   // 将实体 导入到这个module中，以便你这个module中的其它provider使用
@@ -14,4 +16,4 @@ import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
   // 如果你这个模块中的provider 要在别的模块中使用 你必须要在这里声明 导出这些provider
   exports: [OperationLogsService],
 })
-export class OperationLogsModule {}
+export class OperationLogsModule { }
