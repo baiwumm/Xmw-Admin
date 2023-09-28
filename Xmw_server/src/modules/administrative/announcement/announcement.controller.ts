@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 16:47:01
+ * @LastEditTime: 2023-09-28 17:58:28
  */
 import {
   Body,
@@ -33,6 +33,7 @@ import type { SessionTypes } from '@/utils/types';
 
 import { AnnouncementService } from './announcement.service'; // Announcement Service
 import {
+  CreateAlreadyDto,
   CreateAnnouncementDto,
   ListAnnouncementDto,
   ResponseAnnouncementDto,
@@ -135,6 +136,25 @@ export class AnnouncementController {
     const response = await this.announcementService.updatePinned(
       announcement_id,
       pinned,
+    );
+    return response;
+  }
+
+  /**
+   * @description: 已读活动公告
+   * @author: 白雾茫茫丶
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/already')
+  @ApiOkResponse({ type: CreateAlreadyDto })
+  @ApiOperation({ summary: '已读活动公告' })
+  async createAlready(
+    @Body() announcement_id: string,
+    @Session() session: SessionTypes,
+  ) {
+    const response = await this.announcementService.createAlready(
+      announcement_id,
+      session,
     );
     return response;
   }

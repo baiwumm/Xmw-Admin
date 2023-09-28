@@ -4,20 +4,25 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:36:18
+ * @LastEditTime: 2023-09-28 18:00:07
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 
+import { XmwAlready } from '@/models/xmw_already.model'; // xmw_already 实体
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
 import type { Flag, PageResponse, Response, SessionTypes } from '@/utils/types';
 
-import { ListAnnouncementDto, SaveAnnouncementDto } from './dto';
+import {
+  ListAnnouncementDto,
+  SaveAlreadyDto,
+  SaveAnnouncementDto,
+} from './dto';
 
 @Injectable()
 export class AnnouncementService {
@@ -26,6 +31,8 @@ export class AnnouncementService {
     @InjectModel(XmwAnnouncement)
     private readonly announcementModel: typeof XmwAnnouncement,
     private readonly operationLogsService: OperationLogsService,
+    @InjectModel(XmwAlready)
+    private readonly alreadyModel: typeof XmwAlready,
   ) { }
 
   /**
@@ -145,6 +152,22 @@ export class AnnouncementService {
       `更新【${currentInfo.title}】是否置顶状态：${{ 0: '否', 1: '是' }[pinned]
       }`,
     );
+    return responseMessage(result);
+  }
+
+  /**
+   * @description: 创建已读公告
+   * @author: 白雾茫茫丶
+   */
+  async createAlready(
+    announcement_id: string,
+    session: SessionTypes,
+  ): Promise<Response<SaveAlreadyDto>> {
+    // 如果通过则执行 sql insert 语句
+    const result = await this.alreadyModel.create({
+      announcement_id,
+      user_id: session?.currentUserInfo?.user_id,
+    });
     return responseMessage(result);
   }
 }

@@ -72,3 +72,23 @@ export class UpdatePinnedDto {
   })
   pinned: Flag;
 }
+
+/**
+ * @description: 已读活动公告数据 DTO
+ * @author: 白雾茫茫丶
+ */
+export class SaveAlreadyDto {
+  @ApiProperty({
+    type: String,
+    description: '活动公告id',
+    default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+  })
+  announcement_id: string;
+
+  @ApiProperty({
+    type: String,
+    description: '用户id',
+    default: '0c01ef7d-2f6f-440a-b642-62564d41f473',
+  })
+  user_id: string;
+}

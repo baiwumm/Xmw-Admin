@@ -4,11 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:41:00
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:25:26
+ * @LastEditTime: 2023-09-28 17:56:52
  */
 import { ApiProperty } from '@nestjs/swagger';
 
 import { ResponseDto } from '@/dto/response.dto';
+import { XmwAlready } from '@/models/xmw_already.model'; // xmw_already 实体
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
 import type { PageResponse } from '@/utils/types';
 
@@ -42,7 +43,6 @@ export class ResponseAnnouncementDto extends ResponseDto {
 
 /**
  * @description: 创建活动公告 Dto
- * @return {*}
  * @author: 白雾茫茫丶
  */
 export class CreateAnnouncementDto extends ResponseDto {
@@ -62,4 +62,20 @@ export class CreateAnnouncementDto extends ResponseDto {
     },
   })
   data: XmwAnnouncement;
+}
+
+/**
+ * @description: 已读活动公告 Dto
+ * @author: 白雾茫茫丶
+ */
+export class CreateAlreadyDto extends ResponseDto {
+  @ApiProperty({
+    type: Object,
+    description: '响应体',
+    default: {
+      announcement_id: 'c293df80-43e5-4a79-b642-42fb427fe8a9',
+      user_id: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
+    },
+  })
+  data: XmwAlready;
 }
