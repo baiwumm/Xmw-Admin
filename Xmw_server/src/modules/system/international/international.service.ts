@@ -4,11 +4,11 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 16:25:30
+ * @LastEditTime: 2023-09-28 18:23:43
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { isUndefined, keys, omitBy } from 'lodash';
+import { isUndefined, omitBy, values } from 'lodash';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { Sequelize } from 'sequelize-typescript';
@@ -17,6 +17,7 @@ import { XmwInternational } from '@/models/xmw_international.model'; // xmw_inte
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeLang, initializeTree, responseMessage } from '@/utils'; // 全局工具函数
+import { LANGS } from '@/utils/enums';
 import type { Langs, Response, SessionTypes } from '@/utils/types';
 
 import { ListInternationalDto, SaveInternationalDto } from './dto';
@@ -34,8 +35,8 @@ export class InternationalService {
    * @description: 获取当前语言的国际化数据
    * @author: 白雾茫茫丶
    */
-  async getAllLocalesLang(): Promise<Response<Partial<Langs>>> {
-    const result: Partial<Langs> = {};
+  async getAllLocalesLang(): Promise<Response<Langs>> {
+    const result: Langs = {};
     // 查询数据
     const sqlData = await this.internationaModel.findAll({
       order: [['created_time', 'desc']], // 排序规则,
@@ -43,7 +44,7 @@ export class InternationalService {
     // 先将数据转成树形结构
     const treeLang = initializeTree(sqlData, 'id', 'parent_id', 'children');
     // 获取多语言
-    const locales: string[] = keys({} as Langs);
+    const locales: string[] = values(LANGS);
     // 转成层级对象
     for (let i = 0; i < locales.length; i++) {
       const lang = locales[i];
