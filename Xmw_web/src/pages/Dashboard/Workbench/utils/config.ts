@@ -1,6 +1,5 @@
 /**
  * @description: 最新动态
- * @return {*}
  * @Author: 白雾茫茫丶
  */
 type LatestNewsTypes = {
@@ -38,7 +37,6 @@ export const latestNews: LatestNewsTypes[] = [
 
 /**
  * @description: 项目主要技术栈
- * @return {*}
  * @author: 白雾茫茫丶
  */
 export const technologyStack = [
@@ -65,38 +63,5 @@ export const technologyStack = [
     value: 'Umi',
     description: 'Umi，中文发音为「乌米」，是可扩展的企业级前端应用框架。',
     avatar: 'icon-umi',
-  },
-]
-
-/**
- * @description: 最新公告
- * @return {*}
- * @author: 白雾茫茫丶
- */
-export const latestAnnouncement = [
-  {
-    type: '活动',
-    title: '武汉大学学生夫妻可申请合宿，须持有结婚证，且均为在籍全日制学生，如何看待这一举措？',
-    color: 'volcano',
-  },
-  {
-    type: '消息',
-    title: '8点1氪丨​中科院博士被骗至缅甸，转账12万元才放人；恒大回应高管年薪过千万系误读；​A股上市药企2022年销售费用超3200亿元',
-    color: 'cyan',
-  },
-  {
-    type: '通知',
-    title: '央行派发定心丸！在岸、离岸人民币对美元拉升超300点',
-    color: 'blue',
-  },
-  {
-    type: '公告',
-    title: '公司经过讨论决定，给每位员工薪资翻倍，希望各位继续努力，再接再厉',
-    color: 'purple',
-  },
-  {
-    type: '消息',
-    title: '“稚晖君”离职华为创业产品首秀，智元机器人“远征 A1”发布',
-    color: 'cyan',
   },
 ]

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-29 09:49:55
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 09:30:59
+ * @LastEditTime: 2023-10-08 09:08:37
  */
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
 import { Form, message } from 'antd'
@@ -12,7 +12,8 @@ import { FC } from 'react'
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createAnnouncement, updateAnnouncement } from '@/services/administrative/announcement'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/administrative/announcement'
 
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
@@ -36,9 +37,10 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenModalFa
   // 提交表单
   const handlerSubmit = async (values: API.ANNOUNCEMENT) => {
     // 提交数据
-    await (announcement_id ? updateAnnouncement : createAnnouncement)({ ...values, announcement_id }).then((res) => {
-      if (res.code === REQUEST_CODE.SUCCESS) {
-        message.success(res.msg);
+    await (announcement_id ? updateAnnouncement : createAnnouncement)({ ...values, announcement_id }).then((
+      { code, msg }) => {
+      if (isSuccess(code)) {
+        message.success(msg);
         // 刷新表格
         reloadTable()
         // 关闭浮层

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 14:51:38
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 15:52:50
+ * @LastEditTime: 2023-10-08 09:06:29
  */
 import { LockOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { HeaderProps } from '@ant-design/pro-components'
@@ -14,9 +14,10 @@ import { Dropdown, MenuProps, Modal } from 'antd'
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 import { Logout } from '@/services/logic/login'
-import { logoutToLogin, removeLocalStorageItem } from '@/utils'
+import { isSuccess, logoutToLogin, removeLocalStorageItem } from '@/utils'
 import { IconFont } from '@/utils/const'
-import { INTERNATION, LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { INTERNATION, LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 
 export default function AvatarProps(openLockScreen: () => void): HeaderProps['avatarProps'] {
   // 国际化方法
@@ -29,9 +30,9 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
 */
   const { run: loginOut } = useRequest(Logout, {
     manual: true,
-    onSuccess: async (res) => {
-      if (res.code === REQUEST_CODE.SUCCESS) {
-        setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
+    onSuccess: async ({ code }) => {
+      if (isSuccess(code)) {
+        setInitialState((s: InitialStateTypes) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
         removeLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN)
         // 退出登录返回登录页
         logoutToLogin()

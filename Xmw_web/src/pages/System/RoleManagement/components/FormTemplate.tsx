@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 14:36:37
+ * @LastEditTime: 2023-10-08 09:14:05
  */
 
 import { ModalForm } from '@ant-design/pro-components';
@@ -13,7 +13,8 @@ import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createRole, updateRole } from '@/services/system/role-management'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/role-management'
 
 import FormTemplateItem from './FormTemplateItem' // 表单组件 
@@ -37,9 +38,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenDrawerF
 	// 提交表单
 	const handlerSubmit = async (values: API.ROLEMANAGEMENT): Promise<void> => {
 		// 提交数据
-		await (role_id ? updateRole : createRole)({ ...values, role_id }).then((res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg);
+		await (role_id ? updateRole : createRole)({ ...values, role_id }).then(({ code, msg }) => {
+			if (isSuccess(code)) {
+				message.success(msg);
 				// 刷新表格
 				reloadTable()
 				// 关闭浮层

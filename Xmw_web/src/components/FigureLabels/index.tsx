@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 16:06:07
+ * @LastEditTime: 2023-10-08 09:07:52
  */
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
@@ -13,8 +13,8 @@ import { Input, InputRef, message, Tag, Tooltip } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react'
 
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
-import { randomTagColor } from '@/utils'
-import { REQUEST_CODE } from '@/utils/enums'
+import { isSuccess, randomTagColor } from '@/utils'
+import type { InitialStateTypes } from '@/utils/types'
 
 type IProps = {
 	value?: string[]
@@ -46,15 +46,14 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
  */
 	const { run: runUpdateUser } = useRequest(updateUser, {
 		manual: true,
-		onSuccess: async (res, params) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg)
+		onSuccess: async ({ code, msg }, params) => {
+			if (isSuccess(code)) {
+				message.success(msg)
 				// 更新全局状态
 				if (params[0]?.tags && initialState?.CurrentUser?.user_id) {
-					setInitialState({
-						...initialState,
-						CurrentUser: { ...initialState?.CurrentUser, tags: params[0]?.tags },
-					})
+					setInitialState((s: InitialStateTypes) => ({
+						...s, CurrentUser: { ...initialState?.CurrentUser, tags: params[0]?.tags },
+					}));
 				}
 			}
 		},

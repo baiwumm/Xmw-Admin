@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-25 10:51:53
+ * @LastEditTime: 2023-10-08 09:13:27
  */
 
 import { DrawerForm } from '@ant-design/pro-components';
@@ -14,7 +14,8 @@ import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createMenu, updateMenu } from '@/services/system/menu-management'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/menu-management'
 
 import FormTemplateItem from './FormTemplateItem'
@@ -43,9 +44,9 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 提交表单
 	const handlerSubmit = async (values: API.MENUMANAGEMENT): Promise<void> => {
 		// 请求接口
-		await (menu_id ? updateMenu : createMenu)({ ...values, menu_id }).then((res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg);
+		await (menu_id ? updateMenu : createMenu)({ ...values, menu_id }).then(({ code, msg }) => {
+			if (isSuccess(code)) {
+				message.success(msg);
 				// 刷新表格
 				reloadTable()
 				// 关闭浮层

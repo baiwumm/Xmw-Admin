@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 17:50:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-19 10:16:42
+ * @LastEditTime: 2023-10-08 09:07:11
  */
 import { ClusterOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons' // antd 图标库
 import { Access, useAccess, useIntl } from '@umijs/max'
@@ -12,8 +12,8 @@ import { Button, Dropdown, MenuProps, message, Modal } from 'antd'
 import { filter, get } from 'lodash-es'
 import { FC } from 'react'
 
-import { formatPathName } from '@/utils'
-import { INTERNATION, OPERATION, REQUEST_CODE } from '@/utils/enums'
+import { formatPathName, isSuccess } from '@/utils'
+import { INTERNATION, OPERATION } from '@/utils/enums'
 import permissions from '@/utils/permission'
 import type { PathNames, Response } from '@/utils/types'
 
@@ -103,9 +103,9 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
           title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
           content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
           onOk: async () => {
-            await request(id).then((res) => {
-              if (res.code === REQUEST_CODE.SUCCESS) {
-                message.success(res.msg)
+            await request(id).then(({ code, msg }) => {
+              if (isSuccess(code)) {
+                message.success(msg)
                 // 刷新表格
                 reloadTable()
               }

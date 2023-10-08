@@ -51,7 +51,7 @@ export type AnnouncementAttributes = {
   content: string; // 正文内容
   type: AnnouncementTypes; // 类型
   pinned: Flag; // 是否置顶
-  readCounts: number; // 阅读次数
+  read_counts: number; // 阅读次数
 } & Times &
   Pick<UserAttributes, 'user_id'> &
   Pick<CommonTypes, 'status'>;

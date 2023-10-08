@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-27 16:58:23
+ * @LastEditTime: 2023-10-08 09:14:59
  */
 
 import { LoginForm } from '@ant-design/pro-components';
@@ -13,14 +13,14 @@ import { useDebounceFn, useRequest } from 'ahooks';
 import { Col, message, notification, Row, Tabs, TabsProps, Typography } from 'antd'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { eq } from 'lodash-es'
 import React, { FC, useState } from 'react';
 
 import Footer from '@/components/Footer'; // 全局页脚
 import { Login } from '@/services/logic/login' // 登录相关接口
-import { encryptionAesPsd, formatPerfix, setLocalStorageItem, timeFix } from '@/utils'
+import { encryptionAesPsd, formatPerfix, initUserAuthority, isSuccess, setLocalStorageItem, timeFix } from '@/utils'
 import { IconFont } from '@/utils/const'
-import { LOCAL_STORAGE, LOGIN_TYPE, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { LOCAL_STORAGE, LOGIN_TYPE, ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 import type { LoginParams, LoginType } from '@/utils/types/login'
 
 import Account from './components/Account' // 账户密码登录
@@ -31,7 +31,7 @@ const LoginPage: FC = () => {
   dayjs.extend(relativeTime);
   const { formatMessage } = useIntl();
   // 初始化状态
-  const { initialState, refresh, loading: initialStateLoading } = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>(LOGIN_TYPE.ACCOUNT);
   /**
@@ -42,33 +42,38 @@ const LoginPage: FC = () => {
     {
       manual: true,
       onSuccess: async ({ code, data }) => {
-        if (eq(code, REQUEST_CODE.SUCCESS)) {
+        if (isSuccess(code)) {
           // 获取登录 token
           const { access_token, login_last_time } = data
           // 将 token 保存到localstorage
           setLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN, access_token)
-          // 重新执行 getInitialState 方法，并获取新的全局初始状态
-          await refresh().then(() => {
-            const urlParams = new URL(window.location.href).searchParams;
-            // 路由跳转
-            history.push(urlParams.get('redirect') || '/');
-            // 欢迎语
-            notification.success({
-              message: `${timeFix()} 💕`,
-              description: login_last_time ?
-                <span>
-                  {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
-                  <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
-                </span>
-                :
-                <Typography.Text strong>
-                  {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.first-login') })}
-                </Typography.Text>,
-              icon:
-                <IconFont
-                  type="icon-huanyingye"
-                  style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
-            })
+          // 加载用户信息和权限
+          await initUserAuthority().then(async (result) => {
+            // 将用户权限信息保存到全局
+            await setInitialState((s: InitialStateTypes) => ({ ...s, ...result })).then(() => {
+              setTimeout(() => {
+                // 路由跳转
+                const urlParams = new URL(window.location.href).searchParams;
+                history.push(urlParams.get('redirect') || '/');
+                // 欢迎语
+                notification.success({
+                  message: `${timeFix()}，${result?.CurrentUser?.cn_name} 💕`,
+                  description: login_last_time ?
+                    <span>
+                      {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
+                      <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
+                    </span>
+                    :
+                    <Typography.Text strong>
+                      {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.first-login') })}
+                    </Typography.Text>,
+                  icon:
+                    <IconFont
+                      type="icon-huanyingye"
+                      style={{ color: initialState?.Settings?.colorPrimary, fontSize: '24px' }} />,
+                })
+              }, 0)
+            });
           })
         }
       },
@@ -139,7 +144,7 @@ const LoginPage: FC = () => {
             subTitle={formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'subtitle') })}
             submitter={{
               submitButtonProps: {
-                loading: loginLoading || initialStateLoading,
+                loading: loginLoading,
               },
             }}
             onFinish={async (values) => {

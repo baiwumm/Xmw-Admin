@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:58:28
+ * @LastEditTime: 2023-10-07 13:31:46
  */
 import {
   Body,
@@ -61,9 +61,13 @@ export class AnnouncementController {
   @Get()
   @ApiOkResponse({ type: ResponseAnnouncementDto })
   @ApiOperation({ summary: '获取活动公告列表' })
-  async getAnnouncementList(@Query() announcementInfo: ListAnnouncementDto) {
+  async getAnnouncementList(
+    @Query() announcementInfo: ListAnnouncementDto,
+    @Session() session: SessionTypes,
+  ) {
     const response = await this.announcementService.getAnnouncementList(
       announcementInfo,
+      session,
     );
     return response;
   }
@@ -115,9 +119,8 @@ export class AnnouncementController {
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除活动公告' })
   async deleteAnnouncement(@Param('announcement_id') announcement_id: string) {
-    const response = await this.announcementService.deleteAnnouncement(
-      announcement_id,
-    );
+    const response =
+      await this.announcementService.deleteAnnouncement(announcement_id);
     return response;
   }
 
@@ -149,13 +152,29 @@ export class AnnouncementController {
   @ApiOkResponse({ type: CreateAlreadyDto })
   @ApiOperation({ summary: '已读活动公告' })
   async createAlready(
-    @Body() announcement_id: string,
+    @Body() { announcement_id }: Pick<SaveAnnouncementDto, 'announcement_id'>,
     @Session() session: SessionTypes,
   ) {
     const response = await this.announcementService.createAlready(
       announcement_id,
       session,
     );
+    return response;
+  }
+
+  /**
+   * @description: 已读次数
+   * @author: 白雾茫茫丶
+   */
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/incrementAlreadyCount')
+  @ApiOkResponse({ type: CreateAlreadyDto })
+  @ApiOperation({ summary: '已读活动公告' })
+  async incrementAlreadyCount(
+    @Body() { announcement_id }: Pick<SaveAnnouncementDto, 'announcement_id'>,
+  ) {
+    const response =
+      await this.announcementService.incrementAlreadyCount(announcement_id);
     return response;
   }
 }

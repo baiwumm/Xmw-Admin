@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-25 09:26:08
+ * @LastEditTime: 2023-10-07 10:01:29
  */
 import { ManOutlined, UnlockOutlined, UserOutlined, WomanOutlined } from '@ant-design/icons'
 import { ActionType, ColumnsState, ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components'
@@ -12,6 +12,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
 import { message, Popconfirm, Space, Switch, Tag } from 'antd'
+import { cloneDeep } from 'lodash-es'
 import { FC, MutableRefObject, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
@@ -271,12 +272,12 @@ const TableTemplate: FC = () => {
 				<DropdownMenu
 					pathName={ROUTES.USERMANAGEMENT}
 					editCallback={() => {
+						const result = cloneDeep(record)
 						// 表单数据回显处理,密码解密
-						record.password = decryptionAesPsd(record.password)
-						record.confirmPassword = record.password
+						result.password = result.confirmPassword = decryptionAesPsd(record.password)
 						// 编辑场景下需要使用formMapRef循环设置formData
 						stepFormMapRef?.current?.forEach((formInstanceRef) => {
-							formInstanceRef?.current?.setFieldsValue(record);
+							formInstanceRef?.current?.setFieldsValue(result);
 						});
 						setModalVisibleTrue()
 					}}

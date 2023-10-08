@@ -4,38 +4,61 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 14:34:36
+ * @LastEditTime: 2023-10-08 11:18:42
  */
 import { CheckCard, PageContainer } from '@ant-design/pro-components';
-import { useModel } from '@umijs/max';
+import { useIntl, useModel } from '@umijs/max';
 import { useRequest } from 'ahooks'
 import { Avatar, Card, Col, List, Row, Space, Tag, Timeline, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FC } from 'react';
+import { get } from 'lodash-es'
+import { createRef, FC } from 'react';
 
-import { IconFont } from '@/utils/const'
+import AnnouncementDetail from '@/pages/Administrative/Announcement/components/AnnouncementDetail'
+import { getAnnouncementList } from '@/services/administrative/announcement'
+import { formatPerfix, isSuccess, randomTagColor } from '@/utils'
+import { AnnouncementTypeEnum, IconFont } from '@/utils/const'
+import { ROUTES } from '@/utils/enums'
+import type { AnnouncementDetailRefsProps } from '@/utils/types/administrative/announcement'
 
 import RenderContent from './components/RenderContent' // 顶部布局
 import StatisticChart from './components/StatisticChart' // 指标卡片
-import { latestAnnouncement, latestNews, technologyStack } from './utils/config'
-
+import { latestNews, technologyStack } from './utils/config'
 const { Paragraph, Text, Title, Link } = Typography;
 
 const Workbench: FC = () => {
+  // 国际化工具
+  const { formatMessage } = useIntl();
+  // dayjs 相对时间
   dayjs.extend(relativeTime);
+  // 全局状态
   const { initialState } = useModel('@@initialState');
-  // 请求项目 commit 日志
+  // 公告详情
+  const announcementDetailRefs = createRef<AnnouncementDetailRefsProps>();
+
+  /**
+ * @description: 请求项目 commit 日志
+ * @author: 白雾茫茫丶
+ */
   const { data: commitList, loading: commitLoading } = useRequest(
     async () => {
       const response = await fetch('https://api.github.com/repos/baiwumm/Xmw-Admin/commits?page=1&per_page=10')
-      if (response.status === 200) {
+      if (isSuccess(response.status)) {
         const result = await response.json()
         return result
       }
       return []
-    },
-  )
+    })
+
+  /**
+ * @description: 获取活动公告列表
+ * @author: 白雾茫茫丶
+ */
+  const { data: announcementList, loading: announcementListLoading } = useRequest(
+    async (params) => get(await getAnnouncementList(params), 'data.list', []), {
+    defaultParams: [{ current: 1, pageSize: 5 }],
+  })
 
   // 渲染副标题
   const renderSecondary = (content: string, rows = 1) => {
@@ -107,15 +130,23 @@ const Workbench: FC = () => {
           </Col>
           <Col span={10}>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-              <Card title="最新公告">
+              <Card title="最新公告" loading={announcementListLoading} bodyStyle={{ padding: '5px 24px' }}>
                 <List
                   itemLayout="horizontal"
-                  dataSource={latestAnnouncement}
-                  renderItem={(item) => (
-                    <List.Item>
+                  dataSource={announcementList}
+                  renderItem={(record: API.ANNOUNCEMENT) => (
+                    <List.Item actions={[<Tag color={randomTagColor()} key="type">{
+                      formatMessage({
+                        id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${AnnouncementTypeEnum[record.type]}`),
+                      })
+                    }</Tag>]}>
                       <List.Item.Meta
-                        avatar={<Tag color={item.color}>{item.type}</Tag>}
-                        title={renderSecondary(item.title, 1)}
+                        avatar={<Avatar src={record.avatar_url} />}
+                        title={<a onClick={() => {
+                          announcementDetailRefs?.current?.setCurrentRecord(record);
+                          announcementDetailRefs?.current?.setOpenDrawerTrue();
+                        }}>{record.title}</a>}
+                        description={record.cn_name}
                       />
                     </List.Item>
                   )}
@@ -145,6 +176,8 @@ const Workbench: FC = () => {
           </Col>
         </Row>
       </Space>
+      {/* 公告详情 */}
+      <AnnouncementDetail onRef={announcementDetailRefs} />
     </PageContainer>
   )
 }

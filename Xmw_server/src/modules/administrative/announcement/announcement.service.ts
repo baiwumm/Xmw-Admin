@@ -4,12 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 18:00:07
+ * @LastEditTime: 2023-10-07 17:30:35
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
+import { Sequelize } from 'sequelize-typescript';
 
 import { XmwAlready } from '@/models/xmw_already.model'; // xmw_already 实体
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
@@ -33,6 +34,7 @@ export class AnnouncementService {
     private readonly operationLogsService: OperationLogsService,
     @InjectModel(XmwAlready)
     private readonly alreadyModel: typeof XmwAlready,
+    private sequelize: Sequelize,
   ) { }
 
   /**
@@ -41,9 +43,12 @@ export class AnnouncementService {
    */
   async getAnnouncementList(
     announcementInfo: ListAnnouncementDto,
+    session: SessionTypes,
   ): Promise<Response<PageResponse<XmwAnnouncement>>> {
     // 解构参数
     const { title, type, status, pinned, pageSize, current } = announcementInfo;
+    // 获取 seesion 用户 id
+    const user_id = session?.currentUserInfo?.user_id;
     // 拼接查询参数
     const where: WhereOptions = {};
     if (title) where.title = { [Op.substring]: title };
@@ -53,13 +58,28 @@ export class AnnouncementService {
     // 分页查询数据
     const { count, rows } = await this.announcementModel.findAndCountAll({
       attributes: {
-        include: ['u.cn_name', 'u.avatar_url'],
+        include: [
+          'u.cn_name',
+          'u.avatar_url',
+          [
+            this.sequelize.literal(
+              `case when a.user_id = '${user_id}' then 1 else 0 end`,
+            ),
+            'already',
+          ],
+        ],
       },
+      distinct: true,
       // 联表查询
       include: [
         {
           model: XmwUser,
           as: 'u',
+          attributes: [],
+        },
+        {
+          model: XmwAlready,
+          as: 'a',
           attributes: [],
         },
       ],
@@ -163,11 +183,39 @@ export class AnnouncementService {
     announcement_id: string,
     session: SessionTypes,
   ): Promise<Response<SaveAlreadyDto>> {
+    // 获取当前登录用户 id
+    const user_id = session?.currentUserInfo?.user_id;
+    // 已阅读的公告不再重复录入
+    const exist = await this.alreadyModel.findOne({
+      where: { [Op.and]: { announcement_id, user_id } },
+    });
+    if (exist) {
+      return responseMessage({}, '当前用户已阅读此公告');
+    }
     // 如果通过则执行 sql insert 语句
     const result = await this.alreadyModel.create({
       announcement_id,
-      user_id: session?.currentUserInfo?.user_id,
+      user_id,
     });
+    return responseMessage(result);
+  }
+
+  /**
+   * @description: 已读次数
+   * @author: 白雾茫茫丶
+   */
+  async incrementAlreadyCount(
+    announcement_id: string,
+  ): Promise<Response<SaveAnnouncementDto>> {
+    // 将阅读次数+1
+    const result = await this.announcementModel.increment(
+      { read_counts: 1 },
+      {
+        where: {
+          announcement_id,
+        },
+      },
+    );
     return responseMessage(result);
   }
 }

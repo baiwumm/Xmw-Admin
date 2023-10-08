@@ -10,10 +10,10 @@ import 'nprogress/nprogress.css';
 
 import { AxiosRequestConfig, request, RequestConfig, RequestError, RequestOptions } from '@umijs/max';
 import { message, Modal } from 'antd'
-import { debounce, eq } from 'lodash-es'; // lodash 工具函数
+import { debounce } from 'lodash-es'; // lodash 工具函数
 import Nprogress from 'nprogress';
 
-import { getLocalStorageItem, logoutToLogin } from '@/utils' // 全局工具函数
+import { getLocalStorageItem, isSuccess, logoutToLogin } from '@/utils' // 全局工具函数
 import { LOCAL_STORAGE, REQUEST_CODE } from '@/utils/enums'
 import type { Response } from '@/utils/types'
 
@@ -38,7 +38,7 @@ const umiRequest: RequestConfig = {
     // 错误抛出
     errorThrower: (res: Response) => {
       const { code, msg } = res;
-      if (!eq(code, REQUEST_CODE.SUCCESS)) {
+      if (!isSuccess(code)) {
         throw new Error(msg); // 抛出自制的错误
       }
     },

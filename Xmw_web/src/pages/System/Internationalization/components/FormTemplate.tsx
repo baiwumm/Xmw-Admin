@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 09:34:40
+ * @LastEditTime: 2023-10-08 09:12:23
  */
 import { ModalForm } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
@@ -12,7 +12,8 @@ import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createInternational, updateInternational } from '@/services/system/internationalization'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/internationalization'
 
 // 引入业务组件
@@ -42,9 +43,9 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 提交表单
 	const handlerSubmit = async (values: API.INTERNATIONALIZATION) => {
 		// 执行数据库操作
-		await (id ? updateInternational : createInternational)({ ...values, id }).then((res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg);
+		await (id ? updateInternational : createInternational)({ ...values, id }).then(({ code, msg }) => {
+			if (isSuccess(code)) {
+				message.success(msg);
 				// 刷新表格
 				reloadTable()
 				// 关闭浮层

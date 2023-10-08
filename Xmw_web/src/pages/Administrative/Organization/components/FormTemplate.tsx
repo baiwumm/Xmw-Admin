@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 09:28:23
+ * @LastEditTime: 2023-10-08 09:10:45
  */
 
 import { DrawerForm } from '@ant-design/pro-components';
@@ -14,7 +14,8 @@ import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createOrganization, updateOrganization } from '@/services/administrative/organization';
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/administrative/organization';
 
 // 引入业务组件
@@ -49,9 +50,9 @@ const FormTemplate: FC<FormTemplateProps> = ({
 			org_id,
 			org_logo: isString(org_logo) ? org_logo : get(org_logo, '[0].response.data.path', ''),
 		};
-		await (org_id ? updateOrganization : createOrganization)(params).then((res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg);
+		await (org_id ? updateOrganization : createOrganization)(params).then(({ code, msg }) => {
+			if (isSuccess(code)) {
+				message.success(msg);
 				// 关闭浮层
 				handlerClose()
 				// 刷新表格

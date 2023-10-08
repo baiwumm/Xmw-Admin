@@ -1,5 +1,5 @@
 import { ANNOUNCEMENT_TYPE } from '@/utils/enums'
-import type { EnumValues } from '@/utils/types'
+import type { EnumValues, PaginationParams } from '@/utils/types'
 
 /**
  * @description: 创建新闻公告 Props
@@ -12,7 +12,7 @@ export type CreateAnnouncementProps = Pick<
   * @description: 头部搜索表单 Props
   * @author: 白雾茫茫丶
   */
-export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pinned'>>
+export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pinned'>> & PaginationParams
 
 /**
  * @description: FormTemplate Props
@@ -40,8 +40,13 @@ export type AnnouncementType = EnumValues<typeof ANNOUNCEMENT_TYPE>
  * @description: 公告详情
  * @author: 白雾茫茫丶
  */
-export type DetailDrawerProps = {
-  data?: API.ANNOUNCEMENT;
-  open: boolean;
-  onCalcel: () => void;
+export type AnnouncementDetailRefsProps = {
+  setCurrentRecord: (record: API.ANNOUNCEMENT) => void;
+  setOpenDrawerTrue: () => void;
 }
+
+/**
+ * @description: 已读公告
+ * @author: 白雾茫茫丶
+ */
+export type AlreadyParams = Pick<CreateAnnouncementProps, 'announcement_id'>

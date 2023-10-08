@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-12 16:10:13
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-21 17:56:47
+ * @LastEditTime: 2023-10-08 09:11:47
  */
 import { ProFormText } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
@@ -15,8 +15,9 @@ import type { FC } from 'react'
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { Logout } from '@/services/logic/login' // 登录相关接口
 import { updateUser } from '@/services/system/user-management'
-import { encryptionAesPsd, formatPerfix, logoutToLogin, removeLocalStorageItem } from '@/utils'
-import { INTERNATION, LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { encryptionAesPsd, formatPerfix, isSuccess, logoutToLogin, removeLocalStorageItem } from '@/utils'
+import { INTERNATION, LOCAL_STORAGE, ROUTES } from '@/utils/enums'
+import type { InitialStateTypes } from '@/utils/types'
 
 type PasswordParams = {
   originalPassword: string;
@@ -37,9 +38,9 @@ const ChangePassword: FC = () => {
  */
   const { run: loginOut } = useRequest(Logout, {
     manual: true,
-    onSuccess: async (res) => {
-      if (res.code === REQUEST_CODE.SUCCESS) {
-        setInitialState((s) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
+    onSuccess: async ({ code }) => {
+      if (isSuccess(code)) {
+        setInitialState((s: InitialStateTypes) => ({ ...s, CurrentUser: undefined, Access_token: undefined }));
         removeLocalStorageItem(LOCAL_STORAGE.ACCESS_TOKEN);
         removeLocalStorageItem(LOCAL_STORAGE.USER_INFO);
         // 退出登录返回登录页
@@ -55,8 +56,8 @@ const ChangePassword: FC = () => {
  */
   const { run: runUpdateUser } = useRequest(updateUser, {
     manual: true,
-    onSuccess: async (res) => {
-      if (res.code === REQUEST_CODE.SUCCESS) {
+    onSuccess: async ({ code }) => {
+      if (isSuccess(code)) {
         // 更新密码成功后退出登录返回到登录页面
         loginOut()
         // 销毁对话框

@@ -1,10 +1,11 @@
 // src/utils/log4js.ts
-import * as Path from 'path';
-import * as Log4js from 'log4js';
-import * as Util from 'util';
-import * as Moment from 'moment'; // 处理时间的工具
-import * as StackTrace from 'stacktrace-js';
 import Chalk from 'chalk'; // 颜色库
+import * as Log4js from 'log4js';
+import * as Moment from 'moment'; // 处理时间的工具
+import * as Path from 'path';
+import * as StackTrace from 'stacktrace-js';
+import * as Util from 'util';
+
 import config from '../config/log4js';
 
 // 日志级别
@@ -27,7 +28,7 @@ export class ContextTrace {
     public readonly path?: string,
     public readonly lineNumber?: number,
     public readonly columnNumber?: number,
-  ) {}
+  ) { }
 }
 
 Log4js.addLayout('Awesome-nest', (logConfig: any) => {

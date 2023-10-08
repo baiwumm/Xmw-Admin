@@ -32,9 +32,6 @@ const LockSleep: FC = () => {
   // 判断用户未操作时间是否拆过设定值
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
-    console.log('currentTime', currentTime)
-    console.log('last_time', LOCK_SLEEP?.last_time)
-    console.log('timeOut', timeOut)
     // 判断是否超时
     if (LOCK_SLEEP && currentTime - LOCK_SLEEP.last_time > timeOut) {
       setTrue()

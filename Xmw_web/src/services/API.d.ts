@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-23 10:23:23
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:05:39
+ * @LastEditTime: 2023-10-07 14:24:23
  */
 
 import type { CommonTypes, Flag, Langs, RequestMethods, TableTimes } from '@/utils/types'
@@ -136,8 +136,17 @@ declare global {
       content: string; // 正文内容
       type: AnnouncementType; // 类型
       pinned: Flag; // 是否置顶
-      readCounts: number; // 阅读次数
+      read_counts: number; // 阅读次数
+      already: Flag; // 是否已读
     } & Pick<USERMANAGEMENT, 'user_id' | 'avatar_url' | 'cn_name'> & Pick<CommonTypes, 'status'>
+
+    /**
+     * @description: 智能行政-活动公告-已读
+     * @author: 白雾茫茫丶
+     */
+    type ALREADY = TableTimes & {
+      id: string;
+    } & Pick<USERMANAGEMENT, 'user_id'> & Pick<ANNOUNCEMENT, 'announcement_id'>
 
     /**
      * @description: 系统设置-国际化

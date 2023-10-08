@@ -3,6 +3,7 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasOne,
   IsIn,
   IsUUID,
   Model,
@@ -10,6 +11,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
+import { XmwAlready } from '@/models/xmw_already.model';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import type { AnnouncementTypes, Status } from '@/utils/types';
 import { AnnouncementAttributes } from '@/utils/types/administrative';
@@ -20,6 +22,7 @@ export class XmwAnnouncement
   implements AnnouncementAttributes {
   @IsUUID(4)
   @PrimaryKey
+  @ForeignKey(() => XmwAlready)
   @Column({
     type: DataType.UUID,
     allowNull: false,
@@ -91,8 +94,11 @@ export class XmwAnnouncement
     defaultValue: 0,
     comment: '阅读次数',
   })
-  readCounts: number;
+  read_counts: number;
 
   @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   userInfo: XmwUser;
+
+  @HasOne(() => XmwAlready, { as: 'a' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  alreadyInfo: XmwAlready;
 }

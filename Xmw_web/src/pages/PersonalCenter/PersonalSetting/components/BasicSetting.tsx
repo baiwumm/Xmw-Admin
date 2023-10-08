@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-13 09:26:44
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-25 10:06:27
+ * @LastEditTime: 2023-10-08 09:11:12
  */
 import { ProForm } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
@@ -16,8 +16,8 @@ import PersonalInformation from '@/pages/System/UserManagement/Steps/PersonalInf
 import SetAvatar from '@/pages/System/UserManagement/Steps/SetAvatar' // 设置用户头像
 import UserInformation from '@/pages/System/UserManagement/Steps/UserInformation' // 用户信息
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
-import { formatPerfix } from '@/utils'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { formatPerfix, isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 
 const BasicSetting: FC = () => {
   const { formatMessage } = useIntl();
@@ -30,9 +30,9 @@ const BasicSetting: FC = () => {
  */
   const { run: runUpdateUser } = useRequest(updateUser, {
     manual: true,
-    onSuccess: async (res, params) => {
-      if (res.code === REQUEST_CODE.SUCCESS) {
-        message.success(res.msg)
+    onSuccess: async ({ code, msg }, params) => {
+      if (isSuccess(code)) {
+        message.success(msg)
         // 更新全局状态
         if (initialState?.CurrentUser) {
           setInitialState({ ...initialState, CurrentUser: { ...initialState.CurrentUser, ...params[0] } })

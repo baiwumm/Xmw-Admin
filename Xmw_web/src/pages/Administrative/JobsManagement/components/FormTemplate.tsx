@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-22 09:24:32
+ * @LastEditTime: 2023-10-08 09:10:11
  */
 import { DrawerForm } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
@@ -12,7 +12,8 @@ import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
 import { createJobs, updateJobs } from '@/services/administrative/jobs-management'
-import { REQUEST_CODE, ROUTES } from '@/utils/enums'
+import { isSuccess } from '@/utils'
+import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/administrative/jobs-management'
 
 // 引入业务组件
@@ -43,9 +44,9 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// 提交表单
 	const handlerSubmit = async (values: API.JOBSMANAGEMENT) => {
 		// 请求接口
-		await (jobs_id ? updateJobs : createJobs)({ ...values, jobs_id }).then((res) => {
-			if (res.code === REQUEST_CODE.SUCCESS) {
-				message.success(res.msg);
+		await (jobs_id ? updateJobs : createJobs)({ ...values, jobs_id }).then(({ code, msg }) => {
+			if (isSuccess(code)) {
+				message.success(msg);
 				// 刷新表格
 				reloadTable()
 				// 关闭浮层

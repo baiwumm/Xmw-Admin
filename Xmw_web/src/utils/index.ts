@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-27 15:45:56
+ * @LastEditTime: 2023-10-08 09:15:44
  */
 import type { ColumnsState, RequestData } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
@@ -12,9 +12,36 @@ import CryptoJS from 'crypto-js'; // AES/DES加密
 import { compact, eq, get, join, sample, startsWith } from 'lodash-es';
 import { stringify } from 'querystring';
 
+import { getPermissions, getRoutesMenus, getUserInfo } from '@/services/logic/login' // 登录相关接口
 import { LOCAL_STORAGE, REQUEST_CODE, ROUTES } from '@/utils/enums'
-import type { LockSleepTypes, PageResponse, Response } from '@/utils/types'
+import type { InitialStateTypes, LockSleepTypes, PageResponse, Response } from '@/utils/types'
 
+/**
+ * @description: 获取用户信息、菜单和权限
+ * @author: 白雾茫茫丶
+ */
+export const initUserAuthority = async (): Promise<InitialStateTypes> => {
+  try {
+    // 获取用户信息和菜单按钮权限
+    const [userInfo, routeMenuInfo, permissionInfo] =
+      await Promise.all([getUserInfo(), getRoutesMenus(), getPermissions()])
+    // 初始化全局状态
+    return {
+      CurrentUser: get(userInfo, 'data', {}),
+      RouteMenu: get(routeMenuInfo, 'data', []),
+      Permissions: get(permissionInfo, 'data', []),
+    }
+  } catch (error) {
+    history.push(ROUTES.LOGIN);
+    return {}
+  }
+}
+
+/**
+ * @description: 判断请求是否成功
+ * @author: 白雾茫茫丶
+ */
+export const isSuccess = (code?: number): boolean => eq(code, REQUEST_CODE.SUCCESS)
 
 /**
  * @description: 格式化请求数据
@@ -28,7 +55,7 @@ export const formatResponse = <T extends any[]>(
   return {
     data: get(data, 'list') || get(response, 'data') || [],
     // success 请返回 true，不然 table 会停止解析数据，即使有数据
-    success: eq(code, REQUEST_CODE.SUCCESS),
+    success: isSuccess(code),
     total: get(data, 'total', 0),
   }
 }
