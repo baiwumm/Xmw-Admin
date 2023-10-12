@@ -63,6 +63,50 @@ pnpm start:dev
 pnpm build
 ```
 
+## Function Module
+
+```
+- Login / Logout
+
+- Dashboard
+  - Workbench
+  - EnvironmentalDependence
+
+- Administrative
+  - Announcement
+  - Organization
+  - JobsManagement
+  - Structure
+
+- PersonalCenter
+  - PersonalInformation
+  - PersonalSetting
+
+- TechnicalDocument
+  - React
+  - Nest
+  - Ant Design
+  - Umi
+
+- System
+  - UserManagement
+  - MenuManagement
+  - RoleManagement
+  - Internationalization
+  - OperationLog
+
+```
+
+## Demo Figure
+
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png!baiwu) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/03.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/04.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/05.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/06.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/07.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/08.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/09.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/10.png!baiwu) |
+
+
 ## 🪴 Project Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/d70fa0fda028f36880de53d6a7e82305ee78b265.svg "Repobeats analytics image")

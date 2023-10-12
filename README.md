@@ -63,6 +63,49 @@ pnpm start:dev
 pnpm build
 ```
 
+## 功能模块
+
+```
+- 登录 / 注销
+
+- 指示面板
+  - 工作台
+  - 环境依赖
+
+- 智能行政
+  - 活动公告
+  - 组织管理
+  - 岗位管理
+  - 组织架构
+
+- 个人中心
+  - 个人信息
+  - 个人设置
+
+- 技术文档
+  - React文档
+  - Nest文档
+  - And-design文档
+  - Umi文档
+
+- 系统设置
+  - 用户管理
+  - 菜单管理
+  - 角色管理
+  - 国际化
+  - 操作日志
+
+```
+
+## 演示图
+
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png!baiwu) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/03.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/04.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/05.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/06.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/07.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/08.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/09.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/10.png!baiwu) |
+
 ## 🪴 项目活动
 
 ![Alt](https://repobeats.axiom.co/api/embed/d70fa0fda028f36880de53d6a7e82305ee78b265.svg "Repobeats analytics image")
