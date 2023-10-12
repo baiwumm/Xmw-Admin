@@ -42,6 +42,14 @@ export class ListAnnouncementDto {
   pinned?: number;
 
   @ApiProperty({
+    type: Boolean,
+    description: '只查询未读消息',
+    default: false,
+    required: false,
+  })
+  unready?: boolean;
+
+  @ApiProperty({
     type: Number,
     description: '条数',
     default: 10,

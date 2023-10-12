@@ -11,7 +11,7 @@ import { Form, message } from 'antd'
 import { FC } from 'react'
 
 import { renderFormTitle } from '@/components/TableColumns'
-import { createAnnouncement, updateAnnouncement } from '@/services/administrative/announcement'
+import { saveAnnouncement } from '@/services/administrative/announcement'
 import { isSuccess } from '@/utils'
 import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/administrative/announcement'
@@ -37,8 +37,7 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenModalFa
   // 提交表单
   const handlerSubmit = async (values: API.ANNOUNCEMENT) => {
     // 提交数据
-    await (announcement_id ? updateAnnouncement : createAnnouncement)({ ...values, announcement_id }).then((
-      { code, msg }) => {
+    await saveAnnouncement({ ...values, announcement_id }).then(({ code, msg }) => {
       if (isSuccess(code)) {
         message.success(msg);
         // 刷新表格

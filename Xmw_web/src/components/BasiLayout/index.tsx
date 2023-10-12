@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 11:28:51
+ * @LastEditTime: 2023-10-12 15:36:09
  */
 import { ProConfigProvider, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
@@ -18,7 +18,7 @@ import { IconFont } from '@/utils/const'
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 import type { InitialStateTypes } from '@/utils/types'
 
-import { actionsRender, appList, avatarProps, LockScreenModal, LockSleep } from './components'
+import { actionsRender, AnnouncementDetail, appList, avatarProps, LockScreenModal, LockSleep } from './components'
 
 const { Paragraph } = Typography;
 
@@ -110,6 +110,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 								<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
 								{/* 睡眠弹窗 */}
 								<LockSleep />
+								{/* 公告详情 */}
+								<AnnouncementDetail />
 							</App>
 						</ConfigProvider>
 						<SettingDrawer

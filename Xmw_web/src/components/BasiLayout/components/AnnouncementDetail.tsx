@@ -4,25 +4,46 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-28 09:45:19
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 14:50:29
+ * @LastEditTime: 2023-10-12 15:36:30
  */
-import { useBoolean } from 'ahooks'
+import { useBoolean, useMount, useRequest, useUnmount } from 'ahooks'
 import { Avatar, ConfigProvider, Drawer, List, Typography } from 'antd';
-import React, { FC, RefObject, useImperativeHandle, useState } from 'react'
+import { pick } from 'lodash-es'
+import { FC, useState } from 'react'
 
-import type { AnnouncementDetailRefsProps } from '@/utils/types/administrative/announcement'
+import { announcementAlready } from '@/services/administrative/announcement'
+import { isSuccess } from '@/utils'
+import { EVENTBUS_TYPE } from '@/utils/enums'
+import eventBus from '@/utils/eventBus'
 
 const { Text } = Typography;
 
-type AnnouncementDetailProps = {
-  onRef: RefObject<AnnouncementDetailRefsProps>,
-}
-
-const AnnouncementDetail: FC<AnnouncementDetailProps> = ({ onRef }) => {
+const AnnouncementDetail: FC = () => {
   // 保存当前数据
   const [currentRecord, setCurrentRecord] = useState<API.ANNOUNCEMENT>()
   // 是否显示 Drawer
   const [open, { setTrue: setOpenDrawerTrue, setFalse: setOpenDrawerFalse }] = useBoolean(false)
+  /**
+   * @description: 公告已读
+   * @author: 白雾茫茫丶
+   */
+  const { runAsync: fetchAnnouncementAlready } = useRequest(async (params) => await announcementAlready(params), {
+    manual: true,
+  })
+
+  /**
+   * @description: 查看详情
+   * @author: 白雾茫茫丶
+   */
+  const handleAnnouncementDetails = async (record: API.ANNOUNCEMENT, callback?: () => void) => {
+    setCurrentRecord(record);
+    setOpenDrawerTrue();
+    await fetchAnnouncementAlready(pick(record, 'announcement_id')).then(({ code }) => {
+      if (isSuccess(code)) {
+        callback?.()
+      }
+    })
+  }
 
   /**
    * @description: 退出详情
@@ -33,8 +54,14 @@ const AnnouncementDetail: FC<AnnouncementDetailProps> = ({ onRef }) => {
     setOpenDrawerFalse();
   }
 
-  // 将方法通过 useImperativeHandle 暴露给父组件
-  useImperativeHandle(onRef, () => ({ setCurrentRecord, setOpenDrawerTrue }))
+  useMount(() => {
+    // 监听别的模块查看公告详情
+    eventBus.on(EVENTBUS_TYPE.ANNOUNCEMENT, handleAnnouncementDetails)
+  })
+
+  useUnmount(() => {
+    eventBus.off(EVENTBUS_TYPE.ANNOUNCEMENT, handleAnnouncementDetails)
+  })
   return (
     <Drawer open={open} onClose={handlerCancel} width={450}>
       <ConfigProvider theme={{

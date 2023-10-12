@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:40:24
+ * @LastEditTime: 2023-10-12 09:15:52
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -78,22 +78,23 @@ export class JobsManagementService {
   ): Promise<Response<SaveJobsManagementDto>> {
     // 解构参数
     const { jobs_name } = jobsInfo;
-    // 组织名称不能相同
-    const exist = await this.jobsModel.findOne({
+    const [result, created] = await this.jobsModel.findOrCreate({
+      // 岗位名称不能相同
       where: { jobs_name },
+      // 如果不存在则插入数据
+      defaults: {
+        ...jobsInfo,
+        founder: session?.currentUserInfo?.user_id,
+      },
     });
-    // 如果有结果，则证明已存在，这里存在两种情况，
-    if (exist) {
+    // 判断是否创建
+    if (created) {
+      // 保存操作日志
+      await this.operationLogsService.saveLogs(`创建岗位：${jobs_name}`);
+      return responseMessage(result);
+    } else {
       return responseMessage({}, '岗位名称已存在!', -1);
     }
-    // 如果通过则执行 sql insert 语句
-    const result = await this.jobsModel.create({
-      ...jobsInfo,
-      founder: session.currentUserInfo.user_id,
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`创建岗位：${jobs_name}`);
-    return responseMessage(result);
   }
 
   /**

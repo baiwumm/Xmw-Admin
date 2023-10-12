@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-07 13:31:46
+ * @LastEditTime: 2023-10-09 10:16:52
  */
 import {
   Body,
@@ -14,7 +14,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
   Session,
   UseGuards,
@@ -57,7 +56,7 @@ export class AnnouncementController {
    * @description: 获取活动公告列表
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseAnnouncementDto })
   @ApiOperation({ summary: '获取活动公告列表' })
@@ -80,32 +79,13 @@ export class AnnouncementController {
   @Post()
   @ApiOkResponse({ type: CreateAnnouncementDto })
   @ApiOperation({ summary: '创建活动公告' })
-  async createAnnouncement(
+  async saveAnnouncement(
     @Body() announcementInfo: SaveAnnouncementDto,
     @Session() session: SessionTypes,
   ) {
-    const response = await this.announcementService.createAnnouncement(
+    const response = await this.announcementService.saveAnnouncement(
       announcementInfo,
       session,
-    );
-    return response;
-  }
-
-  /**
-   * @description: 更新活动公告
-   * @author: 白雾茫茫丶
-   */
-  @UseGuards(AuthGuard('jwt'))
-  @Put('/:announcement_id')
-  @ApiOkResponse({ type: UpdateResponseDto })
-  @ApiOperation({ summary: '更新活动公告' })
-  async updateAnnouncement(
-    @Param('announcement_id') announcement_id: string,
-    @Body() announcementInfo: SaveAnnouncementDto,
-  ) {
-    const response = await this.announcementService.updateAnnouncement(
-      announcement_id,
-      announcementInfo,
     );
     return response;
   }
@@ -163,18 +143,15 @@ export class AnnouncementController {
   }
 
   /**
-   * @description: 已读次数
+   * @description: 查询不同消息类型的未读条数
    * @author: 白雾茫茫丶
    */
   @UseGuards(AuthGuard('jwt'))
-  @Post('/incrementAlreadyCount')
-  @ApiOkResponse({ type: CreateAlreadyDto })
-  @ApiOperation({ summary: '已读活动公告' })
-  async incrementAlreadyCount(
-    @Body() { announcement_id }: Pick<SaveAnnouncementDto, 'announcement_id'>,
-  ) {
-    const response =
-      await this.announcementService.incrementAlreadyCount(announcement_id);
+  @Get('/unready')
+  @ApiOkResponse({ type: ResponseAnnouncementDto })
+  @ApiOperation({ summary: '查询不同消息类型的未读条数' })
+  async queryUnreadyCount(@Session() session: SessionTypes) {
+    const response = await this.announcementService.queryUnreadyCount(session);
     return response;
   }
 }

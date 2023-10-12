@@ -12,7 +12,9 @@ export type CreateAnnouncementProps = Pick<
   * @description: 头部搜索表单 Props
   * @author: 白雾茫茫丶
   */
-export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pinned'>> & PaginationParams
+export type SearchParams = Partial<Pick<API.ANNOUNCEMENT, 'title' | 'type' | 'pinned'>> & PaginationParams & {
+  unready?: boolean; // 是否只查询未读消息
+}
 
 /**
  * @description: FormTemplate Props
@@ -35,15 +37,6 @@ export type PinnedParams = Pick<API.ANNOUNCEMENT, 'announcement_id' | 'pinned'>
  * @author: 白雾茫茫丶
  */
 export type AnnouncementType = EnumValues<typeof ANNOUNCEMENT_TYPE>
-
-/**
- * @description: 公告详情
- * @author: 白雾茫茫丶
- */
-export type AnnouncementDetailRefsProps = {
-  setCurrentRecord: (record: API.ANNOUNCEMENT) => void;
-  setOpenDrawerTrue: () => void;
-}
 
 /**
  * @description: 已读公告

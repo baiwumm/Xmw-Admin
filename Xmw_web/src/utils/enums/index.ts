@@ -41,6 +41,7 @@ export enum LOCAL_STORAGE {
 export enum ROUTES {
   LOGIN = '/user/login', // 登录页
   WORKBENCH = '/dashboard/work-bench', // 指示面板-工作台
+  DEPENDENCE = '/dashboard/environmental-dependence', // 指示面板-环境依赖
   ANNOUNCEMENT = '/administrative/announcement', // 智能行政-活动公告
   ORGANIZATION = '/administrative/organization', // 智能行政-组织管理
   JOBSMANAGEMENT = '/administrative/jobs-management', // 智能行政-岗位管理
@@ -204,4 +205,12 @@ export enum LANGS {
   US = 'en-US', // 英文
   JP = 'ja-JP', // 日文
   TW = 'zh-TW', // 繁体中文
+}
+
+/**
+ * @description: EventBus type
+ * @author: 白雾茫茫丶
+ */
+export enum EVENTBUS_TYPE {
+  ANNOUNCEMENT = 'Announcement-Detail', // 查看公告详情
 }

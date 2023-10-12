@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 22:06:24
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 18:23:43
+ * @LastEditTime: 2023-10-12 09:19:56
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -109,22 +109,23 @@ export class InternationalService {
   ): Promise<Response<SaveInternationalDto>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
-    // 相同层级名称不能相同
-    const exist = await this.internationaModel.findOne({
-      where: { name },
+    const [result, created] = await this.internationaModel.findOrCreate({
+      // 同一层级 name 不能相同
+      where: { [Op.and]: { name, parent_id } },
+      // 如果不存在则插入数据
+      defaults: {
+        ...internationalInfo,
+        founder: session?.currentUserInfo?.user_id,
+      },
     });
-    // 如果有结果，则证明已存在，这里存在两种情况，
-    if (exist && exist.parent_id == parent_id) {
+    // 判断是否创建
+    if (created) {
+      // 保存操作日志
+      await this.operationLogsService.saveLogs(`创建国际化：${name}`);
+      return responseMessage(result);
+    } else {
       return responseMessage({}, '同一层级 name 不能相同!', -1);
     }
-    // 如果通过则执行 sql insert 语句
-    const result = await this.internationaModel.create({
-      ...internationalInfo,
-      founder: session.currentUserInfo.user_id,
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`创建国际化：${name}`);
-    return responseMessage(result);
   }
 
   /**

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 16:00:13
+ * @LastEditTime: 2023-10-08 15:02:09
  */
 import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useEventListener, useInterval, useMount } from 'ahooks'
@@ -33,7 +33,7 @@ const LockSleep: FC = () => {
   const checkTimeout = () => {
     const currentTime = new Date().getTime()
     // 判断是否超时
-    if (LOCK_SLEEP && currentTime - LOCK_SLEEP.last_time > timeOut) {
+    if (LOCK_SLEEP && (currentTime - LOCK_SLEEP.last_time > timeOut)) {
       setTrue()
       setLocalStorageItem(LOCAL_STORAGE.LOCK_SLEEP, { ...LOCK_SLEEP, isSleep: true })
     }
@@ -51,10 +51,9 @@ const LockSleep: FC = () => {
     })
   };
 
-  // 每隔10分钟执行一次
   useInterval(() => {
     checkTimeout()
-  }, 10 * 60 * 1000);
+  }, timeOut);
 
   // 监听用户是否有操作行为
   useEventListener('mousemove', () => {

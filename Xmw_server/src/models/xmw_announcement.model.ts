@@ -88,14 +88,6 @@ export class XmwAnnouncement
   })
   pinned: number;
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-    comment: '阅读次数',
-  })
-  read_counts: number;
-
   @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   userInfo: XmwUser;
 

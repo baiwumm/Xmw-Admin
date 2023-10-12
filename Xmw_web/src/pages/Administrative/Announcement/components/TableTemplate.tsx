@@ -4,15 +4,15 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:09:40
+ * @LastEditTime: 2023-10-12 15:42:55
  */
 import { EyeOutlined } from '@ant-design/icons';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
 import { Avatar, Badge, Form, message, Popconfirm, Space, Statistic, Switch, Tag, Typography } from 'antd'
-import { eq, mapValues, pick } from 'lodash-es'
-import { createRef, FC, useRef, useState } from 'react';
+import { eq, mapValues } from 'lodash-es'
+import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import {
@@ -22,24 +22,13 @@ import {
   operationColumn,
   statusColumn,
 } from '@/components/TableColumns'
-import {
-  announcementAlready,
-  delAnnouncement,
-  getAnnouncementList,
-  incrementAlreadyCount,
-  setPinned,
-} from '@/services/administrative/announcement'
-import { formatPerfix, formatResponse, isSuccess, randomTagColor } from '@/utils'
+import { delAnnouncement, getAnnouncementList, setPinned } from '@/services/administrative/announcement'
+import { formatPerfix, formatResponse, randomTagColor } from '@/utils'
 import { AnnouncementTypeEnum } from '@/utils/const'
-import { FLAG, INTERNATION, ROUTES } from '@/utils/enums'
-import type {
-  AlreadyParams,
-  AnnouncementDetailRefsProps,
-  PinnedParams,
-  SearchParams,
-} from '@/utils/types/administrative/announcement'
+import { EVENTBUS_TYPE, FLAG, INTERNATION, ROUTES } from '@/utils/enums'
+import eventBus from '@/utils/eventBus'
+import type { PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
 
-import AnnouncementDetail from './AnnouncementDetail'
 import FormTemplate from './FormTemplate'
 
 const { Text, Link } = Typography;
@@ -49,8 +38,6 @@ const TableTemplate: FC = () => {
   const { formatMessage } = useIntl();
   // 表单实例
   const [form] = Form.useForm<API.ANNOUNCEMENT>();
-  // 公告详情
-  const announcementDetailRefs = createRef<AnnouncementDetailRefsProps>();
   // 是否显示 Modal
   const [openModal, { setTrue: setOpenModalTrue, setFalse: setOpenModalFalse }] = useBoolean(false)
   // 切换状态 loading
@@ -70,27 +57,6 @@ const TableTemplate: FC = () => {
    */
   const { runAsync: fetchAnnouncementList } = useRequest(
     async (params) => formatResponse(await getAnnouncementList(params)), {
-    manual: true,
-  })
-
-  /**
-   * @description: 公告已读
-   * @author: 白雾茫茫丶
-   */
-  const { run: fetchAnnouncementAlready } = useRequest(async (params) => await announcementAlready(params), {
-    manual: true,
-    onSuccess: ({ code }) => {
-      if (isSuccess(code)) {
-        reloadTable()
-      }
-    },
-  })
-
-  /**
-   * @description: 已读次数
-   * @author: 白雾茫茫丶
-   */
-  const { run: fetchIncrementAlreadyCount } = useRequest(async (params) => await incrementAlreadyCount(params), {
     manual: true,
   })
 
@@ -155,17 +121,7 @@ const TableTemplate: FC = () => {
         const isAlready = eq(record.already, FLAG.YES)
         return (
           <Badge dot={!isAlready} offset={[5, 5]}>
-            <Link onClick={async () => {
-              announcementDetailRefs?.current?.setCurrentRecord(record);
-              announcementDetailRefs?.current?.setOpenDrawerTrue();
-              // 请求参数
-              const params: AlreadyParams = pick(record, 'announcement_id')
-              // 已读次数 + 1
-              fetchIncrementAlreadyCount(params)
-              if (!isAlready) {
-                fetchAnnouncementAlready(pick(record, 'announcement_id'))
-              }
-            }}>{record.title}</Link>
+            <Link onClick={() => eventBus.emit(EVENTBUS_TYPE.ANNOUNCEMENT, record, reloadTable)}>{record.title}</Link>
           </Badge>
         )
       },
@@ -255,8 +211,6 @@ const TableTemplate: FC = () => {
       <Form form={form}>
         <FormTemplate reloadTable={reloadTable} open={openModal} setOpenModalFalse={setOpenModalFalse} />
       </Form>
-      {/* 公告详情 */}
-      <AnnouncementDetail onRef={announcementDetailRefs} />
     </>
   )
 }

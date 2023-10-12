@@ -4,12 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:32:45
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-07 17:42:30
+ * @LastEditTime: 2023-10-09 13:49:28
  */
 import { ROUTES } from '@/utils/enums'
 import type { PageResponse } from '@/utils/types'
 import type {
   AlreadyParams,
+  AnnouncementType,
   CreateAnnouncementProps,
   PinnedParams,
   SearchParams,
@@ -32,17 +33,8 @@ export async function getAnnouncementList(options?: SearchParams) {
  * @param {CreateAnnouncementProps} options
  * @author: 白雾茫茫丶
  */
-export async function createAnnouncement(options: CreateAnnouncementProps) {
-  return httpRequest.post<API.ANNOUNCEMENT>(`${baseURL}`, options);
-}
-
-/**
- * @description: 更新活动公告
- * @param {API.ANNOUNCEMENT} options
- * @author: 白雾茫茫丶
- */
-export async function updateAnnouncement({ announcement_id, ...options }: API.ANNOUNCEMENT) {
-  return httpRequest.put<number[]>(`${baseURL}/${announcement_id}`, options);
+export async function saveAnnouncement(options: CreateAnnouncementProps) {
+  return httpRequest.post<API.ANNOUNCEMENT | number[]>(`${baseURL}`, options);
 }
 
 /**
@@ -73,10 +65,9 @@ export async function announcementAlready(options: AlreadyParams) {
 }
 
 /**
- * @description: 已读次数
- * @param {AlreadyParams} options
+ * @description: 查询不同消息类型的未读条数
  * @Author: 白雾茫茫丶
  */
-export async function incrementAlreadyCount(options: AlreadyParams) {
-  return httpRequest.post<number[]>(`${baseURL}/incrementAlreadyCount`, options);
+export async function queryUnreadyCount() {
+  return httpRequest.get<Record<AnnouncementType, number>>(`${baseURL}/unready`);
 }

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-08 09:20:45
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-07 16:09:46
+ * @LastEditTime: 2023-10-11 16:50:50
  */
 import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
@@ -24,7 +24,7 @@ const EnvironmentalDependence: FC = () => {
   // 渲染依赖布局
   const renderDependenciesLayout = (dataSource: Record<string, string>, title: string) => {
     return (
-      <Card title={formatMessage({ id: `${formatPerfix(ROUTES.WORKBENCH)}.${title}` })}>
+      <Card title={formatMessage({ id: `${formatPerfix(ROUTES.DEPENDENCE)}.${title}` })}>
         <Row gutter={[12, 10]}>
           {
             map(keys(dataSource), (key: string) => (

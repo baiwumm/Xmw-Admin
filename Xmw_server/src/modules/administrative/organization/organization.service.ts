@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-20 16:42:35
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:46:19
+ * @LastEditTime: 2023-10-12 09:09:01
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -68,22 +68,23 @@ export class OrganizationService {
   ): Promise<Response<SaveOrganizationDto>> {
     // 解构参数
     const { org_name, org_code } = organizationInfo;
-    // 组织名称不能相同
-    const exist = await this.organizationModel.findOne({
+    const [result, created] = await this.organizationModel.findOrCreate({
+      // 组织名称或组织编码不能相同
       where: { [Op.or]: { org_name, org_code } },
+      // 如果不存在则插入数据
+      defaults: {
+        ...organizationInfo,
+        founder: session?.currentUserInfo?.user_id,
+      },
     });
-    // 如果有结果，则证明已存在，这里存在两种情况，
-    if (exist) {
+    // 判断是否创建
+    if (created) {
+      // 保存操作日志
+      await this.operationLogsService.saveLogs(`创建组织：${org_name}`);
+      return responseMessage(result);
+    } else {
       return responseMessage({}, '组织名称或组织编码已存在!', -1);
     }
-    // 如果通过则执行 sql insert 语句
-    const result = await this.organizationModel.create({
-      ...organizationInfo,
-      founder: session?.currentUserInfo?.user_id,
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`创建组织：${org_name}`);
-    return responseMessage(result);
   }
 
   /**

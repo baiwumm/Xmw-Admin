@@ -15,6 +15,7 @@ import {
 import {
   SaveAlreadyDto,
   SaveAnnouncementDto,
+  unAlreadyDto,
   UpdatePinnedDto,
 } from './save.announcement.dto'; // 保存活动公告数据 DTO
 
@@ -26,4 +27,5 @@ export {
   CreateAnnouncementDto,
   UpdatePinnedDto,
   SaveAlreadyDto,
+  unAlreadyDto,
 };

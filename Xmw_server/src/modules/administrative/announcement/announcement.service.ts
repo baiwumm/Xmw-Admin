@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-07 17:30:35
+ * @LastEditTime: 2023-10-09 14:41:19
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -17,12 +17,14 @@ import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announ
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
+import { ANNOUNCEMENT_TYPE } from '@/utils/enums';
 import type { Flag, PageResponse, Response, SessionTypes } from '@/utils/types';
 
 import {
   ListAnnouncementDto,
   SaveAlreadyDto,
   SaveAnnouncementDto,
+  unAlreadyDto,
 } from './dto';
 
 @Injectable()
@@ -46,7 +48,8 @@ export class AnnouncementService {
     session: SessionTypes,
   ): Promise<Response<PageResponse<XmwAnnouncement>>> {
     // 解构参数
-    const { title, type, status, pinned, pageSize, current } = announcementInfo;
+    const { title, type, status, pinned, pageSize, current, unready } =
+      announcementInfo;
     // 获取 seesion 用户 id
     const user_id = session?.currentUserInfo?.user_id;
     // 拼接查询参数
@@ -55,8 +58,17 @@ export class AnnouncementService {
     if (type) where.type = { [Op.eq]: type };
     if (status) where.status = { [Op.eq]: status };
     if (pinned) where.pinned = { [Op.eq]: pinned };
+    if (unready) {
+      where.announcement_id = {
+        [Op.notIn]: this.sequelize
+          .literal(`(select announcement_id from xmw_already
+        where user_id='${user_id}')`),
+      };
+    }
+    // 查询总条数
+    const total = await this.announcementModel.count({ where });
     // 分页查询数据
-    const { count, rows } = await this.announcementModel.findAndCountAll({
+    const result = await this.announcementModel.findAll({
       attributes: {
         include: [
           'u.cn_name',
@@ -67,9 +79,13 @@ export class AnnouncementService {
             ),
             'already',
           ],
+          [
+            this.sequelize.fn('COUNT', this.sequelize.col('a.announcement_id')),
+            'read_counts',
+          ],
         ],
       },
-      distinct: true,
+      group: 'announcement_id',
       // 联表查询
       include: [
         {
@@ -92,44 +108,28 @@ export class AnnouncementService {
         ['created_time', 'desc'],
       ], // 排序规则,
     });
-    return responseMessage({ list: rows, total: count });
+    return responseMessage({ list: result, total });
   }
 
   /**
-   * @description: 创建活动公告
+   * @description: 保存活动公告
    * @author: 白雾茫茫丶
    */
-  async createAnnouncement(
-    announcementInfo: SaveAnnouncementDto,
+  async saveAnnouncement(
+    { announcement_id, ...announcementInfo }: SaveAnnouncementDto,
     session: SessionTypes,
   ): Promise<Response<SaveAnnouncementDto>> {
-    // 如果通过则执行 sql insert 语句
-    const result = await this.announcementModel.create({
-      ...announcementInfo,
-      user_id: session?.currentUserInfo?.user_id,
-    });
+    // 获取当前登录用户 id
+    const user_id = session?.currentUserInfo?.user_id;
+    // 判断是新增还是更新
+    const result = announcement_id
+      ? await this.announcementModel.update(announcementInfo, {
+        where: { announcement_id },
+      })
+      : await this.announcementModel.create({ user_id, ...announcementInfo });
     // 保存操作日志
     await this.operationLogsService.saveLogs(
-      `创建活动公告：${announcementInfo.title}`,
-    );
-    return responseMessage(result);
-  }
-
-  /**
-   * @description: 编辑活动公告
-   * @author: 白雾茫茫丶
-   */
-  async updateAnnouncement(
-    announcement_id: string,
-    announcementInfo: SaveAnnouncementDto,
-  ): Promise<Response<SaveAnnouncementDto>> {
-    // 如果通过则执行 sql update 语句
-    const result = await this.announcementModel.update(announcementInfo, {
-      where: { announcement_id },
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `编辑活动公告：${announcementInfo.title}`,
+      `${announcement_id ? '编辑' : '创建'}活动公告：${announcementInfo.title}`,
     );
     return responseMessage(result);
   }
@@ -185,37 +185,64 @@ export class AnnouncementService {
   ): Promise<Response<SaveAlreadyDto>> {
     // 获取当前登录用户 id
     const user_id = session?.currentUserInfo?.user_id;
-    // 已阅读的公告不再重复录入
-    const exist = await this.alreadyModel.findOne({
-      where: { [Op.and]: { announcement_id, user_id } },
-    });
-    if (exist) {
-      return responseMessage({}, '当前用户已阅读此公告');
-    }
-    // 如果通过则执行 sql insert 语句
-    const result = await this.alreadyModel.create({
-      announcement_id,
-      user_id,
-    });
+    // 插入一条已读数据
+    const result = await this.alreadyModel.create({ announcement_id, user_id });
     return responseMessage(result);
   }
 
   /**
-   * @description: 已读次数
+   * @description: 查询不同消息类型的未读条数
    * @author: 白雾茫茫丶
    */
-  async incrementAlreadyCount(
-    announcement_id: string,
-  ): Promise<Response<SaveAnnouncementDto>> {
-    // 将阅读次数+1
-    const result = await this.announcementModel.increment(
-      { read_counts: 1 },
-      {
-        where: {
-          announcement_id,
-        },
+  async queryUnreadyCount(
+    session: SessionTypes,
+  ): Promise<Response<unAlreadyDto>> {
+    // 获取当前登录用户 id
+    const user_id = session?.currentUserInfo?.user_id;
+    // 查询条件
+    const where: WhereOptions = {
+      announcement_id: {
+        [Op.notIn]: this.sequelize
+          .literal(`(select announcement_id from xmw_already
+        where user_id='${user_id}')`),
       },
-    );
-    return responseMessage(result);
+    };
+    // 查询不同消息类型的条数
+    const total = await this.announcementModel.count({
+      where: {
+        ...where,
+      },
+    }); // 总条数
+    const announcement = await this.announcementModel.count({
+      where: {
+        type: ANNOUNCEMENT_TYPE.ANNOUNCEMENT,
+        ...where,
+      },
+    }); // 公告
+    const activity = await this.announcementModel.count({
+      where: {
+        type: ANNOUNCEMENT_TYPE.ACTIVITY,
+        ...where,
+      },
+    }); // 活动
+    const message = await this.announcementModel.count({
+      where: {
+        type: ANNOUNCEMENT_TYPE.MESSAGE,
+        ...where,
+      },
+    }); // 消息
+    const notification = await this.announcementModel.count({
+      where: {
+        type: ANNOUNCEMENT_TYPE.NOTIFICATION,
+        ...where,
+      },
+    }); // 通知
+    return responseMessage({
+      total,
+      announcement,
+      activity,
+      message,
+      notification,
+    });
   }
 }

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 14:31:27
+ * @LastEditTime: 2023-10-08 15:24:11
  */
 import { FormattedMessage, useIntl } from '@umijs/max';
 import { message, Space, Tabs, TabsProps } from 'antd';
@@ -48,7 +48,7 @@ export const TabsLayout = () => {
           onEdit={(targetKey) => {
             // 如果只有一个 tabs ，不能关闭
             if (tabsItems.length <= 1) {
-              message.info(formatMessage({ id: 'tabs.close' }))
+              message.info(formatMessage({ id: 'components.TabsLayout.close' }))
               return
             }
             // 获取当前 tab 的索引

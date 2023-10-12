@@ -92,3 +92,44 @@ export class SaveAlreadyDto {
   })
   user_id: string;
 }
+
+/**
+ * @description: 未读消息条数
+ * @author: 白雾茫茫丶
+ */
+export class unAlreadyDto {
+  @ApiProperty({
+    type: Number,
+    description: '总条数',
+    default: 88,
+  })
+  total: number;
+
+  @ApiProperty({
+    type: Number,
+    description: '公告',
+    default: 32,
+  })
+  announcement: number;
+
+  @ApiProperty({
+    type: Number,
+    description: '活动',
+    default: 20,
+  })
+  activity: number;
+
+  @ApiProperty({
+    type: Number,
+    description: '消息',
+    default: 16,
+  })
+  message: number;
+
+  @ApiProperty({
+    type: Number,
+    description: '通知',
+    default: 20,
+  })
+  notification: number;
+}

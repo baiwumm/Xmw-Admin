@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-11-09 17:44:15
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:26:29
+ * @LastEditTime: 2023-10-12 09:21:47
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -95,23 +95,23 @@ export class UserManagementService {
   ): Promise<Response<SaveUserManagementDto>> {
     // 解构参数
     const { user_name, work_no, phone } = userInfo;
-    // 用户名称和用户工号、手机号码不能相同
-    const exist = await this.userModel.findOne({
+    const [result, created] = await this.userModel.findOrCreate({
+      // 用户名称和用户工号、手机号码不能相同
       where: { [Op.or]: { user_name, work_no, phone } },
+      // 如果不存在则插入数据
+      defaults: {
+        ...userInfo,
+        founder: session?.currentUserInfo?.user_id,
+      },
     });
-    // 如果有结果，则证明已存在，这里存在两种情况，
-    if (exist) {
+    // 判断是否创建
+    if (created) {
+      // 保存操作日志
+      await this.operationLogsService.saveLogs(`创建用户：${user_name}`);
+      return responseMessage(result);
+    } else {
       return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
     }
-
-    // 如果通过则执行 sql insert 语句
-    const result = await this.userModel.create({
-      ...userInfo,
-      founder: session.currentUserInfo.user_id,
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`创建用户：${user_name}`);
-    return responseMessage(result);
   }
 
   /**

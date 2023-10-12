@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-27 10:12:33
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:14:00
+ * @LastEditTime: 2023-10-09 10:27:57
  */
 import type {
   AnnouncementTypes,
@@ -51,7 +51,6 @@ export type AnnouncementAttributes = {
   content: string; // 正文内容
   type: AnnouncementTypes; // 类型
   pinned: Flag; // 是否置顶
-  read_counts: number; // 阅读次数
 } & Times &
   Pick<UserAttributes, 'user_id'> &
   Pick<CommonTypes, 'status'>;
