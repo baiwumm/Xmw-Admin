@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 15:36:09
+ * @LastEditTime: 2023-10-16 10:17:50
  */
 import { ProConfigProvider, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
 import { useBoolean } from 'ahooks'
-import { App, ConfigProvider, Space, Typography } from 'antd'
+import { Space, Typography } from 'antd'
 import { eq, last, toString } from 'lodash-es'
 
 import Footer from '@/components/Footer'; // 全局底部版权组件
@@ -18,7 +18,14 @@ import { IconFont } from '@/utils/const'
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 import type { InitialStateTypes } from '@/utils/types'
 
-import { actionsRender, AnnouncementDetail, appList, avatarProps, LockScreenModal, LockSleep } from './components'
+import {
+	actionsRender,
+	AnnouncementDetail,
+	appList, avatarProps,
+	EventSourceNotice,
+	LockScreenModal,
+	LockSleep,
+} from './components'
 
 const { Paragraph } = Typography;
 
@@ -103,17 +110,15 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 			return (
 				<>
 					<ProConfigProvider>
-						<ConfigProvider>
-							<App>
-								{children}
-								{/* 锁屏弹窗 */}
-								<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
-								{/* 睡眠弹窗 */}
-								<LockSleep />
-								{/* 公告详情 */}
-								<AnnouncementDetail />
-							</App>
-						</ConfigProvider>
+						{children}
+						{/* 锁屏弹窗 */}
+						<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
+						{/* 睡眠弹窗 */}
+						<LockSleep />
+						{/* 公告详情 */}
+						<AnnouncementDetail />
+						{/* 消息通知 */}
+						<EventSourceNotice />
 						<SettingDrawer
 							disableUrlParams
 							enableDarkTheme

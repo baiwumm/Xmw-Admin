@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-13 11:33:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:10:11
+ * @LastEditTime: 2023-10-17 13:49:20
  */
 import { DrawerForm } from '@ant-design/pro-components';
-import { Form, message } from 'antd';
+import { App, Form } from 'antd';
 import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
@@ -26,6 +26,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	open,
 	setOpenDrawerFalse,
 }) => {
+	// hooks 调用
+	const { message } = App.useApp();
 	// 上下文表单实例
 	const form = Form.useFormInstance()
 	// 获取表单全部字段

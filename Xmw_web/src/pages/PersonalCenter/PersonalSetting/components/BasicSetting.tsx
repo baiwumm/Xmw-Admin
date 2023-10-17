@@ -9,7 +9,7 @@
 import { ProForm } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
-import { Divider, message, Row } from 'antd'
+import { App, Divider, Row } from 'antd'
 import { FC } from 'react'
 
 import PersonalInformation from '@/pages/System/UserManagement/Steps/PersonalInformation' // 个人信息
@@ -21,6 +21,8 @@ import { ROUTES } from '@/utils/enums'
 
 const BasicSetting: FC = () => {
   const { formatMessage } = useIntl();
+  // hooks 调用
+  const { message } = App.useApp();
   // 获取全局状态
   const { initialState, setInitialState } = useModel('@@initialState');
 

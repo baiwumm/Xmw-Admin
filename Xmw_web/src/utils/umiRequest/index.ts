@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-06 10:12:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:44:45
+ * @LastEditTime: 2023-10-17 09:18:19
  */
 import 'nprogress/nprogress.css';
 
@@ -14,7 +14,7 @@ import { debounce } from 'lodash-es'; // lodash 工具函数
 import Nprogress from 'nprogress';
 
 import { getLocalStorageItem, isSuccess, logoutToLogin } from '@/utils' // 全局工具函数
-import { LOCAL_STORAGE, REQUEST_CODE } from '@/utils/enums'
+import { BASEURL, LOCAL_STORAGE, REQUEST_CODE } from '@/utils/enums'
 import type { Response } from '@/utils/types'
 
 /**
@@ -31,7 +31,7 @@ const debounceError = debounce((content: string, duration = 3) => {
  * @author: 白雾茫茫丶
  */
 const umiRequest: RequestConfig = {
-  baseURL: '/api', // 请求前缀
+  baseURL: BASEURL.API, // 请求前缀
   timeout: 30 * 1000, // 超时时间，默认 30 s
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {

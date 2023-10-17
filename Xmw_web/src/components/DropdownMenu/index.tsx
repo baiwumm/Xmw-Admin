@@ -4,11 +4,11 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 17:50:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:07:11
+ * @LastEditTime: 2023-10-17 11:32:03
  */
 import { ClusterOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons' // antd 图标库
 import { Access, useAccess, useIntl } from '@umijs/max'
-import { Button, Dropdown, MenuProps, message, Modal } from 'antd'
+import { App, Button, Dropdown, MenuProps } from 'antd'
 import { filter, get } from 'lodash-es'
 import { FC } from 'react'
 
@@ -41,6 +41,8 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   const { formatMessage } = useIntl();
   // 权限定义集合
   const access = useAccess();
+  // hooks 调用
+  const { modal, message } = App.useApp();
   // 国际化前缀
   const formatPerfix = formatPathName(pathName)
   // 下拉菜单
@@ -99,7 +101,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
         break;
       // 删除
       case OPERATION.DELETE:
-        Modal.confirm({
+        modal.confirm({
           title: formatMessage({ id: INTERNATION.DELETE_TITLE }),
           content: formatMessage({ id: INTERNATION.DELETE_CONTENT }),
           onOk: async () => {

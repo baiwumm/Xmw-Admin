@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-12 17:06:37
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:34:36
+ * @LastEditTime: 2023-10-16 11:07:15
  */
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // swagger 接口文档

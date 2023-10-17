@@ -8,7 +8,7 @@
  */
 
 import { DrawerForm } from '@ant-design/pro-components';
-import { Form, message } from 'antd';
+import { App, Form } from 'antd';
 import { get, isString } from 'lodash-es';
 import type { FC } from 'react';
 
@@ -27,6 +27,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	open,
 	setOpenDrawerFalse,
 }) => {
+	// hooks 调用
+	const { message } = App.useApp();
 	// 上下文表单实例
 	const form = Form.useFormInstance()
 	// 获取表单全部字段

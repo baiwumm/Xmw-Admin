@@ -9,7 +9,7 @@
 import { StepsForm } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { useCounter } from 'ahooks'
-import { message, Modal } from 'antd';
+import { App, Modal } from 'antd';
 import { get, subtract } from 'lodash-es'
 import { FC } from 'react';
 
@@ -29,6 +29,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	stepFormMapRef,
 }) => {
 	const { formatMessage } = useIntl()
+	// hooks 调用
+	const { message } = App.useApp();
 	// 获取表单全部字段
 	const { user_id, user_name } =
 		get(stepFormMapRef, 'current.[0].current')?.getFieldsValue(['user_id', 'user_name']) || {}

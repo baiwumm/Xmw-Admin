@@ -24,6 +24,14 @@ export enum REQUEST_METHODS {
 }
 
 /**
+ * @description: 请求前缀
+ * @author: 白雾茫茫丶
+ */
+export enum BASEURL {
+  API = '/api'
+}
+
+/**
  * @description: 存储在 localstorage 的 key
  * @author: 白雾茫茫丶
  */
@@ -212,5 +220,6 @@ export enum LANGS {
  * @author: 白雾茫茫丶
  */
 export enum EVENTBUS_TYPE {
-  ANNOUNCEMENT = 'Announcement-Detail', // 查看公告详情
+  ANNOUNCEMENT = 'announcement-detail', // 查看公告详情
+  UPDATEUNREADYCOUNT = 'update-unready-count', // 更新未读消息数量
 }

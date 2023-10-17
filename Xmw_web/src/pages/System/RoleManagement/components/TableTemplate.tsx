@@ -10,7 +10,7 @@ import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
-import { Form, message, Popconfirm, Space, Switch, Tag } from 'antd'
+import { App, Form, Popconfirm, Space, Switch, Tag } from 'antd'
 import { map } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
@@ -35,6 +35,8 @@ import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
+	// hooks 调用
+	const { message } = App.useApp();
 	// 表单实例
 	const [form] = Form.useForm<API.ROLEMANAGEMENT>();
 	// 获取表格实例

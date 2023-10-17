@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 15:42:55
+ * @LastEditTime: 2023-10-17 13:49:00
  */
 import { EyeOutlined } from '@ant-design/icons';
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
-import { Avatar, Badge, Form, message, Popconfirm, Space, Statistic, Switch, Tag, Typography } from 'antd'
+import { App, Avatar, Badge, Form, Popconfirm, Space, Statistic, Switch, Tag, Typography } from 'antd'
 import { eq, mapValues } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
@@ -36,6 +36,8 @@ const { Text, Link } = Typography;
 const TableTemplate: FC = () => {
   // 国际化工具
   const { formatMessage } = useIntl();
+  // hooks 调用
+  const { message } = App.useApp();
   // 表单实例
   const [form] = Form.useForm<API.ANNOUNCEMENT>();
   // 是否显示 Modal

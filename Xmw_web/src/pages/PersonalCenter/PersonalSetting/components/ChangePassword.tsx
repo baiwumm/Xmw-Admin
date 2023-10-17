@@ -9,7 +9,7 @@
 import { ProFormText } from '@ant-design/pro-components';
 import { useIntl, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
-import { Button, Form, message, Modal } from 'antd'
+import { App, Button, Form, Modal } from 'antd'
 import type { FC } from 'react'
 
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
@@ -27,6 +27,8 @@ type PasswordParams = {
 
 const ChangePassword: FC = () => {
   const { formatMessage } = useIntl();
+  // hooks 调用
+  const { message } = App.useApp();
   // 获取全局状态
   const { initialState, setInitialState } = useModel('@@initialState');
   // 表单实例

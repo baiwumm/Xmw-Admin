@@ -9,7 +9,7 @@
 import { MobileOutlined } from '@ant-design/icons';
 import { ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
-import { message } from 'antd'
+import { App } from 'antd'
 import type { FC } from 'react'
 
 import { formatPerfix } from '@/utils'
@@ -17,6 +17,8 @@ import { INTERNATION, ROUTES } from '@/utils/enums'
 
 const Mobile: FC = () => {
 	const { formatMessage } = useIntl();
+	// hooks 调用
+	const { message } = App.useApp();
 	return (
 		<>
 			<ProFormText

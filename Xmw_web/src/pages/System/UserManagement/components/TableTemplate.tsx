@@ -11,7 +11,7 @@ import { ActionType, ColumnsState, ProColumns, ProFormInstance, ProTable } from 
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
-import { message, Popconfirm, Space, Switch, Tag } from 'antd'
+import { App, Popconfirm, Space, Switch, Tag } from 'antd'
 import { cloneDeep } from 'lodash-es'
 import { FC, MutableRefObject, useRef, useState } from 'react';
 
@@ -35,6 +35,8 @@ import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
+	// hooks 调用
+	const { message } = App.useApp();
 	// 分步表单实例
 	const stepFormMapRef = useRef<MutableRefObject<ProFormInstance>[]>([]);
 	// 获取表格实例

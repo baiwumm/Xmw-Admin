@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:14:59
+ * @LastEditTime: 2023-10-17 13:51:38
  */
 
 import { LoginForm } from '@ant-design/pro-components';
 import { history, SelectLang, useIntl, useModel } from '@umijs/max'
 import { useDebounceFn, useRequest } from 'ahooks';
-import { Col, message, notification, Row, Tabs, TabsProps, Typography } from 'antd'
+import { App, Col, Row, Tabs, TabsProps, Typography } from 'antd'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { FC, useState } from 'react';
@@ -32,6 +32,8 @@ const LoginPage: FC = () => {
   const { formatMessage } = useIntl();
   // 初始化状态
   const { initialState, setInitialState } = useModel('@@initialState');
+  // hooks 调用
+  const { notification, message } = App.useApp();
   // 用户登录类型
   const [loginType, setLoginType] = useState<LoginType>(LOGIN_TYPE.ACCOUNT);
   /**

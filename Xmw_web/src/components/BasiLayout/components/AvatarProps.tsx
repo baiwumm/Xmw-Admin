@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 14:51:38
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:06:29
+ * @LastEditTime: 2023-10-17 11:19:56
  */
 import { LockOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { HeaderProps } from '@ant-design/pro-components'
 import { history, useIntl, useModel } from '@umijs/max'
 import { useRequest } from 'ahooks'
-import { Dropdown, MenuProps, Modal } from 'antd'
+import { App, Dropdown, MenuProps } from 'antd'
 import type { MenuInfo } from 'rc-menu/lib/interface';
 
 import { Logout } from '@/services/logic/login'
@@ -22,6 +22,8 @@ import type { InitialStateTypes } from '@/utils/types'
 export default function AvatarProps(openLockScreen: () => void): HeaderProps['avatarProps'] {
   // 国际化方法
   const { formatMessage } = useIntl();
+  // hooks 调用
+  const { modal } = App.useApp();
   // 获取全局状态
   const { initialState, setInitialState } = useModel('@@initialState');
   /**
@@ -45,7 +47,7 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
    * @author: 白雾茫茫丶
    */
   const logOutClick = () => {
-    Modal.confirm({
+    modal.confirm({
       title: formatMessage({ id: INTERNATION.WARM_TIPS }),
       content: formatMessage({ id: 'pages.logout.tip' }),
       onOk: async () => {

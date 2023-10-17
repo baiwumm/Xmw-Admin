@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-19 11:19:47
- * @LastEditors: Cyan
- * @LastEditTime: 2023-01-17 14:10:05
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2023-10-16 11:37:52
  */
 import {
   Body,
@@ -59,9 +59,8 @@ export class OrganizationController {
   @ApiOkResponse({ type: ResponseOrganizationDto })
   @ApiOperation({ summary: '获取组织管理列表' })
   async getOrganizationList(@Query() organizationInfo: ListOrganizationDto) {
-    const response = await this.organizationService.getOrganizationList(
-      organizationInfo,
-    );
+    const response =
+      await this.organizationService.getOrganizationList(organizationInfo);
     return response;
   }
 

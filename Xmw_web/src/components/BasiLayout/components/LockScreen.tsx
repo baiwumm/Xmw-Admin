@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 14:20:20
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-14 15:50:19
+ * @LastEditTime: 2023-10-17 13:46:15
  */
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl, useModel } from '@umijs/max'
 import { useLocalStorageState } from 'ahooks'
-import { Avatar, Button, Col, Form, Input, message, Row, Typography } from 'antd'
+import { App, Avatar, Button, Col, Form, Input, Row, Typography } from 'antd'
 import type { FC } from 'react'
 
 import { encryptionAesPsd } from '@/utils'
@@ -21,6 +21,8 @@ const LockScreen: FC<{ setLockPageFalse: () => void }> = ({ setLockPageFalse }) 
   const { formatMessage } = useIntl();
   // 获取全局状态
   const { initialState } = useModel('@@initialState');
+  // hooks 调用
+  const { message } = App.useApp();
   // 表单实例
   const [form] = Form.useForm()
   // 获取锁屏密码

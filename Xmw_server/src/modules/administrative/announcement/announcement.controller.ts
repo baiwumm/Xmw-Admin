@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:17
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-09 10:16:52
+ * @LastEditTime: 2023-10-17 13:56:50
  */
 import {
   Body,
@@ -16,6 +16,7 @@ import {
   Post,
   Query,
   Session,
+  Sse,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -26,9 +27,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
+import { EventEmitter } from 'events';
+import { get } from 'lodash';
+import { Observable } from 'rxjs';
 
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import type { SessionTypes } from '@/utils/types';
+import { AnnouncementAttributes } from '@/utils/types/administrative';
 
 import { AnnouncementService } from './announcement.service'; // Announcement Service
 import {
@@ -39,6 +44,8 @@ import {
   SaveAnnouncementDto,
   UpdatePinnedDto,
 } from './dto';
+
+const eventEmitter = new EventEmitter();
 
 /* swagger 文档 */
 @ApiTags('智能行政-活动公告')
@@ -72,6 +79,19 @@ export class AnnouncementController {
   }
 
   /**
+   * @description: 服务端推送事件
+   * @author: 白雾茫茫丶
+   */
+  @Sse('sse')
+  sse(): Observable<MessageEvent> {
+    return new Observable<any>((observer) => {
+      eventEmitter.on('send', (data: AnnouncementAttributes) => {
+        observer.next({ data });
+      });
+    });
+  }
+
+  /**
    * @description: 创建活动公告
    * @author: 白雾茫茫丶
    */
@@ -87,6 +107,13 @@ export class AnnouncementController {
       announcementInfo,
       session,
     );
+    // 发布文章的时候推送消息给客户端
+    if (!announcementInfo.announcement_id) {
+      eventEmitter.emit('send', {
+        ...get(response, 'data.dataValues', {}),
+        ...session.currentUserInfo,
+      });
+    }
     return response;
   }
 
@@ -101,6 +128,7 @@ export class AnnouncementController {
   async deleteAnnouncement(@Param('announcement_id') announcement_id: string) {
     const response =
       await this.announcementService.deleteAnnouncement(announcement_id);
+    eventEmitter.emit('send', {});
     return response;
   }
 

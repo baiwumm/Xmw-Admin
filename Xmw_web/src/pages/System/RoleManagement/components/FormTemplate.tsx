@@ -8,7 +8,7 @@
  */
 
 import { ModalForm } from '@ant-design/pro-components';
-import { Form, message } from 'antd';
+import { App, Form } from 'antd';
 import type { FC } from 'react';
 
 import { renderFormTitle } from '@/components/TableColumns'
@@ -20,6 +20,8 @@ import type { FormTemplateProps } from '@/utils/types/system/role-management'
 import FormTemplateItem from './FormTemplateItem' // 表单组件 
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenDrawerFalse }) => {
+	// hooks 调用
+	const { message } = App.useApp();
 	// 上下文表单实例
 	const form = Form.useFormInstance()
 	// 获取表单全部字段

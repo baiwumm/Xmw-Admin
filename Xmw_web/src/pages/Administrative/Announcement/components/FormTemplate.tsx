@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-29 09:49:55
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:08:37
+ * @LastEditTime: 2023-10-16 10:12:49
  */
 import { ModalForm } from '@ant-design/pro-components'; // 高级组件
-import { Form, message } from 'antd'
+import { App, Form } from 'antd'
 import { FC } from 'react'
 
 import { renderFormTitle } from '@/components/TableColumns'
@@ -19,6 +19,8 @@ import type { FormTemplateProps } from '@/utils/types/administrative/announcemen
 import FormTemplateItem from '../components/FormTemplateItem' // 表单组件 
 
 const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenModalFalse }) => {
+  // hooks 调用
+  const { message } = App.useApp();
   // 上下文表单实例
   const form = Form.useFormInstance()
   // 获取表单全部字段
@@ -36,8 +38,9 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenModalFa
 
   // 提交表单
   const handlerSubmit = async (values: API.ANNOUNCEMENT) => {
+    const params: API.ANNOUNCEMENT = { ...values, announcement_id }
     // 提交数据
-    await saveAnnouncement({ ...values, announcement_id }).then(({ code, msg }) => {
+    await saveAnnouncement(params).then(({ code, msg }) => {
       if (isSuccess(code)) {
         message.success(msg);
         // 刷新表格

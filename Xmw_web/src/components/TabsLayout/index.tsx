@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 15:24:11
+ * @LastEditTime: 2023-10-17 13:47:55
  */
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { message, Space, Tabs, TabsProps } from 'antd';
+import { App, Space, Tabs, TabsProps } from 'antd';
 import { findIndex, isString, last } from 'lodash-es'
 
 import { IconFont } from '@/utils/const'
@@ -22,6 +22,8 @@ export const TabsLayout = () => {
   }: any) => {
     // 国际化工具
     const { formatMessage } = useIntl();
+    // hooks 调用
+    const { message } = App.useApp();
     // Tabs 配置项
     const tabsItems: TabsProps['items'] = Object.entries(keepElements.current).map(
       ([pathname]) => {

@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 09:07:52
+ * @LastEditTime: 2023-10-17 13:47:26
  */
 import { PlusOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
-import { Input, InputRef, message, Tag, Tooltip } from 'antd';
+import { App, Input, InputRef, Tag, Tooltip } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react'
 
 import { updateUser } from '@/services/system/user-management' // 用户管理接口
@@ -25,6 +25,8 @@ type IProps = {
 const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
 	// 获取全局状态
 	const { initialState, setInitialState } = useModel('@@initialState');
+	// hooks 调用
+	const { message } = App.useApp();
 	// 自定义默认标签
 	const [tags, setTags] = useState<string[]>([]);
 	// 控制 input 框显隐

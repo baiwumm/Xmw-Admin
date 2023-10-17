@@ -8,7 +8,7 @@
  */
 import { BellOutlined } from '@ant-design/icons'
 import { useIntl } from '@umijs/max'
-import { useRequest } from 'ahooks'
+import { useMount, useRequest, useUnmount } from 'ahooks'
 import { Avatar, Badge, Card, ConfigProvider, List, Popover, Spin, Tabs } from 'antd'
 import { get, map } from 'lodash-es'
 import { FC, useState } from 'react'
@@ -114,6 +114,14 @@ const NoticeBell: FC = () => {
       />
     </Card>
   )
+
+  useMount(() => {
+    eventBus.on(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount)
+  })
+
+  useUnmount(() => {
+    eventBus.off(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount)
+  })
   return (
     <>
       <ConfigProvider theme={{

@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-28 09:45:19
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 15:36:30
+ * @LastEditTime: 2023-10-17 13:58:53
  */
 import { useBoolean, useMount, useRequest, useUnmount } from 'ahooks'
 import { Avatar, ConfigProvider, Drawer, List, Typography } from 'antd';
@@ -63,7 +63,7 @@ const AnnouncementDetail: FC = () => {
     eventBus.off(EVENTBUS_TYPE.ANNOUNCEMENT, handleAnnouncementDetails)
   })
   return (
-    <Drawer open={open} onClose={handlerCancel} width={450}>
+    <Drawer open={open} onClose={handlerCancel} width={450} zIndex={1060}>
       <ConfigProvider theme={{
         components: {
           List: {

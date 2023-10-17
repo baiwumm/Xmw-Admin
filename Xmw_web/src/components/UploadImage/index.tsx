@@ -15,7 +15,7 @@ import {
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { useBoolean } from 'ahooks'
-import { message, Space, Spin, Typography, Upload } from 'antd'
+import { App, Space, Spin, Typography, Upload } from 'antd'
 import type { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload';
 import ImgCrop, { ImgCropProps } from 'antd-img-crop';
 import { get, isEmpty } from 'lodash-es'
@@ -49,6 +49,8 @@ const UploadImage: FC<UploadImageProps> = ({
 }) => {
   // 多语言函数
   const { formatMessage } = useIntl();
+  // hooks 调用
+  const { message } = App.useApp();
   // 获取 Token
   const ACCESS_TOKEN = getLocalStorageItem<string>(LOCAL_STORAGE.ACCESS_TOKEN)
   // 上传图片loading

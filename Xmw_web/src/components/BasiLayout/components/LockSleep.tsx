@@ -4,11 +4,11 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-06 16:40:34
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-08 15:02:09
+ * @LastEditTime: 2023-10-17 13:46:32
  */
 import { useIntl, useModel } from '@umijs/max'
 import { useBoolean, useEventListener, useInterval, useMount } from 'ahooks'
-import { Avatar, Button, Col, Form, Input, message, Modal, Row, Typography } from 'antd'
+import { App, Avatar, Button, Col, Form, Input, Modal, Row, Typography } from 'antd'
 import type { FC } from 'react'
 
 import { encryptionAesPsd, getLocalStorageItem, setLocalStorageItem } from '@/utils'
@@ -23,6 +23,8 @@ const timeOut = 60 * 60 * 1000
 const LockSleep: FC = () => {
   const { formatMessage } = useIntl();
   const { initialState } = useModel('@@initialState');
+  // hooks 调用
+  const { message } = App.useApp();
   // 弹窗显示
   const [openModal, { setTrue, setFalse }] = useBoolean(false);
   // 表单实例
