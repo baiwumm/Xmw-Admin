@@ -2,7 +2,7 @@ Language : [中文](./README.md) | 英文
 
 <p align="center"><img width="100" src="https://cdn.baiwumm.com/project/xmw-admin/logo.svg" alt="Xmw Admin"></p>
 <h1 align="center">Xmw Admin</h1>
-<p align="center">Background application developed based on React +Nest</p>
+<p align="center">Background system based on React + Nest full stack development</p>
 
 ## 🪴 Project Introduction
 - 🎯 Front-end technology stack: [React](https://react.dev/)、[Ant Design](https://ant.design/)、[Umi](https://umijs.org/)、[TypeScript](https://github.com/microsoft/TypeScript)
@@ -18,9 +18,9 @@ Language : [中文](./README.md) | 英文
 
 - 😝 Vue2 version: [Vue Admin](https://github.com/baiwumm/Vue2-Admin/)
 
-- [🚀 github 仓库地址](https://github.com/baiwumm/Vue-Admin/)
+- [🚀 github 仓库地址](https://github.com/baiwumm/Xmw-Admin/)
 
-- [🚀 码云仓库地址](https://gitee.com/baiwumm/Vue-Admin/)
+- [🚀 码云仓库地址](https://gitee.com/baiwumm/Xmw-Admin/)
 
 - ❤️ star：**If possible, please give me a star to express my encouragement to the author. Thank you very much!**
 
@@ -63,7 +63,7 @@ pnpm start:dev
 pnpm build
 ```
 
-## Function Module
+## 🪴 Function Module
 
 ```
 - Login / Logout
@@ -97,7 +97,7 @@ pnpm build
 
 ```
 
-## Demo Figure
+## 🪴 Demo Figure
 
 | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png!baiwu) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |

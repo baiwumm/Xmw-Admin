@@ -2,7 +2,7 @@ Language : 中文 | [英文](./README.en-US.md)
 
 <p align="center"><img width="100" src="https://cdn.baiwumm.com/project/xmw-admin/logo.svg" alt="Xmw Admin"></p>
 <h1 align="center">Xmw Admin</h1>
-<p align="center">基于 React +Nest 开发的后台应用</p>
+<p align="center">基于 React + Nest 全栈开发的后台系统</p>
 
 ## 🪴 项目简介
 - 🎯 前端技术栈： [React](https://react.dev/)、[Ant Design](https://ant.design/)、[Umi](https://umijs.org/)、[TypeScript](https://github.com/microsoft/TypeScript)
@@ -18,9 +18,9 @@ Language : 中文 | [英文](./README.en-US.md)
 
 - 😝 Vue2版本： [Vue Admin](https://github.com/baiwumm/Vue2-Admin/)
 
-- [🚀 github 仓库地址](https://github.com/baiwumm/Vue-Admin/)
+- [🚀 github 仓库地址](https://github.com/baiwumm/Xmw-Admin/)
 
-- [🚀 码云仓库地址](https://gitee.com/baiwumm/Vue-Admin/)
+- [🚀 码云仓库地址](https://gitee.com/baiwumm/Xmw-Admin/)
 
 - ❤️ star：**如果可以的话，请顺手给个star，表示对作者的鼓励，万分感谢！**
 
@@ -63,7 +63,7 @@ pnpm start:dev
 pnpm build
 ```
 
-## 功能模块
+## 🪴 功能模块
 
 ```
 - 登录 / 注销
@@ -97,7 +97,7 @@ pnpm build
 
 ```
 
-## 演示图
+## 🪴 演示图
 
 | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png!baiwu) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
