@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-16 10:17:50
+ * @LastEditTime: 2023-10-19 15:47:21
  */
 import { ProConfigProvider, SettingDrawer, Settings as LayoutSettings } from '@ant-design/pro-components';
 import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
@@ -19,12 +19,13 @@ import { LOCAL_STORAGE, ROUTES } from '@/utils/enums'
 import type { InitialStateTypes } from '@/utils/types'
 
 import {
+	ActionButtons,
 	actionsRender,
 	AnnouncementDetail,
 	appList, avatarProps,
 	EventSourceNotice,
 	LockScreenModal,
-	LockSleep,
+	LockSleep
 } from './components'
 
 const { Paragraph } = Typography;
@@ -119,6 +120,9 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 						<AnnouncementDetail />
 						{/* 消息通知 */}
 						<EventSourceNotice />
+						{/* 全局通用按钮 */}
+						<ActionButtons />
+						{/* 工具栏 */}
 						<SettingDrawer
 							disableUrlParams
 							enableDarkTheme
