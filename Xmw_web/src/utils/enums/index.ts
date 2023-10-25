@@ -223,3 +223,15 @@ export enum EVENTBUS_TYPE {
   ANNOUNCEMENT = 'announcement-detail', // 查看公告详情
   UPDATEUNREADYCOUNT = 'update-unready-count', // 更新未读消息数量
 }
+
+/**
+ * @description: TabsLayout 多标签类型
+ * @author: 白雾茫茫丶
+ */
+export enum TABSLAYOUT {
+  CLOSE = 'close', // 关闭当前
+  REFRESH = 'refresh', // 重新加载
+  RIGHT = 'right', // 关闭右侧
+  LEFT = 'left', // 关闭左侧
+  OTHERS = 'others', // 关闭其它
+}

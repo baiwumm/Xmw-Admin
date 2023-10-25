@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-17 20:33:50
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 15:31:19
+ * @LastEditTime: 2023-10-24 09:43:51
  */
 
 import { Settings as LayoutSettings } from '@ant-design/pro-components'; // 高级组件
@@ -12,7 +12,7 @@ import { addLocale, history } from '@umijs/max';
 import { assign, eq, forEach, get, isEmpty, isNil } from 'lodash-es'
 
 import { BasiLayout } from '@/components/BasiLayout'; // 全局 layout 布局
-import { TabsLayout } from '@/components/TabsLayout' // 多标签页配置
+import TabsLayout, { TabsLayoutProps } from '@/components/TabsLayout' // 多标签页配置
 import { getAllLocalesLang } from '@/services/system/internationalization'
 import { getLocalStorageItem, initUserAuthority, setLocalStorageItem } from '@/utils' // 全局工具函数
 import { ANTD_LANGS } from '@/utils/const'
@@ -77,7 +77,7 @@ export const layout = BasiLayout
  * @doc https://alitajs.com/zh-CN/docs/guides/tabs#getcustomtabs
  * @Author: 白雾茫茫丶
  */
-export const getCustomTabs = TabsLayout
+export const getCustomTabs = () => (props: TabsLayoutProps) => <TabsLayout {...props} />
 
 /**
  * @description: request 配置，可以配置错误处理，它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。

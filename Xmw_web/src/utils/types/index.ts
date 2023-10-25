@@ -29,6 +29,12 @@ export type EnumValues<T> = T[EnumKeys<T>];
 export type Status = EnumValues<typeof STATUS>
 
 /**
+ * @description: 反推数组的类型，type B = A[]，ArrayType<B> 等同于 返回 A
+ * @author: 白雾茫茫丶
+ */
+export type ArrayType<T extends any[]> = T extends Array<infer R> ? R : never;
+
+/**
  * @description: 公共的类型
  * @author: 白雾茫茫丶
  */
