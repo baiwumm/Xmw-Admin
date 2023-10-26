@@ -17,18 +17,14 @@ const baseURL = ROUTES.JOBSMANAGEMENT
  * @param {SearchParams} options
  * @author: 白雾茫茫丶
  */
-export async function getJobsList(options?: SearchParams) {
-  return httpRequest.get<API.JOBSMANAGEMENT[]>(`${baseURL}`, options);
-}
+export const getJobsList = (options?: SearchParams) => httpRequest.get<API.JOBSMANAGEMENT[]>(`${baseURL}`, options);
 
 /**
  * @description: 创建岗位数据
  * @param {CreateJobsParams} options
  * @author: 白雾茫茫丶
  */
-export async function createJobs(options: CreateJobsParams) {
-  return httpRequest.post<API.JOBSMANAGEMENT>(`${baseURL}`, options);
-}
+export const createJobs = (options: CreateJobsParams) => httpRequest.post<API.JOBSMANAGEMENT>(`${baseURL}`, options);
 
 /**
  * @description: 更新岗位数据
@@ -36,15 +32,12 @@ export async function createJobs(options: CreateJobsParams) {
  * @author: 白雾茫茫丶
  */
 
-export async function updateJobs({ jobs_id, ...options }: API.JOBSMANAGEMENT) {
-  return httpRequest.put<number[]>(`${baseURL}/${jobs_id}`, options);
-}
+export const updateJobs = ({ jobs_id, ...options }: API.JOBSMANAGEMENT) =>
+  httpRequest.put<number[]>(`${baseURL}/${jobs_id}`, options);
 
 /**
  * @description: 删除岗位数据
  * @param {string} jobs_id
  * @author: 白雾茫茫丶
  */
-export async function delJobs(jobs_id: string) {
-  return httpRequest.delete<number>(`${baseURL}/${jobs_id}`);
-}
+export const delJobs = (jobs_id: string) => httpRequest.delete<number>(`${baseURL}/${jobs_id}`);

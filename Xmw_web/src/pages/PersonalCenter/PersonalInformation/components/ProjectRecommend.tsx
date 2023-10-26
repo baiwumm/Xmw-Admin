@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-19 14:56:08
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-26 15:54:00
+ * @LastEditTime: 2023-10-26 17:43:50
  */
 import { ExportOutlined, EyeOutlined, ForkOutlined, StarOutlined } from '@ant-design/icons';
 import { useIntl } from '@umijs/max'
@@ -40,7 +40,6 @@ const ProjectRecommend: FC = () => {
       }
       return []
     })
-  console.log('repositoryList', repositoryList)
 
   /**
    * @description: 底部操作栏

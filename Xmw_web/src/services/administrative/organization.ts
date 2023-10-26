@@ -17,33 +17,28 @@ const baseURL = ROUTES.ORGANIZATION
  * @param {SearchParams} options
  * @Author: 白雾茫茫丶
  */
-export async function getOrganizationList(options?: SearchParams) {
-  return httpRequest.get<API.ORGANIZATION[]>(`${baseURL}`, options);
-}
+export const getOrganizationList = (options?: SearchParams) =>
+  httpRequest.get<API.ORGANIZATION[]>(`${baseURL}`, options);
 
 /**
  * @description: 新增组织数据
  * @param {CreateOrgParams} options
  * @Author: 白雾茫茫丶
  */
-export async function createOrganization(options: CreateOrgParams) {
-  return httpRequest.post<API.ORGANIZATION>(`${baseURL}`, options);
-}
+export const createOrganization = (options: CreateOrgParams) =>
+  httpRequest.post<API.ORGANIZATION>(`${baseURL}`, options);
 
 /**
  * @description: 更新组织数据
  * @param {API.ORGANIZATION} options
  * @Author: 白雾茫茫丶
  */
-export async function updateOrganization({ org_id, ...options }: API.ORGANIZATION) {
-  return httpRequest.put<number[]>(`${baseURL}/${org_id}`, options);
-}
+export const updateOrganization = ({ org_id, ...options }: API.ORGANIZATION) =>
+  httpRequest.put<number[]>(`${baseURL}/${org_id}`, options);
 
 /**
  * @description: 删除组织数据
  * @param {string} org_id
  * @Author: 白雾茫茫丶
  */
-export async function delOrganization(org_id: string) {
-  return httpRequest.delete(`${baseURL}/${org_id}`);
-}
+export const delOrganization = (org_id: string) => httpRequest.delete(`${baseURL}/${org_id}`);

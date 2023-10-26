@@ -17,17 +17,14 @@ const baseURL = ROUTES.INTERNATIONALIZATION
  * @param {SearchParams} options
  * @Author: 白雾茫茫丶
  */
-export async function getInternationalList(options?: SearchParams) {
-  return httpRequest.get<API.INTERNATIONALIZATION[]>(`${baseURL}`, options);
-}
+export const getInternationalList = (options?: SearchParams) =>
+  httpRequest.get<API.INTERNATIONALIZATION[]>(`${baseURL}`, options);
 
 /**
  * @description: 获取国际化多语言层级对象
  * @Author: 白雾茫茫丶
  */
-export async function getAllLocalesLang() {
-  return httpRequest.get<API.LOCALESLANGAll>(`${baseURL}/allLocales`);
-}
+export const getAllLocalesLang = () => httpRequest.get<API.LOCALESLANGAll>(`${baseURL}/allLocales`);
 
 /**
  * @description: 新增国际化数据
@@ -35,24 +32,20 @@ export async function getAllLocalesLang() {
  * @Author: 白雾茫茫丶
  */
 
-export async function createInternational(options: CreateInternationalParams) {
-  return httpRequest.post<API.INTERNATIONALIZATION>(`${baseURL}`, options);
-}
+export const createInternational = (options: CreateInternationalParams) =>
+  httpRequest.post<API.INTERNATIONALIZATION>(`${baseURL}`, options);
 
 /**
  * @description: 更新国际化数据
  * @param {API.INTERNATIONALIZATION} options
  * @Author: 白雾茫茫丶
  */
-export async function updateInternational({ id, ...options }: API.INTERNATIONALIZATION) {
-  return httpRequest.put<number[]>(`${baseURL}/${id}`, options);
-}
+export const updateInternational = ({ id, ...options }: API.INTERNATIONALIZATION) =>
+  httpRequest.put<number[]>(`${baseURL}/${id}`, options);
 
 /**
  * @description: 删除国际化数据
  * @param {string} id
  * @Author: 白雾茫茫丶
  */
-export async function delInternational(id: string) {
-  return httpRequest.delete(`${baseURL}/${id}`);
-}
+export const delInternational = (id: string) => httpRequest.delete(`${baseURL}/${id}`);

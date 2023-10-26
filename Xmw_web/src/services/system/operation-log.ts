@@ -10,6 +10,5 @@ const baseURL = ROUTES.OPERATIONLOG
  * @param {SearchParams} options
  * @Author: 白雾茫茫丶
  */
-export async function getOperationLogList(options?: SearchTimes) {
-  return httpRequest.get<PageResponse<API.OPERATIONLOG>>(`${baseURL}`, options);
-}
+export const getOperationLogList = (options?: SearchTimes) =>
+  httpRequest.get<PageResponse<API.OPERATIONLOG>>(`${baseURL}`, options);
