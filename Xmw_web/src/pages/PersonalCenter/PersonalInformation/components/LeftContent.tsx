@@ -4,15 +4,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-17 10:02:38
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 16:32:13
+ * @LastEditTime: 2023-10-19 14:52:09
  */
 import { useModel } from '@umijs/max'
 import { Avatar, Col, Divider, Space, Typography } from 'antd'
-import type { FC } from 'react'
+import { codeToText } from 'element-china-area-data';
 import { forEach } from 'lodash-es'
+import type { FC } from 'react'
+
 import FigureLabels from '@/components/FigureLabels' // 标签
 import { IconFont } from '@/utils/const'
-import { codeToText } from "element-china-area-data";
 const { Title, Paragraph } = Typography;
 
 const LeftContent: FC = () => {

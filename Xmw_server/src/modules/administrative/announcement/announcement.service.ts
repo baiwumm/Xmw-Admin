@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-17 13:55:47
+ * @LastEditTime: 2023-10-23 13:37:34
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -141,6 +141,10 @@ export class AnnouncementService {
   async deleteAnnouncement(announcement_id: string): Promise<Response<number>> {
     // 根据主键查找出当前数据
     const currentInfo = await this.announcementModel.findByPk(announcement_id);
+    // 如果通过则执行 sql delete 语句
+    await this.alreadyModel.destroy({
+      where: { announcement_id },
+    });
     // 如果通过则执行 sql delete 语句
     const result = await this.announcementModel.destroy({
       where: { announcement_id },
