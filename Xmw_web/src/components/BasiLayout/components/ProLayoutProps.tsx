@@ -13,10 +13,10 @@ import { IconFont } from '@/utils/const'
 /* 跨站点导航列表 */
 export const appList: HeaderProps['appList'] = [
   {
-    icon: 'https://cdn.baiwumm.com/blog/avatar.jpg!baiwu',
+    icon: 'https://cdn.baiwumm.com/avatar.jpg',
     title: '白雾茫茫丶',
     desc: '好好吃饭🍣好好睡觉💤敲敲代码💻谈谈恋爱💑',
-    url: 'https://baiwumm.com/',
+    url: 'https://blog.baiwumm.com/',
     target: '_blank',
   },
   {
@@ -41,7 +41,7 @@ export const appList: HeaderProps['appList'] = [
     target: '_blank',
   },
   {
-    icon: 'https://cdn.baiwumm.com/project/vue3-admin/logo.png!baiwu',
+    icon: 'https://cdn.baiwumm.com/project/vue3-admin/logo.png',
     title: 'Vue3 Admin',
     desc: '基于 Vue3.0 + TypeScript 的后台解决方案',
     url: 'https://vue3.baiwumm.com/',

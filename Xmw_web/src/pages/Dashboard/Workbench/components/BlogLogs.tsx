@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-11 10:02:20
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-11 10:12:26
+ * @LastEditors: 白雾茫茫丶<843348394@qq.com>
+ * @LastEditTime: 2023-12-01 09:15:46
  */
 import { useIntl } from '@umijs/max'
 import { Avatar, Card, List, Tooltip } from 'antd'
@@ -68,7 +68,7 @@ const BlogLogs: FC<BlogLogsProps> = ({ renderSecondary }) => {
               avatar={
                 <Tooltip title={formatMessage({ id: formatPerfix(ROUTES.WORKBENCH, 'blog-tip') })}>
                   <a href="https://baiwumm.com/" target='_blank'>
-                    <Avatar src='https://cdn.baiwumm.com/blog/avatar.jpg!baiwu' />
+                    <Avatar src='https://cdn.baiwumm.com/avatar.jpg' />
                   </a>
                 </Tooltip>
               }

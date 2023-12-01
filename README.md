@@ -99,12 +99,12 @@ pnpm build
 
 ## 🪴 演示图
 
-| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/01.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/02.png) |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/03.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/04.png!baiwu) |
-| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/05.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/06.png!baiwu) |
-| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/07.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/08.png!baiwu) |
-| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/09.png!baiwu) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/10.png!baiwu) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/03.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/04.png) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/05.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/06.png) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/07.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/08.png) |
+| ![](https://cdn.baiwumm.com/project/xmw-admin/demo/09.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/10.png) |
 
 ## 🪴 项目活动
 
