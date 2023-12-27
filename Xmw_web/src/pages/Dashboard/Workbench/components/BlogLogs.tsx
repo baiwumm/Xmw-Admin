@@ -3,7 +3,7 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-11 10:02:20
- * @LastEditors: 白雾茫茫丶<843348394@qq.com>
+ * @LastEditors: 白雾茫茫丶<baiwumm@foxmail.com>
  * @LastEditTime: 2023-12-01 09:15:46
  */
 import { useIntl } from '@umijs/max'

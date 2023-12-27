@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
   return (
     <DefaultFooter
       style={{ background: 'none' }}
-      copyright={`${currentYear} 白雾茫茫丶 by 843348394@qq.com`}
+      copyright={`${currentYear} 白雾茫茫丶 by baiwumm@foxmail.com`}
       className={styles['global-footer']}
       links={[
         {
