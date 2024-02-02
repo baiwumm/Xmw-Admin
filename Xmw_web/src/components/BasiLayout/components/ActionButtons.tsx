@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-23 13:47:16
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-23 14:21:35
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-02-02 10:37:46
  */
 import { EllipsisOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { KeepAliveContext, useIntl } from '@umijs/max'
@@ -33,7 +33,7 @@ const ActionButtons: FC = () => {
       />
       {/* 项目文档 */}
       <FloatButton
-        onClick={() => window.open('//docs.baiwumm.com/project/xmw-admin')}
+        onClick={() => window.open('//docs.baiwumm.com/personal-project/xmw-admin')}
         tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.document` })}
       />
       {/* 刷新页面 */}

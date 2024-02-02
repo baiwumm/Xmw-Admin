@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 15:16:33
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-26 14:32:49
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-02-02 09:59:21
  */
 import { HeaderProps } from '@ant-design/pro-components'
 
@@ -15,8 +15,8 @@ export const appList: HeaderProps['appList'] = [
   {
     icon: 'https://cdn.baiwumm.com/avatar.jpg',
     title: '白雾茫茫丶',
-    desc: '好好吃饭🍣好好睡觉💤敲敲代码💻谈谈恋爱💑',
-    url: 'https://blog.baiwumm.com/',
+    desc: '记录学习、生活和有趣的事',
+    url: 'https://baiwumm.com/',
     target: '_blank',
   },
   {
