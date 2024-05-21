@@ -14,10 +14,6 @@ Language : [中文](./README.md) | 英文
 
 - 🔑 User name: **admin**，密码：**abc123456**
 
-- 😝 Vue3 version: [Vue3 Admin](https://github.com/baiwumm/Vue3-Admin/)
-
-- 😝 Vue2 version: [Vue Admin](https://github.com/baiwumm/Vue2-Admin/)
-
 - [🚀 github 仓库地址](https://github.com/baiwumm/Xmw-Admin/)
 
 - [🚀 码云仓库地址](https://gitee.com/baiwumm/Xmw-Admin/)
@@ -107,6 +103,6 @@ pnpm build
 | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/09.png) | ![](https://cdn.baiwumm.com/project/xmw-admin/demo/10.png) |
 
 
-## 🪴 Project Activity
+## ⭐ Star History
 
-![Alt](https://repobeats.axiom.co/api/embed/d70fa0fda028f36880de53d6a7e82305ee78b265.svg "Repobeats analytics image")
+[![Star History Chart](https://api.star-history.com/svg?repos=baiwumm/Xmw-Admin&type=Date)](https://star-history.com/#baiwumm/Xmw-Admin&Date)
