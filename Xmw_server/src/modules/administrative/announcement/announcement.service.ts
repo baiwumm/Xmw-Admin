@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 16:18:06
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-23 13:37:34
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-05-21 15:14:49
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -75,7 +75,7 @@ export class AnnouncementService {
           'u.avatar_url',
           [
             this.sequelize.literal(
-              `case when a.user_id = '${user_id}' then 1 else 0 end`,
+              `case when u.user_id = '${user_id}' then 1 else 0 end`,
             ),
             'already',
           ],
