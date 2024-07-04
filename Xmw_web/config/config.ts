@@ -160,7 +160,11 @@ export default defineConfig({
     ga_v2: 'G-1LVFWQ9FZ7', // google analytics 的 key (GA 4)
     baidu: '8be1d11f8b2db2727b2b063e9158161d',
   },
+  // TDK
+  title: 'Xmw Admin',
   metas: [
+    { name: 'keywords', content: 'React.js,Umi.js,Antd,Nest.js,后台模板,后台系统' },
+    { name: 'description', content: '基于 React + Nest 全栈开发的后台系统' },
     { name: 'google-site-verification', content: '4YBtBTmg5H9MGoyvCmvEeJx8viyBPjLnK4INCHT9SQs' },
   ],
   // 启后，可通过 Option+Click/Alt+Click 点击组件跳转至编辑器源码位置，Option+Right-click/Alt+Right-click 可以打开上下文，查看父组件。
