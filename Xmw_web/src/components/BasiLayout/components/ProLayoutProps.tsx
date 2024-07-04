@@ -4,11 +4,11 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 15:16:33
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-02-02 09:59:21
+ * @LastEditTime: 2024-07-03 17:19:52
  */
-import { HeaderProps } from '@ant-design/pro-components'
+import { HeaderProps } from '@ant-design/pro-components';
 
-import { IconFont } from '@/utils/const'
+import { IconFont } from '@/utils/const';
 
 /* 跨站点导航列表 */
 export const appList: HeaderProps['appList'] = [
@@ -17,6 +17,20 @@ export const appList: HeaderProps['appList'] = [
     title: '白雾茫茫丶',
     desc: '记录学习、生活和有趣的事',
     url: 'https://baiwumm.com/',
+    target: '_blank',
+  },
+  {
+    icon: 'https://hot.baiwumm.com/logo.svg',
+    title: '今日热榜',
+    desc: '汇聚全网热点，热门尽览无余',
+    url: 'https://hot.baiwumm.com/',
+    target: '_blank',
+  },
+  {
+    icon: 'https://dream-site.cn/_vercel/image?url=%2Flogo.svg&w=1536&q=100',
+    title: 'Dream Site',
+    desc: '致力于打造程序员的梦中情站',
+    url: 'https://dream-site.cn/',
     target: '_blank',
   },
   {
@@ -68,4 +82,4 @@ export const appList: HeaderProps['appList'] = [
     url: 'https://ele-plus-form.baiwumm.com/',
     target: '_blank',
   },
-]
+];
