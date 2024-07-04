@@ -3,58 +3,72 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-08 15:26:07
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 15:40:20
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-07-04 10:26:15
  */
-import { BellOutlined } from '@ant-design/icons'
-import { useIntl } from '@umijs/max'
-import { useMount, useRequest, useUnmount } from 'ahooks'
-import { Avatar, Badge, Card, ConfigProvider, List, Popover, Spin, Tabs } from 'antd'
-import { get, map } from 'lodash-es'
-import { FC, useState } from 'react'
+import { BellOutlined } from '@ant-design/icons';
+import { useIntl } from '@umijs/max';
+import { useMount, useRequest, useUnmount } from 'ahooks';
+import { Avatar, Badge, Card, ConfigProvider, List, Popover, Spin, Tabs } from 'antd';
+import { get, map } from 'lodash-es';
+import { FC, useState } from 'react';
 
-import { getAnnouncementList, queryUnreadyCount } from '@/services/administrative/announcement'
-import { formatPerfix } from '@/utils'
-import { AnnouncementTypeEnum } from '@/utils/const'
-import { ANNOUNCEMENT_TYPE, EVENTBUS_TYPE, ROUTES } from '@/utils/enums'
-import eventBus from '@/utils/eventBus'
-import type { PaginationParams } from '@/utils/types'
-import type { AnnouncementType } from '@/utils/types/administrative/announcement'
+import { getAnnouncementList, queryUnreadyCount } from '@/services/administrative/announcement';
+import { formatPerfix } from '@/utils';
+import { AnnouncementTypeEnum } from '@/utils/const';
+import { ANNOUNCEMENT_TYPE, EVENTBUS_TYPE, ROUTES } from '@/utils/enums';
+import eventBus from '@/utils/eventBus';
+import type { PaginationParams } from '@/utils/types';
+import type { AnnouncementType } from '@/utils/types/administrative/announcement';
 
 const NoticeBell: FC = () => {
   // 国际化工具类
   const { formatMessage } = useIntl();
   // 当前激活 tab 面板的 key
-  const [activeKey, setActiveKey] = useState<AnnouncementType>(ANNOUNCEMENT_TYPE.ANNOUNCEMENT)
+  const [activeKey, setActiveKey] = useState<AnnouncementType>(ANNOUNCEMENT_TYPE.ANNOUNCEMENT);
   // 当前页码
-  const [current, setCurrent] = useState<number>(1)
+  const [current, setCurrent] = useState<number>(1);
   // 分页参数
-  const paginationParams: PaginationParams = { pageSize: 5, current }
+  const paginationParams: PaginationParams = { pageSize: 5, current };
 
   /**
- * @description: 获取活动公告列表
- * @author: 白雾茫茫丶
- */
-  const { data: announcementList, loading: announcementListLoading, run: fetchAnnouncementList } = useRequest(
-    async () => get(await getAnnouncementList({
-      type: activeKey,
-      unready: true,
-      ...paginationParams,
-    }), 'data', {}), {
-    refreshDeps: [activeKey, current],
-  })
+   * @description: 获取活动公告列表
+   * @author: 白雾茫茫丶
+   */
+  const {
+    data: announcementList,
+    loading: announcementListLoading,
+    run: fetchAnnouncementList,
+  } = useRequest(
+    async () =>
+      get(
+        await getAnnouncementList({
+          type: activeKey,
+          unready: true,
+          ...paginationParams,
+        }),
+        'data',
+        {},
+      ),
+    {
+      refreshDeps: [activeKey, current],
+    },
+  );
 
   /**
- * @description: 查询不同消息类型的未读条数
- * @author: 白雾茫茫丶
- */
-  const { data: unreadyCount, loading: unreadyCountLoading, run: fetchUnreadyCount } = useRequest(
-    async () => get(await queryUnreadyCount(), 'data', {}), {
+   * @description: 查询不同消息类型的未读条数
+   * @author: 白雾茫茫丶
+   */
+  const {
+    data: unreadyCount,
+    loading: unreadyCountLoading,
+    run: fetchUnreadyCount,
+  } = useRequest(async () => get(await queryUnreadyCount(), 'data', {}), {
     onSuccess: () => {
       setCurrent(1);
       fetchAnnouncementList();
     },
-  })
+  });
 
   /**
    * @description: 消息类型
@@ -69,22 +83,19 @@ const NoticeBell: FC = () => {
         setCurrent(1);
       }}
       items={map(AnnouncementTypeEnum, (type: string, value: string) => ({
-        label:
-          `${formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${type}`) })}(${get(unreadyCount, type, 0)})`,
+        label: `${formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${type}`) })}
+        (${get(unreadyCount, type, 0)})`,
         key: value,
-      }))} />
-  )
+      }))}
+    />
+  );
 
   /**
    * @description: 渲染消息内容
    * @author: 白雾茫茫丶
    */
   const renderContent = (
-    <Card
-      bodyStyle={{ padding: 0 }}
-      bordered={false}
-      style={{ boxShadow: 'none' }}
-    >
+    <Card bordered={false} style={{ boxShadow: 'none' }} styles={{ body: { padding: 0 } }}>
       <List
         itemLayout="horizontal"
         dataSource={get(announcementList, 'list', [])}
@@ -104,41 +115,49 @@ const NoticeBell: FC = () => {
               avatar={<Avatar src={record.avatar_url} />}
               title={
                 <Badge dot offset={[5, 5]}>
-                  <a onClick={() => {
-                    eventBus.emit(EVENTBUS_TYPE.ANNOUNCEMENT, record, fetchUnreadyCount);
-                  }}>{record.title}</a></Badge>}
+                  <a
+                    onClick={() => {
+                      eventBus.emit(EVENTBUS_TYPE.ANNOUNCEMENT, record, fetchUnreadyCount);
+                    }}
+                  >
+                    {record.title}
+                  </a>
+                </Badge>
+              }
               description={record.cn_name}
             />
           </List.Item>
         )}
       />
     </Card>
-  )
+  );
 
   useMount(() => {
-    eventBus.on(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount)
-  })
+    eventBus.on(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount);
+  });
 
   useUnmount(() => {
-    eventBus.off(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount)
-  })
+    eventBus.off(EVENTBUS_TYPE.UPDATEUNREADYCOUNT, fetchUnreadyCount);
+  });
   return (
     <>
-      <ConfigProvider theme={{
-        components: {
-          Popover: { minWidth: 350 },
-          Tabs: { horizontalMargin: '0' },
-        },
-      }}>
+      <ConfigProvider
+        theme={{
+          components: {
+            Popover: { titleMinWidth: 350 },
+            Tabs: { horizontalMargin: '0' },
+          },
+        }}
+      >
         <Popover title={renderAnnouncementType} content={renderContent}>
-          <Spin spinning={unreadyCountLoading} size="small">
-            <Badge count={get(unreadyCount, 'total', 0)} size="small">
+          <Badge count={get(unreadyCount, 'total', 0)} size="small">
+            <Spin spinning={unreadyCountLoading} size="small">
               <BellOutlined />
-            </Badge>
-          </Spin>
+            </Spin>
+          </Badge>
         </Popover>
       </ConfigProvider>
     </>
-  )
-}
-export default NoticeBell
+  );
+};
+export default NoticeBell;
