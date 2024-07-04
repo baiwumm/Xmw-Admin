@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-04 10:03:07
+ * @LastEditTime: 2024-07-04 11:12:02
  */
 import {
   PicCenterOutlined,
@@ -72,7 +72,7 @@ const TabsLayout: FC<TabsLayoutProps> = ({
           break;
       }
     },
-    [location.pathname],
+    [dropLeftTabs, dropOtherTabs, dropRightTabs, refreshTab],
   );
   /**
    * @description: 右键菜单配置项
