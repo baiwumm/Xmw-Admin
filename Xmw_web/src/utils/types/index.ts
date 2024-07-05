@@ -158,3 +158,9 @@ export type Flag = EnumValues<typeof FLAG>
  * @author: 白雾茫茫丶
  */
 export type PathNames = EnumValues<typeof ROUTES>
+
+/**
+ * @description: 图标格式
+ * @author: 白雾茫茫丶
+ */
+export type UmiIcon = `${'ri' | 'local'}:${string}`

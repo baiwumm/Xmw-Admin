@@ -4,11 +4,17 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 15:16:33
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-03 17:19:52
+ * @LastEditTime: 2024-07-05 10:25:40
  */
 import { HeaderProps } from '@ant-design/pro-components';
+import { Icon } from '@umijs/max';
 
-import { IconFont } from '@/utils/const';
+import type { UmiIcon } from '@/utils/types';
+
+// 渲染图标
+const renderIcon = (icon: UmiIcon, color: string) => (
+  <Icon icon={icon} style={{ fontSize: '40px', color }} />
+);
 
 /* 跨站点导航列表 */
 export const appList: HeaderProps['appList'] = [
@@ -34,21 +40,21 @@ export const appList: HeaderProps['appList'] = [
     target: '_blank',
   },
   {
-    icon: <IconFont type="icon-GitHub" style={{ fontSize: '40px' }} />,
+    icon: renderIcon('ri:github-fill', '#000000'),
     title: 'baiwumm',
     desc: '立志成为一名优秀的前端工程师',
     url: 'https://github.com/baiwumm/',
     target: '_blank',
   },
   {
-    icon: <IconFont type="icon-gitee" style={{ fontSize: '40px' }} />,
+    icon: renderIcon('local:gitee', '#C71D23'),
     title: 'baiwumm',
     desc: '立志成为一名优秀的前端工程师',
     url: 'https://gitee.com/baiwumm/',
     target: '_blank',
   },
   {
-    icon: <IconFont type="icon-juejin" style={{ fontSize: '40px' }} />,
+    icon: renderIcon('local:juejin', '#006CFF'),
     title: '白雾茫茫丶',
     desc: '星光不问赶路人，岁月不负有心人',
     url: 'https://juejin.cn/user/1917147257534279/',
@@ -69,14 +75,14 @@ export const appList: HeaderProps['appList'] = [
     target: '_blank',
   },
   {
-    icon: <IconFont type="icon-Vue" style={{ fontSize: '40px' }} />,
+    icon: renderIcon('ri:vuejs-fill', '#41B883'),
     title: 'vue3-element-table',
     desc: '基于 Vue3 + Element-plus 封装的 Table 组件',
     url: 'https://ele-plus-table.baiwumm.com/',
     target: '_blank',
   },
   {
-    icon: <IconFont type="icon-Vue" style={{ fontSize: '40px' }} />,
+    icon: renderIcon('ri:vuejs-fill', '#41B883'),
     title: 'vue3-element-form',
     desc: '基于 Vue3 + Element-plus 封装的 Form 组件',
     url: 'https://ele-plus-form.baiwumm.com/',

@@ -4,21 +4,21 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-04 11:07:19
+ * @LastEditTime: 2024-07-05 08:57:12
  */
 import {
   ProConfigProvider,
   SettingDrawer,
   Settings as LayoutSettings,
 } from '@ant-design/pro-components';
-import { history, InitDataType, Link, RunTimeLayoutConfig } from '@umijs/max';
+import { history, Icon, InitDataType, Link, RunTimeLayoutConfig, useIntl } from '@umijs/max';
 import { useBoolean } from 'ahooks';
 import { Space, Typography } from 'antd';
-import { eq, last, toString } from 'lodash-es';
+import { eq, toString } from 'lodash-es';
 
 import Footer from '@/components/Footer'; // 全局底部版权组件
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils';
-import { IconFont } from '@/utils/const';
+import { formatPerfix, getLocalStorageItem, setLocalStorageItem } from '@/utils';
+import { MenuRemixIconMap } from '@/utils/const';
 import { LOCAL_STORAGE, ROUTES } from '@/utils/enums';
 import type { InitialStateTypes } from '@/utils/types';
 
@@ -39,6 +39,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({
   initialState,
   setInitialState,
 }: InitDataType) => {
+  const { formatMessage } = useIntl();
   /* 获取 LAYOUT 的值 */
   const LAYOUT = getLocalStorageItem<LayoutSettings>(LOCAL_STORAGE.LAYOUT);
   // 获取 ACCESS_TOKEN
@@ -48,8 +49,6 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     useBoolean(false);
 
   return {
-    /* 菜单图标使用iconfont */
-    iconfontUrl: process.env.ICONFONT_URL,
     /* 水印 */
     waterMarkProps: {
       content: initialState?.CurrentUser?.cn_name,
@@ -75,22 +74,21 @@ export const BasiLayout: RunTimeLayoutConfig = ({
       itemRender: (route) => {
         return (
           <Space>
-            <IconFont type={`icon-${last(route.linkPath?.split('/'))}`} />
+            <Icon icon={MenuRemixIconMap[route.linkPath as ROUTES]} />
             <span>{route.breadcrumbName}</span>
           </Space>
         );
       },
     },
     /* 自定义菜单项的 render 方法 */
-    menuItemRender: (menuItemProps, defaultDom) => {
+    menuItemRender: ({ icon, pro_layout_parentKeys, isUrl, path }, defaultDom) => {
       const renderMenuDom = () => {
         return (
           <Space>
             {/* 分组布局不用渲染图标，避免重复 */}
-            {!(LAYOUT?.siderMenuType === 'group') &&
-              menuItemProps.pro_layout_parentKeys?.length && (
-                <IconFont type={toString(menuItemProps.icon)} />
-              )}
+            {!(LAYOUT?.siderMenuType === 'group') && pro_layout_parentKeys?.length && (
+              <Icon icon={toString(icon)} />
+            )}
             <Paragraph ellipsis={{ rows: 1, tooltip: defaultDom }} style={{ marginBottom: 0 }}>
               {defaultDom}
             </Paragraph>
@@ -99,13 +97,22 @@ export const BasiLayout: RunTimeLayoutConfig = ({
       };
       return (
         /* 渲染二级菜单图标 */
-        menuItemProps.isUrl ? (
-          <a href={menuItemProps.path} target="_blank">
+        isUrl ? (
+          <a href={path} target="_blank">
             {renderMenuDom()}
           </a>
         ) : (
-          <Link to={menuItemProps.path || '/'}>{renderMenuDom()}</Link>
+          <Link to={path || '/'}>{renderMenuDom()}</Link>
         )
+      );
+    },
+    // 自定义拥有子菜单菜单项的 render 方法
+    subMenuItemRender: ({ icon, path = '' }) => {
+      return (
+        <Space size={4}>
+          <Icon icon={toString(icon)} />
+          <span>{formatMessage({ id: formatPerfix(path, '', true) })}</span>
+        </Space>
       );
     },
     // 菜单的折叠收起事件

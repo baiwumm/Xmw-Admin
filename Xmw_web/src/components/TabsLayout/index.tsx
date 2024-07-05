@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-04 11:12:02
+ * @LastEditTime: 2024-07-05 08:58:38
  */
 import {
   PicCenterOutlined,
@@ -12,12 +12,12 @@ import {
   VerticalLeftOutlined,
   VerticalRightOutlined,
 } from '@ant-design/icons';
-import { FormattedMessage, useIntl } from '@umijs/max';
+import { FormattedMessage, Icon, useIntl } from '@umijs/max';
 import { App, Dropdown, MenuProps, Space, Tabs, TabsProps } from 'antd';
-import { eq, keys, last } from 'lodash-es';
+import { eq, keys } from 'lodash-es';
 import { FC, MutableRefObject, ReactNode, useCallback } from 'react';
 
-import { IconFont } from '@/utils/const';
+import { MenuRemixIconMap } from '@/utils/const';
 import { TABSLAYOUT } from '@/utils/enums';
 import type { EnumValues } from '@/utils/types';
 
@@ -101,7 +101,7 @@ const TabsLayout: FC<TabsLayoutProps> = ({
     // 只有当前活跃的标签页才能操作
     const dom = (
       <Space>
-        <IconFont type={`icon-${last(pathname.split('/'))}`} />
+        <Icon icon={MenuRemixIconMap[pathname]} />
         <FormattedMessage id={`menu${pathname.replaceAll('/', '.')}`} />
       </Space>
     );

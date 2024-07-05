@@ -48,13 +48,23 @@ export enum LOCAL_STORAGE {
  */
 export enum ROUTES {
   LOGIN = '/user/login', // 登录页
+  DASHBOARD = '/dashboard', // 指示面板
   WORKBENCH = '/dashboard/work-bench', // 指示面板-工作台
   DEPENDENCE = '/dashboard/environmental-dependence', // 指示面板-环境依赖
+  ADMINISTRATIVE = '/administrative', // 智能行政
   ANNOUNCEMENT = '/administrative/announcement', // 智能行政-活动公告
   ORGANIZATION = '/administrative/organization', // 智能行政-组织管理
   JOBSMANAGEMENT = '/administrative/jobs-management', // 智能行政-岗位管理
+  STRUCTURE = '/administrative/structure', // 智能行政-组织架构
+  PERSONALCENTER = '/personal-center', // 个人中心
   PERSONALINFOMATION = '/personal-center/personal-information', // 个人中心-个人信息
   PERSONALSETTING = '/personal-center/personal-setting', // 个人中心-个人设置
+  TECHNICALDOCUMENT = '/technical-document', // 技术文档
+  REACT = '/technical-document/react', // 技术文档 - React
+  NEST = '/technical-document/nest', // 技术文档 - Nest
+  ANTDESIGN = '/technical-document/ant-design', // 技术文档 - Ant-design
+  UMI = '/technical-document/umi', // 技术文档 - Umi
+  SYSTEM = '/system', // 系统设置
   USERMANAGEMENT = '/system/user-management', // 系统设置-用户管理
   MENUMANAGEMENT = '/system/menu-management', // 系统设置-菜单管理
   ROLEMANAGEMENT = '/system/role-management', // 系统设置-角色管理

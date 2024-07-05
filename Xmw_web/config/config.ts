@@ -142,11 +142,6 @@ export default defineConfig({
     strategy: 'normal',
   },
   requestRecord: {},
-  define: {
-    'process.env': {
-      ICONFONT_URL: '//at.alicdn.com/t/c/font_3629707_x0dxkt3btrg.js',
-    },
-  },
   /**
   * @name <head> 中额外的 script
   * @description 配置 <head> 中额外的 script
@@ -175,4 +170,32 @@ export default defineConfig({
   favicons: ['/favicon.ico'],
   // 配置 mock 功能。
   mock: false,
+  // 自动安装图标库 https://icones.js.org/
+  icons: {
+    autoInstall: {},
+    include: [
+      'ri:apps-line',
+      'ri:dashboard-2-line',
+      'ri:puzzle-line',
+      'ri:quill-pen-line',
+      'ri:notification-line',
+      'ri:exchange-2-line',
+      'ri:contacts-book-3-line',
+      'ri:organization-chart',
+      'ri:shield-user-line',
+      'ri:id-card-line',
+      'ri:user-settings-line',
+      'ri:code-box-line',
+      'ri:reactjs-fill',
+      'local:nest',
+      'local:ant-design',
+      'local:umi',
+      'ri:settings-line',
+      'ri:group-line',
+      'ri:menu-fill',
+      'ri:shield-user-line',
+      'ri:global-line',
+      'ri:draft-line',
+      'local:hi'],
+  },
 });
