@@ -205,6 +205,9 @@ export default defineConfig({
       'ri:eye-line',
       'ri:git-fork-line',
       'ri:share-box-line',
+      'ri:vuejs-fill',
+      'local:gitee',
+      'local:juejin',
     ],
   },
 });
