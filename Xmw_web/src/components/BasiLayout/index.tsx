@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 08:57:12
+ * @LastEditTime: 2024-07-05 18:28:06
  */
 import {
   ProConfigProvider,
@@ -48,6 +48,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({
   const [openLockModal, { setTrue: setLockModalTrue, setFalse: setLockModalFalse }] =
     useBoolean(false);
 
+  // 渲染菜单图标
+  const renderMenuicon = (icon) => <Icon icon={toString(icon)} style={{ fontSize: 16 }} />;
   return {
     /* 水印 */
     waterMarkProps: {
@@ -84,11 +86,11 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     menuItemRender: ({ icon, pro_layout_parentKeys, isUrl, path }, defaultDom) => {
       const renderMenuDom = () => {
         return (
-          <Space>
+          <Space size={4}>
             {/* 分组布局不用渲染图标，避免重复 */}
-            {!(LAYOUT?.siderMenuType === 'group') && pro_layout_parentKeys?.length && (
-              <Icon icon={toString(icon)} />
-            )}
+            {!(LAYOUT?.siderMenuType === 'group') &&
+              pro_layout_parentKeys?.length &&
+              renderMenuicon(icon)}
             <Paragraph ellipsis={{ rows: 1, tooltip: defaultDom }} style={{ marginBottom: 0 }}>
               {defaultDom}
             </Paragraph>
@@ -108,11 +110,17 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     },
     // 自定义拥有子菜单菜单项的 render 方法
     subMenuItemRender: ({ icon, path = '' }) => {
-      return (
+      return !initialState?.Collapsed ? (
         <Space size={4}>
-          <Icon icon={toString(icon)} />
+          {renderMenuicon(icon)}
           <span>{formatMessage({ id: formatPerfix(path, '', true) })}</span>
         </Space>
+      ) : (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 40 }}
+        >
+          {renderMenuicon(icon)}
+        </div>
       );
     },
     // 菜单的折叠收起事件

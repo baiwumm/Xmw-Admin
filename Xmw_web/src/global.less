@@ -1,21 +1,27 @@
 /*
   1. 使用更直观的 box-sizing 模型
 */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
+
 /*
   2. 移除默认 margin
 */
 * {
   margin: 0;
 }
+
 /*
   3. 在应用中允许基于百分比的高度
 */
-html, body {
+html,
+body {
   height: 100%;
 }
+
 /*
   排版调整
   4. 添加无障碍行高
@@ -25,28 +31,52 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
 /*
   6. 改进媒体默认设置
 */
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
+
 /*
   7. 删除内置表单排版样式
 */
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
+
 /*
   8. 避免文字溢出
 */
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
 .colorWeak {
   filter: invert(80%);
+}
+
+.ant-pro-base-menu-vertical-item-title-collapsed {
+  align-items: center !important;
+}
+
+.ant-menu-title-content > a {
+  display: flex;
 }
 
 /* 修改滚动条样式 */
@@ -68,5 +98,3 @@ p, h1, h2, h3, h4, h5, h6 {
 *::-webkit-scrollbar-track {
   background-color: transparent;
 }
-
-
