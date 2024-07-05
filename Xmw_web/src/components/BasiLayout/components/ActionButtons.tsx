@@ -4,30 +4,30 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-23 13:47:16
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-02-02 10:37:46
+ * @LastEditTime: 2024-07-05 10:52:34
  */
-import { EllipsisOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
-import { KeepAliveContext, useIntl } from '@umijs/max'
-import { FloatButton } from 'antd'
-import { FC, useContext, useState } from 'react'
+import { Icon, KeepAliveContext, useIntl } from '@umijs/max';
+import { FloatButton } from 'antd';
+import { FC, useContext, useState } from 'react';
 
-import { INTERNATION } from '@/utils/enums'
+import { INTERNATION } from '@/utils/enums';
 
 const ActionButtons: FC = () => {
   const { formatMessage } = useIntl();
   // 刷新当前组件
   const { refreshTab } = useContext(KeepAliveContext);
   // 受控展开，需配合 trigger 一起使用
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <FloatButton.Group
       open={open}
-      icon={<EllipsisOutlined />}
+      icon={<Icon icon="ri:more-fill" />}
       trigger="click"
-      onOpenChange={(open) => setOpen(open)}>
+      onOpenChange={(open) => setOpen(open)}
+    >
       {/* Github issues*/}
       <FloatButton
-        icon={<QuestionCircleOutlined />}
+        icon={<Icon icon="ri:questionnaire-line" />}
         onClick={() => window.open('//github.com/baiwumm/Xmw-Admin/issues')}
         tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.github-issues` })}
       />
@@ -38,12 +38,13 @@ const ActionButtons: FC = () => {
       />
       {/* 刷新页面 */}
       <FloatButton
-        icon={<SyncOutlined />}
+        icon={<Icon icon="ri:loop-right-line" />}
         onClick={() => refreshTab(location.pathname)}
-        tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.refresh` })} />
+        tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.refresh` })}
+      />
       {/* 回到顶部 */}
       <FloatButton.BackTop visibilityHeight={100} />
     </FloatButton.Group>
-  )
-}
-export default ActionButtons
+  );
+};
+export default ActionButtons;

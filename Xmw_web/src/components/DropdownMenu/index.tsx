@@ -3,24 +3,23 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 17:50:17
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-17 11:32:03
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-07-05 11:06:14
  */
-import { ClusterOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons' // antd 图标库
-import { Access, useAccess, useIntl } from '@umijs/max'
-import { App, Button, Dropdown, MenuProps } from 'antd'
-import { filter, get } from 'lodash-es'
-import { FC } from 'react'
+import { Access, Icon, useAccess, useIntl } from '@umijs/max';
+import { App, Button, Dropdown, MenuProps } from 'antd';
+import { filter, get } from 'lodash-es';
+import { FC } from 'react';
 
-import { formatPathName, isSuccess } from '@/utils'
-import { INTERNATION, OPERATION } from '@/utils/enums'
-import permissions from '@/utils/permission'
-import type { PathNames, Response } from '@/utils/types'
+import { formatPathName, isSuccess } from '@/utils';
+import { INTERNATION, OPERATION } from '@/utils/enums';
+import permissions from '@/utils/permission';
+import type { PathNames, Response } from '@/utils/types';
 
 type DeleteParams = {
-  request: (id: string) => Promise<Response>; // 删除接口 
+  request: (id: string) => Promise<Response>; // 删除接口
   id: string; // 删除 id 字段
-}
+};
 
 export type DropdownMenuProps = {
   pathName: PathNames; // 路由字段
@@ -28,7 +27,7 @@ export type DropdownMenuProps = {
   editCallback?: () => void; // 编辑回调
   deleteParams: DeleteParams;
   reloadTable: () => void; // 刷新表格
-}
+};
 
 const DropdownMenu: FC<DropdownMenuProps> = ({
   pathName,
@@ -44,43 +43,62 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   // hooks 调用
   const { modal, message } = App.useApp();
   // 国际化前缀
-  const formatPerfix = formatPathName(pathName)
+  const formatPerfix = formatPathName(pathName);
   // 下拉菜单
   const menuItems: MenuProps['items'] = [
     // 添加子级
     {
-      label: <Access
-        accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''))}
-        fallback={null}>
-        <span>{addChildCallback ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` }) : null}</span>
-      </Access>,
-      icon: <ClusterOutlined />,
+      label: (
+        <Access
+          accessible={access.operationPermission(
+            get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''),
+          )}
+          fallback={null}
+        >
+          <span>
+            {addChildCallback
+              ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` })
+              : null}
+          </span>
+        </Access>
+      ),
+      icon: <Icon icon="ri:add-box-line" />,
       key: OPERATION.ADDCHILD,
       disabled: !addChildCallback,
     },
     // 编辑
     {
-      label: <Access
-        accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.EDIT}`, ''))}
-        fallback={null}>
-        <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` })}</span>
-      </Access>,
-      icon: <EditOutlined />,
+      label: (
+        <Access
+          accessible={access.operationPermission(
+            get(permissions, `${formatPerfix}.${OPERATION.EDIT}`, ''),
+          )}
+          fallback={null}
+        >
+          <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` })}</span>
+        </Access>
+      ),
+      icon: <Icon icon="ri:edit-line" />,
       key: OPERATION.EDIT,
       disabled: !editCallback,
     },
     // 删除
     {
-      label: <Access
-        accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.DELETE}`, ''))}
-        fallback={null}>
-        <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.DELETE}` })}</span>
-      </Access>,
-      icon: <DeleteOutlined />,
+      label: (
+        <Access
+          accessible={access.operationPermission(
+            get(permissions, `${formatPerfix}.${OPERATION.DELETE}`, ''),
+          )}
+          fallback={null}
+        >
+          <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.DELETE}` })}</span>
+        </Access>
+      ),
+      icon: <Icon icon="ri:delete-bin-line" />,
       key: OPERATION.DELETE,
       disabled: !deleteParams,
     },
-  ]
+  ];
 
   /**
    * @description: 点击菜单回调
@@ -88,7 +106,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
    */
   const onClickMenuItem: MenuProps['onClick'] = ({ key }) => {
     // 删除参数
-    const { request, id } = deleteParams
+    const { request, id } = deleteParams;
     // 判断操作类型
     switch (key) {
       // 添加子级
@@ -107,13 +125,13 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
           onOk: async () => {
             await request(id).then(({ code, msg }) => {
               if (isSuccess(code)) {
-                message.success(msg)
+                message.success(msg);
                 // 刷新表格
-                reloadTable()
+                reloadTable();
               }
-            })
+            });
           },
-        })
+        });
         break;
     }
   };
@@ -121,9 +139,9 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
     <Dropdown menu={{ items: filter(menuItems, ['disabled', false]), onClick: onClickMenuItem }}>
       <Button size="small">
         {formatMessage({ id: INTERNATION.OPERATION })}
-        <DownOutlined />
+        <Icon icon="ri:arrow-down-s-line" />
       </Button>
     </Dropdown>
-  )
-}
-export default DropdownMenu
+  );
+};
+export default DropdownMenu;

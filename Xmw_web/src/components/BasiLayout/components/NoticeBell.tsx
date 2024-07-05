@@ -4,10 +4,9 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-08 15:26:07
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-04 10:26:15
+ * @LastEditTime: 2024-07-05 11:00:29
  */
-import { BellOutlined } from '@ant-design/icons';
-import { useIntl } from '@umijs/max';
+import { Icon, useIntl } from '@umijs/max';
 import { useMount, useRequest, useUnmount } from 'ahooks';
 import { Avatar, Badge, Card, ConfigProvider, List, Popover, Spin, Tabs } from 'antd';
 import { get, map } from 'lodash-es';
@@ -152,7 +151,7 @@ const NoticeBell: FC = () => {
         <Popover title={renderAnnouncementType} content={renderContent}>
           <Badge count={get(unreadyCount, 'total', 0)} size="small">
             <Spin spinning={unreadyCountLoading} size="small">
-              <BellOutlined />
+              <Icon icon="ri:notification-line" />
             </Spin>
           </Badge>
         </Popover>

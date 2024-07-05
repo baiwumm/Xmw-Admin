@@ -3,33 +3,47 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-25 17:28:14
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-17 13:49:00
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-07-05 14:06:19
  */
-import { EyeOutlined } from '@ant-design/icons';
-import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
-import { useIntl } from '@umijs/max'
-import { useBoolean, useRequest } from 'ahooks'
-import { App, Avatar, Badge, Form, Popconfirm, Space, Statistic, Switch, Tag, Typography } from 'antd'
-import { eq, mapValues } from 'lodash-es'
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
+import { Icon, useIntl } from '@umijs/max';
+import { useBoolean, useRequest } from 'ahooks';
+import {
+  App,
+  Avatar,
+  Badge,
+  Form,
+  Popconfirm,
+  Space,
+  Statistic,
+  Switch,
+  Tag,
+  Typography,
+} from 'antd';
+import { eq, mapValues } from 'lodash-es';
 import { FC, useRef, useState } from 'react';
 
-import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
+import DropdownMenu from '@/components/DropdownMenu'; // 表格操作下拉菜单
 import {
   columnScrollX,
   CreateButton,
   createTimeColumn,
   operationColumn,
   statusColumn,
-} from '@/components/TableColumns'
-import { delAnnouncement, getAnnouncementList, setPinned } from '@/services/administrative/announcement'
-import { formatPerfix, formatResponse, randomTagColor } from '@/utils'
-import { AnnouncementTypeEnum } from '@/utils/const'
-import { EVENTBUS_TYPE, FLAG, INTERNATION, ROUTES } from '@/utils/enums'
-import eventBus from '@/utils/eventBus'
-import type { PinnedParams, SearchParams } from '@/utils/types/administrative/announcement'
+} from '@/components/TableColumns';
+import {
+  delAnnouncement,
+  getAnnouncementList,
+  setPinned,
+} from '@/services/administrative/announcement';
+import { formatPerfix, formatResponse, randomTagColor } from '@/utils';
+import { AnnouncementTypeEnum } from '@/utils/const';
+import { EVENTBUS_TYPE, FLAG, INTERNATION, ROUTES } from '@/utils/enums';
+import eventBus from '@/utils/eventBus';
+import type { PinnedParams, SearchParams } from '@/utils/types/administrative/announcement';
 
-import FormTemplate from './FormTemplate'
+import FormTemplate from './FormTemplate';
 
 const { Text, Link } = Typography;
 
@@ -41,16 +55,17 @@ const TableTemplate: FC = () => {
   // 表单实例
   const [form] = Form.useForm<API.ANNOUNCEMENT>();
   // 是否显示 Modal
-  const [openModal, { setTrue: setOpenModalTrue, setFalse: setOpenModalFalse }] = useBoolean(false)
+  const [openModal, { setTrue: setOpenModalTrue, setFalse: setOpenModalFalse }] = useBoolean(false);
   // 切换状态 loading
-  const [pinnedLoading, { setTrue: setPinnedLoadingTrue, setFalse: setPinnedLoadingFalse }] = useBoolean(false);
+  const [pinnedLoading, { setTrue: setPinnedLoadingTrue, setFalse: setPinnedLoadingFalse }] =
+    useBoolean(false);
   // 保存当前公告 id
-  const [announcementId, setAnnouncementId] = useState<string>('')
+  const [announcementId, setAnnouncementId] = useState<string>('');
   // 获取表格实例
   const tableRef = useRef<ActionType>();
   // 手动触发刷新表格
   function reloadTable() {
-    tableRef?.current?.reload()
+    tableRef?.current?.reload();
   }
 
   /**
@@ -58,22 +73,26 @@ const TableTemplate: FC = () => {
    * @author: 白雾茫茫丶
    */
   const { runAsync: fetchAnnouncementList } = useRequest(
-    async (params) => formatResponse(await getAnnouncementList(params)), {
-    manual: true,
-  })
+    async (params) => formatResponse(await getAnnouncementList(params)),
+    {
+      manual: true,
+    },
+  );
 
   // 设置角色状态
   const changePinned = async ({ announcement_id, pinned }: PinnedParams) => {
     await setPinned({
       announcement_id,
       pinned: pinned === FLAG.NO ? FLAG.YES : FLAG.NO,
-    }).then((result) => {
-      message.success(result.msg)
-      reloadTable()
-    }).finally(() => {
-      setPinnedLoadingFalse()
     })
-  }
+      .then((result) => {
+        message.success(result.msg);
+        reloadTable();
+      })
+      .finally(() => {
+        setPinnedLoadingFalse();
+      });
+  };
 
   // 渲染是否置顶
   const renderPinned = (record: API.ANNOUNCEMENT) => (
@@ -83,12 +102,16 @@ const TableTemplate: FC = () => {
       onConfirm={() => changePinned(record)}
       onCancel={() => setPinnedLoadingFalse()}
       key="popconfirm"
-    ><Switch
+    >
+      <Switch
         checkedChildren={formatMessage({ id: INTERNATION.FLAG_YES })}
         unCheckedChildren={formatMessage({ id: INTERNATION.FLAG_NO })}
         checked={record.pinned === FLAG.YES}
         loading={announcementId === record.announcement_id && pinnedLoading}
-        onChange={() => { setPinnedLoadingTrue(); setAnnouncementId(record.announcement_id) }}
+        onChange={() => {
+          setPinnedLoadingTrue();
+          setAnnouncementId(record.announcement_id);
+        }}
       />
     </Popconfirm>
   );
@@ -120,12 +143,14 @@ const TableTemplate: FC = () => {
       width: 260,
       render: (_, record) => {
         // 判断是否已读
-        const isAlready = eq(record.already, FLAG.YES)
+        const isAlready = eq(record.already, FLAG.YES);
         return (
           <Badge dot={!isAlready} offset={[5, 5]}>
-            <Link onClick={() => eventBus.emit(EVENTBUS_TYPE.ANNOUNCEMENT, record, reloadTable)}>{record.title}</Link>
+            <Link onClick={() => eventBus.emit(EVENTBUS_TYPE.ANNOUNCEMENT, record, reloadTable)}>
+              {record.title}
+            </Link>
           </Badge>
-        )
+        );
       },
     },
     {
@@ -136,13 +161,16 @@ const TableTemplate: FC = () => {
       width: 100,
       align: 'center',
       valueEnum: mapValues(AnnouncementTypeEnum, (item: string) =>
-        formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${item}`) })),
+        formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${item}`) }),
+      ),
       render: (_, record) => {
-        return <Tag color={randomTagColor()}>
-          {
-            formatMessage({ id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${AnnouncementTypeEnum[record.type]}`) })
-          }
-        </Tag>
+        return (
+          <Tag color={randomTagColor()}>
+            {formatMessage({
+              id: formatPerfix(ROUTES.ANNOUNCEMENT, `type.${AnnouncementTypeEnum[record.type]}`),
+            })}
+          </Tag>
+        );
       },
     },
     /* 状态 */
@@ -155,8 +183,14 @@ const TableTemplate: FC = () => {
       width: 160,
       align: 'center',
       valueEnum: {
-        [FLAG.NO]: { text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_NO) }), status: 'Default' },
-        [FLAG.YES]: { text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_YES) }), status: 'Processing' },
+        [FLAG.NO]: {
+          text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_NO) }),
+          status: 'Default',
+        },
+        [FLAG.YES]: {
+          text: formatMessage({ id: formatPerfix(INTERNATION.FLAG_YES) }),
+          status: 'Processing',
+        },
       },
       render: (_, record) => renderPinned(record),
     },
@@ -166,7 +200,13 @@ const TableTemplate: FC = () => {
       width: 160,
       align: 'center',
       render: (_, record) => (
-        <Statistic value={record.read_counts} prefix={<EyeOutlined />} valueStyle={{ fontSize: 18 }} />
+        <Statistic
+          value={record.read_counts}
+          prefix={
+            <Icon icon="ri:eye-line" style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+          }
+          valueStyle={{ fontSize: 18 }}
+        />
       ),
     },
     /* 创建时间 */
@@ -189,15 +229,14 @@ const TableTemplate: FC = () => {
         />
       ),
     },
-  ]
+  ];
   return (
     <>
       <ProTable<API.ANNOUNCEMENT, SearchParams>
         actionRef={tableRef}
         columns={columns}
         rowKey="announcement_id"
-        request={async (params: SearchParams) => fetchAnnouncementList(params)
-        }
+        request={async (params: SearchParams) => fetchAnnouncementList(params)}
         pagination={{ pageSize: 8 }}
         // 工具栏
         toolBarRender={() => [
@@ -205,15 +244,20 @@ const TableTemplate: FC = () => {
           <CreateButton
             key="create"
             pathName={ROUTES.ANNOUNCEMENT}
-            callback={() => setOpenModalTrue()} />,
+            callback={() => setOpenModalTrue()}
+          />,
         ]}
         scroll={{ x: columnScrollX(columns) }}
       />
       {/* 抽屉表单 */}
       <Form form={form}>
-        <FormTemplate reloadTable={reloadTable} open={openModal} setOpenModalFalse={setOpenModalFalse} />
+        <FormTemplate
+          reloadTable={reloadTable}
+          open={openModal}
+          setOpenModalFalse={setOpenModalFalse}
+        />
       </Form>
     </>
-  )
-}
-export default TableTemplate
+  );
+};
+export default TableTemplate;

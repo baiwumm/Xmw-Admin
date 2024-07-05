@@ -4,9 +4,8 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 14:51:38
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 10:10:26
+ * @LastEditTime: 2024-07-05 10:55:34
  */
-import { LockOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { HeaderProps } from '@ant-design/pro-components';
 import { history, Icon, useIntl, useModel } from '@umijs/max';
 import { useRequest } from 'ahooks';
@@ -86,7 +85,7 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
     },
     {
       key: 'lockScreen',
-      icon: <LockOutlined style={{ fontSize: 16 }} />,
+      icon: <Icon icon="ri:lock-line" style={{ fontSize: 16 }} />,
       label: formatMessage({ id: `${INTERNATION.BASICLAYOUT}.LockScreen` }),
     },
     {
@@ -94,7 +93,7 @@ export default function AvatarProps(openLockScreen: () => void): HeaderProps['av
     },
     {
       key: 'logout',
-      icon: <PoweroffOutlined style={{ fontSize: 14 }} />,
+      icon: <Icon icon="ri:logout-box-r-line" style={{ fontSize: 14 }} />,
       label: formatMessage({ id: `${INTERNATION.BASICLAYOUT}.Logout` }),
     },
   ];

@@ -4,9 +4,8 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 09:55:40
+ * @LastEditTime: 2024-07-05 14:14:43
  */
-import { ManOutlined, UnlockOutlined, UserOutlined, WomanOutlined } from '@ant-design/icons';
 import {
   ActionType,
   ColumnsState,
@@ -132,9 +131,12 @@ const TableTemplate: FC = () => {
       width: 100,
       align: 'center',
       render: (text) => (
-        <Space>
-          <Tag icon={<UserOutlined className={PrimaryColor} />}>{text}</Tag>
-        </Space>
+        <Tag>
+          <Space size={4}>
+            <Icon icon="ri:user-line" className={PrimaryColor} />
+            <span>{text}</span>
+          </Space>
+        </Tag>
       ),
     },
     {
@@ -186,11 +188,15 @@ const TableTemplate: FC = () => {
       },
       render: (_, record) => {
         const colors: Record<string, string> = { 0: '#ff45cb', 1: '#0091ff' };
-        const styles = { fontSize: 20 };
+        const styles = { fontSize: 20, display: 'inline-block' };
         return {
-          [SEX.FEMALE]: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
-          [SEX.MALE]: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
-          [SEX.PRIVACY]: <UnlockOutlined style={styles} className={PrimaryColor} />,
+          [SEX.FEMALE]: (
+            <Icon icon="ri:women-line" style={{ color: colors[record.sex], ...styles }} />
+          ),
+          [SEX.MALE]: <Icon icon="ri:men-line" style={{ color: colors[record.sex], ...styles }} />,
+          [SEX.PRIVACY]: (
+            <Icon icon="ri:lock-unlock-line" style={styles} className={PrimaryColor} />
+          ),
         }[record.sex];
       },
     },

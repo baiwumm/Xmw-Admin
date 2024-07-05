@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-04 11:08:36
+ * @LastEditTime: 2024-07-05 11:12:02
  */
-import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
+import { Icon } from '@umijs/max';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -25,7 +25,12 @@ const Footer: React.FC = () => {
         },
         {
           key: 'github',
-          title: <GithubOutlined />,
+          title: (
+            <Icon
+              icon="ri:github-fill"
+              style={{ display: 'inline-block', fontSize: 16, verticalAlign: 'text-bottom' }}
+            />
+          ),
           href: 'https://github.com/baiwumm/Xmw-Admin/',
           blankTarget: true,
         },

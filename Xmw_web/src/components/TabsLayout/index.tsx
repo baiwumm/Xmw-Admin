@@ -4,22 +4,16 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 08:58:38
+ * @LastEditTime: 2024-07-05 13:56:41
  */
-import {
-  PicCenterOutlined,
-  ReloadOutlined,
-  VerticalLeftOutlined,
-  VerticalRightOutlined,
-} from '@ant-design/icons';
 import { FormattedMessage, Icon, useIntl } from '@umijs/max';
 import { App, Dropdown, MenuProps, Space, Tabs, TabsProps } from 'antd';
 import { eq, keys } from 'lodash-es';
-import { FC, MutableRefObject, ReactNode, useCallback } from 'react';
+import { FC, MutableRefObject, useCallback } from 'react';
 
 import { MenuRemixIconMap } from '@/utils/const';
 import { TABSLAYOUT } from '@/utils/enums';
-import type { EnumValues } from '@/utils/types';
+import type { EnumValues, UmiIcon } from '@/utils/types';
 
 export type TabsLayoutProps = {
   isKeep: boolean;
@@ -77,22 +71,22 @@ const TabsLayout: FC<TabsLayoutProps> = ({
   /**
    * @description: 右键菜单配置项
    */
-  const renderMenuItem = (key: EnumValues<typeof TABSLAYOUT>, icon: ReactNode) => ({
+  const renderMenuItem = (key: EnumValues<typeof TABSLAYOUT>, icon: UmiIcon) => ({
     label: formatMessage({ id: `${prefix}${key}` }),
-    icon,
+    icon: <Icon icon={icon} style={{ fontSize: 16 }} />,
     key: key,
   });
   const menuItems: MenuProps['items'] = [
     // 重新加载
-    renderMenuItem(TABSLAYOUT.REFRESH, <ReloadOutlined />),
+    renderMenuItem(TABSLAYOUT.REFRESH, 'ri:refresh-line'),
     { type: 'divider' },
     // 关闭右侧
-    renderMenuItem(TABSLAYOUT.RIGHT, <VerticalLeftOutlined />),
+    renderMenuItem(TABSLAYOUT.RIGHT, 'ri:skip-right-line'),
     // 关闭左侧
-    renderMenuItem(TABSLAYOUT.LEFT, <VerticalRightOutlined />),
+    renderMenuItem(TABSLAYOUT.LEFT, 'ri:skip-left-line'),
     { type: 'divider' },
     // 关闭其它
-    renderMenuItem(TABSLAYOUT.OTHERS, <PicCenterOutlined />),
+    renderMenuItem(TABSLAYOUT.OTHERS, 'ri:arrow-left-right-line'),
   ];
   /**
    * @description: Tabs 配置项
