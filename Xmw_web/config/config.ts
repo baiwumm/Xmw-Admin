@@ -210,6 +210,8 @@ export default defineConfig({
       'local:juejin',
       'local:sequelize',
       'local:mysql',
+      'ri:thumb-up-line',
+      'ri:message-2-line',
     ],
   },
 });
