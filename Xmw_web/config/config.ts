@@ -208,6 +208,8 @@ export default defineConfig({
       'ri:vuejs-fill',
       'local:gitee',
       'local:juejin',
+      'local:sequelize',
+      'local:mysql',
     ],
   },
 });

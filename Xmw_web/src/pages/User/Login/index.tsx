@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 10:03:42
+ * @LastEditTime: 2024-07-08 11:36:04
  */
 
 import { LoginForm } from '@ant-design/pro-components';
 import { history, Icon, SelectLang, useIntl, useModel } from '@umijs/max';
 import { useDebounceFn, useRequest } from 'ahooks';
-import { App, Col, Row, Tabs, TabsProps, Typography } from 'antd';
+import { App, Col, Row, Segmented, Space, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import React, { FC, useState } from 'react';
@@ -26,12 +26,14 @@ import {
   timeFix,
 } from '@/utils';
 import { LOCAL_STORAGE, LOGIN_TYPE, ROUTES } from '@/utils/enums';
-import type { InitialStateTypes } from '@/utils/types';
+import type { InitialStateTypes, UmiIcon } from '@/utils/types';
 import type { LoginParams, LoginType } from '@/utils/types/login';
 
 import Account from './components/Account'; // 账户密码登录
 import Mobile from './components/Mobile'; // 手机号码登录
 import styles from './index.module.less'; // css 样式恩建
+
+const { Text } = Typography;
 
 const LoginPage: FC = () => {
   dayjs.extend(relativeTime);
@@ -70,12 +72,12 @@ const LoginPage: FC = () => {
                   description: login_last_time ? (
                     <span>
                       {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.last-time') })}
-                      <Typography.Text strong>{dayjs(login_last_time).fromNow()}</Typography.Text>
+                      <Text strong>{dayjs(login_last_time).fromNow()}</Text>
                     </span>
                   ) : (
-                    <Typography.Text strong>
+                    <Text strong>
                       {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'success.first-login') })}
-                    </Typography.Text>
+                    </Text>
                   ),
                   icon: (
                     <Icon
@@ -139,6 +141,70 @@ const LoginPage: FC = () => {
     },
   ];
 
+  /**
+   * @description: 渲染图标
+   */
+  const renderIcon = (icon: UmiIcon) => (
+    <Icon icon={icon} style={{ display: 'inline-block', verticalAlign: 'middle' }} />
+  );
+
+  /**
+   * @description: 渲染副标题
+   */
+  const renderSubTitle = (
+    <Space direction="vertical" size={5} style={{ display: 'flex' }}>
+      <Space>
+        <Text type="secondary">
+          {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'subtitle.frontEnd') })}：
+        </Text>
+        <Segmented
+          options={[
+            {
+              label: 'React',
+              value: 'https://react.dev/',
+              icon: renderIcon('ri:reactjs-fill'),
+            },
+            {
+              label: 'Umi',
+              value: 'https://umijs.org/',
+              icon: renderIcon('local:umi'),
+            },
+            {
+              label: 'Ant-Design',
+              value: 'https://ant-design.antgroup.com/',
+              icon: renderIcon('local:ant-design'),
+            },
+          ]}
+          onChange={(value) => window.open(value)}
+        />
+      </Space>
+      <Space>
+        <Text type="secondary">
+          {formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'subtitle.backEnd') })}：
+        </Text>
+        <Segmented
+          options={[
+            {
+              label: 'Nest',
+              value: 'https://docs.nestjs.cn/',
+              icon: renderIcon('local:nest'),
+            },
+            {
+              label: 'Sequelize',
+              value: 'https://github.com/sequelize/sequelize/',
+              icon: renderIcon('local:sequelize'),
+            },
+            {
+              label: 'Mysql',
+              value: 'https://www.mysql.com/',
+              icon: renderIcon('local:mysql'),
+            },
+          ]}
+          onChange={(value) => window.open(value)}
+        />
+      </Space>
+    </Space>
+  );
   return (
     <div className={styles.container}>
       {/* 国际化下拉框 */}
@@ -155,7 +221,7 @@ const LoginPage: FC = () => {
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
             title={initialState?.Settings?.title}
-            subTitle={formatMessage({ id: formatPerfix(ROUTES.LOGIN, 'subtitle') })}
+            subTitle={renderSubTitle}
             submitter={{
               submitButtonProps: {
                 loading: loginLoading,
