@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-30 13:49:17
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 14:01:52
+ * @LastEditTime: 2024-07-09 17:56:56
  */
 import {
   ProFormUploadButton,
@@ -88,9 +88,9 @@ const UploadImage: FC<UploadImageProps> = ({
    */
   const beforeUpload = (file: RcFile) => {
     // 获取限制的图片类型，默认全部
-    const accept = get(fieldProps, 'accept', 'image/*');
+    const accept = get(fieldProps, 'accept');
     // 判断类型是否正确
-    const isFileType = accept.includes(file.type);
+    const isFileType = !accept || accept.includes(file.type);
     // 图片大小限制
     const isLtSize = file.size / 1024 / 1024 < maxSize;
     if (!isFileType) {
