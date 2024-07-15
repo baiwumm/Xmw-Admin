@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-15 09:59:42
+ * @LastEditTime: 2024-07-15 10:30:56
  */
 import {
   ProConfigProvider,
@@ -76,7 +76,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({
         history.push(ROUTES.LOGIN);
       }
       // 中文状态下，绑定 umami 事件
-      if (eq(getLocale(), 'zh-CN')) {
+      if (eq(getLocale(), 'zh-CN') && !eq(pathname, '/')) {
         umami.track(formatMessage({ id: formatPerfix(pathname, '', true) }));
       }
     },
