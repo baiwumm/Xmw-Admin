@@ -172,6 +172,8 @@ export default defineConfig({
   favicons: ['/favicon.ico'],
   // 配置 mock 功能。
   mock: false,
+  // 修复 esbuild 压缩器自动引入的全局变量导致的命名冲突问题。
+  esbuildMinifyIIFE: true,
   // 自动安装图标库 https://icones.js.org/
   icons: {
     autoInstall: {},
