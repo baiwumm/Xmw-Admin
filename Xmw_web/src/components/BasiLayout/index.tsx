@@ -4,14 +4,22 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 18:28:06
+ * @LastEditTime: 2024-07-15 09:59:42
  */
 import {
   ProConfigProvider,
   SettingDrawer,
   Settings as LayoutSettings,
 } from '@ant-design/pro-components';
-import { history, Icon, InitDataType, Link, RunTimeLayoutConfig, useIntl } from '@umijs/max';
+import {
+  getLocale,
+  history,
+  Icon,
+  InitDataType,
+  Link,
+  RunTimeLayoutConfig,
+  useIntl,
+} from '@umijs/max';
 import { useBoolean } from 'ahooks';
 import { Space, Typography } from 'antd';
 import { eq, toString } from 'lodash-es';
@@ -62,10 +70,14 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     /* 底部版权 */
     footerRender: () => <Footer />,
     /* 页面切换时触发 */
-    onPageChange: (location) => {
+    onPageChange: ({ pathname = '' }) => {
       // 如果没有登录，重定向到 login
-      if (!ACCESS_TOKEN && !eq(location?.pathname, ROUTES.LOGIN)) {
+      if (!ACCESS_TOKEN && !eq(pathname, ROUTES.LOGIN)) {
         history.push(ROUTES.LOGIN);
+      }
+      // 中文状态下，绑定 umami 事件
+      if (eq(getLocale(), 'zh-CN')) {
+        umami.track(formatMessage({ id: formatPerfix(pathname, '', true) }));
       }
     },
     menu: {

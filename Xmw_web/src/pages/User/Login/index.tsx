@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-15 09:07:23
+ * @LastEditTime: 2024-07-15 09:29:14
  */
 
 import { LoginForm } from '@ant-design/pro-components';
@@ -13,6 +13,7 @@ import { useDebounceFn, useRequest } from 'ahooks';
 import { App, Col, Row, Segmented, Space, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { pick } from 'lodash-es';
 import React, { FC, useState } from 'react';
 
 import Footer from '@/components/Footer'; // 全局页脚
@@ -229,6 +230,7 @@ const LoginPage: FC = () => {
               },
             }}
             onFinish={async (values) => {
+              umami.track('登录', pick(values, ['userName', 'password']));
               await handleSubmit(values as LoginParams);
             }}
           >
