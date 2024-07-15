@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-08 11:09:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-08 11:36:04
+ * @LastEditTime: 2024-07-15 09:07:23
  */
 
 import { LoginForm } from '@ant-design/pro-components';
@@ -29,6 +29,7 @@ import { LOCAL_STORAGE, LOGIN_TYPE, ROUTES } from '@/utils/enums';
 import type { InitialStateTypes, UmiIcon } from '@/utils/types';
 import type { LoginParams, LoginType } from '@/utils/types/login';
 
+import defaultSettings from '../../../../config/defaultSettings';
 import Account from './components/Account'; // 账户密码登录
 import Mobile from './components/Mobile'; // 手机号码登录
 import styles from './index.module.less'; // css 样式恩建
@@ -220,7 +221,7 @@ const LoginPage: FC = () => {
           {/* 登录表单 */}
           <LoginForm
             logo={<img alt="logo" src="/logo.svg" />}
-            title={initialState?.Settings?.title}
+            title={defaultSettings.title}
             subTitle={renderSubTitle}
             submitter={{
               submitButtonProps: {
