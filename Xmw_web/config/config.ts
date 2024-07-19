@@ -150,7 +150,7 @@ export default defineConfig({
     // 解决首次加载时白屏的问题
     { src: '/scripts/loading.js', async: true },
     // Umimai 统计
-    { src: 'https://umami.baiwumm.com/script.js', 'data-website-id': 'c145ca5f-1856-4bc6-83b5-38e812f2f840' },
+    { src: 'https://umami.baiwumm.com/script.js', 'data-website-id': '7e15460c-1124-4f43-9d26-33ecc1e9bd94' },
   ],
   // 站点统计
   analytics: {
