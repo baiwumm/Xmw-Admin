@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:39:28
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:26:15
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-10 14:10:09
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -183,7 +183,7 @@ export class RoleManagementService {
       // 根据主键查找出当前数据
       const currentInfo = await this.roleModel.findByPk(role_id);
       await this.operationLogsService.saveLogs(
-        `删除角色：${currentInfo.role_name}`,
+        `更新角色：${currentInfo.role_name}`,
       );
       return responseMessage(result);
     } catch (error) {
