@@ -3,9 +3,10 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-16 10:50:33
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 16:39:48
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-10 11:28:54
  */
+import { Request } from 'express';
 import * as fs from 'fs';
 
 import { XmwInternational } from '@/models/xmw_international.model'; // 数据库实体
@@ -107,4 +108,17 @@ export const checkDirAndCreate = (filePath: string): void => {
       fs.mkdirSync(checkPath);
     }
   }
+};
+
+/**
+ * @description: 获取客户端真实 IP
+ * @param {Request} req
+ */
+export const getRealIp = (req: Request): string => {
+  const result =
+    req.headers['x-forwarded-for'] ||
+    req.headers['x-real-ip'] ||
+    req.socket.remoteAddress ||
+    req.ip;
+  return Array.isArray(result) ? result[0] : result;
 };

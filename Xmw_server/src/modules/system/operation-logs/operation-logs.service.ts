@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 17:41:04
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-10 11:30:13
  */
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -15,7 +15,7 @@ import type { WhereOptions } from 'sequelize/types';
 
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { responseMessage } from '@/utils'; // 全局工具函数
+import { getRealIp, responseMessage } from '@/utils'; // 全局工具函数
 import type { PageResponse, Response, SessionTypes } from '@/utils/types';
 import type { LogsAttributes } from '@/utils/types/system';
 
@@ -35,11 +35,11 @@ export class OperationLogsService {
    * @author: 白雾茫茫丶
    */
   async saveLogs(content: string) {
-    const { url, method, headers, ip, body } = this.request;
+    const { url, method, headers, body } = this.request;
     const logData: LogsAttributes = {
       user_id: this.request.session.currentUserInfo.user_id,
       content,
-      ip,
+      ip: getRealIp(this.request),
       path: headers.referer,
       user_agent: headers['user-agent'],
       method,

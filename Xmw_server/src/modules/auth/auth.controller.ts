@@ -3,14 +3,15 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-11-25 14:30:19
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:53:56
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-10 11:32:28
  */
 import {
   Body,
   Controller,
   Get,
   Post,
+  Req,
   Res,
   Session,
   UseGuards,
@@ -23,11 +24,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
+import { Request } from 'express';
 import * as svgCaptcha from 'svg-captcha';
 
 import { ResponseDto } from '@/dto/response.dto';
-import { responseMessage } from '@/utils';
-import { IpAddress } from '@/utils/requestIp'; // 获取客户端真实IP
+import { getRealIp, responseMessage } from '@/utils';
 import type { SessionTypes } from '@/utils/types';
 
 import { AuthService } from './auth.service'; // Auth Service
@@ -60,12 +61,12 @@ export class AuthController {
   @ApiOperation({ summary: '用户登录' })
   async login(
     @Body() loginParams: LoginParamsDto,
-    @IpAddress() clinetIp: string,
     @Session() session: SessionTypes,
+    @Req() req: Request,
   ) {
     const response = await this.authService.loginSingToken(
       loginParams,
-      clinetIp,
+      getRealIp(req),
       session,
     );
     return response;
