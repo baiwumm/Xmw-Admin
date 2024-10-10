@@ -216,6 +216,8 @@ export default defineConfig({
       'local:mysql',
       'ri:thumb-up-line',
       'ri:message-2-line',
+      'ri:flower-line',
+      'ri:terminal-box-line',
     ],
   },
 });

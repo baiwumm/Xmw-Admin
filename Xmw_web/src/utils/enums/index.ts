@@ -59,6 +59,8 @@ export enum ROUTES {
   PERSONALCENTER = '/personal-center', // 个人中心
   PERSONALINFOMATION = '/personal-center/personal-information', // 个人中心-个人信息
   PERSONALSETTING = '/personal-center/personal-setting', // 个人中心-个人设置
+  FEATURES = '/features', // 功能页
+  CAPTCHA = '/features/captcha', // 验证码
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest
