@@ -40,10 +40,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!cacheToken) {
       throw new UnauthorizedException('token令牌已过期，请重新登录！');
     }
-    // token 校验
-    if (JSON.parse(cacheToken) !== originToken) {
-      throw new UnauthorizedException('token令牌非法，请重新登录！');
-    }
+    // token 校验，用户二次登录
+    // if (JSON.parse(cacheToken) !== originToken) {
+    //   throw new UnauthorizedException('token令牌非法，请重新登录！');
+    // }
     return payload;
   }
 }
