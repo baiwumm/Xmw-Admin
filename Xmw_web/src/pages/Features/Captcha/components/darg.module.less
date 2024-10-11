@@ -1,0 +1,69 @@
+.drag-captcha{
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+  background-color: rgb(203 213 225);
+  text-align: center;
+}
+
+.dv_progress_bar{
+  position: absolute;
+  width: 0;
+  height: 0;
+  // transition: width 0.5s;
+}
+
+.dv_text{
+  position: absolute;
+  top:0;
+  user-select: none;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0, var(--textColor)),
+    color-stop(0.4, var(--textColor)),
+    color-stop(0.5, #fff),
+    color-stop(0.6, var(--textColor)),
+    color-stop(1, var(--textColor))
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-size-adjust: none;
+  animation: slidetounlock 3s infinite;
+}
+
+.dv_text_box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dv_handler{
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  // transition: left 0.5s;
+}
+
+@keyframes slidetounlock {
+  0% {
+    background-position: var(--pwidth) 0;
+  }
+  100% {
+    background-position: var(--width) 0;
+  }
+}
+@keyframes slidetounlock2 {
+  0% {
+    background-position: var(--pwidth) 0;
+  }
+  100% {
+    background-position: var(--pwidth) 0;
+  }
+}
