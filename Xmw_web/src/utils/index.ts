@@ -9,7 +9,7 @@
 import type { ColumnsState, RequestData } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { compact, eq, get, join, sample, startsWith } from 'lodash-es';
+import { compact, eq, get, join, random, sample, startsWith } from 'lodash-es';
 import { stringify } from 'querystring';
 
 import { getPermissions, getRoutesMenus, getUserInfo } from '@/services/logic/login' // 登录相关接口
@@ -232,3 +232,15 @@ export const randomTagColor = () => {
   const colors = ['magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple']
   return sample(colors)
 }
+
+/** @description: 生成随机颜色 */
+export const randomColor = (min = 0, max = 255) => {
+  // 生成三个介于 0 到 255 之间的随机数作为 RGB 的值
+  const r = random(min, max);
+  const g = random(min, max);
+  const b = random(min, max);
+  return `rgb(${r},${g},${b})`;
+};
+
+/** @description: 验证码字符 */
+export const codeChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
