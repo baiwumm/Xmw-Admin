@@ -218,6 +218,10 @@ export default defineConfig({
       'ri:message-2-line',
       'ri:flower-line',
       'ri:terminal-box-line',
+      'ri:arrow-right-double-line',
+      'ri:checkbox-circle-line',
+      'ri:lock-unlock-line',
+      'ri:lock-line',
     ],
   },
 });
