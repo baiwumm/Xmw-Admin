@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 13:47:25
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-14 14:05:09
+ * @LastEditTime: 2024-10-14 17:33:23
  * @Description: 验证码
  */
 import { PageContainer, PageHeader, ProCard } from '@ant-design/pro-components'
@@ -18,6 +18,7 @@ import DragCaptcha, { type DragCaptchaRef } from './components/DragCaptcha'; // 
 import GraphicCaptcha, { type GraphicCaptchaRef } from './components/GraphicCaptcha'; // 图形验证码
 import OperationCaptcha, { type OperationCaptchaRef } from './components/OperationCaptcha'; // 运算验证码
 import PointCaptcha, { type PointCaptchaRef } from './components/PointCaptcha'; // 点选验证码
+import RotateCaptcha, { type RotateCaptchaRef } from './components/RotateCaptcha'; // 图片旋转验证码
 
 const { Search } = Input;
 
@@ -26,6 +27,7 @@ const Captcha: FC = () => {
   const { formatMessage } = useIntl(); // 国际化工具
   const [graphicInput, setGraphicInput] = useState(''); // 图形验证码输入的值
   const [operationInput, setOperationInput] = useState(''); // 运算验证码输入的值
+  const [imgSrc, setImgSrc] = useState(getRandomImg()); // 图片地址
 
   // 国际化
   const renderMessage = (field: string) => formatMessage({ id: formatPerfix(ROUTES.CAPTCHA, field) });
@@ -38,6 +40,9 @@ const Captcha: FC = () => {
 
   // 滑块验证码
   const dragCaptchaRef = createRef<DragCaptchaRef>();
+
+  // 图片旋转验证码
+  const rotateCaptchaRef = createRef<RotateCaptchaRef>();
 
   // 点选验证码
   const pointCaptchaRef = createRef<PointCaptchaRef>();
@@ -77,6 +82,17 @@ const Captcha: FC = () => {
 
   // 滑块验证码成功回调
   const onDragCaptchaSuccess = (seconds: number) => {
+    message.success(formatMessage({ id: formatPerfix(ROUTES.CAPTCHA, 'dragCodeSuccess') }, { seconds }))
+  }
+
+  // 重置图片旋转验证码
+  const resetRotateCaptchaRef = () => {
+    setImgSrc(getRandomImg());
+    rotateCaptchaRef?.current?.reset();
+  }
+
+  // 图片旋转验证码成功回调
+  const onRotateCaptchaSuccess = (seconds: number) => {
     message.success(formatMessage({ id: formatPerfix(ROUTES.CAPTCHA, 'dragCodeSuccess') }, { seconds }))
   }
 
@@ -160,6 +176,27 @@ const Captcha: FC = () => {
                   {renderMessage('reset')}
                 </Button>
               </div>
+            </Space>
+          </Card>
+        </Col>
+        {/* 图片旋转验证码 */}
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <Card title={renderMessage('rotateCaptcha')}>
+            <Space direction="vertical" style={{ display: 'flex' }}>
+              <Row justify='center'>
+                <RotateCaptcha
+                  onRef={rotateCaptchaRef}
+                  width={250}
+                  imgSrc={imgSrc}
+                  success={onRotateCaptchaSuccess}
+                />
+              </Row>
+              <Button
+                type="primary"
+                block onClick={resetRotateCaptchaRef}
+              >
+                {renderMessage('reset')}
+              </Button>
             </Space>
           </Card>
         </Col>
