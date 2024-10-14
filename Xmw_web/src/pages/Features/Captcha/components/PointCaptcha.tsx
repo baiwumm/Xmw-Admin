@@ -2,13 +2,13 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-11 16:00:36
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-14 14:20:18
+ * @LastEditTime: 2024-10-14 17:08:08
  * @Description: 点选验证码
  */
 import { Icon } from '@umijs/max';
 import { useMount, useSetState } from 'ahooks';
 import { Alert, Button, Space, Spin } from 'antd';
-import { cloneDeep, difference, every, join, map, random, sample, shuffle, some } from 'lodash-es';
+import { cloneDeep, difference, every, join, map, random, sample, shuffle } from 'lodash-es';
 import { FC, type MouseEvent, RefObject, useImperativeHandle, useRef } from 'react';
 
 import { generateRandomHanziArray, randomColor } from '@/utils';

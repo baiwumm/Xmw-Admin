@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-11 10:58:33
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-11 14:54:21
+ * @LastEditTime: 2024-10-14 17:37:39
  * @Description: 滑块验证码
  */
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -90,9 +90,6 @@ const DragCaptcha: FC<DragCaptchaProps> = ({
   const passVerify = () => {
     setIsPassing(true);
     setIsmoving(false);
-    if (messageRef.current) {
-      messageRef.current.style['-webkit-text-fill-color'] = 'unset';
-    }
     if (dragCaptchaRef.current) {
       dragCaptchaRef.current.style.setProperty('--textColor', '#fff');
     }
@@ -165,7 +162,6 @@ const DragCaptcha: FC<DragCaptchaProps> = ({
       dragCaptchaRef.current.style.setProperty('--textColor', textColor);
     }
     if (messageRef.current) {
-      messageRef.current.style['-webkit-text-fill-color'] = 'transparent';
       messageRef.current.style.color = background;
     }
   };
