@@ -222,6 +222,7 @@ export default defineConfig({
       'ri:checkbox-circle-line',
       'ri:lock-unlock-line',
       'ri:lock-line',
+      'ri:reset-left-fill',
     ],
   },
 });
