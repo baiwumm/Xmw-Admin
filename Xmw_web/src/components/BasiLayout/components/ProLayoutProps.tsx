@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-14 15:16:33
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 10:25:40
+ * @LastEditTime: 2024-10-14 10:09:26
  */
 import { HeaderProps } from '@ant-design/pro-components';
 import { Icon } from '@umijs/max';
@@ -61,9 +61,9 @@ export const appList: HeaderProps['appList'] = [
     target: '_blank',
   },
   {
-    icon: 'https://cdn.baiwumm.com/project/vue3-admin/logo.png',
+    icon: 'https://vue3.baiwumm.com/logo.png',
     title: 'Vue3 Admin',
-    desc: '基于 Vue3.0 + TypeScript 的后台解决方案',
+    desc: '基于 Vue3 + Nest.js  开发的全栈后台应用',
     url: 'https://vue3.baiwumm.com/',
     target: '_blank',
   },
