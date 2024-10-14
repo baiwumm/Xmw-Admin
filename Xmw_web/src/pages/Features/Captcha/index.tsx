@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 13:47:25
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-11 15:23:48
+ * @LastEditTime: 2024-10-14 14:05:09
  * @Description: 验证码
  */
 import { PageContainer, PageHeader, ProCard } from '@ant-design/pro-components'
@@ -11,12 +11,13 @@ import { App, Button, Card, Col, Input, Row, Space } from 'antd';
 import { toNumber } from 'lodash-es';
 import { createRef, FC, useState } from 'react';
 
-import { formatPerfix } from '@/utils';
+import { formatPerfix, getRandomImg } from '@/utils';
 import { ROUTES } from '@/utils/enums'
 
 import DragCaptcha, { type DragCaptchaRef } from './components/DragCaptcha'; // 滑块验证码
 import GraphicCaptcha, { type GraphicCaptchaRef } from './components/GraphicCaptcha'; // 图形验证码
 import OperationCaptcha, { type OperationCaptchaRef } from './components/OperationCaptcha'; // 运算验证码
+import PointCaptcha, { type PointCaptchaRef } from './components/PointCaptcha'; // 点选验证码
 
 const { Search } = Input;
 
@@ -37,6 +38,9 @@ const Captcha: FC = () => {
 
   // 滑块验证码
   const dragCaptchaRef = createRef<DragCaptchaRef>();
+
+  // 点选验证码
+  const pointCaptchaRef = createRef<PointCaptchaRef>();
 
   // 验证判断
   const validateCaptcha = (empty: boolean, success: boolean) => {
@@ -74,6 +78,20 @@ const Captcha: FC = () => {
   // 滑块验证码成功回调
   const onDragCaptchaSuccess = (seconds: number) => {
     message.success(formatMessage({ id: formatPerfix(ROUTES.CAPTCHA, 'dragCodeSuccess') }, { seconds }))
+  }
+
+  // 点选验证码回调
+  const onPointCaptchaCallback = (result: boolean) => {
+    if (result) {
+      message.success(renderMessage('success'));
+    } else {
+      message.error(renderMessage('error'));
+    }
+  }
+
+  // 重置点选验证码
+  const resetPointCaptcha = () => {
+    pointCaptchaRef?.current?.refresh();
   }
   return (
     <PageContainer header={{ title: null }}>
@@ -142,6 +160,28 @@ const Captcha: FC = () => {
                   {renderMessage('reset')}
                 </Button>
               </div>
+            </Space>
+          </Card>
+        </Col>
+        {/* 点选验证码 */}
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <Card title={renderMessage('pointCaptcha')}>
+            <Space direction="vertical" style={{ display: 'flex' }}>
+              <Row justify='center'>
+                <PointCaptcha
+                  onRef={pointCaptchaRef}
+                  imgs={getRandomImg(20)}
+                  width={300}
+                  height={230}
+                  callback={onPointCaptchaCallback}
+                />
+              </Row>
+              <Button
+                type="primary"
+                block onClick={resetPointCaptcha}
+              >
+                {renderMessage('reset')}
+              </Button>
             </Space>
           </Card>
         </Col>
