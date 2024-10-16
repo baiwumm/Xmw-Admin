@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 13:47:25
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-14 17:33:23
+ * @LastEditTime: 2024-10-16 09:52:26
  * @Description: 验证码
  */
 import { PageContainer, PageHeader, ProCard } from '@ant-design/pro-components'
@@ -18,6 +18,7 @@ import DragCaptcha, { type DragCaptchaRef } from './components/DragCaptcha'; // 
 import GraphicCaptcha, { type GraphicCaptchaRef } from './components/GraphicCaptcha'; // 图形验证码
 import OperationCaptcha, { type OperationCaptchaRef } from './components/OperationCaptcha'; // 运算验证码
 import PointCaptcha, { type PointCaptchaRef } from './components/PointCaptcha'; // 点选验证码
+import PuzzleCaptcha, { type PuzzleCaptchaRef } from './components/PuzzleCaptcha'; // 拼图验证码
 import RotateCaptcha, { type RotateCaptchaRef } from './components/RotateCaptcha'; // 图片旋转验证码
 
 const { Search } = Input;
@@ -43,6 +44,9 @@ const Captcha: FC = () => {
 
   // 图片旋转验证码
   const rotateCaptchaRef = createRef<RotateCaptchaRef>();
+
+  // 拼图验证码
+  const puzzleCaptchaRef = createRef<PuzzleCaptchaRef>();
 
   // 点选验证码
   const pointCaptchaRef = createRef<PointCaptchaRef>();
@@ -94,6 +98,11 @@ const Captcha: FC = () => {
   // 图片旋转验证码成功回调
   const onRotateCaptchaSuccess = (seconds: number) => {
     message.success(formatMessage({ id: formatPerfix(ROUTES.CAPTCHA, 'dragCodeSuccess') }, { seconds }))
+  }
+
+  // 重置拼图验证码
+  const resetPuzzleCaptcha = () => {
+    puzzleCaptchaRef?.current?.reset();
   }
 
   // 点选验证码回调
@@ -194,6 +203,26 @@ const Captcha: FC = () => {
               <Button
                 type="primary"
                 block onClick={resetRotateCaptchaRef}
+              >
+                {renderMessage('reset')}
+              </Button>
+            </Space>
+          </Card>
+        </Col>
+        {/* 拼图验证码 */}
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <Card title={renderMessage('puzzleCaptcha')}>
+            <Space direction="vertical" style={{ display: 'flex' }}>
+              <Row justify='center'>
+                <PuzzleCaptcha
+                  onRef={puzzleCaptchaRef}
+                  height={235}
+                  onSuccess={() => message.success(renderMessage('success'))}
+                />
+              </Row>
+              <Button
+                type="primary"
+                block onClick={resetPuzzleCaptcha}
               >
                 {renderMessage('reset')}
               </Button>
