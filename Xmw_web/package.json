@@ -67,6 +67,7 @@
     "rc-menu": "^9.12.2",
     "react": "^18.2.0",
     "react-quill": "^2.0.0",
+    "react-viewer": "^3.2.2",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
