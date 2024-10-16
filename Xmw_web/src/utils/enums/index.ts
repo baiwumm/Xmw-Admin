@@ -61,6 +61,7 @@ export enum ROUTES {
   PERSONALSETTING = '/personal-center/personal-setting', // 个人中心-个人设置
   FEATURES = '/features', // 功能页
   CAPTCHA = '/features/captcha', // 验证码
+  GANTT = '/features/gantt', // 甘特图
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest
