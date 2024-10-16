@@ -197,4 +197,12 @@ export const ganttTasks: Task[] = [
     parent: '22',
     open: true,
   },
+  {
+    id: 27,
+    text: '图片预览',
+    start_date: new Date('2024-11-10 00:00:00'),
+    duration: 1,
+    parent: '22',
+    open: true,
+  },
 ];

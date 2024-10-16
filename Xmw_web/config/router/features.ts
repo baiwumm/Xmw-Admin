@@ -30,5 +30,12 @@ export default {
       access: 'adminRouteFilter',
       exact: true,
     },
+    {
+      path: '/features/viewer',
+      name: 'viewer',
+      component: './Features/Viewer',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
   ],
 }

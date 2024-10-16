@@ -62,6 +62,7 @@ export enum ROUTES {
   FEATURES = '/features', // 功能页
   CAPTCHA = '/features/captcha', // 验证码
   GANTT = '/features/gantt', // 甘特图
+  VIEWER = '/features/viewer', // 图片预览
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest

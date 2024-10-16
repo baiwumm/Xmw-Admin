@@ -7,16 +7,15 @@
  */
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 
-import { PageContainer, PageHeader, ProCard } from '@ant-design/pro-components'
+import { PageContainer } from '@ant-design/pro-components'
 import { useIntl } from '@umijs/max';
 import { useMount } from 'ahooks'
 import { Card, Segmented } from 'antd';
 import type { SegmentedOptions } from 'antd/es/segmented';
-import type { GanttConfigOptions, ZoomLevel } from 'dhtmlx-gantt';
-import { gantt } from 'dhtmlx-gantt';
+import { gantt, type GanttConfigOptions, type ZoomLevel } from 'dhtmlx-gantt';
 import { FC, useRef, useState } from 'react';
 
-import { formatPerfix, getRandomImg } from '@/utils';
+import { formatPerfix } from '@/utils';
 import { ROUTES } from '@/utils/enums'
 
 import { ganttTasks } from './data';
@@ -27,7 +26,7 @@ const Gantt: FC = () => {
   const { formatMessage } = useIntl(); // 国际化工具
   const [timeType, setTimeType] = useState<TimeType>('day');
 
-  const ganttRef = useRef<HTMLElement>(null);
+  const ganttRef = useRef<HTMLDivElement>(null);
 
   const options: SegmentedOptions<TimeType> = [
     {
