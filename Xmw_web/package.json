@@ -57,6 +57,7 @@
     "ahooks": "^3.7.8",
     "antd": "^5.21.3",
     "antd-img-crop": "^4.13.0",
+    "colorthief": "^2.6.0",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.10",
     "dhtmlx-gantt": "^8.0.10",
