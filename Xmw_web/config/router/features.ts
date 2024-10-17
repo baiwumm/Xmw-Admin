@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 14:11:27
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-16 13:45:09
+ * @LastEditTime: 2024-10-16 17:59:47
  * @Description: 功能页模块
  */
 export default {
@@ -34,6 +34,13 @@ export default {
       path: '/features/viewer',
       name: 'viewer',
       component: './Features/Viewer',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
+    {
+      path: '/features/lazyload',
+      name: 'lazyload',
+      component: './Features/Lazyload',
       access: 'adminRouteFilter',
       exact: true,
     },

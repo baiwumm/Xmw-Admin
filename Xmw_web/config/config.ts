@@ -225,6 +225,7 @@ export default defineConfig({
       'ri:reset-left-fill',
       'fa6-solid:chart-gantt',
       'ri:image-line',
+      'ri:image-add-line',
     ],
   },
 });
