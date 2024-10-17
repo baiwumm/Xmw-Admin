@@ -44,5 +44,12 @@ export default {
       access: 'adminRouteFilter',
       exact: true,
     },
+    {
+      path: '/features/colorthief',
+      name: 'colorthief',
+      component: './Features/Colorthief',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
   ],
 }

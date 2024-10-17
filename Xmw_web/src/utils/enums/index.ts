@@ -64,6 +64,7 @@ export enum ROUTES {
   GANTT = '/features/gantt', // 甘特图
   VIEWER = '/features/viewer', // 图片预览
   LAZYLOAD = '/features/lazyload', // 懒加载
+  COLORTHIEF = '/features/colorthief', // 图片取色盘
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest

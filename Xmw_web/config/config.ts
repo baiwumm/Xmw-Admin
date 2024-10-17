@@ -226,6 +226,7 @@ export default defineConfig({
       'fa6-solid:chart-gantt',
       'ri:image-line',
       'ri:image-add-line',
+      'ri:palette-line',
     ],
   },
 });

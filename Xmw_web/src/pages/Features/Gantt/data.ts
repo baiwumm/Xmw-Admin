@@ -213,4 +213,12 @@ export const ganttTasks: Task[] = [
     parent: '22',
     open: true,
   },
+  {
+    id: 29,
+    text: '图片取色盘',
+    start_date: new Date('2024-11-12 00:00:00'),
+    duration: 1,
+    parent: '22',
+    open: true,
+  },
 ];
