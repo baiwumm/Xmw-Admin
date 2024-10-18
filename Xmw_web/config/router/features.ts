@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 14:11:27
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-16 17:59:47
+ * @LastEditTime: 2024-10-17 17:30:41
  * @Description: 功能页模块
  */
 export default {
@@ -48,6 +48,20 @@ export default {
       path: '/features/colorthief',
       name: 'colorthief',
       component: './Features/Colorthief',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
+    {
+      path: '/features/eye-dropper',
+      name: 'eye-dropper',
+      component: './Features/EyeDropper',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
+    {
+      path: '/features/flow',
+      name: 'flow',
+      component: './Features/Flow',
       access: 'adminRouteFilter',
       exact: true,
     },

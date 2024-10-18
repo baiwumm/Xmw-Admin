@@ -227,6 +227,8 @@ export default defineConfig({
       'ri:image-line',
       'ri:image-add-line',
       'ri:palette-line',
+      'ri:dropper-line',
+      'ri:flow-chart',
     ],
   },
 });

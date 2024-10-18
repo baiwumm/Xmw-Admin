@@ -65,6 +65,8 @@ export enum ROUTES {
   VIEWER = '/features/viewer', // 图片预览
   LAZYLOAD = '/features/lazyload', // 懒加载
   COLORTHIEF = '/features/colorthief', // 图片取色盘
+  EYEDROPPER = '/features/eye-dropper', // 系统级取色器
+  FLOW = '/features/flow', // 流程图
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest
