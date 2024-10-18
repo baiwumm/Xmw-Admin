@@ -2,12 +2,13 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-17 17:28:34
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-18 14:17:30
+ * @LastEditTime: 2024-10-18 14:50:54
  * @Description: 流程图
  */
 import '@xyflow/react/dist/style.css';
 
 import dagre from '@dagrejs/dagre';
+import { useIntl } from '@umijs/max';
 import {
   addEdge,
   Background,
@@ -23,8 +24,10 @@ import {
 import { Button, Flex } from 'antd';
 import React, { FC, useCallback } from 'react';
 
-import { initialEdges, initialNodes } from './nodes-edges';
+import { formatPerfix } from '@/utils';
+import { ROUTES } from '@/utils/enums'
 
+import { initialEdges, initialNodes } from './nodes-edges';
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
 const nodeWidth = 172;
@@ -70,6 +73,7 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 );
 
 const Flow: FC = () => {
+  const { formatMessage } = useIntl(); // 国际化工具
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
@@ -107,8 +111,12 @@ const Flow: FC = () => {
         <Controls />
         <Panel position="top-right">
           <Flex gap="small" wrap>
-            <Button type='primary' onClick={() => onLayout('TB')}>垂直布局</Button>
-            <Button type='primary' onClick={() => onLayout('LR')}>水平布局</Button>
+            <Button type='primary' onClick={() => onLayout('TB')}>
+              {formatMessage({ id: formatPerfix(ROUTES.FLOW, 'vertical') })}
+            </Button>
+            <Button type='primary' onClick={() => onLayout('LR')}>
+              {formatMessage({ id: formatPerfix(ROUTES.FLOW, 'horizontal') })}
+            </Button>
           </Flex>
         </Panel>
       </ReactFlow>
