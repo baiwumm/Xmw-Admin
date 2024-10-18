@@ -54,6 +54,8 @@
     "@ant-design/charts": "^1.4.2",
     "@ant-design/pro-components": "^2.7.19",
     "@ant-design/use-emotion-css": "1.0.4",
+    "@dagrejs/dagre": "^1.1.4",
+    "@xyflow/react": "^12.3.2",
     "ahooks": "^3.7.8",
     "antd": "^5.21.3",
     "antd-img-crop": "^4.13.0",
