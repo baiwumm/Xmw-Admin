@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-15 10:30:56
+ * @LastEditTime: 2024-10-21 09:26:59
  */
 import {
   ProConfigProvider,
@@ -57,7 +57,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     useBoolean(false);
 
   // 渲染菜单图标
-  const renderMenuicon = (icon) => <Icon icon={toString(icon)} style={{ fontSize: 16 }} />;
+  const renderMenuicon = (icon) => <Icon icon={toString(icon)} style={{ fontSize: 16, display: 'flex' }} />;
   return {
     /* 水印 */
     waterMarkProps: {
