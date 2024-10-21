@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-21 09:26:59
+ * @LastEditTime: 2024-10-21 17:30:56
  */
 import {
   ProConfigProvider,
@@ -95,16 +95,16 @@ export const BasiLayout: RunTimeLayoutConfig = ({
       },
     },
     /* 自定义菜单项的 render 方法 */
-    menuItemRender: ({ icon, pro_layout_parentKeys, isUrl, path }, defaultDom) => {
+    menuItemRender: ({ icon, pro_layout_parentKeys, isUrl, path = '', locale }, defaultDom) => {
       const renderMenuDom = () => {
+        const isGroup = LAYOUT?.siderMenuType === 'group';
         return (
           <Space size={4}>
             {/* 分组布局不用渲染图标，避免重复 */}
-            {!(LAYOUT?.siderMenuType === 'group') &&
-              pro_layout_parentKeys?.length &&
+            {pro_layout_parentKeys?.length &&
               renderMenuicon(icon)}
             <Paragraph ellipsis={{ rows: 1, tooltip: defaultDom }} style={{ marginBottom: 0 }}>
-              {defaultDom}
+              {isGroup ? formatMessage({ id: locale as string }) : defaultDom}
             </Paragraph>
           </Space>
         );
