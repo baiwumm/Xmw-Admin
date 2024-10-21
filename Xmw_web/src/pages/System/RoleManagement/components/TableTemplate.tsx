@@ -4,14 +4,14 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 13:54:14
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 09:53:32
+ * @LastEditTime: 2024-10-21 17:11:29
  */
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Icon, useIntl } from '@umijs/max';
 import { useBoolean, useRequest } from 'ahooks';
 import { App, Form, Popconfirm, Space, Switch, Tag } from 'antd';
-import { map } from 'lodash-es';
+import { filter, includes, map } from 'lodash-es';
 import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu'; // 表格操作下拉菜单
@@ -147,9 +147,15 @@ const TableTemplate: FC = () => {
         <DropdownMenu
           pathName={ROUTES.ROLEMANAGEMENT}
           editCallback={() => {
+            // 获取全部勾选的节点
+            const checkedKeys = map(record.menu_permission, 'menu_id');
+            // 获取勾选节点的父节点
+            const parentIds = map(map(record.menu_permission, 'menuInfo'), 'parent_id');
+            // 过滤掉半勾选的节点
+            const menus = filter(checkedKeys, (key: string) => !includes(parentIds, key));
             form.setFieldsValue({
               ...record,
-              menu_permission: map(record.menu_permission, 'menu_id'),
+              menu_permission: menus,
             });
             setOpenDrawerTrue();
           }}
