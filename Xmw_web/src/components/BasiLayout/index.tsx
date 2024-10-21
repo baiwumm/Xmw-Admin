@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-21 17:30:56
+ * @LastEditTime: 2024-10-21 17:39:14
  */
 import {
   ProConfigProvider,
@@ -87,8 +87,8 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     breadcrumbProps: {
       itemRender: (route) => {
         return (
-          <Space>
-            <Icon icon={MenuRemixIconMap[route.linkPath as ROUTES]} />
+          <Space align='center'>
+            <Icon icon={MenuRemixIconMap[route.linkPath as ROUTES]} style={{ display: 'flex' }} />
             <span>{route.breadcrumbName}</span>
           </Space>
         );
