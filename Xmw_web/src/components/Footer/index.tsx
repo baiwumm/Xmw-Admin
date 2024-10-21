@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
           title: (
             <Icon
               icon="ri:github-fill"
-              style={{ display: 'inline-block', fontSize: 16, verticalAlign: 'text-bottom' }}
+              style={{ display: 'inline-block', fontSize: 16, verticalAlign: 'middle' }}
             />
           ),
           href: 'https://github.com/baiwumm/Xmw-Admin/',
