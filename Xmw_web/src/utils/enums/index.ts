@@ -67,6 +67,7 @@ export enum ROUTES {
   COLORTHIEF = '/features/colorthief', // 图片取色盘
   EYEDROPPER = '/features/eye-dropper', // 系统级取色器
   FLOW = '/features/flow', // 流程图
+  SWIPER = '/features/swiper', // Swiper
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest

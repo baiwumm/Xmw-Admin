@@ -229,6 +229,7 @@ export default defineConfig({
       'ri:palette-line',
       'ri:dropper-line',
       'ri:flow-chart',
+      'simple-icons:swiper',
     ],
   },
 });

@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 14:11:27
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-17 17:30:41
+ * @LastEditTime: 2024-10-21 09:18:27
  * @Description: 功能页模块
  */
 export default {
@@ -62,6 +62,13 @@ export default {
       path: '/features/flow',
       name: 'flow',
       component: './Features/Flow',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
+    {
+      path: '/features/swiper',
+      name: 'swiper',
+      component: './Features/Swiper',
       access: 'adminRouteFilter',
       exact: true,
     },

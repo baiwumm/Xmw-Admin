@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-31 08:56:55
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-16 14:27:44
+ * @LastEditTime: 2024-10-21 09:20:33
  */
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 
@@ -163,4 +163,4 @@ export type PathNames = EnumValues<typeof ROUTES>
  * @description: 图标格式
  * @author: 白雾茫茫丶
  */
-export type UmiIcon = `${'ri' | 'local' | 'fa6-solid'}:${string}`
+export type UmiIcon = `${'ri' | 'local' | 'fa6-solid' | 'simple-icons'}:${string}`

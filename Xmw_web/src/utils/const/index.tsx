@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-09-06 13:37:18
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-17 15:45:59
+ * @LastEditTime: 2024-10-21 09:19:45
  */
 import { FormattedMessage } from '@umijs/max';
 import type { Locale } from 'antd/es/locale';
@@ -59,6 +59,7 @@ export const MenuRemixIconMap: Record<string, UmiIcon> = {
   [ROUTES.COLORTHIEF]: 'ri:palette-line',
   [ROUTES.EYEDROPPER]: 'ri:dropper-line',
   [ROUTES.FLOW]: 'ri:flow-chart',
+  [ROUTES.SWIPER]: 'simple-icons:swiper',
   [ROUTES.TECHNICALDOCUMENT]: 'ri:code-box-line',
   [ROUTES.REACT]: 'ri:reactjs-fill',
   [ROUTES.NEST]: 'local:nest',
