@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-28 17:39:28
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-10 14:10:09
+ * @LastEditTime: 2024-10-21 15:26:22
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -12,6 +12,7 @@ import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import { Sequelize } from 'sequelize-typescript';
 
+import { XmwMenu } from '@/models/xmw_menu.model';
 import { XmwPermission } from '@/models/xmw_permission.model';
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
@@ -76,6 +77,16 @@ export class RoleManagementService {
         {
           model: XmwPermission,
           as: 'menu_permission',
+          include: [
+            {
+              model: XmwRole,
+              as: 'roleInfo',
+            },
+            {
+              model: XmwMenu,
+              as: 'menuInfo',
+            },
+          ],
         },
       ],
       offset: (Number(current) - 1) * pageSize,

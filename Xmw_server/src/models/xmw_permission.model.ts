@@ -17,6 +17,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
+import { XmwMenu } from '@/models/xmw_menu.model';
 import { XmwRole } from '@/models/xmw_role.model';
 import type { PermissionAttributes } from '@/utils/types/system';
 
@@ -42,9 +43,13 @@ export class XmwPermission
 
   //菜单id
   @IsUUID(4)
+  @ForeignKey(() => XmwMenu)
   @Column({ type: DataType.UUID, comment: '菜单id' })
   menu_id: string;
 
   @BelongsTo(() => XmwRole)
   roleInfo: XmwRole;
+
+  @BelongsTo(() => XmwMenu)
+  menuInfo: XmwMenu;
 }
