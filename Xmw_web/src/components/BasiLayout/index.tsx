@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-19 20:39:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-21 17:39:14
+ * @LastEditTime: 2024-10-21 17:45:47
  */
 import {
   ProConfigProvider,
@@ -98,14 +98,17 @@ export const BasiLayout: RunTimeLayoutConfig = ({
     menuItemRender: ({ icon, pro_layout_parentKeys, isUrl, path = '', locale }, defaultDom) => {
       const renderMenuDom = () => {
         const isGroup = LAYOUT?.siderMenuType === 'group';
+        const isCollapsed = initialState?.Collapsed;
         return (
           <Space size={4}>
             {/* 分组布局不用渲染图标，避免重复 */}
             {pro_layout_parentKeys?.length &&
               renderMenuicon(icon)}
-            <Paragraph ellipsis={{ rows: 1, tooltip: defaultDom }} style={{ marginBottom: 0 }}>
-              {isGroup ? formatMessage({ id: locale as string }) : defaultDom}
-            </Paragraph>
+            {!isGroup || (isGroup && !isCollapsed) ? (
+              <Paragraph ellipsis={{ rows: 1, tooltip: defaultDom }} style={{ marginBottom: 0 }}>
+                {isGroup ? formatMessage({ id: locale as string }) : defaultDom}
+              </Paragraph>
+            ) : null}
           </Space>
         );
       };
