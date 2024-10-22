@@ -72,5 +72,12 @@ export default {
       access: 'adminRouteFilter',
       exact: true,
     },
+    {
+      path: '/features/file-preview',
+      name: 'file-preview',
+      component: './Features/FilePreview',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
   ],
 }

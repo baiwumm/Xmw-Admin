@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from '@umijs/max';
+import path from 'path';
 
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
@@ -174,6 +175,10 @@ export default defineConfig({
   mock: false,
   // 修复 esbuild 压缩器自动引入的全局变量导致的命名冲突问题。
   esbuildMinifyIIFE: true,
+  // 设置别名
+  alias: {
+    '@public': path.resolve(__dirname, '../public'),
+  },
   // 自动安装图标库 https://icones.js.org/
   icons: {
     autoInstall: {},
@@ -230,6 +235,7 @@ export default defineConfig({
       'ri:dropper-line',
       'ri:flow-chart',
       'simple-icons:swiper',
+      'ri:file-excel-2-line',
     ],
   },
 });

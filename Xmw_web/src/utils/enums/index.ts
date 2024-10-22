@@ -68,6 +68,7 @@ export enum ROUTES {
   EYEDROPPER = '/features/eye-dropper', // 系统级取色器
   FLOW = '/features/flow', // 流程图
   SWIPER = '/features/swiper', // Swiper
+  FILEPREVIEW = '/features/file-preview', // 文件预览
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest
