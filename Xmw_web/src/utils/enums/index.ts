@@ -69,6 +69,7 @@ export enum ROUTES {
   FLOW = '/features/flow', // 流程图
   SWIPER = '/features/swiper', // Swiper
   FILEPREVIEW = '/features/file-preview', // 文件预览
+  CHARTS = '/features/charts', // 图表
   TECHNICALDOCUMENT = '/technical-document', // 技术文档
   REACT = '/technical-document/react', // 技术文档 - React
   NEST = '/technical-document/nest', // 技术文档 - Nest

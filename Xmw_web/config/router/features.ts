@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2024-10-10 14:11:27
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-21 09:18:27
+ * @LastEditTime: 2024-10-22 13:59:31
  * @Description: 功能页模块
  */
 export default {
@@ -76,6 +76,13 @@ export default {
       path: '/features/file-preview',
       name: 'file-preview',
       component: './Features/FilePreview',
+      access: 'adminRouteFilter',
+      exact: true,
+    },
+    {
+      path: '/features/charts',
+      name: 'charts',
+      component: './Features/Charts',
       access: 'adminRouteFilter',
       exact: true,
     },

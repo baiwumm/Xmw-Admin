@@ -236,6 +236,8 @@ export default defineConfig({
       'ri:flow-chart',
       'simple-icons:swiper',
       'ri:file-excel-2-line',
+      'ri:bar-chart-2-line',
+      'ri:reset-left-line'
     ],
   },
 });
