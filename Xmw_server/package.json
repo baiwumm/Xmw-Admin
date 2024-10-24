@@ -56,7 +56,8 @@
     "sequelize-typescript": "^2.1.5",
     "stacktrace-js": "^2.0.2",
     "svg-captcha": "^1.4.0",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "ua-parser-js": "^1.0.39"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.1.18",
