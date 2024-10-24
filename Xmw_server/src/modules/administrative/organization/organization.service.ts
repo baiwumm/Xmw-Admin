@@ -12,7 +12,6 @@ import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 
 import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organization 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import type { Response, SessionTypes } from '@/utils/types';
 
@@ -24,7 +23,6 @@ export class OrganizationService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwOrganization)
     private readonly organizationModel: typeof XmwOrganization,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -79,8 +77,6 @@ export class OrganizationService {
     });
     // 判断是否创建
     if (created) {
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`创建组织：${org_name}`);
       return responseMessage(result);
     } else {
       return responseMessage({}, '组织名称或组织编码已存在!', -1);
@@ -121,12 +117,6 @@ export class OrganizationService {
     const result = await this.organizationModel.update(organizationInfo, {
       where: { org_id },
     });
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.organizationModel.findByPk(org_id);
-    await this.operationLogsService.saveLogs(
-      `编辑组织：${currentInfo.org_name}`,
-    );
     return responseMessage(result);
   }
 
@@ -143,14 +133,8 @@ export class OrganizationService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
-    // 根据主键查找出当前数据
-    const currentInfo = await this.organizationModel.findByPk(org_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.organizationModel.destroy({ where: { org_id } });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `删除组织：${currentInfo.org_name}`,
-    );
     return responseMessage(result);
   }
 }

@@ -15,7 +15,6 @@ import { XmwJobs } from '@/models/xmw_jobs.model';
 import { XmwOrganization } from '@/models/xmw_organization.model';
 import { XmwRole } from '@/models/xmw_role.model';
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
 import type {
   PageResponse,
@@ -32,7 +31,6 @@ export class UserManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -106,8 +104,6 @@ export class UserManagementService {
     });
     // 判断是否创建
     if (created) {
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`创建用户：${user_name}`);
       return responseMessage(result);
     } else {
       return responseMessage({}, '用户名称和用户工号、手机号码已存在!', -1);
@@ -146,12 +142,6 @@ export class UserManagementService {
     });
     // 更新 session 用户信息
     session.currentUserInfo = { ...session.currentUserInfo, ...userInfo };
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.userModel.findByPk(user_id);
-    await this.operationLogsService.saveLogs(
-      `编辑用户：${currentInfo.user_name}`,
-    );
     return responseMessage(result);
   }
 
@@ -168,14 +158,8 @@ export class UserManagementService {
     if (exist) {
       return responseMessage({}, 'admin 用户为超级管理员，不能删除!', -1);
     }
-    // 根据主键查找出当前数据
-    const currentInfo = await this.userModel.findByPk(user_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.userModel.destroy({ where: { user_id } });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `删除用户：${currentInfo.user_name}`,
-    );
     return responseMessage(result);
   }
 
@@ -191,13 +175,6 @@ export class UserManagementService {
     const result = await this.userModel.update(
       { status },
       { where: { user_id } },
-    );
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.userModel.findByPk(user_id);
-    await this.operationLogsService.saveLogs(
-      `更新用户[${currentInfo.user_name}]状态：${{ 0: '禁用', 1: '正常' }[status]
-      }`,
     );
     return responseMessage(result);
   }

@@ -15,7 +15,6 @@ import App_configuration from '@/config/configuration'; // 全局配置
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module'; // 系统设置-操作日志
 
 import { AuthController } from './auth.controller'; // Auth Controller
 import { AuthService } from './auth.service'; // Auth Service
@@ -29,7 +28,6 @@ import { JwtStrategy } from './jwt.strategy';
       // 这里不设置 token 过期时间，过期时间在 redis 里面设置
       secret: App_configuration().secret,
     }),
-    OperationLogsModule,
   ],
   // 由 Nest 注入器实例化的提供者，并且可以至少在整个模块中共享
   controllers: [AuthController],

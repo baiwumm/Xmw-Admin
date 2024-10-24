@@ -123,7 +123,6 @@ export type InternationalAttributes = {
  */
 export type LogsAttributes = {
   log_id?: string; // id
-  content: string; // 日志内容
   ip: string; // ip
   path: string; // 前端路由
   method: RequestMethods | string; // 请求方式

@@ -15,7 +15,6 @@ import { Sequelize } from 'sequelize-typescript';
 import { XmwMenu } from '@/models/xmw_menu.model';
 import { XmwPermission } from '@/models/xmw_permission.model';
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
 import type {
   PageResponse,
@@ -42,7 +41,6 @@ export class RoleManagementService {
     private readonly permissionModel: typeof XmwPermission,
 
     private sequelize: Sequelize,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -136,8 +134,6 @@ export class RoleManagementService {
       await this.permissionModel.bulkCreate(permissionData, { transaction: t });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`创建角色：${role_name}`);
       return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
@@ -190,12 +186,6 @@ export class RoleManagementService {
       await this.permissionModel.bulkCreate(permissionData, { transaction: t });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      // 保存操作日志
-      // 根据主键查找出当前数据
-      const currentInfo = await this.roleModel.findByPk(role_id);
-      await this.operationLogsService.saveLogs(
-        `更新角色：${currentInfo.role_name}`,
-      );
       return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
@@ -217,8 +207,6 @@ export class RoleManagementService {
         where: { role_id },
         transaction: t,
       });
-      // 根据主键查找出当前数据
-      const currentInfo = await this.roleModel.findByPk(role_id);
       // 再删除 xmw_role 关联的数据
       const result = await this.roleModel.destroy({
         where: { role_id },
@@ -226,10 +214,6 @@ export class RoleManagementService {
       });
       // 如果执行到此行,且没有引发任何错误,提交事务
       await t.commit();
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(
-        `删除角色：${currentInfo.role_name}`,
-      );
       return responseMessage(result);
     } catch (error) {
       // 如果执行到达此行,则抛出错误,回滚事务
@@ -250,13 +234,6 @@ export class RoleManagementService {
     const result = await this.roleModel.update(
       { status },
       { where: { role_id } },
-    );
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.roleModel.findByPk(role_id);
-    await this.operationLogsService.saveLogs(
-      `更新角色[${currentInfo.role_name}]状态：${{ 0: '禁用', 1: '正常' }[status]
-      }`,
     );
     return responseMessage(result);
   }

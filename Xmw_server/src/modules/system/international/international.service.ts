@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 22:06:24
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-12 09:19:56
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-24 11:06:15
  */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
@@ -15,7 +15,6 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeLang, initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import { LANGS } from '@/utils/enums';
 import type { Langs, Response, SessionTypes } from '@/utils/types';
@@ -28,7 +27,6 @@ export class InternationalService {
     @InjectModel(XmwInternational)
     private readonly internationaModel: typeof XmwInternational,
     private sequelize: Sequelize,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -109,9 +107,12 @@ export class InternationalService {
   ): Promise<Response<SaveInternationalDto>> {
     // 解构参数
     const { name, parent_id } = internationalInfo;
+    const where = parent_id
+      ? { [Op.and]: { name, parent_id } }
+      : { [Op.and]: { name } };
     const [result, created] = await this.internationaModel.findOrCreate({
       // 同一层级 name 不能相同
-      where: { [Op.and]: { name, parent_id } },
+      where,
       // 如果不存在则插入数据
       defaults: {
         ...internationalInfo,
@@ -120,8 +121,6 @@ export class InternationalService {
     });
     // 判断是否创建
     if (created) {
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`创建国际化：${name}`);
       return responseMessage(result);
     } else {
       return responseMessage({}, '同一层级 name 不能相同!', -1);
@@ -155,10 +154,6 @@ export class InternationalService {
     const result = await this.internationaModel.update(internationalInfo, {
       where: { id },
     });
-    // 根据主键查找出当前数据
-    const currentInfo = await this.internationaModel.findByPk(id);
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`编辑国际化：${currentInfo.name}`);
     return responseMessage(result);
   }
 
@@ -175,12 +170,8 @@ export class InternationalService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
-    // 根据主键查找出当前数据
-    const currentInfo = await this.internationaModel.findByPk(id);
     // 如果通过则执行 sql delete 语句
     const result = await this.internationaModel.destroy({ where: { id } });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(`删除国际化：${currentInfo.name}`);
     return responseMessage(result);
   }
 }

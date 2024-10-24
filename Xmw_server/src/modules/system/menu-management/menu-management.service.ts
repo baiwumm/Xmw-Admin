@@ -15,7 +15,6 @@ import { Sequelize } from 'sequelize-typescript';
 import { XmwInternational } from '@/models/xmw_international.model'; // xmw_international 实体
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import type { Response, SessionTypes } from '@/utils/types';
 
@@ -30,7 +29,6 @@ export class MenuManagementService {
     @InjectModel(XmwInternational)
     private readonly internationaModel: typeof XmwInternational,
     private sequelize: Sequelize,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -123,18 +121,6 @@ export class MenuManagementService {
       ...menuInfo,
       founder: session.currentUserInfo.user_id,
     });
-    // 查询菜单 name 对应的中文名称
-    const internationalInfo = await this.internationaModel.findOne({
-      where: {
-        id: {
-          [Op.eq]: menuInfo.name,
-        },
-      },
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `创建菜单：${internationalInfo['zh-CN']}`,
-    );
     return responseMessage(result);
   }
 
@@ -179,20 +165,6 @@ export class MenuManagementService {
     const result = await this.menuModel.update(menuInfo, {
       where: { menu_id },
     });
-    // 根据主键查找出当前数据
-    const currentInfo = await this.menuModel.findByPk(menu_id);
-    // 查询菜单 name 对应的中文名称
-    const internationalInfo = await this.internationaModel.findOne({
-      where: {
-        id: {
-          [Op.eq]: currentInfo.name,
-        },
-      },
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `编辑菜单：${internationalInfo['zh-CN']}`,
-    );
     return responseMessage(result);
   }
 
@@ -209,22 +181,8 @@ export class MenuManagementService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
-    // 根据主键查找出当前数据
-    const currentInfo = await this.menuModel.findByPk(menu_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.menuModel.destroy({ where: { menu_id } });
-    // 查询菜单 name 对应的中文名称
-    const internationalInfo = await this.internationaModel.findOne({
-      where: {
-        id: {
-          [Op.eq]: currentInfo.name,
-        },
-      },
-    });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `删除菜单：${internationalInfo['zh-CN']}`,
-    );
     return responseMessage(result);
   }
 }

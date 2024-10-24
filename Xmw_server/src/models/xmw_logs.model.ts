@@ -34,10 +34,6 @@ export class XmwLogs
   @Column({ type: DataType.UUID, allowNull: false, comment: '用户id' })
   user_id: string;
 
-  // 日志内容
-  @Column({ type: DataType.STRING(200), allowNull: false, comment: '日志内容' })
-  content: string;
-
   // ip
   @IsIP
   @Column({ type: DataType.STRING(50), allowNull: false, comment: 'ip' })

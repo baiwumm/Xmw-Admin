@@ -15,7 +15,6 @@ import { Sequelize } from 'sequelize-typescript';
 import { XmwAlready } from '@/models/xmw_already.model'; // xmw_already 实体
 import { XmwAnnouncement } from '@/models/xmw_announcement.model'; // xmw_announcement 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { responseMessage } from '@/utils'; // 全局工具函数
 import { ANNOUNCEMENT_TYPE } from '@/utils/enums';
 import type { Flag, PageResponse, Response, SessionTypes } from '@/utils/types';
@@ -33,7 +32,6 @@ export class AnnouncementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwAnnouncement)
     private readonly announcementModel: typeof XmwAnnouncement,
-    private readonly operationLogsService: OperationLogsService,
     @InjectModel(XmwAlready)
     private readonly alreadyModel: typeof XmwAlready,
     private sequelize: Sequelize,
@@ -127,10 +125,6 @@ export class AnnouncementService {
         where: { announcement_id },
       })
       : await this.announcementModel.create({ user_id, ...announcementInfo });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `${announcement_id ? '编辑' : '创建'}活动公告：${announcementInfo.title}`,
-    );
     return responseMessage(result);
   }
 
@@ -149,10 +143,6 @@ export class AnnouncementService {
     const result = await this.announcementModel.destroy({
       where: { announcement_id },
     });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `删除活动公告：${currentInfo.title}`,
-    );
     return responseMessage(result);
   }
 
@@ -168,13 +158,6 @@ export class AnnouncementService {
     const result = await this.announcementModel.update(
       { pinned },
       { where: { announcement_id } },
-    );
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.announcementModel.findByPk(announcement_id);
-    await this.operationLogsService.saveLogs(
-      `更新【${currentInfo.title}】是否置顶状态：${{ 0: '否', 1: '是' }[pinned]
-      }`,
     );
     return responseMessage(result);
   }

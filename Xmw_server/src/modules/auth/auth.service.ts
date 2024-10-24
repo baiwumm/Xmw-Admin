@@ -22,7 +22,6 @@ import { XmwOrganization } from '@/models/xmw_organization.model'; // xmw_organi
 import { XmwRole } from '@/models/xmw_role.model'; // xmw_role 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils';
 import type { Response, SessionTypes } from '@/utils/types';
 
@@ -41,7 +40,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly redisCacheService: RedisCacheService,
     private sequelize: Sequelize,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -120,10 +118,6 @@ export class AuthService {
           `${userInfo.user_id}-last-login`,
           moment().format('YYYY-MM-DD HH:mm:ss'),
         );
-        // 保存操作日志
-        await this.operationLogsService.saveLogs(
-          `${{ account: '账户', mobile: '手机' }[loginParams.type]}登录`,
-        );
         return {
           data: {
             access_token: token,
@@ -197,8 +191,6 @@ export class AuthService {
           where: { user_id },
         },
       );
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`退出登录`);
       return responseMessage({});
     }
     return responseMessage({}, '登录信息已失效!', 401);

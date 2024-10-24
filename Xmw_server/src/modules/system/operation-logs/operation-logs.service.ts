@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-10 11:30:13
+ * @LastEditTime: 2024-10-24 11:01:53
  */
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -34,11 +34,10 @@ export class OperationLogsService {
    * @description: 保存操作日志
    * @author: 白雾茫茫丶
    */
-  async saveLogs(content: string) {
+  async logAction() {
     const { url, method, headers, body } = this.request;
     const logData: LogsAttributes = {
       user_id: this.request.session.currentUserInfo.user_id,
-      content,
       ip: getRealIp(this.request),
       path: headers.referer,
       user_agent: headers['user-agent'],

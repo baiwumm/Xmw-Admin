@@ -13,7 +13,6 @@ import type { WhereOptions } from 'sequelize/types';
 
 import { XmwJobs } from '@/models/xmw_jobs.model'; // xmw_jobs 实体
 import { XmwOrganization } from '@/models/xmw_organization.model';
-import { OperationLogsService } from '@/modules/system/operation-logs/operation-logs.service'; // OperationLogs Service
 import { initializeTree, responseMessage } from '@/utils'; // 全局工具函数
 import type { Response, SessionTypes } from '@/utils/types';
 
@@ -25,7 +24,6 @@ export class JobsManagementService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwJobs)
     private readonly jobsModel: typeof XmwJobs,
-    private readonly operationLogsService: OperationLogsService,
   ) { }
 
   /**
@@ -89,8 +87,6 @@ export class JobsManagementService {
     });
     // 判断是否创建
     if (created) {
-      // 保存操作日志
-      await this.operationLogsService.saveLogs(`创建岗位：${jobs_name}`);
       return responseMessage(result);
     } else {
       return responseMessage({}, '岗位名称已存在!', -1);
@@ -128,12 +124,6 @@ export class JobsManagementService {
     const result = await this.jobsModel.update(jobsInfo, {
       where: { jobs_id },
     });
-    // 保存操作日志
-    // 根据主键查找出当前数据
-    const currentInfo = await this.jobsModel.findByPk(jobs_id);
-    await this.operationLogsService.saveLogs(
-      `编辑岗位：${currentInfo.jobs_name}`,
-    );
     return responseMessage(result);
   }
 
@@ -150,14 +140,8 @@ export class JobsManagementService {
     if (exist) {
       return responseMessage({}, '当前数据存在子级，不能删除!', -1);
     }
-    // 根据主键查找出当前数据
-    const currentInfo = await this.jobsModel.findByPk(jobs_id);
     // 如果通过则执行 sql delete 语句
     const result = await this.jobsModel.destroy({ where: { jobs_id } });
-    // 保存操作日志
-    await this.operationLogsService.saveLogs(
-      `删除岗位：${currentInfo.jobs_name}`,
-    );
     return responseMessage(result);
   }
 }
