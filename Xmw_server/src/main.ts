@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-12 17:06:37
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-10-16 11:07:15
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-24 14:08:24
  */
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // swagger 接口文档
@@ -63,7 +63,7 @@ async function bootstrap() {
   app.use('/static', express.static(join(rootDir, '/upload')));
 
   // 全局添加接口前缀
-  app.setGlobalPrefix(process.env.REQUEST_URL_PREFIX);
+  // app.setGlobalPrefix(process.env.REQUEST_URL_PREFIX);
 
   // 构建swagger文档
   const options = new DocumentBuilder()
