@@ -18,6 +18,7 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -27,7 +28,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'; // swagger 接口文档
-
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
 import type { SessionTypes } from '@/utils/types';
 
@@ -48,6 +49,8 @@ import { RoleManagementService } from './role-management.service'; // RoleManage
   description: 'token令牌',
 })
 @ApiBearerAuth()
+@UseInterceptors(LoggerInterceptor)
+@UseGuards(AuthGuard('jwt'))
 @Controller('system/role-management')
 export class RoleManagementController {
   constructor(private readonly roleManagementService: RoleManagementService) { }
@@ -56,7 +59,6 @@ export class RoleManagementController {
    * @description: 获取角色管理列表
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseRoleManagementDto })
   @ApiOperation({ summary: '获取角色管理列表' })
@@ -69,7 +71,6 @@ export class RoleManagementController {
    * @description: 创建角色数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateRoleManagementDto })
   @ApiOperation({ summary: '创建角色数据' })
@@ -88,7 +89,6 @@ export class RoleManagementController {
    * @description: 更新角色数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Put('/:role_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色数据' })
@@ -107,7 +107,6 @@ export class RoleManagementController {
    * @description: 删除角色数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Delete('/:role_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除角色数据' })
@@ -120,7 +119,6 @@ export class RoleManagementController {
    * @description: 更新角色状态
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Patch('/:role_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新角色状态' })

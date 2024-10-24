@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-11-25 14:31:27
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 15:54:23
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-24 14:29:53
  */
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -15,7 +15,7 @@ import App_configuration from '@/config/configuration'; // 全局配置
 import { XmwMenu } from '@/models/xmw_menu.model'; // xmw_menu 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
 import { RedisCacheService } from '@/modules/redis-cache/redis-cache.service'; // RedisCache Service
-
+import { OperationLogsModule } from '@/modules/system/operation-logs/operation-logs.module';
 import { AuthController } from './auth.controller'; // Auth Controller
 import { AuthService } from './auth.service'; // Auth Service
 import { JwtStrategy } from './jwt.strategy';
@@ -28,6 +28,7 @@ import { JwtStrategy } from './jwt.strategy';
       // 这里不设置 token 过期时间，过期时间在 redis 里面设置
       secret: App_configuration().secret,
     }),
+    OperationLogsModule
   ],
   // 由 Nest 注入器实例化的提供者，并且可以至少在整个模块中共享
   controllers: [AuthController],

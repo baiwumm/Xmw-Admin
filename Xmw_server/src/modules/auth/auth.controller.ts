@@ -15,6 +15,7 @@ import {
   Res,
   Session,
   UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -26,7 +27,7 @@ import {
 } from '@nestjs/swagger'; // swagger 接口文档
 import { Request } from 'express';
 import * as svgCaptcha from 'svg-captcha';
-
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import { ResponseDto } from '@/dto/response.dto';
 import { getRealIp, responseMessage } from '@/utils';
 import type { SessionTypes } from '@/utils/types';
@@ -47,6 +48,7 @@ import {
   required: true,
   description: 'token令牌',
 })
+@UseInterceptors(LoggerInterceptor)
 @ApiBearerAuth()
 @Controller('auth')
 export class AuthController {

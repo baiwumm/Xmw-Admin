@@ -18,6 +18,7 @@ import {
   Session,
   Sse,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -32,6 +33,7 @@ import { get } from 'lodash';
 import { Observable } from 'rxjs';
 
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import type { SessionTypes } from '@/utils/types';
 import { AnnouncementAttributes } from '@/utils/types/administrative';
 
@@ -47,7 +49,6 @@ import {
 
 const eventEmitter = new EventEmitter();
 
-/* swagger 文档 */
 @ApiTags('智能行政-活动公告')
 @ApiHeader({
   name: 'Authorization',
@@ -55,6 +56,8 @@ const eventEmitter = new EventEmitter();
   description: 'token令牌',
 })
 @ApiBearerAuth()
+@UseInterceptors(LoggerInterceptor)
+@UseGuards(AuthGuard('jwt'))
 @Controller('administrative/announcement')
 export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) { }
@@ -63,7 +66,6 @@ export class AnnouncementController {
    * @description: 获取活动公告列表
    * @author: 白雾茫茫丶
    */
-  // @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseAnnouncementDto })
   @ApiOperation({ summary: '获取活动公告列表' })
@@ -95,7 +97,6 @@ export class AnnouncementController {
    * @description: 创建活动公告
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateAnnouncementDto })
   @ApiOperation({ summary: '创建活动公告' })
@@ -121,7 +122,6 @@ export class AnnouncementController {
    * @description: 删除活动公告
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Delete('/:announcement_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除活动公告' })
@@ -136,7 +136,6 @@ export class AnnouncementController {
    * @description: 更新是否置顶状态
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Patch('/:announcement_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新是否置顶状态' })
@@ -155,7 +154,6 @@ export class AnnouncementController {
    * @description: 已读活动公告
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Post('/already')
   @ApiOkResponse({ type: CreateAlreadyDto })
   @ApiOperation({ summary: '已读活动公告' })
@@ -174,7 +172,6 @@ export class AnnouncementController {
    * @description: 查询不同消息类型的未读条数
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Get('/unready')
   @ApiOkResponse({ type: ResponseAnnouncementDto })
   @ApiOperation({ summary: '查询不同消息类型的未读条数' })

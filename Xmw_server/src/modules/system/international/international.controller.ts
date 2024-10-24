@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-15 22:06:24
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-09-28 16:44:09
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-24 14:29:02
  */
 import {
   Body,
@@ -17,6 +17,7 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -28,6 +29,7 @@ import {
 } from '@nestjs/swagger'; // swagger 接口文档
 
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import type { SessionTypes } from '@/utils/types';
 
 import {
@@ -47,6 +49,7 @@ import { InternationalService } from './international.service'; // International
   description: 'token令牌',
 })
 @ApiBearerAuth()
+@UseInterceptors(LoggerInterceptor)
 @Controller('system/internationalization')
 export class InternationalController {
   constructor(private readonly internationalService: InternationalService) { }
@@ -71,9 +74,8 @@ export class InternationalController {
   @ApiOkResponse({ type: ResponseInternationalDto })
   @ApiOperation({ summary: '获取国际化列表' })
   async getInternationalList(@Query() internationalInfo: ListInternationalDto) {
-    const response = await this.internationalService.getInternationalList(
-      internationalInfo,
-    );
+    const response =
+      await this.internationalService.getInternationalList(internationalInfo);
     return response;
   }
 

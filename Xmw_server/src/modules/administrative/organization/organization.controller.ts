@@ -17,6 +17,7 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -28,6 +29,7 @@ import {
 } from '@nestjs/swagger'; // swagger 接口文档
 
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import type { SessionTypes } from '@/utils/types';
 
 import {
@@ -46,6 +48,8 @@ import { OrganizationService } from './organization.service'; // Organization Se
   description: 'token令牌',
 })
 @ApiBearerAuth()
+@UseInterceptors(LoggerInterceptor)
+@UseGuards(AuthGuard('jwt'))
 @Controller('administrative/organization')
 export class OrganizationController {
   constructor(private readonly organizationService: OrganizationService) { }
@@ -54,7 +58,6 @@ export class OrganizationController {
    * @description: 获取组织管理列表
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseOrganizationDto })
   @ApiOperation({ summary: '获取组织管理列表' })
@@ -68,7 +71,6 @@ export class OrganizationController {
    * @description: 创建组织数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateOrganizationDto })
   @ApiOperation({ summary: '创建组织数据' })
@@ -87,7 +89,6 @@ export class OrganizationController {
    * @description: 更新组织数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Put('/:org_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新组织数据' })
@@ -106,7 +107,6 @@ export class OrganizationController {
    * @description: 删除组织数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Delete('/:org_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除组织数据' })

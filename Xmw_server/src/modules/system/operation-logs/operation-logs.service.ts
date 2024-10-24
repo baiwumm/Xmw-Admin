@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-24 11:01:53
+ * @LastEditTime: 2024-10-24 15:07:18
  */
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Request } from 'express';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
+import * as UAParser from 'ua-parser-js';
 
 import { XmwLogs } from '@/models/xmw_logs.model'; // Xmw_logs 实体
 import { XmwUser } from '@/models/xmw_user.model'; // xmw_user 实体
@@ -28,6 +29,8 @@ export class OperationLogsService {
     // 使用 InjectModel 注入参数，注册数据库实体
     @InjectModel(XmwLogs)
     private readonly logsModel: typeof XmwLogs,
+    @InjectModel(XmwUser)
+    private readonly userModel: typeof XmwUser,
   ) { }
 
   /**
@@ -35,18 +38,31 @@ export class OperationLogsService {
    * @author: 白雾茫茫丶
    */
   async logAction() {
-    const { url, method, headers, body } = this.request;
-    const logData: LogsAttributes = {
-      user_id: this.request.session.currentUserInfo.user_id,
-      ip: getRealIp(this.request),
-      path: headers.referer,
-      user_agent: headers['user-agent'],
-      method,
-      api_url: url,
-      params: body,
-    };
-    // 将数据插入到表中
-    await this.logsModel.create(logData);
+    const { originalUrl, method, headers, body, query } = this.request;
+    const userAgent = headers['user-agent'];
+    let { currentUserInfo } = this.request.session;
+    // 登录接口需要单独处理
+    const isLogin = originalUrl === '/auth/login';
+    if ((currentUserInfo && method.toUpperCase() !== 'GET') || isLogin) {
+      if (isLogin) {
+        // 查询数据库中对应的用户
+        currentUserInfo = await this.userModel.findOne({
+          where: { user_name: body.user_name },
+        });
+      }
+      const parser = new UAParser(userAgent);
+      const logData: LogsAttributes = {
+        user_id: currentUserInfo.user_id,
+        ip: getRealIp(this.request),
+        os: Object.values(parser.getOS()).join(' '),
+        browser: parser.getBrowser().name,
+        method,
+        api_url: originalUrl,
+        params: { ...body, ...query },
+      };
+      // 将数据插入到表中
+      await this.logsModel.create(logData);
+    }
   }
 
   /**
@@ -64,18 +80,13 @@ export class OperationLogsService {
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 分页查询数据
     const { count, rows } = await this.logsModel.findAndCountAll({
-      attributes: {
-        include: ['u.cn_name', 'u.user_name'],
-      },
       // 联表查询
       include: [
         {
           model: XmwUser,
-          as: 'u',
-          attributes: [],
+          as: 'userInfo',
         },
       ],
-      raw: true,
       offset: (Number(current) - 1) * pageSize,
       limit: Number(pageSize),
       where,

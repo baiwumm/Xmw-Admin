@@ -17,6 +17,7 @@ import {
   Query,
   Session,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -28,6 +29,7 @@ import {
 } from '@nestjs/swagger'; // swagger 接口文档
 
 import { DeleteResponseDto, UpdateResponseDto } from '@/dto/response.dto'; // 响应体 Dto
+import { LoggerInterceptor } from '@/interceptor/logger.interceptor';
 import type { SessionTypes } from '@/utils/types';
 
 import {
@@ -46,6 +48,8 @@ import { JobsManagementService } from './jobs-management.service'; // JobsManage
   description: 'token令牌',
 })
 @ApiBearerAuth()
+@UseInterceptors(LoggerInterceptor)
+@UseGuards(AuthGuard('jwt'))
 @Controller('administrative/jobs-management')
 export class JobsManagementController {
   constructor(private readonly jobsManagementService: JobsManagementService) { }
@@ -54,7 +58,6 @@ export class JobsManagementController {
    * @description: 获取岗位管理列表
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   @ApiOkResponse({ type: ResponseJobsDto })
   @ApiOperation({ summary: '获取岗位管理列表' })
@@ -67,7 +70,6 @@ export class JobsManagementController {
    * @description: 创建岗位数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiOkResponse({ type: CreateJobsDto })
   @ApiOperation({ summary: '创建岗位数据' })
@@ -86,7 +88,6 @@ export class JobsManagementController {
    * @description: 更新岗位数据
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Put('/:jobs_id')
   @ApiOkResponse({ type: UpdateResponseDto })
   @ApiOperation({ summary: '更新岗位数据' })
@@ -106,7 +107,6 @@ export class JobsManagementController {
    * @return {*}
    * @author: 白雾茫茫丶
    */
-  @UseGuards(AuthGuard('jwt'))
   @Delete('/:jobs_id')
   @ApiOkResponse({ type: DeleteResponseDto })
   @ApiOperation({ summary: '删除岗位数据' })
