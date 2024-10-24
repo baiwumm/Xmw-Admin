@@ -124,10 +124,10 @@ export type InternationalAttributes = {
 export type LogsAttributes = {
   log_id?: string; // id
   ip: string; // ip
-  path: string; // 前端路由
   method: RequestMethods | string; // 请求方式
   params: Record<string, any>; // 请求参数
-  user_agent: string; // 代理
+  os: string; // 操作系统
+  browser: string; // 浏览器
   api_url: string; // 请求地址
 } & Times &
   Pick<UserAttributes, 'user_id'>;

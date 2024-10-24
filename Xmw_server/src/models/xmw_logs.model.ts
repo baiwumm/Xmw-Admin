@@ -39,13 +39,13 @@ export class XmwLogs
   @Column({ type: DataType.STRING(50), allowNull: false, comment: 'ip' })
   ip: string;
 
-  // 前端路由
-  @Column({ type: DataType.STRING(100), allowNull: false, comment: '前端路由' })
-  path: string;
+  // 操作系统
+  @Column({ type: DataType.STRING(200), allowNull: false, comment: '操作系统' })
+  os: string;
 
-  // 代理
-  @Column({ type: DataType.STRING(200), allowNull: false, comment: '代理' })
-  user_agent: string;
+  // 浏览器
+  @Column({ type: DataType.STRING(200), allowNull: false, comment: '浏览器' })
+  browser: string;
 
   // 请求参数
   @Column({ type: DataType.JSON, allowNull: false, comment: '请求参数' })
@@ -59,6 +59,6 @@ export class XmwLogs
   @Column({ type: DataType.STRING(100), allowNull: false, comment: '请求地址' })
   api_url: string;
 
-  @BelongsTo(() => XmwUser, { as: 'u' }) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
+  @BelongsTo(() => XmwUser) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   userInfo: XmwUser;
 }
