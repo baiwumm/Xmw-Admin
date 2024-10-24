@@ -3,25 +3,63 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-08-08 14:55:20
- * @LastEditors: Cyan
- * @LastEditTime: 2023-08-08 15:00:13
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-24 09:32:34
  */
-import { TinyArea } from '@ant-design/charts';
-import { FC } from 'react'
+import { Tiny } from '@ant-design/charts';
+import { useMount } from 'ahooks';
+import { Spin } from 'antd';
+import { random } from 'lodash-es';
+import { FC, useImperativeHandle, useState } from 'react'
 
-const TinyAreaChart: FC = () => {
-  const data = [
-    264, 417, 438, 887, 309, 397, 550, 575, 563, 430, 525, 592, 492, 467, 513, 546, 983, 340, 539, 243, 226, 192,
-  ];
+import type { ChartProps } from '../type'
+
+type DataType = {
+  value: number;
+  index: number;
+}
+
+const TinyAreaChart: FC<ChartProps> = ({ onRef, colorPrimary }) => {
+  const [data, setData] = useState<DataType[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const reset = () => {
+    setLoading(true);
+    const result: DataType[] = [];
+    for (let i = 10; i > 0; i--) {
+      result.push({
+        index: i,
+        value: random(1000, 10000),
+      })
+    }
+    setTimeout(() => {
+      setLoading(false);
+      setData(result)
+    }, 1000)
+  }
+
   const config = {
-    height: 60,
-    autoFit: false,
     data,
-    smooth: true,
-    areaStyle: {
-      fill: '#d6e3fd',
+    height: 60,
+    shapeField: 'smooth',
+    xField: 'index',
+    yField: 'value',
+    style: {
+      fill: colorPrimary,
+      fillOpacity: 0.6,
     },
   };
-  return <TinyArea {...config} />;
+
+  useMount(() => {
+    reset()
+  })
+
+  // 用useImperativeHandle暴露一些外部ref能访问的属性
+  useImperativeHandle(onRef, () => ({ reset }))
+  return (
+    <Spin spinning={loading}>
+      <Tiny.Area {...config} />
+    </Spin>
+  )
 }
 export default TinyAreaChart
