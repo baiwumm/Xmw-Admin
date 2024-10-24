@@ -44,8 +44,8 @@ const Workbench: FC = () => {
         <div style={{ marginTop: '-12px' }} >
           <StatisticChart />
         </div>
-        <Row gutter={16}>
-          <Col span={14}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={24} lg={14} xl={14} xxl={14}>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
               {/* 主要技术栈 */}
               <TechnologyStack renderSecondary={renderSecondary} />
@@ -53,7 +53,7 @@ const Workbench: FC = () => {
               <BlogLogs renderSecondary={renderSecondary} />
             </Space>
           </Col>
-          <Col span={10}>
+          <Col xs={24} sm={24} md={24} lg={10} xl={10} xxl={10}>
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
               {/* 最新公告 */}
               <LatestAnnouncement />

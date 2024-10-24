@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-01-30 14:04:03
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 13:56:41
+ * @LastEditTime: 2024-10-24 10:11:56
  */
 import { FormattedMessage, Icon, useIntl } from '@umijs/max';
-import { App, Dropdown, MenuProps, Space, Tabs, TabsProps } from 'antd';
+import { App, Badge, Dropdown, MenuProps, Space, Tabs, TabsProps } from 'antd';
 import { eq, keys } from 'lodash-es';
 import { FC, MutableRefObject, useCallback } from 'react';
 
@@ -73,7 +73,7 @@ const TabsLayout: FC<TabsLayoutProps> = ({
    */
   const renderMenuItem = (key: EnumValues<typeof TABSLAYOUT>, icon: UmiIcon) => ({
     label: formatMessage({ id: `${prefix}${key}` }),
-    icon: <Icon icon={icon} style={{ fontSize: 16 }} />,
+    icon: <Icon icon={icon} style={{ fontSize: 16, display: 'flex' }} />,
     key: key,
   });
   const menuItems: MenuProps['items'] = [
@@ -92,16 +92,21 @@ const TabsLayout: FC<TabsLayoutProps> = ({
    * @description: Tabs 配置项
    */
   const tabsItems: TabsProps['items'] = keys(keepElements.current).map((pathname: string) => {
+    // 判断是否当前活跃标签
+    const isCurrent = eq(activeKey, pathname);
     // 只有当前活跃的标签页才能操作
     const dom = (
-      <Space>
-        <Icon icon={MenuRemixIconMap[pathname]} />
+      <Space size={5}>
+        {isCurrent && (
+          <Badge status="processing" />
+        )}
+        <Icon icon={MenuRemixIconMap[pathname]} style={{ display: 'flex' }} />
         <FormattedMessage id={`menu${pathname.replaceAll('/', '.')}`} />
       </Space>
     );
     return {
       key: pathname,
-      label: eq(activeKey, pathname) ? (
+      label: isCurrent ? (
         <Dropdown
           menu={{ items: menuItems, onClick: ({ key }) => handleClickMenu(key) }}
           trigger={['contextMenu']}
