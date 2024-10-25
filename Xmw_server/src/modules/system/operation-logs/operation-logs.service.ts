@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-24 15:07:18
+ * @LastEditTime: 2024-10-25 15:22:21
  */
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -73,9 +73,12 @@ export class OperationLogsService {
     logsInfo: ListOperationLogsDto,
   ): Promise<Response<PageResponse<XmwLogs>>> {
     // 解构参数
-    const { start_time, end_time, pageSize, current } = logsInfo;
+    const { start_time, end_time, pageSize, current, user_id, method } =
+      logsInfo;
     // 拼接查询参数
     const where: WhereOptions = {};
+    if (user_id) where.user_id = { [Op.eq]: user_id };
+    if (method) where.method = { [Op.eq]: method };
     if (start_time && end_time)
       where.created_time = { [Op.between]: [start_time, end_time] };
     // 分页查询数据
@@ -93,5 +96,14 @@ export class OperationLogsService {
       order: [['created_time', 'desc']], // 排序规则,
     });
     return responseMessage({ list: rows, total: count });
+  }
+
+  /**
+   * @description: 删除操作日志
+   */
+  async deleteLogs(ids: string[]) {
+    // 如果通过则执行 sql delete 语句
+    const result = await this.logsModel.destroy({ where: { log_id: ids } });
+    return responseMessage(result);
   }
 }

@@ -3,19 +3,21 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-03-17 15:50:23
- * @LastEditors: Cyan
- * @LastEditTime: 2023-03-17 15:50:42
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-25 15:17:44
  */
 import { ApiProperty } from '@nestjs/swagger';
+
+import type { RequestMethods } from '@/utils/types';
 
 export class ListOperationLogsDto {
   @ApiProperty({
     type: String,
-    description: '用户名称',
-    default: 'admin',
+    description: '用户id',
+    default: 'bf75a509-f90e-4a29-8bf7-470b581550f6',
     required: false,
   })
-  user_name?: string;
+  user_id?: string;
 
   @ApiProperty({
     type: Number,
@@ -46,4 +48,28 @@ export class ListOperationLogsDto {
     required: false,
   })
   end_time?: Date;
+
+  @ApiProperty({
+    type: String,
+    description: '请求方法',
+    enum: ['POST', 'PUT', 'DELETE', 'PATCH'],
+    default: 'POST',
+    required: false,
+  })
+  method?: RequestMethods;
+}
+
+/**
+ * @description: 删除操作日志
+ */
+export class DelLogsDto {
+  @ApiProperty({
+    type: [String],
+    description: 'id 集合',
+    default: [
+      'f45cd48b-e703-49db-91be-ae7f594e73e0',
+      'fa0fc96c-6c01-459d-b904-c6f65ec369b5',
+    ],
+  })
+  ids: string[];
 }
