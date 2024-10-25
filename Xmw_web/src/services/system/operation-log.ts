@@ -12,3 +12,8 @@ const baseURL = ROUTES.OPERATIONLOG
  */
 export const getOperationLogList = (options?: SearchTimes) =>
   httpRequest.get<PageResponse<API.OPERATIONLOG>>(`${baseURL}`, options);
+
+/**
+ * @description: 删除日志列表
+ */
+export const delLogs = (options: { ids: string[] }) => httpRequest.delete<number>(`${baseURL}`, options);

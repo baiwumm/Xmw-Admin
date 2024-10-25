@@ -237,7 +237,8 @@ export default defineConfig({
       'simple-icons:swiper',
       'ri:file-excel-2-line',
       'ri:bar-chart-2-line',
-      'ri:reset-left-line'
+      'ri:reset-left-line',
+      'ri:delete-bin-line',
     ],
   },
 });

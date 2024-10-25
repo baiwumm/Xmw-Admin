@@ -164,13 +164,13 @@ declare global {
    */
     type OPERATIONLOG = TableTimes & {
       log_id: string; // id
-      content: string; // 日志内容
       ip: string; // ip
-      path: string; // 前端路由
-      user_agent: string; // 代理
+      os: string; // 操作系统
+      broswer: string; // 浏览器
       method: RequestMethods; // 请求方式
       params: Record<string, any>; // 请求参数
       api_url: string; // 请求地址
+      userInfo: USERMANAGEMENT;
     } & Pick<USERMANAGEMENT, 'user_id'>;
   }
 }
