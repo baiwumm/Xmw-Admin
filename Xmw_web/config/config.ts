@@ -190,7 +190,6 @@ export default defineConfig({
       'ri:notification-line',
       'ri:exchange-2-line',
       'ri:contacts-book-3-line',
-      'ri:organization-chart',
       'ri:shield-user-line',
       'ri:id-card-line',
       'ri:user-settings-line',

@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: Cyan
  * @Date: 2022-09-08 15:12:38
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-08-28 09:34:25
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-10-28 16:30:22
  */
 export default {
     path: '/administrative',
@@ -36,14 +36,6 @@ export default {
             name: 'jobs-management',
             icon: 'icon-jobs-management',
             component: './Administrative/JobsManagement',
-            access: 'adminRouteFilter',
-            exact: true,
-        },
-        {
-            path: '/administrative/structure',
-            name: 'structure',
-            icon: 'icon-structure',
-            component: './Administrative/Structure',
             access: 'adminRouteFilter',
             exact: true,
         },

@@ -47,7 +47,6 @@ export const MenuRemixIconMap: Record<string, UmiIcon> = {
   [ROUTES.ANNOUNCEMENT]: 'ri:notification-line',
   [ROUTES.ORGANIZATION]: 'ri:exchange-2-line',
   [ROUTES.JOBSMANAGEMENT]: 'ri:contacts-book-3-line',
-  [ROUTES.STRUCTURE]: 'ri:organization-chart',
   [ROUTES.PERSONALCENTER]: 'ri:shield-user-line',
   [ROUTES.PERSONALINFOMATION]: 'ri:id-card-line',
   [ROUTES.PERSONALSETTING]: 'ri:user-settings-line',
