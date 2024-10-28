@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-10-09 10:38:10
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-07-05 11:09:11
+ * @LastEditTime: 2024-10-28 17:16:36
  */
 import { Icon, useModel } from '@umijs/max';
 import { useBoolean, useRequest } from 'ahooks';
@@ -42,6 +42,11 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
   // 绑定编辑状态下 input 的 ref
   const editInputRef = useRef<InputRef>(null);
 
+  // 表单收集字段
+  const triggerChange = (changedValue: string[]) => {
+    onChange?.([...changedValue]);
+  };
+
   /**
    * @description: 更新用户信息
    * @author: 白雾茫茫丶
@@ -50,12 +55,15 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
     manual: true,
     onSuccess: async ({ code, msg }, params) => {
       if (isSuccess(code)) {
+        const newTags = params[0]?.tags as string[];
         message.success(msg);
+        setTags(newTags);
+        triggerChange(newTags);
         // 更新全局状态
         if (params[0]?.tags && initialState?.CurrentUser?.user_id) {
           setInitialState((s: InitialStateTypes) => ({
             ...s,
-            CurrentUser: { ...initialState?.CurrentUser, tags: params[0]?.tags },
+            CurrentUser: { ...initialState?.CurrentUser, tags: newTags },
           }));
         }
       }
@@ -82,22 +90,18 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
     }
   }, [value]);
 
-  // 表单收集字段
-  const triggerChange = (changedValue: string[]) => {
-    onChange?.([...changedValue]);
-  };
-
   // 移除标签
   const handleClose = (removedTag: string) => {
     const newTags = tags.filter((tag) => tag !== removedTag);
-    setTags(newTags);
-    triggerChange(newTags);
     // 判断是否需要更新用户信息
     if (canCallback) {
       const user_id = initialState?.CurrentUser?.user_id;
       if (user_id) {
         runUpdateUser({ tags: newTags, user_id });
       }
+    } else {
+      setTags(newTags);
+      triggerChange(newTags);
     }
   };
 
@@ -105,14 +109,15 @@ const FigureLabels: FC<IProps> = ({ value, onChange, canCallback }) => {
   const handleInputConfirm = () => {
     // 已存在的 tag 则不执行新增
     if (inputValue && !tags.includes(inputValue)) {
-      setTags([...tags, inputValue]);
-      triggerChange([...tags, inputValue]);
       // 判断是否需要更新用户信息
       if (canCallback) {
         const user_id = initialState?.CurrentUser?.user_id;
         if (user_id) {
           runUpdateUser({ tags: [...tags, inputValue], user_id });
         }
+      } else {
+        setTags([...tags, inputValue]);
+        triggerChange([...tags, inputValue]);
       }
     }
     setInputVisibleFalse();
