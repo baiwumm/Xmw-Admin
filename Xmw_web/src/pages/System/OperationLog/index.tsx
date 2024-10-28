@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-25 17:35:38
+ * @LastEditTime: 2024-10-28 10:05:30
  */
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components'
 import { Icon, useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import { App, Avatar, Button, Popconfirm, Space, Table, Tag } from 'antd'
-import { get, isEmpty, map, values } from 'lodash-es';
+import { compact, get, isEmpty, map, values } from 'lodash-es';
 import { FC, useRef, useState } from 'react';
 
 import { columnScrollX, createTimeColumn, createTimeInSearch, operationColumn } from '@/components/TableColumns'
@@ -126,6 +126,17 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 			align: 'center',
 			ellipsis: true,
+		},
+		{
+			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'location') }),
+			dataIndex: 'location',
+			hideInSearch: true,
+			align: 'center',
+			ellipsis: true,
+			render: (_, record) => {
+				const location = [record.province, record.city];
+				return compact(location).length ? location.join('-') : '--';
+			},
 		},
 		{
 			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'ip') }),

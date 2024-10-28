@@ -170,6 +170,9 @@ declare global {
       method: RequestMethods; // 请求方式
       params: Record<string, any>; // 请求参数
       api_url: string; // 请求地址
+      province: string; // 所在省份
+      city: string; // 所在城市
+      adcode: string; // 城市编码
       userInfo: USERMANAGEMENT;
     } & Pick<USERMANAGEMENT, 'user_id'>;
   }
