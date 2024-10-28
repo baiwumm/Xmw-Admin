@@ -129,5 +129,8 @@ export type LogsAttributes = {
   os: string; // 操作系统
   browser: string; // 浏览器
   api_url: string; // 请求地址
+  province?: string; // 所在省份
+  city?: string; // 所在城市
+  adcode?: string; // 城市编码
 } & Times &
   Pick<UserAttributes, 'user_id'>;

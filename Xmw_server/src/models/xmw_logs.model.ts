@@ -59,6 +59,18 @@ export class XmwLogs
   @Column({ type: DataType.STRING(100), allowNull: false, comment: '请求地址' })
   api_url: string;
 
+  // 所在省份
+  @Column({ type: DataType.STRING(100), allowNull: true, comment: '所在省份' })
+  province: string;
+
+  // 所在城市
+  @Column({ type: DataType.STRING(100), allowNull: true, comment: '所在城市' })
+  city: string;
+
+  // 城市编码
+  @Column({ type: DataType.STRING(100), allowNull: true, comment: '城市编码' })
+  adcode: string;
+
   @BelongsTo(() => XmwUser) // 定义多对一关系。注意使用BelongsTo是多对一关系的【多】表
   userInfo: XmwUser;
 }

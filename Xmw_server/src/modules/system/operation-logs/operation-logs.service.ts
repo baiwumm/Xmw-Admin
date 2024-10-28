@@ -4,12 +4,15 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-12-12 10:11:05
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-25 15:22:21
+ * @LastEditTime: 2024-10-28 10:09:28
  */
+import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { InjectModel } from '@nestjs/sequelize';
 import { Request } from 'express';
+import { assign, compact, isArray, values } from 'lodash';
+import { lastValueFrom, map } from 'rxjs';
 import { Op } from 'sequelize';
 import type { WhereOptions } from 'sequelize/types';
 import * as UAParser from 'ua-parser-js';
@@ -31,7 +34,35 @@ export class OperationLogsService {
     private readonly logsModel: typeof XmwLogs,
     @InjectModel(XmwUser)
     private readonly userModel: typeof XmwUser,
+    private readonly httpService: HttpService,
   ) { }
+
+  /**
+   * @description: 获取用户真实ip
+   * @author: 白雾茫茫丶
+   */
+  async getLocationByIp(ipAddress: string): Promise<any> {
+    try {
+      const response = await lastValueFrom(
+        this.httpService
+          .get(
+            `https://restapi.amap.com/v3/ip?key=${process.env.GAODE_MAP_KEY}&ip=${ipAddress}`,
+          )
+          .pipe(map((res) => res.data)),
+      );
+      if (response?.status === '1') {
+        const { province, city, adcode } = response;
+        return {
+          province: isArray(province) ? undefined : province,
+          city: isArray(city) ? undefined : city,
+          adcode: isArray(adcode) ? undefined : adcode,
+        };
+      }
+      return {};
+    } catch (error) {
+      return {};
+    }
+  }
 
   /**
    * @description: 保存操作日志
@@ -39,8 +70,12 @@ export class OperationLogsService {
    */
   async logAction() {
     const { originalUrl, method, headers, body, query } = this.request;
+    // 获取请求代理信息
     const userAgent = headers['user-agent'];
+    // 获取 session 用户信息
     let { currentUserInfo } = this.request.session;
+    // 获取代理 ip
+    const realIp = getRealIp(this.request);
     // 登录接口需要单独处理
     const isLogin = originalUrl === '/auth/login';
     if ((currentUserInfo && method.toUpperCase() !== 'GET') || isLogin) {
@@ -51,15 +86,23 @@ export class OperationLogsService {
         });
       }
       const parser = new UAParser(userAgent);
+      // 根据 IP 获取地理信息
+      let location = {};
+      if (process.env.GAODE_MAP_KEY) {
+        location = await this.getLocationByIp(realIp);
+      }
       const logData: LogsAttributes = {
         user_id: currentUserInfo.user_id,
-        ip: getRealIp(this.request),
+        ip: realIp,
         os: Object.values(parser.getOS()).join(' '),
         browser: parser.getBrowser().name,
         method,
         api_url: originalUrl,
         params: { ...body, ...query },
       };
+      if (compact(values(location)).length > 0) {
+        assign(logData, location);
+      }
       // 将数据插入到表中
       await this.logsModel.create(logData);
     }
