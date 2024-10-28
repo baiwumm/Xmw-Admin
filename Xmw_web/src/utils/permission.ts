@@ -57,5 +57,10 @@ export default {
       edit: 'system:internationalization:edit', // 编辑
       delete: 'system:internationalization:delete', // 删除
     },
+    // 操作日志
+    'operation-log': {
+      delete: 'system:operation-log:delete', // 删除
+      'batch-delete': 'system:operation-log:batch-delete', // 批量删除
+    },
   },
 }

@@ -4,10 +4,10 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-28 10:05:30
+ * @LastEditTime: 2024-10-28 17:05:02
  */
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components'
-import { Icon, useIntl } from '@umijs/max'
+import { Access, Icon, useAccess, useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks'
 import { App, Avatar, Button, Popconfirm, Space, Table, Tag } from 'antd'
 import { compact, get, isEmpty, map, values } from 'lodash-es';
@@ -16,12 +16,15 @@ import { FC, useRef, useState } from 'react';
 import { columnScrollX, createTimeColumn, createTimeInSearch, operationColumn } from '@/components/TableColumns'
 import { delLogs, getOperationLogList } from '@/services/system/operation-log'
 import { getUserList } from '@/services/system/user-management'; // 用户管理接口
-import { formatPerfix, formatResponse, isSuccess, randomTagColor } from '@/utils'
-import { REQUEST_METHODS, ROUTES } from '@/utils/enums'
+import { formatPathName, formatPerfix, formatResponse, isSuccess, randomTagColor } from '@/utils'
+import { OPERATION, REQUEST_METHODS, ROUTES } from '@/utils/enums'
+import permissions from '@/utils/permission';
 import type { SearchTimes } from '@/utils/types'
 
 const OperationLog: FC = () => {
 	const { formatMessage } = useIntl();
+	// 权限定义集合
+	const access = useAccess();
 	// hooks 调用
 	const { message } = App.useApp();
 	// 获取表格实例
@@ -152,23 +155,30 @@ const OperationLog: FC = () => {
 		{
 			...operationColumn,
 			render: (_, record) => (
-				<Popconfirm
-					title="确认删除吗？"
-					open={currentId === record.log_id}
-					onConfirm={() => handleDelLogs(record.log_id)}
-					okButtonProps={{ loading: delLogsLoading }}
-					onCancel={() => setCurrentId('')}
+				<Access
+					accessible={access.operationPermission(
+						get(permissions, `${formatPathName(ROUTES.OPERATIONLOG)}.${OPERATION.DELETE}`, ''),
+					)}
+					fallback='--'
 				>
-					<Button
-						color="danger"
-						variant="outlined"
-						size='small'
-						icon={<Icon icon='ri:delete-bin-line' />}
-						onClick={() => setCurrentId(record.log_id)}
+					<Popconfirm
+						title="确认删除吗？"
+						open={currentId === record.log_id}
+						onConfirm={() => handleDelLogs(record.log_id)}
+						okButtonProps={{ loading: delLogsLoading }}
+						onCancel={() => setCurrentId('')}
 					>
-						{formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'delete', true) })}
-					</Button>
-				</Popconfirm>
+						<Button
+							color="danger"
+							variant="outlined"
+							size='small'
+							icon={<Icon icon='ri:delete-bin-line' />}
+							onClick={() => setCurrentId(record.log_id)}
+						>
+							{formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'delete', true) })}
+						</Button>
+					</Popconfirm>
+				</Access>
 			),
 		},
 	]
@@ -229,16 +239,23 @@ const OperationLog: FC = () => {
 				}}
 				tableAlertOptionRender={() => {
 					return (
-						<Button
-							color="danger"
-							variant="outlined"
-							size='small'
-							icon={<Icon icon='ri:delete-bin-line' />}
-							onClick={() => fetchDelLogs({ ids: selectedRowKeys as string[] })}
-							loading={delLogsLoading}
+						<Access
+							accessible={access.operationPermission(
+								get(permissions, `${formatPathName(ROUTES.OPERATIONLOG)}.${OPERATION.BATCHDELETE}`, ''),
+							)}
+							fallback={null}
 						>
-							{formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'batchDelete', true) })}
-						</Button>
+							<Button
+								color="danger"
+								variant="outlined"
+								size='small'
+								icon={<Icon icon='ri:delete-bin-line' />}
+								onClick={() => fetchDelLogs({ ids: selectedRowKeys as string[] })}
+								loading={delLogsLoading}
+							>
+								{formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'batch-delete', true) })}
+							</Button>
+						</Access>
 					);
 				}}
 			/>

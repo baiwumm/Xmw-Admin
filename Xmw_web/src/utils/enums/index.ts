@@ -123,6 +123,7 @@ export enum OPERATION {
   EDIT = 'edit', // 编辑
   DELETE = 'delete', // 删除
   ADDCHILD = 'add-child', // 添加子级
+  BATCHDELETE = 'batch-delete', // 批量删除
 }
 
 /**
