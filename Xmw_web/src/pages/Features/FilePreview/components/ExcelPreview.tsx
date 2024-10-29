@@ -8,7 +8,6 @@
 import '@js-preview/excel/lib/index.css';
 
 import jsPreviewExcel, { JsExcelPreview } from '@js-preview/excel';
-import XlsxFile from '@public/office/test.xlsx';
 import { useMount } from 'ahooks';
 import { Spin } from 'antd'
 import React, { FC, useRef, useState } from 'react';
@@ -29,7 +28,7 @@ const ExcelPreview: FC = () => {
       setIsLoading(true) // 开始加载时设置 loading 状态
 
       myExcelPreviewer
-        .preview(XlsxFile)
+        .preview('/office/test.xlsx')
         .finally(() => {
           setIsLoading(false)
         })
