@@ -83,6 +83,7 @@
   "devDependencies": {
     "@ant-design/pro-cli": "^3.1.0",
     "@iconify-json/fa6-solid": "1.2.1",
+    "@iconify-json/logos": "1.2.3",
     "@iconify-json/ri": "1.1.21",
     "@iconify-json/simple-icons": "1.2.9",
     "@testing-library/react": "^14.0.0",
@@ -106,8 +107,7 @@
     "swagger-ui-dist": "^5.9.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "umi-presets-pro": "^2.0.3",
-    "@iconify-json/logos": "1.2.3"
+    "umi-presets-pro": "^2.0.3"
   },
   "engines": {
     "node": ">=18.0.0"
