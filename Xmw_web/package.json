@@ -106,7 +106,8 @@
     "swagger-ui-dist": "^5.9.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "umi-presets-pro": "^2.0.3"
+    "umi-presets-pro": "^2.0.3",
+    "@iconify-json/logos": "1.2.3"
   },
   "engines": {
     "node": ">=18.0.0"
