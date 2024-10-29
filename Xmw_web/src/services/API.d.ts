@@ -166,7 +166,7 @@ declare global {
       log_id: string; // id
       ip: string; // ip
       os: string; // 操作系统
-      broswer: string; // 浏览器
+      browser: string; // 浏览器
       method: RequestMethods; // 请求方式
       params: Record<string, any>; // 请求参数
       api_url: string; // 请求地址

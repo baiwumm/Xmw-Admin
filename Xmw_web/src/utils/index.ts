@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-07 16:12:53
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-14 11:28:54
+ * @LastEditTime: 2024-10-29 14:32:15
  */
 import type { ColumnsState, RequestData } from '@ant-design/pro-components';
 import { history } from '@umijs/max';
 import { message } from 'antd';
 import CryptoJS from 'crypto-js'; // AES/DES加密
-import { compact, eq, get, isInteger, join, random, sample, sampleSize, startsWith } from 'lodash-es';
+import { compact, eq, get, isInteger, join, keys, random, sample, sampleSize, startsWith, toLower } from 'lodash-es';
 import { stringify } from 'querystring';
 
 import { getPermissions, getRoutesMenus, getUserInfo } from '@/services/logic/login' // 登录相关接口
@@ -280,4 +280,43 @@ export const generateRandomHanziArray = (count = 1) => {
   }
 
   return hanziArray;
+};
+
+/** @description: 浏览器图标映射 */
+export const BroswerIconMap = (text: string): string | undefined => {
+  const iconMap: Record<string, string> = {
+    Chrome: 'logos:chrome',
+    Firefox: 'logos:firefox',
+    Safari: 'logos:safari',
+    Opera: 'logos:opera',
+    Edge: 'logos:microsoft-edge',
+    WebKit: 'logos:webkit',
+    Android: 'logos:android-icon',
+  };
+  for (let i = 0; i < keys(iconMap).length; i += 1) {
+    const item = keys(iconMap)[i];
+    if (startsWith(toLower(text), toLower(item))) {
+      return iconMap[item];
+    }
+  }
+  return undefined;
+};
+
+/** @description: 操作系统图标映射 */
+export const OsIconMap = (text: string): string | undefined => {
+  const iconMap: Record<string, string> = {
+    Windows: 'logos:microsoft-windows-icon',
+    'Mac OS': 'logos:apple',
+    Linux: 'logos:linux-tux',
+    Android: 'logos:android-icon',
+    iOS: 'logos:apple',
+    Chrome: 'logos:chrome',
+  };
+  for (let i = 0; i < keys(iconMap).length; i += 1) {
+    const item = keys(iconMap)[i];
+    if (startsWith(toLower(text), toLower(item))) {
+      return iconMap[item];
+    }
+  }
+  return undefined;
 };

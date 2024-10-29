@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-29 10:25:40
+ * @LastEditTime: 2024-10-29 15:09:53
  */
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components'
 import { Access, Icon, useAccess, useIntl } from '@umijs/max'
@@ -16,7 +16,15 @@ import { FC, useRef, useState } from 'react';
 import { columnScrollX, createTimeColumn, createTimeInSearch, operationColumn } from '@/components/TableColumns'
 import { delLogs, getOperationLogList } from '@/services/system/operation-log'
 import { getUserList } from '@/services/system/user-management'; // 用户管理接口
-import { formatPathName, formatPerfix, formatResponse, isSuccess, randomTagColor } from '@/utils'
+import {
+	BroswerIconMap,
+	formatPathName,
+	formatPerfix,
+	formatResponse,
+	isSuccess,
+	OsIconMap,
+	randomTagColor,
+} from '@/utils'
 import { OPERATION, REQUEST_METHODS, ROUTES } from '@/utils/enums'
 import permissions from '@/utils/permission';
 import type { SearchTimes } from '@/utils/types'
@@ -122,6 +130,14 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 			align: 'center',
 			ellipsis: true,
+			render: (text, record) => (
+				<Space>
+					{OsIconMap(record.os) ? (
+						<Icon icon={OsIconMap(record.os)} style={{ fontSize: 16, display: 'flex' }} />
+					) : null}
+					{text}
+				</Space>
+			),
 		},
 		{
 			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'browser') }),
@@ -129,6 +145,14 @@ const OperationLog: FC = () => {
 			hideInSearch: true,
 			align: 'center',
 			ellipsis: true,
+			render: (text, record) => (
+				<Space>
+					{BroswerIconMap(record.browser) ? (
+						<Icon icon={BroswerIconMap(record.browser)} style={{ fontSize: 16, display: 'flex' }} />
+					) : null}
+					{text}
+				</Space>
+			),
 		},
 		{
 			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'location') }),
@@ -138,7 +162,12 @@ const OperationLog: FC = () => {
 			ellipsis: true,
 			render: (_, record) => {
 				const location = [record.province, record.city];
-				return compact(location).length ? uniq(location).join('-') : '--';
+				return compact(location).length ? (
+					<Space size={2}>
+						<Icon icon='ri:map-pin-line' style={{ fontSize: 16, display: 'flex' }} />
+						{compact(location).length ? uniq(location).join('-') : '--'}
+					</Space>
+				) : '--'
 			},
 		},
 		{
