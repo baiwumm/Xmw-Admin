@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2022-09-02 14:07:00
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-10-28 17:05:02
+ * @LastEditTime: 2024-10-29 09:10:24
  */
 import { ActionType, PageContainer, ProColumns, ProTable } from '@ant-design/pro-components'
 import { Access, Icon, useAccess, useIntl } from '@umijs/max'
@@ -144,7 +144,7 @@ const OperationLog: FC = () => {
 		{
 			title: formatMessage({ id: formatPerfix(ROUTES.OPERATIONLOG, 'ip') }),
 			dataIndex: 'ip',
-			width: 100,
+			width: 140,
 			hideInSearch: true,
 			align: 'center',
 		},
